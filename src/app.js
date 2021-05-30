@@ -56,7 +56,7 @@ $(document)
         uniforms.resolution.value.y = renderer.domElement.height;
       }
 
-      $('.ui.container').css('marginTop', (height) - ($('.ui.container').height() / 2));
+      $('.ui.container').css('marginTop', (window.innerHeight / 2 ) - ($('.ui.container').height() /2 ));
     }
 
     function render(time) {
