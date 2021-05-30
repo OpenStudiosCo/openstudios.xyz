@@ -10,36 +10,15 @@ block append title
   | Home | Open Studios
 
 block append page
-  #bottom_left
-    .overlay
-      h3 Welcome to Open Studios!
-      p.
-        An independent game studio that uses open source and web technology
-        to deliver cutting edge experiences for gamers and developers.
-  #top_left
-    a(href='/projects#kamigen')
-      video(width='400' height='400' autoplay='true' muted='muted')
-        source(src='/assets/kamigen.mp4' type='video/mp4' loop='true')
-      .overlay
-        h3 Kamigen
-        p.
-          Kamigen is a tropical cyberpunk (science fiction) world with aircraft combat.
-          Play the game or catch up on the story in the comics.
-  #top_right
-    a(href='/projects#kettlefish')
-      video(width='400' height='400' autoplay='true' muted='muted')
-        source(src='/assets/kettlefish.mp4' type='video/mp4' loop='true')
-      .overlay
-        h3 Kettlefish
-        p.
-          An opinionated boilerplate to create static websites. Out of the
-          box Kettlefish comes with a default homepage but it has many uses.
-  #bottom_right
-    a(href='/projects#manifold')
-      video(width='400' height='400' autoplay='true' muted='muted')
-        source(src='/assets/manifold.mp4' type='video/mp4' loop='true')
-      .overlay
-        h3 Manifold
-        p.
-          A hybrid 2D/3D design tool for indie game developers; fast and 
-          efficient modelling for Three.JS scenes.
+  h2.ui.inverted.header New website coming soon.
+  h1(style='display: inline-block;')
+    a#logo(href='/' title='Home')
+      span.hidden Home
+      img.ui.image.small(src='/assets/wlogo.png' title='Open Studios logo')
+  .ui.horizontal.divider
+  a(href='https://www.facebook.com/openstudiosco', title='Facebook')
+    i.icon.facebook.large.inverted
+  a(href='https://www.linkedin.com/company/38109426/', title='LinkedIn')
+    i.icon.linkedin.large.inverted
+  a(href='https://twitter.com/OpenStudios1', title='Twitter')
+    i.icon.twitter.large.inverted

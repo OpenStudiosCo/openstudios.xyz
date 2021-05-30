@@ -33,8 +33,8 @@
     "css": "stylus src/styles -o dist",
     "pug": "pug src/pages -P -o . -b .",
     "rollup": "rollup -c",
-    "dev-osx": "sudo http-server -p 80 -c-1 .",
-    "dev": "http-server -p 80 -c-1 .",
+    "dev-osx": "sudo http-server -p 3000 -c-1 .",
+    "dev": "http-server -p 3000 -c-1 .",
     "preinstall": "npm i -g pug-cli stylus http-server rollup",
     "gs": "for i in ../*; do (cd $i && (echo $i; git status)); done",
     "gsw": "for /D %i in (../*) do cd ../%i && (git remote get-url origin && git status)"

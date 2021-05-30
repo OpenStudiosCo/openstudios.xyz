@@ -17,7 +17,7 @@ $(document)
     var geometry = new THREE.PlaneBufferGeometry(2, 2);
 
     var uniforms = {
-      time: { type: "f", value: 1.0 },
+      time: { type: "f", value: 2.0 },
       resolution: { type: "v2", value: new THREE.Vector2() },
       mouse: { type: "v2", value: new THREE.Vector2() },
     };
@@ -54,9 +54,11 @@ $(document)
       var height = canvas.clientHeight * dpr;
       if (width != canvas.width || height != canvas.height) {
         renderer.setSize( width, height, false );
-        uniforms.resolution.value.x = renderer.domElement.width / 4;
-        uniforms.resolution.value.y = renderer.domElement.height / 4;
+        uniforms.resolution.value.x = renderer.domElement.width;
+        uniforms.resolution.value.y = renderer.domElement.height;
       }
+
+      $('.ui.container').css('marginTop', (height) - ($('.ui.container').height() / 2));
     }
 
     function render(time) {

@@ -10,10 +10,7 @@ html
     block styles
   body
     #wrapper
-      .ui.grid.stackable
-        .row
-          .column.three.wide
-            include /src/templates/sidebar.pug
-          #container.column.thirteen.wide
-            block page
+      .ui.container
+        .ui.basic.center.aligned.segment
+          block page
     include /src/templates/scripts.pug
