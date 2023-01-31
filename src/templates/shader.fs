@@ -1,4 +1,5 @@
 // Forked from: https://www.shadertoy.com/view/NsS3Dt
+// https://glslsandbox.com/e#98997.0
 
 #extension GL_OES_standard_derivatives : enable
 
@@ -50,12 +51,12 @@ float fbm(vec2 p, int lv)
 
 void main( )
 {
-    vec2 uv = (2.*gl_FragCoord.xy-resolution.xy)/resolution.y;
+    vec2 uv = (2.*gl_FragCoord.xy-resolution.xy)/(resolution.y * 0.8);
     
     float mtHeight = fbm(uv.xx+0.6, 8);
     float mtHeightSm = fbm(uv.xx+0.6, 3);
     vec3 col = vec3(0);
-    vec2 sunPos = vec2(0.8,-0.);
+    vec2 sunPos = vec2(0.8,0.0);
     vec3 skyCol = vec3(0.075,0.310,0.518);
     float q = uv.y-sunPos.y;
     float q2 = uv.x-sunPos.x;
@@ -104,5 +105,5 @@ void main( )
     col += 0.03 * (hash12(gl_FragCoord.xy)-0.5) * sqrt(resolution.y/400.);
 
     // Output to screen
-    gl_FragColor = vec4(col,1.0);
+    gl_FragColor = clamp(vec4(col,1.0), vec4(0.), vec4(0.8));
 }
