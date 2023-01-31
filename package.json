@@ -1,47 +1,45 @@
 {
-  "name": "kettlefish",
-  "version": "0.0.8",
-  "description": "A Node.JS based boilerplate for no fuss static HTML websites",
-  "main": "kettlefish.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/paulbrzeski/kettlefish"
+  "name": "openstudios.xyz",
+  "version": "2.0.0",
+  "description": "The homepage of Open Studios and a Kettlefish inspired Eleventy boilerplate",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production npm-run-all clean -p build:*",
+    "build:11ty": "eleventy --quiet",
+    "build:rollup": "rollup -c",
+    "clean": "rimraf dist",
+    "dev": "npm-run-all clean build:* -p dev:*",
+    "dev:11ty": "eleventy --serve --quiet",
+    "dev:rollup": "rollup -c -w"
   },
-  "keywords": [
-    "boilerplate"
-  ],
-  "author": "Paul Brzeski",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/paulbrzeski/kettlefish/issues"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "alpinejs": "^3.10.2",
+    "autoprefixer": "^10.4.7",
+    "cross-env": "^7.0.3",
+    "kute.js": "^2.2.2",
+    "npm-run-all": "^4.1.5",
+    "popmotion": "^11.0.5",
+    "postcss": "^8.4.13",
+    "postcss-import": "^14.1.0",
+    "postcss-nested": "^5.0.6",
+    "poststylus": "^1.0.0",
+    "pug": "^3.0.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.72.1",
+    "rollup-plugin-buble": "^0.19.8",
+    "rollup-plugin-inject-process-env": "^1.3.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-pug": "^1.1.1",
+    "stylus": "^0.57.0",
+    "tailwindcss": "^3.0.24",
+    "three": "^0.145.0",
+    "tweakpane": "^3.1.0"
   },
   "dependencies": {
-    "axis": "^1.0.0",
-    "chokidar": "^2.1.1",
-    "cross-spawn": "^6.0.5",
-    "jstransformer-markdown": "^1.1.1",
-    "npm": "^6.14.8",
-    "prompt": "^1.0.0",
-    "pug": "^2.0.0-beta6",
-    "pug-cli": "^1.0.0-alpha6",
-    "rollup-plugin-buble": "^0.19.2",
-    "rollup-plugin-uglify": "^3.0.0",
-    "stylus": "^0.54.8",
-    "vue": "^2.6.12"
-  },
-  "scripts": {
-    "css": "stylus src/styles -o dist",
-    "pug": "pug src/pages -P -o . -b .",
-    "rollup": "rollup -c",
-    "dev-osx": "sudo http-server -p 3000 -c-1 .",
-    "dev": "http-server -p 3000 -c-1 .",
-    "preinstall": "npm i -g pug-cli stylus http-server rollup",
-    "gs": "for i in ../*; do (cd $i && (echo $i; git status)); done",
-    "gsw": "for /D %i in (../*) do cd ../%i && (git remote get-url origin && git status)"
-  },
-  "bin": {
-    "kettlefish": "./bin/kettlefish",
-    "kf": "./bin/kettlefish"
-  },
-  "preferGlobal": "true"
+    "@11ty/eleventy-img": "^2.0.1"
+  }
 }

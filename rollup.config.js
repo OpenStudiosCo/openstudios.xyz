@@ -1,13 +1,43 @@
+// ES2015 Support
 import buble from 'rollup-plugin-buble';
-import uglify from 'rollup-plugin-uglify';
+
+// Import pug templates as view functions
+import pug from 'rollup-plugin-pug';
+
+// Import css files (for extraction)
+import postcss from 'rollup-plugin-postcss';
+import path from 'path';
+
+// Resolve node plugins in scripts so they are bundled too.
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+
+import injectProcessEnv from 'rollup-plugin-inject-process-env';
+
 
 export default {
-  input: 'src/app.js',
+  external: [ 'THREE' ],
+  input: 'src/scripts/main.js',
   output: {
-  	file: 'dist/app.js',
-  	format: 'cjs'
+    name: 'main',
+  	file: 'docs/main.js',
+  	format: 'iife',
+    sourcemap: true,
+
+    globals: {
+      THREE: 'THREE',
+    }
   },
   plugins: [
-    buble()
+    postcss({
+      extract: path.resolve('docs/main.css'),
+      minimize: true,
+    }),
+    injectProcessEnv({ 
+      NODE_ENV: 'production',
+    }),
+    nodeResolve(),
+    pug(),
+    buble({ transforms: { asyncAwait: false } })
   ]
 };
+ 

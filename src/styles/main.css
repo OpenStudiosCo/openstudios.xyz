@@ -1,0 +1,55 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+canvas {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+#wrapper {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+@screen md {}
+
+@screen lg {}
+
+@screen xl {}
+
+@keyframes blurout {
+    0% {
+        filter: blur(0px);
+        opacity: 1.0;
+    }
+
+    100% {
+        filter: blur(20px);
+        opacity: 0.0;
+        animation-play-state: paused;
+    }
+
+}
+
+@keyframes blurin {
+    0% {
+        filter: blur(20px);
+        opacity: 0.0;
+    }
+
+    100% {
+        filter: blur(0px);
+        opacity: 1.0;
+        animation-play-state: paused;
+    }
+
+}

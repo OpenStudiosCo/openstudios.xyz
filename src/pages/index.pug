@@ -1,24 +1,7 @@
-extends /src/templates/layout.pug
-
-block append scripts
-  script(src='./dist/app.js')
-
-block append styles
-  link(href='./dist/home.css', rel='stylesheet')
+extends ../templates/layout.pug
 
 block append title
   | Open Studios | 
 
 block append page
-  h2.ui.inverted.header New website coming soon.
-  h1(style='display: inline-block;')
-    a#logo(href='/' title='Home')
-      span.hidden Home
-      img.ui.image.small(src='/assets/wlogo.png' title='Open Studios logo')
-  .ui.horizontal.divider
-  a(href='https://www.facebook.com/openstudiosco', title='Facebook')
-    i.icon.facebook.large.inverted
-  a(href='https://www.linkedin.com/company/38109426/', title='LinkedIn')
-    i.icon.linkedin.large.inverted
-  a(href='https://twitter.com/OpenStudios1', title='Twitter')
-    i.icon.twitter.large.inverted
+  h1 new content
