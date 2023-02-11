@@ -20,6 +20,20 @@ canvas {
   width: 100%;
 }
 
+#wrapper #container {
+    @apply grid grid-cols-4 gap-12;
+}
+
+#right-sidebar .socials ul {
+    @apply grid grid-cols-5 gap-2;
+}
+
+#right-sidebar .socials img {
+    height: auto;
+    width: 100%;
+    max-width: 100px;
+}
+
 @screen md {}
 
 @screen lg {}
