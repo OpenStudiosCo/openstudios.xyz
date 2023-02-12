@@ -21,17 +21,36 @@ canvas {
 }
 
 #wrapper #container {
-    @apply grid grid-cols-4 gap-12;
+    @apply grid lg:grid-cols-4 gap-12 justify-items-center;
 }
 
+#container {
+    @apply m-8 lg:m-12;
+}
+
+#left-sidebar .sites ul {
+    @apply grid lg:grid-cols-2 gap-4 justify-items-center;
+}
+
+#left-sidebar .featured {
+    @apply content-end;
+}
+
+#main {
+    @apply grow;
+}
+
+#right-sidebar .socials {
+    @apply justify-items-end;
+}
 #right-sidebar .socials ul {
-    @apply grid grid-cols-5 gap-2;
+    @apply grid grid-cols-5 gap-2 justify-items-end;
 }
 
 #right-sidebar .socials img {
     height: auto;
     width: 100%;
-    max-width: 100px;
+    max-width: 80px;
 }
 
 @screen md {}
