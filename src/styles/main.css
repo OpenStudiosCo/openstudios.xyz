@@ -8,32 +8,43 @@ body {
 }
 
 canvas {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 #wrapper {
-  position: absolute;
-  height: 100%;
-  width: 100%;
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
 
 #wrapper #container {
-    @apply grid lg:grid-cols-4 gap-12 justify-items-center;
+    @apply grid lg:grid-cols-4 gap-12 justify-items-center items-stretch;
 }
 
 #container {
-    @apply m-8 lg:m-12;
+    @apply mx-8 my-12 lg:mx-12 lg:my-16;
 }
 
-#left-sidebar .sites ul {
-    @apply grid lg:grid-cols-2 gap-4 justify-items-center;
-}
+#left-sidebar {
+    @apply lg:flex;
 
-#left-sidebar .featured {
-    @apply content-end;
+    .sites ul {
+        @apply grid lg:grid-cols-2 gap-4 justify-items-center;
+    
+        img {
+            height: auto;
+            width: 100%;
+            min-width: 80px; 
+        }
+    }
+
+    .featured {
+        @apply lg:self-end grid lg:grid-cols-2 gap-4 justify-items-center;
+    }
 }
 
 #main {
