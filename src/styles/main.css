@@ -51,7 +51,7 @@ h3 {
     }
 
     .featured {
-        @apply xl:self-end grid gap-4 justify-items-center text-white mb-20 xl:mb-0;
+        @apply xl:self-end grid gap-4 justify-items-center text-white pb-20;
 
         img {
             @apply mb-4;
