@@ -1,24 +1,69 @@
-extends /src/templates/layout.pug
-
-block append scripts
-  script(src='./dist/app.js')
-
-block append styles
-  link(href='./dist/home.css', rel='stylesheet')
+extends ../templates/layout.pug
 
 block append title
-  | Home | Open Studios
+  | Open Studios | 
 
 block append page
-  h2.ui.inverted.header New website coming soon.
-  h1(style='display: inline-block;')
-    a#logo(href='/' title='Home')
-      span.hidden Home
-      img.ui.image.small(src='/assets/wlogo.png' title='Open Studios logo')
-  .ui.horizontal.divider
-  a(href='https://www.facebook.com/openstudiosco', title='Facebook')
-    i.icon.facebook.large.inverted
-  a(href='https://www.linkedin.com/company/38109426/', title='LinkedIn')
-    i.icon.linkedin.large.inverted
-  a(href='https://twitter.com/OpenStudios1', title='Twitter')
-    i.icon.twitter.large.inverted
+  #container
+    #left-sidebar
+      .sites
+        ul
+          li
+            a(href="https://grayjewellery.com.au/")
+              img(src="/assets/sites/garrettray.png")
+              span.hidden Garrett Ray Jewellery
+          li
+            a(href="https://kamigen.com/")
+              img(src="/assets/sites/kamigen.png")
+              span.hidden Kamigen
+          li
+            a(href="https://paulbrzeski.com/")
+              img(src="/assets/sites/paulbrzeski.png")
+              span.hidden Paul Brzeski
+      .featured
+        a(href="https://medium.com/@open_studios/studio-roundup-for-january-2023-117a63642348")
+          img(src="/assets/vogueuk23febcover.png")
+        div(class="drop-shadow")
+          h3
+            a(href="https://medium.com/@open_studios/studio-roundup-for-january-2023-117a63642348") Studio Roundup for January 2023
+          p.
+            This is an exciting year for Open Studios — a lot of hard work and setup is now starting to pay off as we enter our fourth year of operation.
+    #main
+      div(class="w-full")
+        h1.logo
+          img(src="/assets/logo.png")
+          span.hidden Open Studios
+        h2 open minded
+    #right-sidebar
+      .media
+        h3 Latest media
+        ul
+          li
+            //- Kamigen Animation Test 2
+            iframe(width="560" height="315" src="https://www.youtube.com/embed/VUzLwHIt_vM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen)
+          li
+            //- Introducing Garrett Ray Jewellery
+            iframe(width="560" height="315" src="https://www.youtube.com/embed/pnEoyGDhc80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen)
+          li
+            //- Demonology Concept Reel
+            iframe(width="560" height="315" src="https://www.youtube.com/embed/QdaT9zFnhlw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen)
+      .socials
+        ul
+          li
+            a(href="https://www.facebook.com/openstudiosco")
+              img(src="/assets/icons/facebook.png" class="bg-white")
+          li
+            a(href="https://www.linkedin.com/company/open-studios-australia/")
+              img(src="/assets/icons/linkedin.png" class="bg-white")
+          li
+            a(href="https://medium.com/@open_studios")
+              img(src="/assets/icons/medium.png")
+          li
+            a(href="https://www.redbubble.com/people/openstudios/shop")
+              img(src="/assets/icons/redbubble.png")
+          li
+            a(href="https://www.youtube.com/@open-studios")
+              img(src="/assets/icons/youtube.png")
+      h1.logo(class="block xl:hidden")
+        img(src="/assets/logo.png" class="invert mb-20")
+        span.hidden Open Studios
