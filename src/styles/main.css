@@ -31,7 +31,7 @@ h3 {
 }
 
 #container {
-    @apply mx-8 my-12 xl:mx-12 xl:my-16;
+    @apply px-8 py-12 xl:px-12 xl:py-16;
 }
 
 #left-sidebar {
@@ -60,7 +60,7 @@ h3 {
 }
 
 h1.logo { 
-    @apply px-24 lg:px-24 xl:px-48;
+    @apply lg:px-24 xl:px-48;
     img {
         @apply mx-auto;
         max-width: 240px;
@@ -76,7 +76,7 @@ h1.logo {
     }
 
     h2 {
-        @apply place-self-center font-semibold my-20 text-center text-white text-9xl;
+        @apply place-self-center font-semibold my-20 text-center text-white text-8xl lg:text-9xl;
     }
 }
 
