@@ -52,11 +52,15 @@ h3 {
 
     .featured {
         @apply xl:self-end grid gap-4 justify-items-center text-white mb-20 xl:mb-0;
+
+        img {
+            @apply mb-4;
+        }
     }
 }
 
 h1.logo { 
-    @apply px-24 mt-20;
+    @apply px-24 lg:px-12 xl:px-48;
     img {
         @apply mx-auto;
     }
@@ -64,8 +68,6 @@ h1.logo {
 
 #main {
     @apply xl:flex-1 order-1 xl:order-2 xl:w-auto xl:flex xl:place-items-center;
-
-    
 
     h2 {
         @apply font-semibold my-20 text-center text-white text-8xl;
