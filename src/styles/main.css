@@ -60,17 +60,23 @@ h3 {
 }
 
 h1.logo { 
-    @apply px-24 lg:px-12 xl:px-48;
+    @apply px-24 lg:px-24 xl:px-48;
     img {
         @apply mx-auto;
+        max-width: 240px;
     }
 }
 
 #main {
     @apply xl:flex-1 order-1 xl:order-2 xl:w-auto xl:flex xl:place-items-center;
 
+    h1.logo {
+        @apply xl:absolute xl:left-0 xl:right-0 xl:top-[25%];
+        
+    }
+
     h2 {
-        @apply font-semibold my-20 text-center text-white text-8xl;
+        @apply place-self-center font-semibold my-20 text-center text-white text-9xl;
     }
 }
 
