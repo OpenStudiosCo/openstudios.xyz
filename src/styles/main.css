@@ -5,6 +5,7 @@
 body {
     margin: 0;
     overflow-x: hidden;
+    @apply text-white
 }
 
 canvas {
@@ -12,6 +13,10 @@ canvas {
     width: 100%;
     height: 100%;
     z-index: -1;
+}
+
+h3 {
+    @apply text-xl;
 }
 
 #wrapper {
@@ -22,40 +27,82 @@ canvas {
 }
 
 #wrapper #container {
-    @apply grid lg:grid-cols-4 gap-12 justify-items-center items-stretch;
+    @apply flex flex-col xl:flex-row w-full;
 }
 
 #container {
-    @apply mx-8 my-12 lg:mx-12 lg:my-16;
+    @apply mx-8 my-12 xl:mx-12 xl:my-16;
 }
 
 #left-sidebar {
-    @apply lg:flex;
+    @apply  xl:grid w-full xl:w-96 xl:flex-none order-2 xl:order-1;
 
-    .sites ul {
-        @apply grid lg:grid-cols-2 gap-4 justify-items-center;
-    
-        img {
-            height: auto;
-            width: 100%;
-            min-width: 80px; 
+    .sites {
+        @apply mb-20;
+        ul {
+            @apply grid xl:grid-cols-2 gap-8 justify-items-center;
+        
+            img {
+                height: auto;
+                width: 100%;
+                min-width: 80px; 
+            }
         }
     }
 
     .featured {
-        @apply lg:self-end grid lg:grid-cols-2 gap-4 justify-items-center;
+        @apply xl:self-end grid gap-4 justify-items-center text-white mb-20 xl:mb-0;
+    }
+}
+
+h1.logo { 
+    @apply px-24 mt-20;
+    img {
+        @apply mx-auto;
     }
 }
 
 #main {
-    @apply grow;
+    @apply xl:flex-1 order-1 xl:order-2 xl:w-auto xl:flex xl:place-items-center;
+
+    
+
+    h2 {
+        @apply font-semibold my-20 text-center text-white text-8xl;
+    }
+}
+
+#right-sidebar {
+    @apply xl:grid xl:flex-none w-full xl:w-96 order-last;
+
+    h3 {
+        @apply mb-4;
+        margin-left: 5%;
+    }
+
+    .media li {
+        position: relative;
+        display: block;
+        width: 90%; /* width of iframe wrapper */
+        height: 0;
+        margin: 1rem auto;
+        padding: 0% 0% 56.25%; /* 16:9 ratio */
+        overflow: hidden;
+    }
+    .media li iframe {
+        position: absolute;
+        top: 0; bottom: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
 }
 
 #right-sidebar .socials {
-    @apply justify-items-end;
+    @apply xl:self-end my-20 xl:my-0;
 }
 #right-sidebar .socials ul {
-    @apply grid grid-cols-5 gap-2 justify-items-end;
+    @apply grid grid-cols-5 gap-2 justify-items-center;
 }
 
 #right-sidebar .socials img {

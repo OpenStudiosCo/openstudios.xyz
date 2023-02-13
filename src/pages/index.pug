@@ -23,34 +23,18 @@ block append page
       .featured
         a(href="#")
           img(src="/assets/vogueuk23febcover.png")
-        div
+        div(class="drop-shadow")
           h3
             a(href="#") Studio Roundup for January 2023
           p.
             This is an exciting year for Open Studios — a lot of hard work and setup is now starting to pay off as we enter our fourth year of operation.
     #main
-      h1
-        img(src="/assets/logo.png")
-        span.hidden Open Studios
-      h2 open minded
+      div(class="w-full")
+        h1.logo
+          img(src="/assets/logo.png")
+          span.hidden Open Studios
+        h2 open minded
     #right-sidebar
-      .socials
-        ul
-          li
-            a(href="#")
-              img(src="/assets/icons/facebook.png")
-          li
-            a(href="#")
-              img(src="/assets/icons/linkedin.png")
-          li
-            a(href="#")
-              img(src="/assets/icons/medium.png")
-          li
-            a(href="#")
-              img(src="/assets/icons/redbubble.png")
-          li
-            a(href="#")
-              img(src="/assets/icons/youtube.png")
       .media
         h3 Latest media
         ul
@@ -63,3 +47,23 @@ block append page
           li
             //- Demonology Concept Reel
             iframe(width="560" height="315" src="https://www.youtube.com/embed/QdaT9zFnhlw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen)
+      .socials
+        ul
+          li
+            a(href="#")
+              img(src="/assets/icons/facebook.png" class="bg-white")
+          li
+            a(href="#")
+              img(src="/assets/icons/linkedin.png" class="bg-white")
+          li
+            a(href="#")
+              img(src="/assets/icons/medium.png")
+          li
+            a(href="#")
+              img(src="/assets/icons/redbubble.png")
+          li
+            a(href="#")
+              img(src="/assets/icons/youtube.png")
+      h1.logo(class="block xl:hidden")
+        img(src="/assets/logo.png" class="invert mb-20")
+        span.hidden Open Studios
