@@ -19,6 +19,16 @@ h3 {
     @apply text-xl;
 }
 
+a:hover, a:focus
+{
+	color: #fff;
+    text-shadow: -1px 1px 8px #ffc, 1px -1px 8px #fff;
+
+    * {
+        box-shadow: -1px 1px 8px #ffc, 1px -1px 8px #fff;
+    }
+}
+
 #wrapper {
     display: flex;
     position: absolute;
@@ -51,7 +61,7 @@ h3 {
     }
 
     .featured {
-        @apply xl:self-end grid gap-4 justify-items-center text-white pb-20 2xl:pb-0;
+        @apply xl:self-end grid gap-4 justify-items-center text-white pb-20 2xl:pb-10;
 
         .drop-shadow {
             @apply px-4 md:px-20 xl:px-0;
