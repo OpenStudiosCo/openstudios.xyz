@@ -64,8 +64,8 @@ a:hover, a:focus
             img {
                 height: auto;
                 width: 100%;
-                @media (min-width: 1536px) and (min-height: 768px) {
-                    min-width: 135px;
+                @media (min-width: 1536px) and (max-height: 1065px) {
+                    min-width: 90px;
                 }
 
                 @media (min-width: 1280px) and (max-height: 887px) {
@@ -114,18 +114,16 @@ a:hover, a:focus
 }
 
 h1.logo { 
-    @apply lg:px-24 xl:px-48;
+    @apply mt-20 xl:-mt-20 lg:px-24 xl:px-48;
     img {
         @apply mx-auto;
         max-width: 240px;
     }
-    @media (min-width: 1280px) and (max-height: 887px) {
-        @apply -mt-20;
-    }
+
 }
 
 h2.page-title {
-    @apply place-self-center font-semibold my-20 text-center text-white text-8xl lg:text-9xl;
+    @apply place-self-center font-semibold my-20 text-center text-white text-8xl lg:text-9xl px-8;
     @media xl {
         @apply fixed inset-x-0 max-w-max mx-auto;
     }
