@@ -176,6 +176,7 @@ h2.page-title {
     @apply xl:self-end my-20 xl:my-0;
 
     @media (min-width: 1280px) and (max-height: 887px) {
+        margin-bottom: 1.7rem;
         max-width: 250px;
         @apply mx-auto;
     }
