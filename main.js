@@ -18,6 +18,10 @@ function init() {
   scene = new THREE.Scene();
   scene.add( new THREE.AmbientLight( 0x111122 ) );
 
+  const light = new THREE.HemisphereLight( 0xffffff, 0x444444, 0.01 );
+  light.position.set( - 2, 2, 2 );
+  scene.add( light );
+
   // lights
 
   function createLight( color ) {
@@ -124,7 +128,7 @@ function generateTexture() {
 
 function animate() {
 
-  mesh.scale.set(1, 1,  window.innerHeight/ window.innerWidth )
+  mesh.scale.set(1, 1,  2.5 * (window.innerHeight/ window.innerWidth) );
 
   requestAnimationFrame( animate );
   render();
