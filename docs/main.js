@@ -29,70 +29,46 @@
         $(document)
             .ready(function () {
 
-                $('video').each(function () {
-                    this.loop = true;
-                    this.play();
-                });
-
-                // Background effect
-                var camera = new THREE.Camera();
-                camera.position.z = 1;
-
                 var scene = new THREE.Scene();
-
-                var geometry = new THREE.PlaneBufferGeometry(2, 2);
-
-                var uniforms = {
-                    time: { type: "f", value: 2.0 },
-                    resolution: { type: "v2", value: new THREE.Vector2() },
-                    mouse: { type: "v2", value: new THREE.Vector2() },
-                };
-
-                var material = new THREE.ShaderMaterial({
-                    uniforms: uniforms,
-                    vertexShader: $('#vs').text(),
-                    fragmentShader: $('#fs').text(),
-                });
-
-                var mesh = new THREE.Mesh(geometry, material);
-                scene.add(mesh);
+                var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
                 var renderer = new THREE.WebGLRenderer();
-                document.body.appendChild(renderer.domElement);
-                renderer.domElement.addEventListener('mousemove', recordMousePosition);
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                document.body.appendChild( renderer.domElement );
 
-                render(0);
+                var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+                var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+                var cube = new THREE.Mesh( geometry, material );
+                scene.add( cube );
 
-                function recordMousePosition(e) {
-                    // normalize the mouse position across the canvas
-                    // so in the shader the values go from -1 to +1
-                    var canvas = renderer.domElement;
-                    var rect = canvas.getBoundingClientRect();
+                camera.position.z = 5;
 
-                    uniforms.mouse.value.x = (e.clientX - rect.left) / canvas.clientWidth * 2 - 1;
-                    uniforms.mouse.value.y = (e.clientY - rect.top) / canvas.clientHeight * -2 + 1;
+                function animate() {
+                    requestAnimationFrame( animate );
+
+                    cube.rotation.x += 0.01;
+                    cube.rotation.y += 0.01;
+
+                    renderer.render( scene, camera );
                 }
+
+                animate();
+
+                window.addEventListener( 'resize', resize, false);
 
                 function resize() {
-                    var canvas = renderer.domElement;
+                    
                     var dpr = window.devicePixelRatio;  // make 1 or less if too slow
-                    var width = canvas.clientWidth * dpr;
-                    var height = canvas.clientHeight * dpr;
-                    if (width != canvas.width || height != canvas.height) {
-                        renderer.setSize(width, height, false);
-                        uniforms.resolution.value.x = renderer.domElement.width;
-                        uniforms.resolution.value.y = renderer.domElement.height;
-                    }
+                    var width = window.innerWidth * dpr;
+                    var height = window.innerHeight * dpr;
 
-                    $('.ui.container').css('marginTop', (window.innerHeight / 2) - ($('.ui.container').height() / 2));
+                    camera.aspect = width / height;
+                    camera.lookAt( 0, 0, 0);
+                    camera.updateProjectionMatrix();
+                    renderer.setSize( width, height );
                 }
 
-                function render(time) {
-                    resize();
-                    uniforms.time.value = time * 0.001;
-                    renderer.render(scene, camera);
-                    requestAnimationFrame(render);
-                }
+                
 
             })
             ;

@@ -1,6 +1,6 @@
 {
   "name": "openstudios.xyz",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "The homepage of Open Studios and a Kettlefish inspired Eleventy boilerplate",
   "scripts": {
     "build": "cross-env NODE_ENV=production npm-run-all clean -p build:*",

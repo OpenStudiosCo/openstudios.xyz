@@ -18,70 +18,46 @@ function begin() {
     $(document)
         .ready(function () {
 
-            $('video').each(function () {
-                this.loop = true;
-                this.play();
-            });
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-            // Background effect
-            var camera = new THREE.Camera();
-            camera.position.z = 1;
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
 
-            var scene = new THREE.Scene();
+            const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+            const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+            const cube = new THREE.Mesh( geometry, material );
+            scene.add( cube );
 
-            var geometry = new THREE.PlaneBufferGeometry(2, 2);
+            camera.position.z = 5;
 
-            var uniforms = {
-                time: { type: "f", value: 2.0 },
-                resolution: { type: "v2", value: new THREE.Vector2() },
-                mouse: { type: "v2", value: new THREE.Vector2() },
-            };
+            function animate() {
+                requestAnimationFrame( animate );
 
-            var material = new THREE.ShaderMaterial({
-                uniforms: uniforms,
-                vertexShader: $('#vs').text(),
-                fragmentShader: $('#fs').text(),
-            });
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
 
-            var mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
-
-            var renderer = new THREE.WebGLRenderer();
-            document.body.appendChild(renderer.domElement);
-            renderer.domElement.addEventListener('mousemove', recordMousePosition);
-
-            render(0);
-
-            function recordMousePosition(e) {
-                // normalize the mouse position across the canvas
-                // so in the shader the values go from -1 to +1
-                var canvas = renderer.domElement;
-                var rect = canvas.getBoundingClientRect();
-
-                uniforms.mouse.value.x = (e.clientX - rect.left) / canvas.clientWidth * 2 - 1;
-                uniforms.mouse.value.y = (e.clientY - rect.top) / canvas.clientHeight * -2 + 1;
+                renderer.render( scene, camera );
             }
+
+            animate();
+
+            window.addEventListener( 'resize', resize, false);
 
             function resize() {
-                var canvas = renderer.domElement;
+                
                 var dpr = window.devicePixelRatio;  // make 1 or less if too slow
-                var width = canvas.clientWidth * dpr;
-                var height = canvas.clientHeight * dpr;
-                if (width != canvas.width || height != canvas.height) {
-                    renderer.setSize(width, height, false);
-                    uniforms.resolution.value.x = renderer.domElement.width;
-                    uniforms.resolution.value.y = renderer.domElement.height;
-                }
+                var width = window.innerWidth * dpr;
+                var height = window.innerHeight * dpr;
 
-                $('.ui.container').css('marginTop', (window.innerHeight / 2) - ($('.ui.container').height() / 2));
+                camera.aspect = width / height;
+                camera.lookAt( 0, 0, 0);
+                camera.updateProjectionMatrix();
+                renderer.setSize( width, height );
             }
 
-            function render(time) {
-                resize();
-                uniforms.time.value = time * 0.001;
-                renderer.render(scene, camera);
-                requestAnimationFrame(render);
-            }
+            
 
         })
         ;
