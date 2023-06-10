@@ -105,6 +105,26 @@ function init() {
     cpu.position.set(0, 0.15, 0.33);
     deskGroup.add(cpu);
 
+      
+    // Create an overhead office light geometry
+    var lightWidth = 0.5;
+    var lightHeight = 0.2;
+    var lightDepth = 3;
+    var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
+
+    // Create the overhead office light material
+    var lightMaterial = new THREE.MeshPhongMaterial({ color: 0x00EEff, emissive: 0x00EEff, emissiveIntensity: 0.15 });
+
+    // Create the overhead office light mesh
+    var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
+
+    // Position the overhead office light
+    lightMesh.position.set(0, 2.5, 0);
+    lightMesh.rotation.y = Math.PI / 2;
+    // Add the overhead office light to the scene
+    deskGroup.add(lightMesh);
+  
+
     return deskGroup;
   }
 
@@ -170,7 +190,7 @@ function init() {
   scene.add(portrait1);
   scene.add(portrait2);
 
-  const geometry = new THREE.BoxGeometry(30, 30, 170);
+  const geometry = new THREE.BoxGeometry(60, 30, 170);
 
   const material = new THREE.MeshPhongMaterial({
     color: 0xa0adaf,
@@ -197,7 +217,7 @@ function init() {
   // About Us Neon sign
   const loader = new FontLoader();
 
-  loader.load('./helvetiker_regular.typeface.json', function (font) {
+  loader.load('./cursive.json', function (font) {
 
     const textGeometry = new TextGeometry('about us', {
       font: font,
@@ -220,54 +240,29 @@ function init() {
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
     // Position and rotate the sign
-    signMesh.position.set(-5, 15, -105.5); // Example position for the sign
+    signMesh.position.set(-7, 15, -105.5); // Example position for the sign
     //signMesh.rotation.x = -Math.PI / 2; // Rotate the sign to face forward
 
     // Add the sign to the scene
     scene.add(signMesh);
   });
 
-  // Function to create an office light
-  function createOfficeLight(x, y, z) {
-    // Create an overhead office light geometry
-    var lightWidth = 0.8;
-    var lightHeight = 0.2;
-    var lightDepth = 10;
-    var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
-
-    // Create the overhead office light material
-    var lightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-
-    // Create the overhead office light mesh
-    var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
-
-    // Position the overhead office light
-    lightMesh.position.set(x, y, z);
-
-    // Add the overhead office light to the scene
-    scene.add(lightMesh);
-  }
-
-  // Create overhead ceiling lights
-  createOfficeLight(-0.5* adjustedGapSize, 24, -1 * adjustedGapSize);
-  createOfficeLight(0.5* adjustedGapSize, 24, -1 * adjustedGapSize);
-  createOfficeLight(-0.5* adjustedGapSize, 24, -2 * adjustedGapSize);
-  createOfficeLight(0.5* adjustedGapSize, 24, -2 * adjustedGapSize);
-
   // Apply Unreal Bloom post-processing effect
   var renderScene = new RenderPass(scene, camera);
   var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-  bloomPass.threshold = 0.2;
-  bloomPass.strength = 1;
-  bloomPass.radius = 0.001;
+  bloomPass.threshold = 0.12;
+  bloomPass.strength = 0.5;
+  bloomPass.radius = Math.PI / 10;
 
   const outputPass = new OutputPass( THREE.ACESFilmicToneMapping );
+
+  outputPass.toneMappingExposure = Math.pow( Math.PI / 3, 4.0 );
 
   composer = new EffectComposer(renderer);
   composer.setSize(window.innerWidth, window.innerHeight);
   composer.addPass(renderScene);
-  //composer.addPass(bloomPass);
-  //composer.addPass(outputPass);
+  composer.addPass(bloomPass);
+  composer.addPass(outputPass);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 10, 0);
