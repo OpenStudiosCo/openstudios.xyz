@@ -190,7 +190,7 @@ function init() {
   scene.add(portrait1);
   scene.add(portrait2);
 
-  const geometry = new THREE.BoxGeometry(30, 30, 170);
+  const geometry = new THREE.BoxGeometry(60, 30, 170);
 
   const material = new THREE.MeshPhongMaterial({
     color: 0xa0adaf,
