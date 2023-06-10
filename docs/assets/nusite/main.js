@@ -266,8 +266,8 @@ function init() {
   composer = new EffectComposer(renderer);
   composer.setSize(window.innerWidth, window.innerHeight);
   composer.addPass(renderScene);
-  composer.addPass(bloomPass);
-  composer.addPass(outputPass);
+  //composer.addPass(bloomPass);
+  //composer.addPass(outputPass);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 10, 0);
