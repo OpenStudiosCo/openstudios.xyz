@@ -194,9 +194,6 @@ function init() {
   renderer.shadowMap.type = THREE.BasicShadowMap;
   document.body.appendChild(renderer.domElement);
 
-
-
-
   // About Us Neon sign
   const loader = new FontLoader();
 
@@ -230,6 +227,33 @@ function init() {
     scene.add(signMesh);
   });
 
+  // Function to create an office light
+  function createOfficeLight(x, y, z) {
+    // Create an overhead office light geometry
+    var lightWidth = 0.8;
+    var lightHeight = 0.2;
+    var lightDepth = 10;
+    var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
+
+    // Create the overhead office light material
+    var lightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+    // Create the overhead office light mesh
+    var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
+
+    // Position the overhead office light
+    lightMesh.position.set(x, y, z);
+
+    // Add the overhead office light to the scene
+    scene.add(lightMesh);
+  }
+
+  // Create overhead ceiling lights
+  createOfficeLight(-0.5* adjustedGapSize, 24, -1 * adjustedGapSize);
+  createOfficeLight(0.5* adjustedGapSize, 24, -1 * adjustedGapSize);
+  createOfficeLight(-0.5* adjustedGapSize, 24, -2 * adjustedGapSize);
+  createOfficeLight(0.5* adjustedGapSize, 24, -2 * adjustedGapSize);
+
   // Apply Unreal Bloom post-processing effect
   var renderScene = new RenderPass(scene, camera);
   var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
@@ -245,7 +269,6 @@ function init() {
   composer.addPass(bloomPass);
   composer.addPass(outputPass);
 
-
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 10, 0);
   controls.update();
@@ -253,7 +276,10 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
-  //
+  
+// Adjust ambient light intensity
+var ambientLight = new THREE.AmbientLight(0x333333); // Dim ambient light color
+scene.add(ambientLight);
 
   window.addEventListener('resize', onWindowResize);
 
