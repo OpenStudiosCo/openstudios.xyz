@@ -1,12 +1,20 @@
 import * as THREE from 'three';
 
+
 import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
 
 import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js'
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-let camera, scene, renderer, stats, gapSize, scale, deskGroup;
+
+let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
 let pointLight, pointLight2, mesh;
 
 init();
@@ -135,51 +143,32 @@ function init() {
 
   scene.add(deskGroup);
 
+  // Portraits
 
-  // lights
+  // Load textures
+  var portraitTexture1 = new THREE.TextureLoader().load('./garrett.png');
+  var portraitTexture2 = new THREE.TextureLoader().load('./paul.png');
 
-  function createLight(color) {
+  // Create portrait materials
+  var portraitMaterial1 = new THREE.MeshPhongMaterial({ map: portraitTexture1, specular: 1 });
+  var portraitMaterial2 = new THREE.MeshPhongMaterial({ map: portraitTexture2, specular: 1 });
 
-    const intensity = 2;
 
-    const light = new THREE.PointLight(color, intensity, 20);
-    light.castShadow = true;
-    light.shadow.bias = - 0.005; // reduces self-shadowing on double-sided objects
+  // Set portrait dimensions
+  var portraitWidth = 4;
+  var portraitHeight = 4;
 
-    let geometry = new THREE.SphereGeometry(0.3, 12, 6);
-    let material = new THREE.MeshBasicMaterial({ color: color });
-    material.color.multiplyScalar(intensity);
-    let sphere = new THREE.Mesh(geometry, material);
-    light.add(sphere);
+  // Create portrait planes
+  var portrait1 = new THREE.Mesh(new THREE.PlaneGeometry(portraitWidth, portraitHeight), portraitMaterial1);
+  var portrait2 = new THREE.Mesh(new THREE.PlaneGeometry(portraitWidth, portraitHeight), portraitMaterial2);
 
-    const texture = new THREE.CanvasTexture(generateTexture());
-    texture.magFilter = THREE.NearestFilter;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.repeat.set(1, 4.5);
+  // Position the portraits
+  portrait1.position.set(-5, 8, -90);  // Example position for portrait 1
+  portrait2.position.set(5, 8, -90);   // Example position for portrait 2
 
-    geometry = new THREE.SphereGeometry(2, 32, 8);
-    material = new THREE.MeshPhongMaterial({
-      side: THREE.DoubleSide,
-      alphaMap: texture,
-      alphaTest: 0.5
-    });
-
-    sphere = new THREE.Mesh(geometry, material);
-    sphere.castShadow = true;
-    sphere.receiveShadow = true;
-    light.add(sphere);
-
-    return light;
-
-  }
-
-  pointLight = createLight(0x0088ff);
-  scene.add(pointLight);
-
-  pointLight2 = createLight(0xff8888);
-  scene.add(pointLight2);
-  //
+  // Add portraits to the scene
+  scene.add(portrait1);
+  scene.add(portrait2);
 
   const geometry = new THREE.BoxGeometry(30, 30, 170);
 
@@ -204,6 +193,58 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.BasicShadowMap;
   document.body.appendChild(renderer.domElement);
+
+
+
+
+  // About Us Neon sign
+  const loader = new FontLoader();
+
+  loader.load('helvetiker_regular.typeface.json', function (font) {
+
+    const textGeometry = new TextGeometry('about us', {
+      font: font,
+      size: 2,
+      height: 1,
+      curveSegments: 4,
+      bevelEnabled: true,
+      bevelThickness: 0.01,
+      bevelSize: .05,
+      bevelOffset: 0,
+      bevelSegments: 5
+    });
+
+
+    // Create the emissive material for the text
+    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xff66ff, emissiveIntensity: 1 });
+    //    new THREE.MeshBasicMaterial({ color: 0xff00ff, emissive: 0xff00ff, emissiveIntensity: 1 });
+
+    // Create the "About Us" sign mesh
+    var signMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+    // Position and rotate the sign
+    signMesh.position.set(-5, 15, -105.5); // Example position for the sign
+    //signMesh.rotation.x = -Math.PI / 2; // Rotate the sign to face forward
+
+    // Add the sign to the scene
+    scene.add(signMesh);
+  });
+
+  // Apply Unreal Bloom post-processing effect
+  var renderScene = new RenderPass(scene, camera);
+  var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+  bloomPass.threshold = 0.2;
+  bloomPass.strength = 1;
+  bloomPass.radius = 0.001;
+
+  const outputPass = new OutputPass( THREE.ACESFilmicToneMapping );
+
+  composer = new EffectComposer(renderer);
+  composer.setSize(window.innerWidth, window.innerHeight);
+  composer.addPass(renderScene);
+  composer.addPass(bloomPass);
+  composer.addPass(outputPass);
+
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 10, 0);
@@ -243,6 +284,7 @@ function onWindowResize() {
   });
 
   renderer.setSize(width, height);
+  composer.setSize(width, height);
 
 }
 
@@ -261,34 +303,12 @@ function generateTexture() {
 }
 
 function animate() {
-
   requestAnimationFrame(animate);
-  render();
-
-}
-
-function render() {
-
-  let time = performance.now() * 0.001;
-
-  pointLight.position.x = Math.sin(time * 0.6) * 9;
-  pointLight.position.y = Math.sin(time * 0.7) * 9 + 6;
-  pointLight.position.z = Math.sin(time * 0.8) * 9;
-
-  pointLight.rotation.x = time;
-  pointLight.rotation.z = time;
-
-  time += 10000;
-
-  pointLight2.position.x = Math.sin(time * 0.6) * 9;
-  pointLight2.position.y = Math.sin(time * 0.7) * 9 + 6;
-  pointLight2.position.z = Math.sin(time * 0.8) * 9;
-
-  pointLight2.rotation.x = time;
-  pointLight2.rotation.z = time;
-
-  renderer.render(scene, camera);
 
   stats.update();
 
+  composer.render();
+
 }
+
+
