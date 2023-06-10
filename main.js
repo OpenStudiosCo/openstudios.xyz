@@ -236,7 +236,7 @@ function init() {
     var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
 
     // Create the overhead office light material
-    var lightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    var lightMaterial = new THREE.MeshBasicMaterial({ color: 0x00AAff });
 
     // Create the overhead office light mesh
     var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
@@ -257,8 +257,8 @@ function init() {
   // Apply Unreal Bloom post-processing effect
   var renderScene = new RenderPass(scene, camera);
   var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-  bloomPass.threshold = 0.2;
-  bloomPass.strength = 1;
+  bloomPass.threshold = 0.32;
+  bloomPass.strength = 0.35;
   bloomPass.radius = 0.001;
 
   const outputPass = new OutputPass( THREE.ACESFilmicToneMapping );
@@ -266,8 +266,8 @@ function init() {
   composer = new EffectComposer(renderer);
   composer.setSize(window.innerWidth, window.innerHeight);
   composer.addPass(renderScene);
-  //composer.addPass(bloomPass);
-  //composer.addPass(outputPass);
+  composer.addPass(bloomPass);
+  composer.addPass(outputPass);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 10, 0);
