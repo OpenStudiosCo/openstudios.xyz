@@ -197,7 +197,7 @@ function init() {
   // About Us Neon sign
   const loader = new FontLoader();
 
-  loader.load('helvetiker_regular.typeface.json', function (font) {
+  loader.load('./helvetiker_regular.typeface.json', function (font) {
 
     const textGeometry = new TextGeometry('about us', {
       font: font,
