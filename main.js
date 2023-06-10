@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
+
 import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -21,6 +23,29 @@ function init() {
   const light = new THREE.HemisphereLight( 0xffffff, 0x444444, 0.01 );
   light.position.set( - 2, 2, 2 );
   scene.add( light );
+
+  // Add the extension functions
+  THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
+  THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
+  THREE.Mesh.prototype.raycast = acceleratedRaycast;
+
+  // Generate geometry and associated BVH
+  const geom = new THREE.TorusKnotGeometry( 3, 3, 40, 10 );
+  const bvhmesh = new THREE.Mesh( geom, new THREE.MeshStandardMaterial( {
+    flatShading: true,
+    color: 0xff9800,
+    emissive: 0xff9800,
+    emissiveIntensity: 0.35,
+
+    polygonOffset: true,
+    polygonOffsetUnits: 1,
+    polygonOffsetFactor: 1,
+
+  } ));
+  geom.computeBoundsTree();
+
+  scene.add( bvhmesh );
+
 
   // lights
 
