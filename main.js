@@ -217,7 +217,7 @@ function init() {
   // About Us Neon sign
   const loader = new FontLoader();
 
-  loader.load('./helvetiker_regular.typeface.json', function (font) {
+  loader.load('./cursive.json', function (font) {
 
     const textGeometry = new TextGeometry('about us', {
       font: font,
@@ -240,7 +240,7 @@ function init() {
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
     // Position and rotate the sign
-    signMesh.position.set(-5, 15, -105.5); // Example position for the sign
+    signMesh.position.set(-7, 15, -105.5); // Example position for the sign
     //signMesh.rotation.x = -Math.PI / 2; // Rotate the sign to face forward
 
     // Add the sign to the scene
