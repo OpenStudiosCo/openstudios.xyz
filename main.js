@@ -105,6 +105,26 @@ function init() {
     cpu.position.set(0, 0.15, 0.33);
     deskGroup.add(cpu);
 
+      
+    // Create an overhead office light geometry
+    var lightWidth = 0.5;
+    var lightHeight = 0.2;
+    var lightDepth = 3;
+    var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
+
+    // Create the overhead office light material
+    var lightMaterial = new THREE.MeshPhongMaterial({ color: 0x00EEff, emissive: 0x00EEff, emissiveIntensity: 0.15 });
+
+    // Create the overhead office light mesh
+    var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
+
+    // Position the overhead office light
+    lightMesh.position.set(0, 2.5, 0);
+    lightMesh.rotation.y = Math.PI / 2;
+    // Add the overhead office light to the scene
+    deskGroup.add(lightMesh);
+  
+
     return deskGroup;
   }
 
@@ -227,41 +247,16 @@ function init() {
     scene.add(signMesh);
   });
 
-  // Function to create an office light
-  function createOfficeLight(x, y, z) {
-    // Create an overhead office light geometry
-    var lightWidth = 0.8;
-    var lightHeight = 0.2;
-    var lightDepth = 10;
-    var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
-
-    // Create the overhead office light material
-    var lightMaterial = new THREE.MeshBasicMaterial({ color: 0x00AAff });
-
-    // Create the overhead office light mesh
-    var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
-
-    // Position the overhead office light
-    lightMesh.position.set(x, y, z);
-
-    // Add the overhead office light to the scene
-    scene.add(lightMesh);
-  }
-
-  // Create overhead ceiling lights
-  createOfficeLight(-0.5* adjustedGapSize, 24, -1 * adjustedGapSize);
-  createOfficeLight(0.5* adjustedGapSize, 24, -1 * adjustedGapSize);
-  createOfficeLight(-0.5* adjustedGapSize, 24, -2 * adjustedGapSize);
-  createOfficeLight(0.5* adjustedGapSize, 24, -2 * adjustedGapSize);
-
   // Apply Unreal Bloom post-processing effect
   var renderScene = new RenderPass(scene, camera);
   var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-  bloomPass.threshold = 0.32;
-  bloomPass.strength = 0.35;
-  bloomPass.radius = 0.001;
+  bloomPass.threshold = 0.12;
+  bloomPass.strength = 0.5;
+  bloomPass.radius = Math.PI / 10;
 
   const outputPass = new OutputPass( THREE.ACESFilmicToneMapping );
+
+  outputPass.toneMappingExposure = Math.pow( Math.PI / 3, 4.0 );
 
   composer = new EffectComposer(renderer);
   composer.setSize(window.innerWidth, window.innerHeight);
