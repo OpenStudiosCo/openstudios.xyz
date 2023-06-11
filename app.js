@@ -1,5 +1,6 @@
-import * as THREE from 'three';
+import { greet } from 'virtual-office'
 
+import * as THREE from 'three';
 
 import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
 
@@ -15,10 +16,28 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 
 let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
-let pointLight, pointLight2, mesh;
+let mesh;
 
-init();
-animate();
+function domReady(callback) {
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    // DOM is already ready or in the process of loading
+    callback();
+  } else {
+    // DOMContentLoaded event listener
+    document.addEventListener('DOMContentLoaded', callback);
+  }
+}
+
+domReady(
+  function () {
+    init();
+    animate();    
+  }
+);
+
+
+// Expose the virtual office module to the window scope
+window.virtualOffice = { greet };
 
 function init() {
 
@@ -109,7 +128,7 @@ function init() {
     // Create an overhead office light geometry
     var lightWidth = 0.5;
     var lightHeight = 0.2;
-    var lightDepth = 3;
+    var lightDepth = 1.5;
     var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
 
     // Create the overhead office light material
@@ -149,11 +168,11 @@ function init() {
     desk.rotation.y = Math.PI / 2;
     if (i < 2) {
       desk.position.x = -(gapSize * scale);
-      desk.position.z = (i === 0 ? -3.5 : 0.5) * adjustedGapSize;
+      desk.position.z = -15 + (i === 0 ? -1.5 : 0.5) * adjustedGapSize;
       desk.rotation.y += Math.PI; // Rotate the desk on the left side
     } else {
       desk.position.x = (gapSize * scale);
-      desk.position.z = (i === 2 ? -3.5 : 0.5) * adjustedGapSize;
+      desk.position.z = -15 + (i === 2 ? -1.5 : 0.5) * adjustedGapSize;
     }
 
     desk.scale.set(scale, scale, scale); // Scale up the desk
@@ -299,6 +318,8 @@ scene.add(ambientLight);
 
 }
 
+
+
 function onWindowResize() {
   var width = window.innerWidth;
   var height = window.innerHeight;
@@ -317,9 +338,9 @@ function onWindowResize() {
   deskGroup.children.forEach(function (desk, i) {
 
     if (i < 2) {
-      desk.position.z = (i === 0 ? -3.5 : 0.5) * adjustedGapSize;
+      desk.position.z = - 15 + (i === 0 ? -1.5 : 0.5) * adjustedGapSize;
     } else {
-      desk.position.z = (i === 2 ? -3.5 : 0.5) * adjustedGapSize;
+      desk.position.z = - 15 + (i === 2 ? -1.5 : 0.5) * adjustedGapSize;
     }
   });
 
