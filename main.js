@@ -166,21 +166,21 @@ function init() {
   // Portraits
 
   // Load textures
-  var portraitTexture1 = new THREE.TextureLoader().load('./garrett.png');
-  var portraitTexture2 = new THREE.TextureLoader().load('./paul.png');
+  var portraitTexture1 = new THREE.TextureLoader().load('./paul.png');
+  var portraitTexture2 = new THREE.TextureLoader().load('./garrett.png');
 
   // Create portrait materials
   var portraitMaterial1 = new THREE.MeshStandardMaterial({ map: portraitTexture1 });
   var portraitMaterial2 = new THREE.MeshPhongMaterial({ map: portraitTexture2 });
 
-  function brightenMaterial( material ) {
+  function brightenMaterial( material, amount ) {
 
     // Increase the brightness of the texture
     material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
     material.map.needsUpdate = true; // Update the material
 
     // Increase the brightness by adjusting the material color
-    const brightness = 2.5; // Increase the value to make it brighter
+    const brightness = amount; // Increase the value to make it brighter
     material.color.setRGB(
       material.color.r * brightness,
       material.color.g * brightness,
@@ -190,8 +190,8 @@ function init() {
     return material;
   }
 
-  portraitMaterial1 = brightenMaterial(portraitMaterial1);
-  portraitMaterial2 = brightenMaterial(portraitMaterial2);
+  portraitMaterial1 = brightenMaterial(portraitMaterial1, 2.75);
+  portraitMaterial2 = brightenMaterial(portraitMaterial2, 4.);
 
   // Set portrait dimensions
   var portraitWidth = 4;
@@ -252,7 +252,7 @@ function init() {
 
 
     // Create the emissive material for the text
-    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xff66ff, emissiveIntensity: 0.75 });
+    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 1 });
     //    new THREE.MeshBasicMaterial({ color: 0xff00ff, emissive: 0xff00ff, emissiveIntensity: 1 });
 
     // Create the "About Us" sign mesh
@@ -269,9 +269,9 @@ function init() {
   // Apply Unreal Bloom post-processing effect
   var renderScene = new RenderPass(scene, camera);
   var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-  bloomPass.threshold = 0.2;
-  bloomPass.strength = 0.5;
-  bloomPass.radius = Math.PI / 2;
+  bloomPass.threshold = 0.15;
+  bloomPass.strength = 0.4;
+  bloomPass.radius = 0.95;
 
   const outputPass = new OutputPass( THREE.ACESFilmicToneMapping );
 
@@ -292,7 +292,7 @@ function init() {
 
   
 // Adjust ambient light intensity
-var ambientLight = new THREE.AmbientLight(0x333333); // Dim ambient light color
+var ambientLight = new THREE.AmbientLight(0x4A2F45); // Dim ambient light color
 scene.add(ambientLight);
 
   window.addEventListener('resize', onWindowResize);
