@@ -170,9 +170,28 @@ function init() {
   var portraitTexture2 = new THREE.TextureLoader().load('./paul.png');
 
   // Create portrait materials
-  var portraitMaterial1 = new THREE.MeshPhongMaterial({ map: portraitTexture1, specular: 1 });
-  var portraitMaterial2 = new THREE.MeshPhongMaterial({ map: portraitTexture2, specular: 1 });
+  var portraitMaterial1 = new THREE.MeshStandardMaterial({ map: portraitTexture1 });
+  var portraitMaterial2 = new THREE.MeshPhongMaterial({ map: portraitTexture2 });
 
+  function brightenMaterial( material ) {
+
+    // Increase the brightness of the texture
+    material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
+    material.map.needsUpdate = true; // Update the material
+
+    // Increase the brightness by adjusting the material color
+    const brightness = 2.5; // Increase the value to make it brighter
+    material.color.setRGB(
+      material.color.r * brightness,
+      material.color.g * brightness,
+      material.color.b * brightness
+    );
+
+    return material;
+  }
+
+  portraitMaterial1 = brightenMaterial(portraitMaterial1);
+  portraitMaterial2 = brightenMaterial(portraitMaterial2);
 
   // Set portrait dimensions
   var portraitWidth = 4;
@@ -233,7 +252,7 @@ function init() {
 
 
     // Create the emissive material for the text
-    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xff66ff, emissiveIntensity: 1 });
+    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xff66ff, emissiveIntensity: 0.75 });
     //    new THREE.MeshBasicMaterial({ color: 0xff00ff, emissive: 0xff00ff, emissiveIntensity: 1 });
 
     // Create the "About Us" sign mesh
@@ -250,9 +269,9 @@ function init() {
   // Apply Unreal Bloom post-processing effect
   var renderScene = new RenderPass(scene, camera);
   var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-  bloomPass.threshold = 0.12;
+  bloomPass.threshold = 0.2;
   bloomPass.strength = 0.5;
-  bloomPass.radius = Math.PI / 10;
+  bloomPass.radius = Math.PI / 2;
 
   const outputPass = new OutputPass( THREE.ACESFilmicToneMapping );
 
