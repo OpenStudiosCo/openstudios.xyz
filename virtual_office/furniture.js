@@ -1,7 +1,45 @@
 import * as THREE from 'three';
 
+// Creates a portrait plane based on provided image
+export function createPortrait ( img_url, brightness) {
+  
+  // Load textures
+  var portraitTexture = new THREE.TextureLoader().load(img_url);
+
+  // Create portrait materials
+  var portraitMaterial = new THREE.MeshStandardMaterial({ map: portraitTexture });
+  
+  function brightenMaterial( material, amount ) {
+
+    // Increase the brightness of the texture
+    material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
+    material.map.needsUpdate = true; // Update the material
+
+    // Increase the brightness by adjusting the material color
+    const brightness = amount; // Increase the value to make it brighter
+    material.color.setRGB(
+      material.color.r * brightness,
+      material.color.g * brightness,
+      material.color.b * brightness
+    );
+
+    return material;
+  }
+
+  portraitMaterial = brightenMaterial(portraitMaterial, brightness);
+
+  // Set portrait dimensions
+  var portraitWidth = 8;
+  var portraitHeight = 8;
+
+  // Create portrait planes
+  var portrait = new THREE.Mesh(new THREE.PlaneGeometry(portraitWidth, portraitHeight), portraitMaterial);
+
+  return portrait;
+}
+
 // Uses createDesk and arranges them in the room.
-export function setupDesks(adjustedGapSize, gapSize, scale) {
+export function setupDesks( adjustedGapSize, gapSize, scale ) {
   // Create desks
   var deskGroup = new THREE.Group();
 

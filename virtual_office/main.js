@@ -12,7 +12,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-import { setupDesks, updateDeskZ } from './furniture.js';
+import { createPortrait, setupDesks, updateDeskZ } from './furniture.js';
 
 let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
 let mesh;
@@ -69,51 +69,16 @@ export function init() {
   deskGroup = setupDesks(adjustedGapSize, gapSize, scale);
   scene.add(deskGroup);
 
-  // Portraits
-
-  // Load textures
-  var portraitTexture1 = new THREE.TextureLoader().load('./paul.png');
-  var portraitTexture2 = new THREE.TextureLoader().load('./garrett.png');
-
-  // Create portrait materials
-  var portraitMaterial1 = new THREE.MeshStandardMaterial({ map: portraitTexture1 });
-  var portraitMaterial2 = new THREE.MeshPhongMaterial({ map: portraitTexture2 });
-
-  function brightenMaterial( material, amount ) {
-
-    // Increase the brightness of the texture
-    material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
-    material.map.needsUpdate = true; // Update the material
-
-    // Increase the brightness by adjusting the material color
-    const brightness = amount; // Increase the value to make it brighter
-    material.color.setRGB(
-      material.color.r * brightness,
-      material.color.g * brightness,
-      material.color.b * brightness
-    );
-
-    return material;
-  }
-
-  portraitMaterial1 = brightenMaterial(portraitMaterial1, 2.75);
-  portraitMaterial2 = brightenMaterial(portraitMaterial2, 4.);
-
-  // Set portrait dimensions
-  var portraitWidth = 4;
-  var portraitHeight = 4;
-
-  // Create portrait planes
-  var portrait1 = new THREE.Mesh(new THREE.PlaneGeometry(portraitWidth, portraitHeight), portraitMaterial1);
-  var portrait2 = new THREE.Mesh(new THREE.PlaneGeometry(portraitWidth, portraitHeight), portraitMaterial2);
-
-  // Position the portraits
-  portrait1.position.set(-5, 8, -90);  // Example position for portrait 1
-  portrait2.position.set(5, 8, -90);   // Example position for portrait 2
-
   // Add portraits to the scene
-  scene.add(portrait1);
-  scene.add(portrait2);
+  let paulsPortrait = createPortrait( './paul.png', 2.75 );
+  paulsPortrait.position.set(-5, 8, -90);  // Example position for portrait 1
+  scene.add(paulsPortrait);
+
+  let garrettsPortrait = createPortrait( './garrett.png', 4. );
+  garrettsPortrait.position.set(5, 8, -90);  // Example position for portrait 1
+  scene.add(garrettsPortrait);
+  
+  scene.add(garrettsPortrait);
 
   const geometry = new THREE.BoxGeometry(60, 30, 170);
 
