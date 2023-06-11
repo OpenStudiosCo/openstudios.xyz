@@ -5,14 +5,12 @@ import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-
 import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js'
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-import { createPortrait, setupDesks, updateDeskZ } from './furniture.js';
+import { createNeonSign, createPortrait, setupDesks, updateDeskZ } from './furniture.js';
 
 let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
 let mesh;
@@ -71,16 +69,16 @@ export function init() {
 
   // Add portraits to the scene
   let paulsPortrait = createPortrait( './paul.png', 2.75 );
-  paulsPortrait.position.set(-5, 8, -90);  // Example position for portrait 1
+  paulsPortrait.position.set(-5, 8, -44 );  // Example position for portrait 1
   scene.add(paulsPortrait);
 
   let garrettsPortrait = createPortrait( './garrett.png', 4. );
-  garrettsPortrait.position.set(5, 8, -90);  // Example position for portrait 1
+  garrettsPortrait.position.set(5, 8, -44 );  // Example position for portrait 1
   scene.add(garrettsPortrait);
   
   scene.add(garrettsPortrait);
 
-  const geometry = new THREE.BoxGeometry(60, 30, 170);
+  const geometry = new THREE.BoxGeometry(60, 30, 135 );
 
   const material = new THREE.MeshPhongMaterial({
     color: 0xa0adaf,
@@ -91,11 +89,9 @@ export function init() {
 
   mesh = new THREE.Mesh(geometry, material);
   mesh.position.y = 10;
-  mesh.position.z = -20;
+  mesh.position.z = 15;
   mesh.receiveShadow = true;
   scene.add(mesh);
-
-  //
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -105,36 +101,10 @@ export function init() {
   document.body.appendChild(renderer.domElement);
 
   // About Us Neon sign
-  const loader = new FontLoader();
-
-  loader.load('./cursive.json', function (font) {
-
-    const textGeometry = new TextGeometry('about us', {
-      font: font,
-      size: 2,
-      height: 1,
-      curveSegments: 4,
-      bevelEnabled: true,
-      bevelThickness: 0.01,
-      bevelSize: .05,
-      bevelOffset: 0,
-      bevelSegments: 5
-    });
-
-
-    // Create the emissive material for the text
-    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 1 });
-    //    new THREE.MeshBasicMaterial({ color: 0xff00ff, emissive: 0xff00ff, emissiveIntensity: 1 });
-
-    // Create the "About Us" sign mesh
-    var signMesh = new THREE.Mesh(textGeometry, textMaterial);
-
+  createNeonSign( ( signMesh ) => {
     // Position and rotate the sign
-    signMesh.position.set(-7, 15, -105.5); // Example position for the sign
-    //signMesh.rotation.x = -Math.PI / 2; // Rotate the sign to face forward
-
-    // Add the sign to the scene
-    scene.add(signMesh);
+    signMesh.position.set(-7, 15, -45 ); // Example position for the sign
+    scene.add( signMesh );
   });
 
   // Apply Unreal Bloom post-processing effect

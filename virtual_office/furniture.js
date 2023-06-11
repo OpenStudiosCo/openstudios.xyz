@@ -1,5 +1,37 @@
 import * as THREE from 'three';
 
+import { FontLoader } from 'three/addons/loaders/FontLoader.js'
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+// Create the About Us neon sign.
+export function createNeonSign ( callback ) {
+  const loader = new FontLoader();
+
+  loader.load('./cursive.json', (font) => {
+
+    const textGeometry = new TextGeometry('about us', {
+      font: font,
+      size: 2,
+      height: 1,
+      curveSegments: 4,
+      bevelEnabled: true,
+      bevelThickness: 0.01,
+      bevelSize: .05,
+      bevelOffset: 0,
+      bevelSegments: 5
+    });
+
+    // Create the emissive material for the text
+    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 1 });
+
+    // Create the "About Us" sign mesh
+    var signMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+    // Add the sign to the scene
+    callback( signMesh );
+  });
+}
+
 // Creates a portrait plane based on provided image
 export function createPortrait ( img_url, brightness) {
   
@@ -92,20 +124,20 @@ function createDesk() {
   deskTop.position.y = 0.05;
 
   // Desk Legs
-  var legGeometry = new THREE.BoxGeometry(0.1, 0.7, 0.1);
+  var legGeometry = new THREE.BoxGeometry(0.1, 0.5, 0.1);
   var legMaterial = new THREE.MeshPhongMaterial({ color: 0x303030 });
 
   var frontLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-  frontLeftLeg.position.set(-0.7, -0.4, -0.3);
+  frontLeftLeg.position.set(-0.7, -0.25, -0.3);
 
   var frontRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-  frontRightLeg.position.set(0.7, -0.4, -0.3);
+  frontRightLeg.position.set(0.7, -0.25, -0.3);
 
   var backLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-  backLeftLeg.position.set(-0.7, -0.4, 0.3);
+  backLeftLeg.position.set(-0.7, -0.25, 0.3);
 
   var backRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-  backRightLeg.position.set(0.7, -0.4, 0.3);
+  backRightLeg.position.set(0.7, -0.25, 0.3);
 
   // Desk Side Panels
   var panelGeometry = new THREE.BoxGeometry(0.1, 0.6, 0.8);
