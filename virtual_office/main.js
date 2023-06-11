@@ -49,18 +49,11 @@ export function init() {
 
   // scene.add( bvhmesh );
   // Create a desk
-  
+
   gapSize = 1; // Gap size between desks
   scale = 10; // Scale factor
 
-  var width = window.innerWidth;
-  var height = window.innerHeight;
-
-  // Adjust gap size based on the aspect ratio
-  var adjustedGapSize = gapSize * scale;
-  if (width < height) {
-    adjustedGapSize *= height / width;
-  }
+  var adjustedGapSize = calculateAdjustedGapSize();
 
   camera.position.z = 4 * adjustedGapSize;
 
@@ -68,17 +61,17 @@ export function init() {
   scene.add(deskGroup);
 
   // Add portraits to the scene
-  let paulsPortrait = createPortrait( './paul.png', 2.75 );
-  paulsPortrait.position.set(-5, 8, -44 );  // Example position for portrait 1
+  let paulsPortrait = createPortrait('./paul.png', 2.75);
+  paulsPortrait.position.set(-5, 8, -79);  // Example position for portrait 1
   scene.add(paulsPortrait);
 
-  let garrettsPortrait = createPortrait( './garrett.png', 4. );
-  garrettsPortrait.position.set(5, 8, -44 );  // Example position for portrait 1
-  scene.add(garrettsPortrait);
-  
+  let garrettsPortrait = createPortrait('./garrett.png', 4.);
+  garrettsPortrait.position.set(5, 8, -79);  // Example position for portrait 1
   scene.add(garrettsPortrait);
 
-  const geometry = new THREE.BoxGeometry(60, 30, 135 );
+  scene.add(garrettsPortrait);
+
+  const geometry = new THREE.BoxGeometry(60, 30, 130);
 
   const material = new THREE.MeshPhongMaterial({
     color: 0xa0adaf,
@@ -89,7 +82,7 @@ export function init() {
 
   mesh = new THREE.Mesh(geometry, material);
   mesh.position.y = 10;
-  mesh.position.z = 15;
+  mesh.position.z = -15;
   mesh.receiveShadow = true;
   scene.add(mesh);
 
@@ -101,10 +94,10 @@ export function init() {
   document.body.appendChild(renderer.domElement);
 
   // About Us Neon sign
-  createNeonSign( ( signMesh ) => {
+  createNeonSign((signMesh) => {
     // Position and rotate the sign
-    signMesh.position.set(-7, 15, -45 ); // Example position for the sign
-    scene.add( signMesh );
+    signMesh.position.set(-7, 15, -80); // Example position for the sign
+    scene.add(signMesh);
   });
 
   // Apply Unreal Bloom post-processing effect
@@ -114,9 +107,9 @@ export function init() {
   bloomPass.strength = 0.4;
   bloomPass.radius = 0.95;
 
-  const outputPass = new OutputPass( THREE.ACESFilmicToneMapping );
+  const outputPass = new OutputPass(THREE.ACESFilmicToneMapping);
 
-  outputPass.toneMappingExposure = Math.pow( Math.PI / 3, 4.0 );
+  outputPass.toneMappingExposure = Math.pow(Math.PI / 3, 4.0);
 
   composer = new EffectComposer(renderer);
   composer.setSize(window.innerWidth, window.innerHeight);
@@ -131,33 +124,28 @@ export function init() {
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
-  
-// Adjust ambient light intensity
-var ambientLight = new THREE.AmbientLight(0x4A2F45); // Dim ambient light color
-scene.add(ambientLight);
 
-  window.addEventListener('resize', function() {
+  // Adjust ambient light intensity
+  var ambientLight = new THREE.AmbientLight(0x4A2F45); // Dim ambient light color
+  scene.add(ambientLight);
+
+  window.addEventListener('resize', function () {
+    var adjustedGapSize = calculateAdjustedGapSize();
+
     var width = window.innerWidth;
     var height = window.innerHeight;
-  
-    // Adjust gap size based on the aspect ratio
-    var adjustedGapSize = gapSize * scale;
-    if (width < height) {
-      adjustedGapSize *= height / width;
-    }
-  
     camera.aspect = width / height;
     camera.position.z = 4 * adjustedGapSize;
     camera.updateProjectionMatrix();
-  
+
     // Adjust desk positions based on the aspect ratio
     deskGroup.children.forEach(function (desk, i) {
-      updateDeskZ( desk, i , adjustedGapSize);
+      updateDeskZ(desk, i, adjustedGapSize);
     });
-  
+
     renderer.setSize(width, height);
     composer.setSize(width, height);
-  
+
   });
 
 }
@@ -169,4 +157,16 @@ export function animate() {
 
   composer.render();
 
+}
+
+function calculateAdjustedGapSize() {
+  var width = window.innerWidth;
+  var height = window.innerHeight;
+
+  // Adjust gap size based on the aspect ratio
+  var adjustedGapSize = gapSize * scale;
+  if (width < height) {
+    adjustedGapSize *= height / width;
+  }
+  return adjustedGapSize;
 }
