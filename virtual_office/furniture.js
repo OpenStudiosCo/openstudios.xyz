@@ -27,6 +27,18 @@ export function createNeonSign(callback) {
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
+    const lightActual = new THREE.PointLight(0xDA68C5, 0.01); // Color: white
+    lightActual.position.set(0, 0.25, 0); // Set the position of the light
+    lightActual.castShadow = true;
+
+    //Set up shadow properties for the light
+    lightActual.shadow.mapSize.width = 128; // default
+    lightActual.shadow.mapSize.height = 128; // default
+    lightActual.shadow.camera.near = 0.5; // default
+    lightActual.shadow.camera.far = 250; // default
+
+    signMesh.add(lightActual);
+
     // Add the sign to the scene
     callback(signMesh);
   });
@@ -90,7 +102,7 @@ export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
     desk.scale.set(scale, scale, scale); // Scale up the desk
 
     desk.children.forEach((desk_iter, i) => {
-      if (desk_iter.type == 'PointLight') {
+      if (desk_iter.type == 'DirectionalLight') {
         let factor = 100;
         desk_iter.position.set(
           desk.position.x / factor,
@@ -101,10 +113,10 @@ export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
 
         // //Create a helper for the shadow camera (optional)
         if (window.virtual_office.debug) {
-          // const helper = new THREE.CameraHelper( lightActual.shadow.camera );
-          //    deskGroup.add( helper );
+          const helper = new THREE.CameraHelper( desk_iter.shadow.camera );
+          scene.add( helper );
           // Create a directional light helper
-          const lightHelper = new THREE.PointLightHelper(desk_iter, 1); // The second parameter is the size of the helper
+          const lightHelper = new THREE.DirectionalLightHelper(desk_iter, 0.25); // The second parameter is the size of the helper
           scene.add(lightHelper);
         }
 
@@ -204,8 +216,8 @@ function createDesk() {
   // Add the overhead office light to the scene
   deskGroup.add(lightMesh);
 
-  const lightActual = new THREE.PointLight(0x00EEff, 0.01); // Color: white
-  lightActual.position.set(0, 0.25, 0); // Set the position of the light
+  const lightActual = new THREE.DirectionalLight(0x00EEff, 0.01); // Color: white
+  lightActual.position.set(0, 0.275, 0); // Set the position of the light
   lightActual.castShadow = true;
 
   //Set up shadow properties for the light
@@ -213,6 +225,8 @@ function createDesk() {
   lightActual.shadow.mapSize.height = 128; // default
   lightActual.shadow.camera.near = 0.5; // default
   lightActual.shadow.camera.far = 250; // default
+
+  lightActual.target = deskTop;
 
   deskGroup.add(lightActual);
 
