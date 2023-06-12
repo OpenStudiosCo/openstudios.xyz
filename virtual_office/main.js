@@ -13,10 +13,10 @@ import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
 
-import { createNeonSign, createPortrait, setupDesks, updateDeskZ } from './furniture.js';
+import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 
 let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
-let room;
+let room, roomDepth, wallGroup;
 
 export function init( pane ) {
 
@@ -62,20 +62,6 @@ export function init( pane ) {
   deskGroup = setupDesks(adjustedGapSize, gapSize, scale, scene);
   scene.add(deskGroup);
 
-  // Add portraits to the scene
-  let paulsPortrait = createPortrait('./paul.png', 2.75);
-  paulsPortrait.position.set(-7.5, 8, -79);  // Example position for portrait 1
-  scene.add(paulsPortrait);
-
-  let garrettsPortrait = createPortrait('./garrett.png', 4.);
-  garrettsPortrait.position.set(7.5, 8, -79);  // Example position for portrait 1
-  scene.add(garrettsPortrait);
-
-  scene.add(garrettsPortrait);
-
-  room = createRoom();
-  scene.add(room);
-
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -83,13 +69,12 @@ export function init( pane ) {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
   document.body.appendChild(renderer.domElement);
 
-  // About Us Neon sign
-  createNeonSign((signMesh) => {
-    // Position and rotate the sign
-    signMesh.position.set(-7, 15, -80); // Example position for the sign
-    
-    scene.add(signMesh);
-  }, scene);
+  room = createRoom();
+  scene.add(room);  
+
+  wallGroup = setupBackwall(scene);
+  wallGroup.position.z = - 15 - roomDepth / 2;
+  scene.add(wallGroup)
 
   // Apply Unreal Bloom post-processing effect
   var renderScene = new RenderPass(scene, camera);
@@ -126,7 +111,6 @@ export function init( pane ) {
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
-
   // Adjust ambient light intensity
   var ambientLight = new THREE.AmbientLight(0x75516d); // Dim ambient light color
   scene.add(ambientLight);
@@ -144,6 +128,13 @@ export function init( pane ) {
     deskGroup.children.forEach(function (desk, i) {
       updateDeskZ(desk, i, adjustedGapSize);
     });
+
+    roomDepth = 6 * adjustedGapSize;
+
+    const geometry = new THREE.BoxGeometry(60, 30, roomDepth);
+    room.geometry = geometry;
+
+    wallGroup.position.z = - 15 - roomDepth / 2;
 
     renderer.setSize(width, height);
     composer.setSize(width, height);
@@ -170,12 +161,16 @@ function calculateAdjustedGapSize() {
   if (width < height) {
     adjustedGapSize *= height / width;
   }
+
   return adjustedGapSize;
 }
 
 function createRoom() {
+  var adjustedGapSize = calculateAdjustedGapSize();
 
-  const geometry = new THREE.BoxGeometry(60, 30, 130);
+  roomDepth = 6 * adjustedGapSize;
+
+  const geometry = new THREE.BoxGeometry(60, 30, roomDepth);
 
   const material = new THREE.MeshPhongMaterial({
     color: 0xa0adaf,

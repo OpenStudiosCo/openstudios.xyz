@@ -3,8 +3,31 @@ import * as THREE from 'three';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
+export function setupBackwall ( scene ) {
+  var wallGroup = new THREE.Group();
+  
+  // About Us Neon sign
+  createNeonSign((signMesh) => {
+    // Position and rotate the sign
+    signMesh.position.set(-7, 15, 0); // Example position for the sign
+    
+    wallGroup.add(signMesh);
+  }, scene);
+  
+  // Add portraits to the scene
+  let paulsPortrait = createPortrait('./paul.png', 2.75);
+  paulsPortrait.position.set(-7.5, 8, 0.1);  // Example position for portrait 1
+  wallGroup.add(paulsPortrait);
+
+  let garrettsPortrait = createPortrait('./garrett.png', 4.);
+  garrettsPortrait.position.set(7.5, 8, 0.1);  // Example position for portrait 1
+  wallGroup.add(garrettsPortrait);
+
+  return wallGroup;
+}
+
 // Create the About Us neon sign.
-export function createNeonSign(callback, scene) {
+function createNeonSign(callback, scene) {
   const loader = new FontLoader();
 
   loader.load('./cursive.json', (font) => {
@@ -53,7 +76,7 @@ export function createNeonSign(callback, scene) {
 }
 
 // Creates a portrait plane based on provided image
-export function createPortrait(img_url, brightness) {
+function createPortrait(img_url, brightness) {
 
   // Load textures
   var portraitTexture = new THREE.TextureLoader().load(img_url);
@@ -89,6 +112,7 @@ export function createPortrait(img_url, brightness) {
 
   return portrait;
 }
+
 
 // Uses createDesk and arranges them in the room.
 export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
