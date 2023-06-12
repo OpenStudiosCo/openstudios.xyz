@@ -16,16 +16,24 @@ domReady(
 
     // Create an object to talk to the application.
     window.virtual_office = {
-      debug: false
+      debug: false,
+      fast: false,
     };
 
-    // Check if we're in debug mode.
+    
     let url = new URL(window.location.href);
+
+    // Check if we're in debug mode.
     if (url.searchParams.has('debug')) {
       window.virtual_office.debug = true;
 
       // Start the UI.
       pane = debug_ui();
+    }
+
+    // Check if we're in fast mode.
+    if (url.searchParams.has('fast')) {
+      window.virtual_office.fast = true;
     }
 
     init( pane );
