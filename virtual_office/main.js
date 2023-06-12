@@ -59,7 +59,7 @@ export function init( pane ) {
 
   camera.position.z = 4 * adjustedGapSize;
 
-  deskGroup = setupDesks(adjustedGapSize, gapSize, scale);
+  deskGroup = setupDesks(adjustedGapSize, gapSize, scale, scene);
   scene.add(deskGroup);
 
   // Add portraits to the scene
@@ -87,6 +87,8 @@ export function init( pane ) {
   createNeonSign((signMesh) => {
     // Position and rotate the sign
     signMesh.position.set(-7, 15, -80); // Example position for the sign
+
+    
     scene.add(signMesh);
   });
 
