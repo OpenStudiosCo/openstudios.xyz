@@ -87,17 +87,16 @@ export function init( pane ) {
   createNeonSign((signMesh) => {
     // Position and rotate the sign
     signMesh.position.set(-7, 15, -80); // Example position for the sign
-
     
     scene.add(signMesh);
-  });
+  }, scene);
 
   // Apply Unreal Bloom post-processing effect
   var renderScene = new RenderPass(scene, camera);
   var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
   bloomPass.threshold = 0.15;
   bloomPass.strength = 0.4;
-  bloomPass.radius = 0.95;
+  bloomPass.radius = 0.5;
 
   const outputPass = new OutputPass(THREE.ACESFilmicToneMapping);
 

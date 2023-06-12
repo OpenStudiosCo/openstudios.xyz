@@ -4,7 +4,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 // Create the About Us neon sign.
-export function createNeonSign(callback) {
+export function createNeonSign(callback, scene) {
   const loader = new FontLoader();
 
   loader.load('./cursive.json', (font) => {
@@ -22,13 +22,13 @@ export function createNeonSign(callback) {
     });
 
     // Create the emissive material for the text
-    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 1 });
+    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 0.85 });
 
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-    const lightActual = new THREE.PointLight(0xDA68C5, 0.01); // Color: white
-    lightActual.position.set(0, 0.25, 0); // Set the position of the light
+    const lightActual = new THREE.PointLight(0xDA68C5, 0.35); // Color: white
+    lightActual.position.set(7.5, 0.25, 10); // Set the position of the light
     lightActual.castShadow = true;
 
     //Set up shadow properties for the light
@@ -36,6 +36,14 @@ export function createNeonSign(callback) {
     lightActual.shadow.mapSize.height = 128; // default
     lightActual.shadow.camera.near = 0.5; // default
     lightActual.shadow.camera.far = 250; // default
+
+    if (window.virtual_office.debug) {
+      const helper = new THREE.CameraHelper( lightActual.shadow.camera );
+      scene.add( helper );
+      // Create a directional light helper
+      const lightHelper = new THREE.PointLightHelper(lightActual, 5); // The second parameter is the size of the helper
+      scene.add(lightHelper);
+    }
 
     signMesh.add(lightActual);
 
