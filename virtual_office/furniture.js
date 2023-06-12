@@ -119,29 +119,13 @@ function createDesk() {
 
   // Desk Top
   var deskTopGeometry = new THREE.BoxGeometry(1.5, 0.1, 0.8);
-  var deskTopMaterial = new THREE.MeshPhongMaterial({ color: 0x303030 });
+  var deskTopMaterial = new THREE.MeshPhongMaterial({ color: 0x986b41 });
   var deskTop = new THREE.Mesh(deskTopGeometry, deskTopMaterial);
   deskTop.position.y = 0.05;
 
-  // Desk Legs
-  var legGeometry = new THREE.BoxGeometry(0.1, 0.5, 0.1);
-  var legMaterial = new THREE.MeshPhongMaterial({ color: 0x303030 });
-
-  var frontLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-  frontLeftLeg.position.set(-0.7, -0.25, -0.3);
-
-  var frontRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-  frontRightLeg.position.set(0.7, -0.25, -0.3);
-
-  var backLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-  backLeftLeg.position.set(-0.7, -0.25, 0.3);
-
-  var backRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-  backRightLeg.position.set(0.7, -0.25, 0.3);
-
   // Desk Side Panels
   var panelGeometry = new THREE.BoxGeometry(0.1, 0.6, 0.8);
-  var panelMaterial = new THREE.MeshPhongMaterial({ color: 0x808080 });
+  var panelMaterial = new THREE.MeshPhongMaterial({ color: 0x986b41 });
 
   var leftPanel = new THREE.Mesh(panelGeometry, panelMaterial);
   leftPanel.position.set(-0.8, -0.2, 0);
@@ -149,26 +133,35 @@ function createDesk() {
   var rightPanel = new THREE.Mesh(panelGeometry, panelMaterial);
   rightPanel.position.set(0.8, -0.2, 0);
 
-  deskGroup.add(deskTop, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg, leftPanel, rightPanel);
+  deskTop.castShadow = true; //default is false
+  deskTop.receiveShadow = false; //default
+
+  leftPanel.castShadow = true; //default is false
+  leftPanel.receiveShadow = false; //default
+
+  rightPanel.castShadow = true; //default is false
+  rightPanel.receiveShadow = false; //default
+
+  deskGroup.add(deskTop, leftPanel, rightPanel);
 
   // Add computer screen
   var screenGeometry = new THREE.BoxGeometry(0.6, 0.4, 0.02);
   var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0, 0.25, 0.2);
+  screen.position.set(0, 0.5, 0.25);
   deskGroup.add(screen);
 
   // Add computer CPU
-  var cpuGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-  var cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x808080 });
+  var cpuGeometry = new THREE.BoxGeometry(0.4, 0.2, 0.2);
+  var cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
   var cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
-  cpu.position.set(0, 0.15, 0.33);
+  cpu.position.set(0, 0.2, 0.3);
   deskGroup.add(cpu);
 
 
   // Create an overhead office light geometry
   var lightWidth = 0.5;
-  var lightHeight = 0.2;
+  var lightHeight = 0.01;
   var lightDepth = 1.5;
   var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
 
@@ -183,6 +176,22 @@ function createDesk() {
   lightMesh.rotation.y = Math.PI / 2;
   // Add the overhead office light to the scene
   deskGroup.add(lightMesh);
+
+  const lightActual = new THREE.DirectionalLight( 0x00EEff , 0.01); // Color: white
+  lightActual.position.set(0, 2.5, 0); // Set the position of the light
+  lightActual.castShadow = true;
+
+  //Set up shadow properties for the light
+  lightActual.shadow.mapSize.width = 512; // default
+  lightActual.shadow.mapSize.height = 512; // default
+  lightActual.shadow.camera.near = 0.005; // default
+  lightActual.shadow.camera.far = 50; // default
+
+  deskGroup.add(lightActual);
+
+  // //Create a helper for the shadow camera (optional)
+  // const helper = new THREE.CameraHelper( lightActual.shadow.camera );
+  // deskGroup.add( helper );
 
   return deskGroup;
 }

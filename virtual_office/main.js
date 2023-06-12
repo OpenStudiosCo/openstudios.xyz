@@ -13,19 +13,18 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { createNeonSign, createPortrait, setupDesks, updateDeskZ } from './furniture.js';
 
 let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
-let mesh;
+let room;
 
 export function init() {
 
+  // Scene Setup.
+
+  // Camera.
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
   camera.position.set(0, 10, 40);
 
+  // Scene container.
   scene = new THREE.Scene();
-  scene.add(new THREE.AmbientLight(0x111122));
-
-  const light = new THREE.HemisphereLight(0xffffff, 0x444444, 0.01);
-  light.position.set(- 2, 2, 2);
-  scene.add(light);
 
   // Add the extension functions
   THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -62,35 +61,23 @@ export function init() {
 
   // Add portraits to the scene
   let paulsPortrait = createPortrait('./paul.png', 2.75);
-  paulsPortrait.position.set(-5, 8, -79);  // Example position for portrait 1
+  paulsPortrait.position.set(-7.5, 8, -79);  // Example position for portrait 1
   scene.add(paulsPortrait);
 
   let garrettsPortrait = createPortrait('./garrett.png', 4.);
-  garrettsPortrait.position.set(5, 8, -79);  // Example position for portrait 1
+  garrettsPortrait.position.set(7.5, 8, -79);  // Example position for portrait 1
   scene.add(garrettsPortrait);
 
   scene.add(garrettsPortrait);
 
-  const geometry = new THREE.BoxGeometry(60, 30, 130);
-
-  const material = new THREE.MeshPhongMaterial({
-    color: 0xa0adaf,
-    shininess: 10,
-    specular: 0x111111,
-    side: THREE.BackSide
-  });
-
-  mesh = new THREE.Mesh(geometry, material);
-  mesh.position.y = 10;
-  mesh.position.z = -15;
-  mesh.receiveShadow = true;
-  scene.add(mesh);
+  room = createRoom();
+  scene.add(room);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.BasicShadowMap;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
   document.body.appendChild(renderer.domElement);
 
   // About Us Neon sign
@@ -126,7 +113,7 @@ export function init() {
 
 
   // Adjust ambient light intensity
-  var ambientLight = new THREE.AmbientLight(0x4A2F45); // Dim ambient light color
+  var ambientLight = new THREE.AmbientLight(0x75516d); // Dim ambient light color
   scene.add(ambientLight);
 
   window.addEventListener('resize', function () {
@@ -169,4 +156,22 @@ function calculateAdjustedGapSize() {
     adjustedGapSize *= height / width;
   }
   return adjustedGapSize;
+}
+
+function createRoom() {
+
+  const geometry = new THREE.BoxGeometry(60, 30, 130);
+
+  const material = new THREE.MeshPhongMaterial({
+    color: 0xa0adaf,
+    shininess: 10,
+    specular: 0x111111,
+    side: THREE.BackSide
+  });
+
+  let mesh = new THREE.Mesh(geometry, material);
+  mesh.position.y = 10;
+  mesh.position.z = -15;
+  mesh.receiveShadow = true;
+  return mesh;
 }
