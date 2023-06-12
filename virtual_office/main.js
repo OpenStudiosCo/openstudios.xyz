@@ -15,7 +15,7 @@ import { createNeonSign, createPortrait, setupDesks, updateDeskZ } from './furni
 let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
 let room;
 
-export function init() {
+export function init( pane ) {
 
   // Scene Setup.
 

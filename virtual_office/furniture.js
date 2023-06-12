@@ -190,8 +190,10 @@ function createDesk() {
   deskGroup.add(lightActual);
 
   // //Create a helper for the shadow camera (optional)
-  // const helper = new THREE.CameraHelper( lightActual.shadow.camera );
-  // deskGroup.add( helper );
+  if ( window.virtual_office.debug ) {
+    const helper = new THREE.CameraHelper( lightActual.shadow.camera );
+    deskGroup.add( helper );
+  }
 
   return deskGroup;
 }
