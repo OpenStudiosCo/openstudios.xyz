@@ -45,7 +45,7 @@ function createNeonSign(callback, scene) {
     });
 
     // Create the emissive material for the text
-    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 0.85 });
+    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 1 });
 
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
@@ -55,10 +55,8 @@ function createNeonSign(callback, scene) {
     lightActual.castShadow = true;
 
     //Set up shadow properties for the light
-    lightActual.shadow.mapSize.width = 128; // default
-    lightActual.shadow.mapSize.height = 128; // default
-    lightActual.shadow.camera.near = 0.5; // default
-    lightActual.shadow.camera.far = 250; // default
+    lightActual.shadow.mapSize.width = 32; // default
+    lightActual.shadow.mapSize.height = 32; // default
 
     if (window.virtual_office.debug) {
       const helper = new THREE.CameraHelper( lightActual.shadow.camera );
@@ -253,10 +251,8 @@ function createDesk() {
   lightActual.castShadow = true;
 
   //Set up shadow properties for the light
-  lightActual.shadow.mapSize.width = 128; // default
-  lightActual.shadow.mapSize.height = 128; // default
-  lightActual.shadow.camera.near = 0.5; // default
-  lightActual.shadow.camera.far = 250; // default
+  lightActual.shadow.mapSize.width = 64; // Adjust the shadow map size
+  lightActual.shadow.mapSize.height = 64;
 
   lightActual.target = deskTop;
 

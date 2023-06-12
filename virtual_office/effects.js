@@ -16,7 +16,10 @@ export function setupEffects( renderer, scene, camera ) {
   composer.setSize(window.innerWidth, window.innerHeight);
   composer.addPass(renderScene);
 
-  if (! window.virtual_office.fast ) {    
+  if (! window.virtual_office.fast ) {
+
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
     const outputPass = new OutputPass(THREE.ACESFilmicToneMapping);
     outputPass.toneMappingExposure = Math.pow(Math.PI / 3, 4.0);

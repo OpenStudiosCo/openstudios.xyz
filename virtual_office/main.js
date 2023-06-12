@@ -59,8 +59,6 @@ export function init( pane ) {
   renderer = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
   document.body.appendChild(renderer.domElement);
 
   room = createRoom();
@@ -80,7 +78,7 @@ export function init( pane ) {
   document.body.appendChild(stats.dom);
 
   // Adjust ambient light intensity
-  var ambientLight = new THREE.AmbientLight(0x444444); // Dim ambient light color
+  var ambientLight = new THREE.AmbientLight(0x555555); // Dim ambient light color
   scene.add(ambientLight);
 
   window.addEventListener('resize', function () {
