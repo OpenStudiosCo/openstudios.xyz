@@ -50,8 +50,8 @@ function createNeonSign(callback, scene) {
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-    const lightActual = new THREE.PointLight(0xDA68C5, 0.35); // Color: white
-    lightActual.position.set(7.5, 0.25, 10); // Set the position of the light
+    const lightActual = new THREE.PointLight(0xDA68C5, 0.1); // Color: white
+    lightActual.position.set(7.5, 0.25, 5); // Set the position of the light
     lightActual.castShadow = true;
 
     //Set up shadow properties for the light

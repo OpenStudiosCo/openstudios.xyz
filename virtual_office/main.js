@@ -78,7 +78,7 @@ export function init( pane ) {
   document.body.appendChild(stats.dom);
 
   // Adjust ambient light intensity
-  var ambientLight = new THREE.AmbientLight(0x555555); // Dim ambient light color
+  var ambientLight = new THREE.AmbientLight(0x554455); // Dim ambient light color
   scene.add(ambientLight);
 
   window.addEventListener('resize', function () {
