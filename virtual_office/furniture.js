@@ -4,7 +4,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 // Create the About Us neon sign.
-export function createNeonSign ( callback ) {
+export function createNeonSign(callback) {
   const loader = new FontLoader();
 
   loader.load('./cursive.json', (font) => {
@@ -28,20 +28,20 @@ export function createNeonSign ( callback ) {
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
     // Add the sign to the scene
-    callback( signMesh );
+    callback(signMesh);
   });
 }
 
 // Creates a portrait plane based on provided image
-export function createPortrait ( img_url, brightness) {
-  
+export function createPortrait(img_url, brightness) {
+
   // Load textures
   var portraitTexture = new THREE.TextureLoader().load(img_url);
 
   // Create portrait materials
   var portraitMaterial = new THREE.MeshStandardMaterial({ map: portraitTexture });
-  
-  function brightenMaterial( material, amount ) {
+
+  function brightenMaterial(material, amount) {
 
     // Increase the brightness of the texture
     material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
@@ -71,7 +71,7 @@ export function createPortrait ( img_url, brightness) {
 }
 
 // Uses createDesk and arranges them in the room.
-export function setupDesks( adjustedGapSize, gapSize, scale ) {
+export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
   // Create desks
   var deskGroup = new THREE.Group();
 
@@ -88,6 +88,29 @@ export function setupDesks( adjustedGapSize, gapSize, scale ) {
     }
 
     desk.scale.set(scale, scale, scale); // Scale up the desk
+
+    desk.children.forEach((desk_iter, i) => {
+      if (desk_iter.type == 'PointLight') {
+        let factor = 100;
+        desk_iter.position.set(
+          desk.position.x / factor,
+          2.5,
+          desk.position.z / factor
+        );
+        desk_iter.updateMatrixWorld();
+
+        // //Create a helper for the shadow camera (optional)
+        if (window.virtual_office.debug) {
+          // const helper = new THREE.CameraHelper( lightActual.shadow.camera );
+          //    deskGroup.add( helper );
+          // Create a directional light helper
+          const lightHelper = new THREE.PointLightHelper(desk_iter, 1); // The second parameter is the size of the helper
+          scene.add(lightHelper);
+        }
+
+      }
+    });
+
     deskGroup.add(desk);
 
   }
@@ -149,6 +172,8 @@ function createDesk() {
   var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
   screen.position.set(0, 0.5, 0.25);
+  screen.castShadow = true; //default is false
+  screen.receiveShadow = false; //default
   deskGroup.add(screen);
 
   // Add computer CPU
@@ -156,8 +181,10 @@ function createDesk() {
   var cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
   var cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
   cpu.position.set(0, 0.2, 0.3);
-  deskGroup.add(cpu);
+  cpu.castShadow = true; //default is false
+  cpu.receiveShadow = false; //default
 
+  deskGroup.add(cpu);
 
   // Create an overhead office light geometry
   var lightWidth = 0.5;
@@ -177,23 +204,17 @@ function createDesk() {
   // Add the overhead office light to the scene
   deskGroup.add(lightMesh);
 
-  const lightActual = new THREE.DirectionalLight( 0x00EEff , 0.01); // Color: white
-  lightActual.position.set(0, 2.5, 0); // Set the position of the light
+  const lightActual = new THREE.PointLight(0x00EEff, 0.01); // Color: white
+  lightActual.position.set(0, 0.25, 0); // Set the position of the light
   lightActual.castShadow = true;
 
   //Set up shadow properties for the light
-  lightActual.shadow.mapSize.width = 512; // default
-  lightActual.shadow.mapSize.height = 512; // default
-  lightActual.shadow.camera.near = 0.005; // default
-  lightActual.shadow.camera.far = 50; // default
+  lightActual.shadow.mapSize.width = 128; // default
+  lightActual.shadow.mapSize.height = 128; // default
+  lightActual.shadow.camera.near = 0.5; // default
+  lightActual.shadow.camera.far = 250; // default
 
   deskGroup.add(lightActual);
-
-  // //Create a helper for the shadow camera (optional)
-  if ( window.virtual_office.debug ) {
-    const helper = new THREE.CameraHelper( lightActual.shadow.camera );
-    deskGroup.add( helper );
-  }
 
   return deskGroup;
 }

@@ -9,6 +9,9 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
 
 import { createNeonSign, createPortrait, setupDesks, updateDeskZ } from './furniture.js';
 
@@ -77,7 +80,7 @@ export function init( pane ) {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+  renderer.shadowMap.type = THREE.VSMShadowMap; // default THREE.PCFShadowMap
   document.body.appendChild(renderer.domElement);
 
   // About Us Neon sign
@@ -101,8 +104,19 @@ export function init( pane ) {
   composer = new EffectComposer(renderer);
   composer.setSize(window.innerWidth, window.innerHeight);
   composer.addPass(renderScene);
-  composer.addPass(bloomPass);
+  
   composer.addPass(outputPass);
+
+  const ssaoPass = new SSAOPass( scene, camera, window.innerWidth, window.innerHeight );
+  ssaoPass.kernelRadius = 8;
+  ssaoPass.output = SSAOPass.OUTPUT.Beauty;
+  composer.addPass( ssaoPass );
+
+  composer.addPass(bloomPass);
+
+  const shaderPass = new ShaderPass( GammaCorrectionShader );
+  composer.addPass( shaderPass );
+
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 10, 0);
