@@ -16,7 +16,6 @@ const frameRateThreshold = 30; // Adjust as needed
 
 // Store the previous frame time
 let previousFrameTime = 0;
-let effectsEnabled  = true; // Variable to track the effects state
 
 // Define the delay duration (in seconds)
 const delayDuration = 3; // Adjust as needed
@@ -37,10 +36,10 @@ export function scaleEffects( currentTime, renderer ) {
   const currentFrameRate = 1 / deltaTime;
 
   delayTimer += deltaTime;
-  frameRates.push(currentFrameRate);
+  frameRates.push( currentFrameRate );
 
   // Check if the delay duration has passed
-  if (! window.virtual_office.fast && (delayTimer >= delayDuration)) {
+  if (! window.virtual_office.fast && ( delayTimer >= delayDuration ) ) {
 
     let avgFrameRate = 0;
 
