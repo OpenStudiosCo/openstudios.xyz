@@ -6,7 +6,7 @@ import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-import { setupEffects } from './effects.js';
+import { scaleEffects, setupEffects } from './effects.js';
 import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 
 let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
@@ -109,12 +109,21 @@ export function init( pane ) {
 
 }
 
-export function animate() {
+
+export function animate( currentTime ) {
+
+  scaleEffects( currentTime, renderer );
+
   requestAnimationFrame(animate);
 
   stats.update();
 
-  composer.render();
+  // Render the composer
+  if (! window.virtual_office.fast ) {
+    composer.render();
+  } else {
+    renderer.render(scene, camera); // Render the scene without the effects
+  }
 
 }
 

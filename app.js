@@ -37,7 +37,7 @@ domReady(
     }
 
     init( pane );
-    animate();    
+    requestAnimationFrame( animate );
   }
 );
 
