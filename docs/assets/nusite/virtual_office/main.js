@@ -6,15 +6,13 @@ import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-import { setupEffects } from './effects.js';
+import { scaleEffects, setupEffects } from './effects.js';
 import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
-
+let tween, tweenActivated;
 let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
-let room, roomDepth, wallGroup;
+let door, room, roomDepth, wallGroup;
 
-export function init( pane ) {
-
-  // Scene Setup.
+export function init(pane) {
 
   // Camera.
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
@@ -44,14 +42,23 @@ export function init( pane ) {
   // geom.computeBoundsTree();
 
   // scene.add( bvhmesh );
-  // Create a desk
 
   gapSize = 1; // Gap size between desks
-  scale = 10; // Scale factor
+  scale = 11; // Scale factor
 
   var adjustedGapSize = calculateAdjustedGapSize();
 
-  camera.position.z = 4 * adjustedGapSize;
+  const coords = {x: 40} // Start at (0, 0)
+  // Scene Setup.
+  tween = new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
+		.to({x: - 4 + 2 * adjustedGapSize}, 1500) // Move to (300, 200) in 1 second.
+		.easing(TWEEN.Easing.Quadratic.InOut) // Use an easing function to make the animation smooth.
+    .onUpdate(() => {
+			// Called after tween.js updates 'coords'.
+			// Move 'box' to the position described by 'coords' with a CSS translation.
+      camera.position.z = coords.x;
+			camera.updateProjectionMatrix();
+		})
 
   deskGroup = setupDesks(adjustedGapSize, gapSize, scale, scene);
   scene.add(deskGroup);
@@ -62,13 +69,17 @@ export function init( pane ) {
   document.body.appendChild(renderer.domElement);
 
   room = createRoom();
-  scene.add(room);  
+  scene.add(room);
+
+  door = createDoor();
+  door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (roomDepth / 2));
+  scene.add(door);
 
   wallGroup = setupBackwall(scene);
   wallGroup.position.z = - 15 - roomDepth / 2;
   scene.add(wallGroup)
 
-  composer = new setupEffects( renderer, scene, camera );
+  composer = new setupEffects(renderer, scene, camera);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 10, 0);
@@ -87,7 +98,7 @@ export function init( pane ) {
     var width = window.innerWidth;
     var height = window.innerHeight;
     camera.aspect = width / height;
-    camera.position.z = 4 * adjustedGapSize;
+    camera.position.z = - 4 + 2 * adjustedGapSize;
     camera.updateProjectionMatrix();
 
     // Adjust desk positions based on the aspect ratio
@@ -102,19 +113,34 @@ export function init( pane ) {
 
     wallGroup.position.z = - 15 - roomDepth / 2;
 
+    door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (roomDepth / 2));
+
     renderer.setSize(width, height);
     composer.setSize(width, height);
 
   });
 
+  tween.start();   
+
 }
 
-export function animate() {
+
+export function animate(currentTime) {
+
+  scaleEffects(currentTime, renderer);
+
+  tween.update(currentTime);
+
   requestAnimationFrame(animate);
 
   stats.update();
 
-  composer.render();
+  // Render the composer
+  if (!window.virtual_office.fast) {
+    composer.render();
+  } else {
+    renderer.render(scene, camera); // Render the scene without the effects
+  }
 
 }
 
@@ -131,6 +157,31 @@ function calculateAdjustedGapSize() {
   return adjustedGapSize;
 }
 
+// Create door geometry
+var doorWidth = 8.2;
+var doorHeight = 20.4;
+var doorDepth = 0.2;
+function createDoor() {
+  var doorParent = new THREE.Object3D();
+
+
+  var doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorDepth);
+
+  // Create door material
+  var doorMaterial = new THREE.MeshLambertMaterial({ color: 0x986b41 });
+
+  // Create door mesh
+  var mesh = new THREE.Mesh(doorGeometry, doorMaterial);
+
+  // Set initial position and rotation of the door
+  mesh.position.set(doorWidth / 2, 0, 0);
+
+  doorParent.add(mesh);
+
+  // Add the door to the scene
+  return doorParent;
+}
+
 function createRoom() {
   var adjustedGapSize = calculateAdjustedGapSize();
 
@@ -142,7 +193,7 @@ function createRoom() {
     color: 0xa0adaf,
     shininess: 10,
     specular: 0x111111,
-    side: THREE.BackSide
+    side: THREE.DoubleSide
   });
 
   let mesh = new THREE.Mesh(geometry, material);
