@@ -79,7 +79,7 @@ export function init(pane) {
 
   domObject = new CSS3DObject(element);
   domObject.scale.set( 0.02, 0.02, 0.02);
-  domObject.position.x = -13.5;
+  domObject.position.x = -13.6;
   domObject.position.y = 5.5;
   domObject.position.z = - 20.5 + adjustedGapSize;
   console.log(adjustedGapSize);
@@ -101,7 +101,7 @@ export function init(pane) {
   //mesh.scale.copy( domObject.scale );
   mesh.castShadow = false;
   mesh.receiveShadow = true;
-  //scene.add(mesh);
+  scene.add(mesh);
 
   // Camera.
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
