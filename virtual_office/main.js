@@ -11,12 +11,15 @@ import { CSS3DRenderer, CSS3DObject  } from 'three/addons/renderers/CSS3DRendere
 import { scaleEffects, setupEffects } from './effects.js';
 import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 let tween, tweenActivated;
-let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
+let bloomComposer, bloomLayer, composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
 let door, room, roomDepth, wallGroup;
 
 let scene2, renderer2;
 
+let materials, darkMaterial;
+
 export function init(pane) {
+  
 
   // Camera.
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
@@ -122,7 +125,10 @@ export function init(pane) {
   wallGroup.position.z = - 15 - roomDepth / 2;
   scene.add(wallGroup);
 
-  composer = new setupEffects(renderer, scene, camera);
+  [ composer, bloomComposer, bloomLayer ] = new setupEffects(renderer, scene, camera);
+
+  darkMaterial = new THREE.MeshBasicMaterial( { color: 'black' } );
+  materials = {};
 
   const controls2 = new OrbitControls(camera, renderer2.domElement);
   controls2.target.set(0, 10, 0);
@@ -183,12 +189,42 @@ export function animate(currentTime) {
 
   // Render the composer
   if (!window.virtual_office.fast) {
+    
+    scene.traverse( darkenNonBloomed );
+    bloomComposer.render();
+    scene.traverse( restoreMaterial );
     composer.render();
+    renderer2.render(scene2, camera);
+
+    
   } else {
     renderer.render(scene, camera); // Render the scene without the effects
+    renderer2.render(scene2, camera);
   }
 
-  renderer2.render(scene2, camera); 
+  
+
+}
+
+function darkenNonBloomed( obj ) {
+
+  if ( obj.isMesh && bloomLayer.test( obj.layers ) === false ) {
+
+    materials[ obj.uuid ] = obj.material;
+    obj.material = darkMaterial;
+
+  }
+
+}
+
+function restoreMaterial( obj ) {
+
+  if ( materials[ obj.uuid ] ) {
+
+    obj.material = materials[ obj.uuid ];
+    delete materials[ obj.uuid ];
+
+  }
 
 }
 
