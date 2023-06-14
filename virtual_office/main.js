@@ -16,14 +16,9 @@ let door, room, roomDepth, wallGroup;
 
 let scene2, renderer2;
 
-let materials, darkMaterial;
+let materials, darkMaterial, domObject;
 
 export function init(pane) {
-  
-
-  // Camera.
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-  camera.position.set(0, 10, 40);
 
   // Scene container.
   scene = new THREE.Scene();
@@ -57,18 +52,6 @@ export function init(pane) {
 
   var adjustedGapSize = calculateAdjustedGapSize();
 
-  const coords = {x: 40} // Start at (0, 0)
-  // Scene Setup.
-  tween = new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
-		.to({x: - 4 + 2 * adjustedGapSize}, 1500) // Move to (300, 200) in 1 second.
-		.easing(TWEEN.Easing.Quadratic.InOut) // Use an easing function to make the animation smooth.
-    .onUpdate(() => {
-			// Called after tween.js updates 'coords'.
-			// Move 'box' to the position described by 'coords' with a CSS translation.
-      camera.position.z = coords.x;
-			camera.updateProjectionMatrix();
-		})
-
   deskGroup = setupDesks(adjustedGapSize, gapSize, scale, scene);
   scene.add(deskGroup);
 
@@ -85,19 +68,25 @@ export function init(pane) {
   renderer2.domElement.style.top = 0;
   document.querySelector("#css").appendChild(renderer2.domElement);
 
+  room = createRoom();
+  scene.add(room);
+
   var element = document.createElement("iframe");
   element.style.width = "300px";
   element.style.height = "200px";
   element.style.opacity = 0.999;
   element.src = "https://www.youtube.com/embed/pnEoyGDhc80";
 
-  var domObject = new CSS3DObject(element);
+  domObject = new CSS3DObject(element);
   domObject.scale.set( 0.02, 0.02, 0.02);
   domObject.position.x = -13.5;
   domObject.position.y = 5.5;
-  domObject.position.z = -9.5;
+  domObject.position.z = - 20.5 + adjustedGapSize;
+  console.log(adjustedGapSize);
+
   domObject.rotation.y = Math.PI / 2;
   scene2.add(domObject);
+
   var material = new THREE.MeshPhongMaterial({
     opacity: 0.2,
     color: new THREE.Color("black"),
@@ -112,10 +101,22 @@ export function init(pane) {
   //mesh.scale.copy( domObject.scale );
   mesh.castShadow = false;
   mesh.receiveShadow = true;
-  scene.add(mesh);
+  //scene.add(mesh);
 
-  room = createRoom();
-  scene.add(room);
+  // Camera.
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+  camera.position.set(0, 10, 15 + (roomDepth / 2));
+  const coords = {x: 15 + (roomDepth / 2)} // Start at (0, 0)
+  // Scene Setup.
+  tween = new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
+		.to({x: - 16 + (roomDepth / 2)}, 1500) // Move to (300, 200) in 1 second.
+		.easing(TWEEN.Easing.Quadratic.InOut) // Use an easing function to make the animation smooth.
+    .onUpdate(() => {
+			// Called after tween.js updates 'coords'.
+			// Move 'box' to the position described by 'coords' with a CSS translation.
+      camera.position.z = coords.x;
+			camera.updateProjectionMatrix();
+		})
 
   door = createDoor();
   door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (roomDepth / 2));
@@ -151,7 +152,7 @@ export function init(pane) {
     var width = window.innerWidth;
     var height = window.innerHeight;
     camera.aspect = width / height;
-    camera.position.z = - 4 + 2 * adjustedGapSize;
+    camera.position.z = - 16 + (roomDepth / 2);
     camera.updateProjectionMatrix();
 
     // Adjust desk positions based on the aspect ratio
@@ -159,8 +160,7 @@ export function init(pane) {
       updateDeskZ(desk, i, adjustedGapSize);
     });
 
-    roomDepth = 6 * adjustedGapSize;
-
+    roomDepth = 8 * adjustedGapSize;
     const geometry = new THREE.BoxGeometry(60, 30, roomDepth);
     room.geometry = geometry;
 
@@ -196,13 +196,10 @@ export function animate(currentTime) {
     composer.render();
     renderer2.render(scene2, camera);
 
-    
   } else {
     renderer.render(scene, camera); // Render the scene without the effects
     renderer2.render(scene2, camera);
   }
-
-  
 
 }
 
@@ -269,7 +266,7 @@ function createDoor() {
 function createRoom() {
   var adjustedGapSize = calculateAdjustedGapSize();
 
-  roomDepth = 6 * adjustedGapSize;
+  roomDepth = 8 * adjustedGapSize;
 
   const geometry = new THREE.BoxGeometry(60, 30, roomDepth);
 

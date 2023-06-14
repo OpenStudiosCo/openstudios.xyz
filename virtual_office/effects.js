@@ -114,7 +114,6 @@ export function setupEffects( renderer, scene, camera ) {
     tonePass.toneMappingExposure = Math.pow(Math.PI / 3, 4.0);
     composer.addPass( tonePass );
 
-
   }
 
   return [ composer, bloomComposer, bloomLayer ];
