@@ -91,6 +91,7 @@ export function setupEffects( renderer, scene, camera ) {
     bloomPass.radius = 0.85;
 
     bloomComposer = new EffectComposer( renderer );
+    bloomComposer.setSize(window.innerWidth, window.innerHeight);
     bloomComposer.renderToScreen = false;
     bloomComposer.addPass( renderScene );
     bloomComposer.addPass( bloomPass );
