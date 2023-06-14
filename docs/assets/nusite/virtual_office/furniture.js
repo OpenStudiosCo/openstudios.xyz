@@ -66,6 +66,8 @@ function createNeonSign(callback, scene) {
       scene.add(lightHelper);
     }
 
+    signMesh.layers.enable(1);
+
     signMesh.add(lightActual);
 
     // Add the sign to the scene
@@ -241,7 +243,7 @@ function createDesk() {
   var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
 
   // Position the overhead office light
-  lightMesh.position.set(0, 2.5, 0);
+  lightMesh.position.set(0, 2.25, 0);
   lightMesh.rotation.y = Math.PI / 2;
   // Add the overhead office light to the scene
   deskGroup.add(lightMesh);

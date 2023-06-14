@@ -8,8 +8,7 @@ import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
 
-let composer;
-let bloomPass, gammaPass, ssaoPass, tonePass;
+let composer, bloomComposer, bloomLayer;
 
 // Define a threshold frame rate below which effects will be disabled
 const frameRateThreshold = 30; // Adjust as needed
@@ -78,24 +77,44 @@ export function setupEffects( renderer, scene, camera ) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
-    tonePass = new OutputPass(THREE.ACESFilmicToneMapping);
-    tonePass.toneMappingExposure = Math.pow(Math.PI / 3, 4.0);
-    composer.addPass(tonePass);
-
-    ssaoPass = new SSAOPass( scene, camera, window.innerWidth, window.innerHeight );
-    ssaoPass.kernelRadius = 8;
+    const ssaoPass = new SSAOPass( scene, camera, window.innerWidth, window.innerHeight );
+    ssaoPass.kernelRadius = 16;
     ssaoPass.output = SSAOPass.OUTPUT.Beauty;
     composer.addPass( ssaoPass );
+      
+    bloomLayer = new THREE.Layers();
+    bloomLayer.set( 1 );
 
-    bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
     bloomPass.threshold = 0.15;
-    bloomPass.strength = 0.4;
+    bloomPass.strength = .85;
     bloomPass.radius = 0.85;
-    composer.addPass(bloomPass);
 
-    gammaPass = new ShaderPass( GammaCorrectionShader );
-    composer.addPass( gammaPass );
+    bloomComposer = new EffectComposer( renderer );
+    bloomComposer.renderToScreen = false;
+    bloomComposer.addPass( renderScene );
+    bloomComposer.addPass( bloomPass );
+
+    const mixPass = new ShaderPass(
+      new THREE.ShaderMaterial( {
+        uniforms: {
+          baseTexture: { value: null },
+          bloomTexture: { value: bloomComposer.renderTarget2.texture }
+        },
+        vertexShader: document.getElementById( 'vertexshader' ).textContent,
+        fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+        defines: {}
+      } ), 'baseTexture'
+    );
+    mixPass.needsSwap = true;
+
+    composer.addPass( mixPass );
+
+    const tonePass = new OutputPass(THREE.ACESFilmicToneMapping);
+    tonePass.toneMappingExposure = Math.pow(Math.PI / 3, 4.0);
+    composer.addPass( tonePass );
+
   }
 
-  return composer;
+  return [ composer, bloomComposer, bloomLayer ];
 }
