@@ -109,8 +109,10 @@ export function init(pane) {
   controls.target.set(0, 10, 0);
   controls.update();
   
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+  if (window.virtual_office.debug) {
+    stats = new Stats();
+    document.body.appendChild(stats.dom);
+  }
 
   // Adjust ambient light intensity
   var ambientLight = new THREE.AmbientLight(0x554455); // Dim ambient light color
@@ -165,7 +167,9 @@ export function animate(currentTime) {
 
   requestAnimationFrame(animate);
 
-  stats.update();
+  if (window.virtual_office.debug) {
+    stats.update();
+  }
 
   // Render the composer
   if (!window.virtual_office.fast) {
