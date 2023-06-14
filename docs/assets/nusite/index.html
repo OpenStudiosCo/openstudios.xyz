@@ -72,6 +72,7 @@
 		</script>
 
 		<script type="x-shader/x-fragment" id="fragmentshader">
+			// Kudos to https://github.com/mrdoob/three.js/issues/14104#issuecomment-1536582334
 
 			uniform sampler2D baseTexture;
 			uniform sampler2D bloomTexture;
@@ -80,8 +81,11 @@
 
 			void main() {
 
-				gl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );
-
+				vec4 base_color = texture2D(baseTexture, vUv);
+				vec4 bloom_color = texture2D(bloomTexture, vUv);
+				
+				float lum = 0.21 * bloom_color.r + 0.71 * bloom_color.g + 0.07 * bloom_color.b;
+				gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
 			}
 
 		</script>
