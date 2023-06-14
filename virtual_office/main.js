@@ -5,12 +5,16 @@ import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-
 import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS3DRenderer, CSS3DObject  } from 'three/addons/renderers/CSS3DRenderer.js';
+
 
 import { scaleEffects, setupEffects } from './effects.js';
 import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 let tween, tweenActivated;
 let composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
 let door, room, roomDepth, wallGroup;
+
+let scene2, renderer2;
 
 export function init(pane) {
 
@@ -20,6 +24,8 @@ export function init(pane) {
 
   // Scene container.
   scene = new THREE.Scene();
+  scene2 = new THREE.Scene();
+
 
   // Add the extension functions
   THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -63,10 +69,47 @@ export function init(pane) {
   deskGroup = setupDesks(adjustedGapSize, gapSize, scale, scene);
   scene.add(deskGroup);
 
+  // Main renderer.
   renderer = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+  document.querySelector("#webgl").appendChild(renderer.domElement);
+
+  // Website renderer.
+  renderer2 = new CSS3DRenderer();
+  renderer2.setSize(window.innerWidth, window.innerHeight);
+  renderer2.domElement.style.position = "absolute";
+  renderer2.domElement.style.top = 0;
+  document.querySelector("#css").appendChild(renderer2.domElement);
+
+  var element = document.createElement("iframe");
+  element.style.width = "300px";
+  element.style.height = "200px";
+  element.style.opacity = 0.999;
+  element.src = "https://www.youtube.com/embed/pnEoyGDhc80";
+
+  var domObject = new CSS3DObject(element);
+  domObject.scale.set( 0.02, 0.02, 0.02);
+  domObject.position.x = -13.5;
+  domObject.position.y = 5.5;
+  domObject.position.z = -9.5;
+  domObject.rotation.y = Math.PI / 2;
+  scene2.add(domObject);
+  var material = new THREE.MeshPhongMaterial({
+    opacity: 0.2,
+    color: new THREE.Color("black"),
+    blending: THREE.NoBlending,
+    side: THREE.DoubleSide
+  });
+  var geometry = new THREE.PlaneGeometry(6, 4);
+  var mesh = new THREE.Mesh(geometry, material);
+  mesh.position.copy(domObject.position);
+  mesh.rotation.copy(domObject.rotation);
+  
+  //mesh.scale.copy( domObject.scale );
+  mesh.castShadow = false;
+  mesh.receiveShadow = true;
+  scene.add(mesh);
 
   room = createRoom();
   scene.add(room);
@@ -77,14 +120,18 @@ export function init(pane) {
 
   wallGroup = setupBackwall(scene);
   wallGroup.position.z = - 15 - roomDepth / 2;
-  scene.add(wallGroup)
+  scene.add(wallGroup);
 
   composer = new setupEffects(renderer, scene, camera);
+
+  const controls2 = new OrbitControls(camera, renderer2.domElement);
+  controls2.target.set(0, 10, 0);
+  controls2.update();
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 10, 0);
   controls.update();
-
+  
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
@@ -124,7 +171,6 @@ export function init(pane) {
 
 }
 
-
 export function animate(currentTime) {
 
   scaleEffects(currentTime, renderer);
@@ -141,6 +187,8 @@ export function animate(currentTime) {
   } else {
     renderer.render(scene, camera); // Render the scene without the effects
   }
+
+  renderer2.render(scene2, camera); 
 
 }
 

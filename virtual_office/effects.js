@@ -9,7 +9,7 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
 
 let composer;
-let bloomPass, gammaPass, ssaoPass, tonePass;
+let bloomPass, gammaPass, renderScene, ssaoPass, tonePass;
 
 // Define a threshold frame rate below which effects will be disabled
 const frameRateThreshold = 30; // Adjust as needed
