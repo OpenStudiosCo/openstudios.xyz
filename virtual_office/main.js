@@ -5,14 +5,14 @@ import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-
 import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { CSS3DRenderer, CSS3DObject  } from 'three/addons/renderers/CSS3DRenderer.js';
+import { CSS3DRenderer } from 'three/addons/renderers/CSS3DRenderer.js';
 
 
 import { scaleEffects, setupEffects } from './effects.js';
 import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 let tween, tweenActivated;
-let bloomComposer, bloomLayer, composer, camera, scene, renderer, stats, gapSize, scale, deskGroup;
-let door, room, roomDepth, wallGroup;
+let bloomComposer, bloomLayer, composer, camera, scene, renderer, stats, gapSize, scale;
+let deskGroup, door, room, roomDepth, screenCSSGroup, screenWebGLGroup, wallGroup;
 
 let scene2, renderer2;
 
@@ -52,7 +52,9 @@ export function init(pane) {
 
   var adjustedGapSize = calculateAdjustedGapSize();
 
-  deskGroup = setupDesks(adjustedGapSize, gapSize, scale, scene);
+  [ deskGroup, screenCSSGroup, screenWebGLGroup ] = setupDesks(adjustedGapSize, gapSize, scale, scene);
+  scene2.add(screenCSSGroup);
+  scene.add(screenWebGLGroup);
   scene.add(deskGroup);
 
   // Main renderer.
@@ -70,38 +72,6 @@ export function init(pane) {
 
   room = createRoom();
   scene.add(room);
-
-  var element = document.createElement("iframe");
-  element.style.width = "300px";
-  element.style.height = "200px";
-  element.style.opacity = 0.999;
-  element.src = "https://www.youtube.com/embed/pnEoyGDhc80";
-
-  domObject = new CSS3DObject(element);
-  domObject.scale.set( 0.02, 0.02, 0.02);
-  domObject.position.x = -13.6;
-  domObject.position.y = 5.5;
-  domObject.position.z = - 20.5 + adjustedGapSize;
-  console.log(adjustedGapSize);
-
-  domObject.rotation.y = Math.PI / 2;
-  scene2.add(domObject);
-
-  var material = new THREE.MeshPhongMaterial({
-    opacity: 0.2,
-    color: new THREE.Color("black"),
-    blending: THREE.NoBlending,
-    side: THREE.DoubleSide
-  });
-  var geometry = new THREE.PlaneGeometry(6, 4);
-  var mesh = new THREE.Mesh(geometry, material);
-  mesh.position.copy(domObject.position);
-  mesh.rotation.copy(domObject.rotation);
-  
-  //mesh.scale.copy( domObject.scale );
-  mesh.castShadow = false;
-  mesh.receiveShadow = true;
-  scene.add(mesh);
 
   // Camera.
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
@@ -146,8 +116,9 @@ export function init(pane) {
   var ambientLight = new THREE.AmbientLight(0x554455); // Dim ambient light color
   scene.add(ambientLight);
 
-  window.addEventListener('resize', function () {
+  function handleViewportChange() {
     var adjustedGapSize = calculateAdjustedGapSize();
+    roomDepth = 8 * adjustedGapSize;
 
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -160,7 +131,13 @@ export function init(pane) {
       updateDeskZ(desk, i, adjustedGapSize);
     });
 
-    roomDepth = 8 * adjustedGapSize;
+    screenCSSGroup.children.forEach(function (screen, i) {
+      updateDeskZ(screen, i, adjustedGapSize);
+    });
+    screenWebGLGroup.children.forEach(function (screen, i) {
+      updateDeskZ(screen, i, adjustedGapSize);
+    });
+
     const geometry = new THREE.BoxGeometry(60, 30, roomDepth);
     room.geometry = geometry;
 
@@ -169,9 +146,12 @@ export function init(pane) {
     door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (roomDepth / 2));
 
     renderer.setSize(width, height);
+    renderer2.setSize(width, height);
     composer.setSize(width, height);
-
-  });
+  }
+  
+  window.addEventListener('orientationchange', handleViewportChange);
+  window.addEventListener('resize', handleViewportChange);
 
   tween.start();   
 

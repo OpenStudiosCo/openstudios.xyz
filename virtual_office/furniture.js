@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import { CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
+
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
@@ -117,18 +119,32 @@ function createPortrait(img_url, brightness) {
 // Uses createDesk and arranges them in the room.
 export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
   // Create desks
-  var deskGroup = new THREE.Group();
+  var deskGroup = new THREE.Group(),
+      screenCSSGroup = new THREE.Group(),
+      screenWebGLGroup = new THREE.Group();
 
   for (var i = 0; i < 4; i++) {
     var desk = createDesk();
     desk.rotation.y = Math.PI / 2;
+
+    var [ screenCSS, screenWebGL ] = createScreen(adjustedGapSize);
+    screenCSS.rotation.y = - Math.PI / 2;
+
     if (i < 2) {
       desk.position.x = -(gapSize * scale);
       desk.rotation.y += Math.PI; // Rotate the desk on the left side
       updateDeskZ(desk, i, adjustedGapSize);
+
+      screenCSS.position.x = -13.6;
+      screenCSS.rotation.y += Math.PI; // Rotate the screen on the left side
+      updateDeskZ(screenCSS, i, adjustedGapSize);
+
     } else {
       desk.position.x = (gapSize * scale);
       updateDeskZ(desk, i, adjustedGapSize);
+
+      screenCSS.position.x = 13.6;
+      updateDeskZ(screenCSS, i, adjustedGapSize);      
     }
 
     desk.scale.set(scale, scale, scale); // Scale up the desk
@@ -155,10 +171,16 @@ export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
       }
     });
 
+    screenWebGL.position.copy(screenCSS.position);
+    screenWebGL.rotation.copy(screenCSS.rotation);
+
     deskGroup.add(desk);
+    screenCSSGroup.add(screenCSS);
+    screenWebGLGroup.add(screenWebGL);
+    
 
   }
-  return deskGroup;
+  return [deskGroup, screenCSSGroup, screenWebGLGroup ];
 }
 
 /**
@@ -261,4 +283,34 @@ function createDesk() {
   deskGroup.add(lightActual);
 
   return deskGroup;
+}
+
+/**
+ * Create an iFrame based screen that will sit on top of a monitor.
+ */
+function createScreen( adjustedGapSize ){
+  var element = document.createElement("iframe");
+  element.style.width = "300px";
+  element.style.height = "200px";
+  element.style.opacity = 0.999;
+  element.src = "https://www.youtube.com/embed/pnEoyGDhc80";
+
+  var domObject = new CSS3DObject(element);
+  domObject.position.y = 5.5;
+  domObject.scale.set( 0.02, 0.02, 0.02); 
+
+  var material = new THREE.MeshPhongMaterial({
+    opacity: 0,
+    color: new THREE.Color("black"),
+    blending: THREE.NoBlending,
+    side: THREE.DoubleSide
+  });
+  var geometry = new THREE.PlaneGeometry(6, 4);
+  var mesh = new THREE.Mesh(geometry, material);
+  
+  //mesh.scale.copy( domObject.scale );
+  mesh.castShadow = false;
+  mesh.receiveShadow = true;
+  
+  return [ domObject, mesh ];
 }
