@@ -1,51 +1,34 @@
 import * as THREE from 'three';
 
-import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
-
 import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS3DRenderer } from 'three/addons/renderers/CSS3DRenderer.js';
 
+import { SUBTRACTION, Brush, Evaluator } from 'three-bvh-csg';
+import { MeshBVHVisualizer } from 'three-mesh-bvh';
+
 
 import { scaleEffects, setupEffects } from './effects.js';
 import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
-let tween, tweenActivated;
-let bloomComposer, bloomLayer, composer, camera, scene, renderer, stats, gapSize, scale;
-let deskGroup, door, room, roomDepth, screenCSSGroup, screenWebGLGroup, wallGroup;
+import { setupTweens, startTweening, updateTweens } from './tweens.js';
+
+let csgEvaluator;
+let bloomComposer, bloomLayer, composer, scene, renderer, stats, gapSize, scale;
+let deskGroup, door, room, screenCSSGroup, screenWebGLGroup, wallGroup;
 
 let scene2, renderer2;
 
-let materials, darkMaterial, domObject;
+let materials, darkMaterial;
 
 export function init(pane) {
+
+  csgEvaluator = new Evaluator();
+  csgEvaluator.useGroups = true;
 
   // Scene container.
   scene = new THREE.Scene();
   scene2 = new THREE.Scene();
-
-
-  // Add the extension functions
-  THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
-  THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
-  THREE.Mesh.prototype.raycast = acceleratedRaycast;
-
-  // // Generate geometry and associated BVH
-  // const geom = new THREE.TorusKnotGeometry( 3, 3, 40, 10 );
-  // const bvhmesh = new THREE.Mesh( geom, new THREE.MeshStandardMaterial( {
-  //   flatShading: true,
-  //   color: 0xff9800,
-  //   emissive: 0xff9800,
-  //   emissiveIntensity: 0.35,
-
-  //   polygonOffset: true,
-  //   polygonOffsetUnits: 1,
-  //   polygonOffsetFactor: 1,
-
-  // } ));
-  // geom.computeBoundsTree();
-
-  // scene.add( bvhmesh );
 
   gapSize = 1; // Gap size between desks
   scale = 11; // Scale factor
@@ -70,42 +53,36 @@ export function init(pane) {
   renderer2.domElement.style.top = 0;
   document.querySelector("#css").appendChild(renderer2.domElement);
 
-  room = createRoom();
+  window.virtual_office.scene_objects.screens_loaded = 0;
+  room = createOfficeRoom();
   scene.add(room);
 
+  window.virtual_office.scene_objects.door = createDoor();
+  window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
+  scene.add(window.virtual_office.scene_objects.door);
+
   // Camera.
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-  camera.position.set(0, 10, 15 + (roomDepth / 2));
-  const coords = {x: 15 + (roomDepth / 2)} // Start at (0, 0)
-  // Scene Setup.
-  tween = new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
-		.to({x: - 16 + (roomDepth / 2)}, 1500) // Move to (300, 200) in 1 second.
-		.easing(TWEEN.Easing.Quadratic.InOut) // Use an easing function to make the animation smooth.
-    .onUpdate(() => {
-			// Called after tween.js updates 'coords'.
-			// Move 'box' to the position described by 'coords' with a CSS translation.
-      camera.position.z = coords.x;
-			camera.updateProjectionMatrix();
-		})
+  window.virtual_office.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+  window.virtual_office.camera.position.set(0, 10, 15 + (window.virtual_office.room_depth / 2));
 
-  door = createDoor();
-  door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (roomDepth / 2));
-  scene.add(door);
+  setupTweens();
 
+
+  // Scene Setup. 
   wallGroup = setupBackwall(scene);
-  wallGroup.position.z = - 15 - roomDepth / 2;
+  wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
   scene.add(wallGroup);
 
-  [ composer, bloomComposer, bloomLayer ] = new setupEffects(renderer, scene, camera);
+  [ composer, bloomComposer, bloomLayer ] = new setupEffects( renderer, scene );
 
   darkMaterial = new THREE.MeshBasicMaterial( { color: 'black' } );
   materials = {};
 
-  const controls2 = new OrbitControls(camera, renderer2.domElement);
+  const controls2 = new OrbitControls(window.virtual_office.camera, renderer2.domElement);
   controls2.target.set(0, 10, 0);
   controls2.update();
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  const controls = new OrbitControls(window.virtual_office.camera, renderer.domElement);
   controls.target.set(0, 10, 0);
   controls.update();
   
@@ -115,18 +92,18 @@ export function init(pane) {
   }
 
   // Adjust ambient light intensity
-  var ambientLight = new THREE.AmbientLight(0x554455); // Dim ambient light color
+  var ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x554455 : 0x443344); // Dim ambient light color
   scene.add(ambientLight);
 
   function handleViewportChange() {
     var adjustedGapSize = calculateAdjustedGapSize();
-    roomDepth = 8 * adjustedGapSize;
+    window.virtual_office.room_depth = 8 * adjustedGapSize;
 
     var width = window.innerWidth;
     var height = window.innerHeight;
-    camera.aspect = width / height;
-    camera.position.z = - 16 + (roomDepth / 2);
-    camera.updateProjectionMatrix();
+    window.virtual_office.camera.aspect = width / height;
+    window.virtual_office.camera.position.z = - 16 + (window.virtual_office.room_depth / 2);
+    window.virtual_office.camera.updateProjectionMatrix();
 
     // Adjust desk positions based on the aspect ratio
     deskGroup.children.forEach(function (desk, i) {
@@ -140,12 +117,12 @@ export function init(pane) {
       updateDeskZ(screen, i, adjustedGapSize);
     });
 
-    const geometry = new THREE.BoxGeometry(60, 30, roomDepth);
-    room.geometry = geometry;
+    const newRoom = createOfficeRoom();
+    room.geometry = newRoom.geometry;
 
-    wallGroup.position.z = - 15 - roomDepth / 2;
+    wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
 
-    door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (roomDepth / 2));
+    window.virtual_office.scene_objects.door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
 
     renderer.setSize(width, height);
     renderer2.setSize(width, height);
@@ -155,15 +132,20 @@ export function init(pane) {
   window.addEventListener('orientationchange', handleViewportChange);
   window.addEventListener('resize', handleViewportChange);
 
-  tween.start();   
-
 }
 
 export function animate(currentTime) {
 
+  if ( window.virtual_office.started == false && window.virtual_office.scene_objects.screens_loaded == 4) {
+    window.virtual_office.started = true;
+    startTweening();
+  }
+
   scaleEffects(currentTime, renderer);
 
-  tween.update(currentTime);
+  if ( window.virtual_office.started ) {
+    updateTweens(currentTime);
+  }
 
   requestAnimationFrame(animate);
 
@@ -178,11 +160,11 @@ export function animate(currentTime) {
     bloomComposer.render();
     scene.traverse( restoreMaterial );
     composer.render();
-    renderer2.render(scene2, camera);
+    renderer2.render(scene2, window.virtual_office.camera);
 
   } else {
-    renderer.render(scene, camera); // Render the scene without the effects
-    renderer2.render(scene2, camera);
+    renderer.render(scene, window.virtual_office.camera); // Render the scene without the effects
+    renderer2.render(scene2, window.virtual_office.camera);
   }
 
 }
@@ -229,41 +211,87 @@ var doorDepth = 0.2;
 function createDoor() {
   var doorParent = new THREE.Object3D();
 
-
   var doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorDepth);
 
   // Create door material
   var doorMaterial = new THREE.MeshLambertMaterial({ color: 0x986b41 });
 
   // Create door mesh
-  var mesh = new THREE.Mesh(doorGeometry, doorMaterial);
-
+  var doorBrush = new Brush(doorGeometry, doorMaterial);
   // Set initial position and rotation of the door
-  mesh.position.set(doorWidth / 2, 0, 0);
+  doorBrush.position.set(doorWidth / 2, 0, 0);
+  doorBrush.updateMatrixWorld();
 
-  doorParent.add(mesh);
 
+  var doorWindowGeometry = new THREE.BoxGeometry(doorWidth / 1.3 , doorHeight /2, doorDepth );
+
+  // Create door material
+  var doorWindowMaterial = new THREE.MeshLambertMaterial({
+    color: 0xC7E3E1,
+    opacity: 0.85,
+    transparent: true
+  });
+
+  // Create door window mesh
+  var windowBrush = new Brush(doorWindowGeometry, doorWindowMaterial);
+  // Set initial position and rotation of the door
+  windowBrush.position.set(doorWidth / 2, 2.5* (doorHeight/ 12), 0);
+  windowBrush.updateMatrixWorld();
+
+  let result = new THREE.Mesh(
+    new THREE.BufferGeometry(),
+    new THREE.MeshBasicMaterial()
+  );
+
+  csgEvaluator.evaluate( doorBrush, windowBrush, SUBTRACTION, result );
+
+  doorParent.add(result);
+
+  doorParent.add(windowBrush);
   // Add the door to the scene
   return doorParent;
 }
 
-function createRoom() {
+function createOfficeRoom() {
   var adjustedGapSize = calculateAdjustedGapSize();
 
-  roomDepth = 8 * adjustedGapSize;
+  window.virtual_office.room_depth = 8 * adjustedGapSize;
 
-  const geometry = new THREE.BoxGeometry(60, 30, roomDepth);
-
-  const material = new THREE.MeshPhongMaterial({
-    color: 0xa0adaf,
-    shininess: 10,
-    specular: 0x111111,
-    side: THREE.DoubleSide
+  var doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorDepth);
+  const transparentMaterial = new THREE.MeshLambertMaterial({
+     opacity: 0,
+     transparent: true
   });
 
-  let mesh = new THREE.Mesh(geometry, material);
-  mesh.position.y = 10;
-  mesh.position.z = -15;
-  mesh.receiveShadow = true;
-  return mesh;
+  const doorBrush = new Brush( doorGeometry, transparentMaterial );
+  doorBrush.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
+  doorBrush.position.x += 4.1;
+  doorBrush.updateMatrixWorld();
+
+  const roomGeometry = new THREE.BoxGeometry(60, 30, window.virtual_office.room_depth);
+
+  const roomMaterial = new THREE.MeshLambertMaterial({
+    color: 0xa0adaf,
+    opacity: 1,
+    side: THREE.DoubleSide,
+    transparent: true
+  });
+ 
+  const roomBrush = new Brush( roomGeometry, roomMaterial );
+  roomBrush.position.y = 10;
+  roomBrush.position.z = -15;
+  
+  roomBrush.updateMatrixWorld();
+
+  let result = new THREE.Mesh(
+    new THREE.BufferGeometry(),
+    new THREE.MeshBasicMaterial()
+  );
+
+  result.receiveShadow = true;
+  result.layers.enable(1);
+
+  csgEvaluator.evaluate( roomBrush, doorBrush, SUBTRACTION, result );
+
+  return result;
 }

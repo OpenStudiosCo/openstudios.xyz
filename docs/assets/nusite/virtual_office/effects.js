@@ -25,48 +25,50 @@ let frameRates = [];
 // Dynamically scale the effects to maintain minimum FPS
 export function scaleEffects( currentTime, renderer ) {
 
-  // Calculate the time elapsed since the previous frame
-  const deltaTime = (currentTime - previousFrameTime) / 1000; // Convert to seconds
+  // Check if fast mode is needed for this session.
+  if (! window.virtual_office.fast){
+    // Calculate the time elapsed since the previous frame
+    const deltaTime = (currentTime - previousFrameTime) / 1000; // Convert to seconds
 
-  // Update previous frame time
-  previousFrameTime = currentTime;
+    // Update previous frame time
+    previousFrameTime = currentTime;
 
-  // Calculate the current frame rate
-  const currentFrameRate = 1 / deltaTime;
+    // Calculate the current frame rate
+    const currentFrameRate = 1 / deltaTime;
 
-  delayTimer += deltaTime;
-  frameRates.push( currentFrameRate );
+    delayTimer += deltaTime;
+    frameRates.push( currentFrameRate );
 
-  // Check if the delay duration has passed
-  if (! window.virtual_office.fast && ( delayTimer >= delayDuration ) ) {
+    // Check if the delay duration has passed
+    if  ( delayTimer >= delayDuration ) {
+      let avgFrameRate = 0;
 
-    let avgFrameRate = 0;
+      var sum = frameRates.reduce(function (total, num) {
+        return total + num;
+      }, 0);
+    
+      avgFrameRate = sum / frameRates.length;
 
-    var sum = frameRates.reduce(function (total, num) {
-      return total + num;
-    }, 0);
-  
-    avgFrameRate = sum / frameRates.length;
+      // Check if the frame rate is below the threshold
+      const isBelowThreshold = avgFrameRate < frameRateThreshold;
 
-    // Check if the frame rate is below the threshold
-    const isBelowThreshold = avgFrameRate < frameRateThreshold;
+      if (isBelowThreshold) {
+        console.log(avgFrameRate + " FPS too low, switching effects off");
+        // Disable effects
+        composer.passes.splice(0, composer.passes.length); // Remove all passes from the composer
+        window.virtual_office.fast = true;
+        renderer.shadowMap.enabled = false;
+      }
 
-    if (isBelowThreshold) {
-      console.log(avgFrameRate + " FPS too low, switching effects off");
-      // Disable effects
-      composer.passes.splice(0, composer.passes.length); // Remove all passes from the composer
-      window.virtual_office.fast = true;
-      renderer.shadowMap.enabled = false;
     }
-
   }
 
 }
 
 // Sets up the effects composer object
-export function setupEffects( renderer, scene, camera ) {
+export function setupEffects( renderer, scene ) {
   // Apply Unreal Bloom post-processing effect
-  var renderScene = new RenderPass(scene, camera);
+  var renderScene = new RenderPass(scene, window.virtual_office.camera);
 
   composer = new EffectComposer(renderer);
   composer.setSize(window.innerWidth, window.innerHeight);
@@ -77,7 +79,7 @@ export function setupEffects( renderer, scene, camera ) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
-    const ssaoPass = new SSAOPass( scene, camera, window.innerWidth, window.innerHeight );
+    const ssaoPass = new SSAOPass( scene, window.virtual_office.camera, window.innerWidth, window.innerHeight );
     ssaoPass.kernelRadius = 16;
     ssaoPass.output = SSAOPass.OUTPUT.Beauty;
     composer.addPass( ssaoPass );
