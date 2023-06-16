@@ -289,11 +289,12 @@ function createDesk() {
  * Create an iFrame based screen that will sit on top of a monitor.
  */
 function createScreen( adjustedGapSize ){
-  var element = document.createElement("iframe");
+  //var element = document.createElement("iframe");
+  var element = document.createElement("img");
   element.style.width = "300px";
   element.style.height = "200px";
   element.style.opacity = 0.999;
-  element.src = "https://www.youtube.com/embed/pnEoyGDhc80";
+  element.src = "../mockup.png";
   element.addEventListener("load", function() {
     window.virtual_office.scene_objects.screens_loaded += 1;
   });
