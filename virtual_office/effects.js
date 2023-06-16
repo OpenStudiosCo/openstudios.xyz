@@ -64,9 +64,9 @@ export function scaleEffects( currentTime, renderer ) {
 }
 
 // Sets up the effects composer object
-export function setupEffects( renderer, scene, camera ) {
+export function setupEffects( renderer, scene ) {
   // Apply Unreal Bloom post-processing effect
-  var renderScene = new RenderPass(scene, camera);
+  var renderScene = new RenderPass(scene, window.virtual_office.camera);
 
   composer = new EffectComposer(renderer);
   composer.setSize(window.innerWidth, window.innerHeight);
@@ -77,7 +77,7 @@ export function setupEffects( renderer, scene, camera ) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
-    const ssaoPass = new SSAOPass( scene, camera, window.innerWidth, window.innerHeight );
+    const ssaoPass = new SSAOPass( scene, window.virtual_office.camera, window.innerWidth, window.innerHeight );
     ssaoPass.kernelRadius = 16;
     ssaoPass.output = SSAOPass.OUTPUT.Beauty;
     composer.addPass( ssaoPass );

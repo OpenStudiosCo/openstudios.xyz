@@ -16,9 +16,12 @@ domReady(
 
     // Create an object to talk to the application.
     window.virtual_office = {
+      camera: false,
       debug: false,
       fast: false,
-      started: false
+      room_depth: false,
+      started: false,
+      tweens: []
     };
 
     
