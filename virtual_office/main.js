@@ -11,7 +11,7 @@ import { MeshBVHVisualizer } from 'three-mesh-bvh';
 
 import { scaleEffects, setupEffects } from './effects.js';
 import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
-import { setupTweens, startTweening, updateTweens } from './tweens.js';
+import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
 let bloomComposer, bloomLayer, composer, scene, renderer, stats, gapSize, scale;
@@ -135,11 +135,6 @@ export function init(pane) {
 }
 
 export function animate(currentTime) {
-
-  if ( window.virtual_office.started == false && window.virtual_office.scene_objects.screens_loaded == 4) {
-    window.virtual_office.started = true;
-    startTweening();
-  }
 
   scaleEffects(currentTime, renderer);
 
