@@ -8,10 +8,13 @@ import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
 
+import { startTweening } from './tweens.js';
+
+
 let composer, bloomComposer, bloomLayer;
 
 // Define a threshold frame rate below which effects will be disabled
-const frameRateThreshold = 30; // Adjust as needed
+const frameRateThreshold = 12; // Adjust as needed
 
 // Store the previous frame time
 let previousFrameTime = 0;
@@ -25,19 +28,14 @@ let frameRates = [];
 // Dynamically scale the effects to maintain minimum FPS
 export function scaleEffects( currentTime, renderer ) {
 
+  // Calculate the time elapsed since the previous frame
+  const deltaTime = (currentTime - previousFrameTime) / 1000; // Convert to seconds
+  delayTimer += deltaTime;
+
+   // Update previous frame time
+  previousFrameTime = currentTime;
   // Check if fast mode is needed for this session.
-  if (! window.virtual_office.fast){
-    // Calculate the time elapsed since the previous frame
-    const deltaTime = (currentTime - previousFrameTime) / 1000; // Convert to seconds
-
-    // Update previous frame time
-    previousFrameTime = currentTime;
-
-    // Calculate the current frame rate
-    const currentFrameRate = 1 / deltaTime;
-
-    delayTimer += deltaTime;
-    frameRates.push( currentFrameRate );
+  if (! window.virtual_office.fast ){
 
     // Check if the delay duration has passed
     if  ( delayTimer >= delayDuration ) {
@@ -59,8 +57,22 @@ export function scaleEffects( currentTime, renderer ) {
         window.virtual_office.fast = true;
         renderer.shadowMap.enabled = false;
       }
-
     }
+    else {
+      // Calculate the current frame rate
+      const currentFrameRate = 1 / deltaTime;
+      frameRates.push( currentFrameRate );
+    }
+
+  }
+
+  if (
+    window.virtual_office.scene_objects.screens_loaded == 4 &&
+    ( delayTimer >= delayDuration ) &&
+    window.virtual_office.started == false 
+  ) {
+    window.virtual_office.started = true;
+    startTweening();
   }
 
 }
@@ -80,7 +92,7 @@ export function setupEffects( renderer, scene ) {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
     const ssaoPass = new SSAOPass( scene, window.virtual_office.camera, window.innerWidth, window.innerHeight );
-    ssaoPass.kernelRadius = 16;
+    ssaoPass.kernelRadius = 20;
     ssaoPass.output = SSAOPass.OUTPUT.Beauty;
     composer.addPass( ssaoPass );
       
