@@ -18,11 +18,11 @@ export function setupBackwall ( scene ) {
   
   // Add portraits to the scene
   let paulsPortrait = createPortrait('./paul.png', 2.75);
-  paulsPortrait.position.set(-7.5, 8, 0.1);  // Example position for portrait 1
+  paulsPortrait.position.set(-7.5, 8, 0.5);  // Example position for portrait 1
   wallGroup.add(paulsPortrait);
 
   let garrettsPortrait = createPortrait('./garrett.png', 4.);
-  garrettsPortrait.position.set(7.5, 8, 0.1);  // Example position for portrait 1
+  garrettsPortrait.position.set(7.5, 8, 0.5);  // Example position for portrait 1
   wallGroup.add(garrettsPortrait);
 
   return wallGroup;

@@ -14,7 +14,7 @@ import { startTweening } from './tweens.js';
 let composer, bloomComposer, bloomLayer;
 
 // Define a threshold frame rate below which effects will be disabled
-const frameRateThreshold = 12; // Adjust as needed
+const frameRateThreshold = 30; // Adjust as needed
 
 // Store the previous frame time
 let previousFrameTime = 0;
