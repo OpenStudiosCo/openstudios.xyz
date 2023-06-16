@@ -10,12 +10,22 @@ export function setupTweens() {
       window.virtual_office.camera.position.z = coords.x;
       window.virtual_office.camera.updateProjectionMatrix();
     });
+
+  // Define the target rotation of the door when it's open
+  var targetRotation = - Math.PI / 2;
+
+  // Animate the door rotation
+  window.virtual_office.tweens.openDoor = new TWEEN.Tween(window.virtual_office.scene_objects.door.rotation)
+    .to({ y: targetRotation }, 500) // Set the duration of the animation
+    ;
 }
 
 export function startTweening() {
   window.virtual_office.tweens.enterTheOffice.start();
+  window.virtual_office.tweens.openDoor.start();
 }
 
 export function updateTweens( currentTime ) {
   window.virtual_office.tweens.enterTheOffice.update( currentTime );
+  window.virtual_office.tweens.openDoor.update( currentTime );
 }

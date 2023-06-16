@@ -295,8 +295,7 @@ function createScreen( adjustedGapSize ){
   element.style.opacity = 0.999;
   element.src = "https://www.youtube.com/embed/pnEoyGDhc80";
   element.addEventListener("load", function() {
-    console.log(window.virtual_office.screensLoaded);
-    window.virtual_office.screensLoaded+=1;
+    window.virtual_office.scene_objects.screens_loaded += 1;
   });
 
   var domObject = new CSS3DObject(element);

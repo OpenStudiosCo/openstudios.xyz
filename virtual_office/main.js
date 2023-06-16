@@ -53,13 +53,13 @@ export function init(pane) {
   renderer2.domElement.style.top = 0;
   document.querySelector("#css").appendChild(renderer2.domElement);
 
-  window.virtual_office.screensLoaded = 0;
+  window.virtual_office.scene_objects.screens_loaded = 0;
   room = createOfficeRoom();
   scene.add(room);
 
-  door = createDoor();
-  door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
-  //scene.add(door);
+  window.virtual_office.scene_objects.door = createDoor();
+  window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
+  scene.add(window.virtual_office.scene_objects.door);
 
   // Camera.
   window.virtual_office.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
@@ -122,7 +122,7 @@ export function init(pane) {
 
     wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
 
-    door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
+    window.virtual_office.scene_objects.door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
 
     renderer.setSize(width, height);
     renderer2.setSize(width, height);
@@ -136,7 +136,7 @@ export function init(pane) {
 
 export function animate(currentTime) {
 
-  if ( window.virtual_office.started == false && window.virtual_office.screensLoaded == 4) {
+  if ( window.virtual_office.started == false && window.virtual_office.scene_objects.screens_loaded == 4) {
     window.virtual_office.started = true;
     startTweening();
   }
@@ -217,13 +217,37 @@ function createDoor() {
   var doorMaterial = new THREE.MeshLambertMaterial({ color: 0x986b41 });
 
   // Create door mesh
-  var mesh = new THREE.Mesh(doorGeometry, doorMaterial);
-
+  var doorBrush = new Brush(doorGeometry, doorMaterial);
   // Set initial position and rotation of the door
-  mesh.position.set(doorWidth / 2, 0, 0);
+  doorBrush.position.set(doorWidth / 2, 0, 0);
+  doorBrush.updateMatrixWorld();
 
-  doorParent.add(mesh);
 
+  var doorWindowGeometry = new THREE.BoxGeometry(doorWidth / 1.3 , doorHeight /2, doorDepth );
+
+  // Create door material
+  var doorWindowMaterial = new THREE.MeshLambertMaterial({
+    color: 0xC7E3E1,
+    opacity: 0.85,
+    transparent: true
+  });
+
+  // Create door window mesh
+  var windowBrush = new Brush(doorWindowGeometry, doorWindowMaterial);
+  // Set initial position and rotation of the door
+  windowBrush.position.set(doorWidth / 2, 2.5* (doorHeight/ 12), 0);
+  windowBrush.updateMatrixWorld();
+
+  let result = new THREE.Mesh(
+    new THREE.BufferGeometry(),
+    new THREE.MeshBasicMaterial()
+  );
+
+  csgEvaluator.evaluate( doorBrush, windowBrush, SUBTRACTION, result );
+
+  doorParent.add(result);
+
+  doorParent.add(windowBrush);
   // Add the door to the scene
   return doorParent;
 }
@@ -249,8 +273,6 @@ function createOfficeRoom() {
   const roomMaterial = new THREE.MeshLambertMaterial({
     color: 0xa0adaf,
     opacity: 1,
-    shininess: 10,
-    specular: 0x111111,
     side: THREE.DoubleSide,
     transparent: true
   });

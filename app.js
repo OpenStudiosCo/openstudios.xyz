@@ -20,6 +20,7 @@ domReady(
       debug: false,
       fast: false,
       room_depth: false,
+      scene_objects: [],
       started: false,
       tweens: []
     };
