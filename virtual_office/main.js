@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 
-import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
-
 import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS3DRenderer } from 'three/addons/renderers/CSS3DRenderer.js';
+
+import { SUBTRACTION, Brush, Evaluator } from 'three-bvh-csg';
+import { MeshBVHVisualizer } from 'three-mesh-bvh';
 
 
 import { scaleEffects, setupEffects } from './effects.js';
@@ -16,36 +17,13 @@ let deskGroup, door, room, roomDepth, screenCSSGroup, screenWebGLGroup, wallGrou
 
 let scene2, renderer2;
 
-let materials, darkMaterial, domObject;
+let materials, darkMaterial;
 
 export function init(pane) {
 
   // Scene container.
   scene = new THREE.Scene();
   scene2 = new THREE.Scene();
-
-
-  // Add the extension functions
-  THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
-  THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
-  THREE.Mesh.prototype.raycast = acceleratedRaycast;
-
-  // // Generate geometry and associated BVH
-  // const geom = new THREE.TorusKnotGeometry( 3, 3, 40, 10 );
-  // const bvhmesh = new THREE.Mesh( geom, new THREE.MeshStandardMaterial( {
-  //   flatShading: true,
-  //   color: 0xff9800,
-  //   emissive: 0xff9800,
-  //   emissiveIntensity: 0.35,
-
-  //   polygonOffset: true,
-  //   polygonOffsetUnits: 1,
-  //   polygonOffsetFactor: 1,
-
-  // } ));
-  // geom.computeBoundsTree();
-
-  // scene.add( bvhmesh );
 
   gapSize = 1; // Gap size between desks
   scale = 11; // Scale factor
@@ -70,7 +48,8 @@ export function init(pane) {
   renderer2.domElement.style.top = 0;
   document.querySelector("#css").appendChild(renderer2.domElement);
 
-  room = createRoom();
+  window.virtual_office.screensLoaded = 0;
+  room = createOfficeRoom();
   scene.add(room);
 
   // Camera.
@@ -86,11 +65,8 @@ export function init(pane) {
 			// Move 'box' to the position described by 'coords' with a CSS translation.
       camera.position.z = coords.x;
 			camera.updateProjectionMatrix();
-		})
-
-  door = createDoor();
-  door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (roomDepth / 2));
-  scene.add(door);
+		});
+  
 
   wallGroup = setupBackwall(scene);
   wallGroup.position.z = - 15 - roomDepth / 2;
@@ -115,7 +91,7 @@ export function init(pane) {
   }
 
   // Adjust ambient light intensity
-  var ambientLight = new THREE.AmbientLight(0x554455); // Dim ambient light color
+  var ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x554455 : 0x443344); // Dim ambient light color
   scene.add(ambientLight);
 
   function handleViewportChange() {
@@ -155,15 +131,20 @@ export function init(pane) {
   window.addEventListener('orientationchange', handleViewportChange);
   window.addEventListener('resize', handleViewportChange);
 
-  tween.start();   
-
 }
 
 export function animate(currentTime) {
 
+  if ( window.virtual_office.started == false && window.virtual_office.screensLoaded == 4) {
+    window.virtual_office.started = true;
+    tween.start();
+  }
+
   scaleEffects(currentTime, renderer);
 
-  tween.update(currentTime);
+  if ( window.virtual_office.started ) {
+    tween.update(currentTime);
+  }
 
   requestAnimationFrame(animate);
 
@@ -247,23 +228,54 @@ function createDoor() {
   return doorParent;
 }
 
-function createRoom() {
+function createOfficeRoom() {
   var adjustedGapSize = calculateAdjustedGapSize();
 
   roomDepth = 8 * adjustedGapSize;
 
-  const geometry = new THREE.BoxGeometry(60, 30, roomDepth);
+  door = createDoor();
+  door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (roomDepth / 2));
+  
+  const csgEvaluator = new Evaluator();
+  csgEvaluator.useGroups = true;
 
-  const material = new THREE.MeshPhongMaterial({
-    color: 0xa0adaf,
-    shininess: 10,
-    specular: 0x111111,
-    side: THREE.DoubleSide
+  const transparentMaterial = new THREE.MeshLambertMaterial({
+     opacity: 0,
+     transparent: true
   });
 
-  let mesh = new THREE.Mesh(geometry, material);
-  mesh.position.y = 10;
-  mesh.position.z = -15;
-  mesh.receiveShadow = true;
-  return mesh;
+  const doorBrush = new Brush( door.children[0].geometry, transparentMaterial );
+  doorBrush.position.copy( door.position );
+  doorBrush.position.x += 4.1;
+  doorBrush.scale.setScalar( door.scale.x );
+  doorBrush.updateMatrixWorld();
+
+  const roomGeometry = new THREE.BoxGeometry(60, 30, roomDepth);
+
+  const roomMaterial = new THREE.MeshLambertMaterial({
+    color: 0xa0adaf,
+    opacity: 1,
+    shininess: 10,
+    specular: 0x111111,
+    side: THREE.DoubleSide,
+    transparent: true
+  });
+ 
+  const roomBrush = new Brush( roomGeometry, roomMaterial );
+  roomBrush.position.y = 10;
+  roomBrush.position.z = -15;
+  
+  roomBrush.updateMatrixWorld();
+
+  let result = new THREE.Mesh(
+    new THREE.BufferGeometry(),
+    new THREE.MeshBasicMaterial()
+  );
+
+  result.receiveShadow = true;
+  result.layers.enable(1);
+
+  csgEvaluator.evaluate( roomBrush, doorBrush, SUBTRACTION, result );
+
+  return result;
 }

@@ -52,13 +52,13 @@ function createNeonSign(callback, scene) {
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-    const lightActual = new THREE.PointLight(0xDA68C5, 0.1); // Color: white
+    const lightActual = new THREE.PointLight(0xDA68C5, window.virtual_office.fast ? 0.35 : 0.1); // Color: white
     lightActual.position.set(7.5, 0.25, 5); // Set the position of the light
     lightActual.castShadow = true;
 
     //Set up shadow properties for the light
-    lightActual.shadow.mapSize.width = 32; // default
-    lightActual.shadow.mapSize.height = 32; // default
+    // lightActual.shadow.mapSize.width = 32; // default
+    // lightActual.shadow.mapSize.height = 32; // default
 
     if (window.virtual_office.debug) {
       const helper = new THREE.CameraHelper( lightActual.shadow.camera );
@@ -294,6 +294,10 @@ function createScreen( adjustedGapSize ){
   element.style.height = "200px";
   element.style.opacity = 0.999;
   element.src = "https://www.youtube.com/embed/pnEoyGDhc80";
+  element.addEventListener("load", function() {
+    console.log(window.virtual_office.screensLoaded);
+    window.virtual_office.screensLoaded+=1;
+  });
 
   var domObject = new CSS3DObject(element);
   domObject.position.y = 5.5;

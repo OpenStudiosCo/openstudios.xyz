@@ -18,6 +18,7 @@ domReady(
     window.virtual_office = {
       debug: false,
       fast: false,
+      started: false
     };
 
     
