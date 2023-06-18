@@ -43,7 +43,7 @@ function createNeonSign(callback, scene) {
     const textGeometry = new TextGeometry('about us', {
       font: font,
       size: 2.5,
-      height: 1,
+      height: 0.5,
       curveSegments: 4
     });
 
@@ -118,15 +118,17 @@ function createPortrait(img_url, brightness) {
 
 // Uses createDesk and arranges them in the room.
 export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
-  // Create desks
+  // Create groups
   var deskGroup = new THREE.Group(),
       screenCSSGroup = new THREE.Group(),
+      // Do these need to be separate?
       screenWebGLGroup = new THREE.Group();
 
   for (var i = 0; i < 4; i++) {
     var desk = createDesk();
     desk.rotation.y = Math.PI / 2;
 
+    // Add screens.
     var [ screenCSS, screenWebGL ] = createScreen(adjustedGapSize);
     screenCSS.rotation.y = - Math.PI / 2;
     screenCSS.position.y = 3.9;
@@ -145,11 +147,61 @@ export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
       desk.position.x = (gapSize * scale);
       updateDeskZ(desk, i, adjustedGapSize);
 
-      screenCSS.position.x = 11.4;
+      screenCSS.position.x = (gapSize * scale) + 0.45;
       screenCSS.rotation.y = - Math.PI / 4;
       updateDeskZ(screenCSS, i, adjustedGapSize);      
       screenCSS.position.z += .175;
     }
+
+    // Add screen labels.
+    let labelText = '';
+    switch ( i ) {
+      case 0:
+        labelText = 'Services';
+        break;
+      case 1:
+        labelText = 'Case studies';
+        break;
+      case 2:
+        labelText = 'Our work';
+        break;
+      case 3:
+        labelText = 'Contact us';
+        break;
+    }
+
+    var deskLabelCallback = (signMesh, i) => {
+
+      signMesh.geometry.computeBoundingBox();
+      const boundingBox = signMesh.geometry.boundingBox;
+
+      // Step 4: Extract dimensions from bounding box
+      const width = boundingBox.max.x - boundingBox.min.x;
+
+      if (i == 0 || i == 2) {
+        signMesh.position.y = 8;
+      }
+      if (i == 1 || i == 3) {
+        signMesh.position.y = 7;
+      }
+
+      if (i < 2) {
+        signMesh.rotation.y = Math.PI / 8;
+        signMesh.position.x = -(gapSize * scale) - width / 2;
+        updateDeskZ(signMesh, i, adjustedGapSize);
+        signMesh.position.z += .175;
+  
+      } else { 
+        signMesh.rotation.y = - Math.PI / 8;
+        signMesh.position.x = (gapSize * scale) - width /2;
+        updateDeskZ(signMesh, i, adjustedGapSize);      
+        signMesh.position.z += .175;
+      }
+
+      scene.add(signMesh);
+    };
+    var deskLabelMesh = createDeskLabel( labelText, i, deskLabelCallback, scene );
+    //desk.add(deskLabelMesh);
 
     desk.scale.set(scale, scale, scale); // Scale up the desk
 
@@ -297,6 +349,32 @@ function createDesk() {
   deskGroup.add(lightActual);
 
   return deskGroup;
+}
+
+
+// Create the desks sign, i.e. "Projects"
+function createDeskLabel(labelText, i, callback, scene) {
+  const loader = new FontLoader();
+
+  loader.load('./fonts/VeraMono.json', (font) => {
+
+    const textGeometry = new TextGeometry(labelText, {
+      font: font,
+      size: 1,
+      height: 0.1
+    });
+
+    // Create the emissive material for the text
+    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 1 });
+
+    // Create the "About Us" sign mesh
+    var signMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+    signMesh.layers.enable(1);
+
+    // Add the sign to the scene
+    callback(signMesh, i);
+  });
 }
 
 /**

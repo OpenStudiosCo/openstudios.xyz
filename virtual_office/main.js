@@ -14,18 +14,18 @@ import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
-let bloomComposer, bloomLayer, composer, scene, renderer, stats, gapSize, scale;
+let bloomComposer, bloomLayer, composer, scene, webGLRenderer, stats, gapSize, scale;
 let deskGroup, door, room, screenCSSGroup, screenWebGLGroup, wallGroup;
 
-let scene2, renderer2;
+let scene2, cssRenderer;
+
+let controls, controls2;
 
 let materials, darkMaterial;
 
 export function init(pane) {
 
-  // Setup renderers.
-  setupRenderers();
-  
+  // Constructive Solid Geometry (csg) Evaluator.
   csgEvaluator = new Evaluator();
   csgEvaluator.useGroups = true;
 
@@ -35,22 +35,35 @@ export function init(pane) {
   var adjustedGapSize = calculateAdjustedGapSize();
   window.virtual_office.room_depth = 8 * adjustedGapSize;
 
+  // Setup renderers.
+  setupRenderers();
+
+  // Camera.
+  var width = window.innerWidth;
+  var height = window.innerHeight;
+  var aspect = width / height;
+  var fov = 30 + Math.min( 20 , 20 * Math.floor( height / width) );
+  window.virtual_office.camera = new THREE.PerspectiveCamera(fov, aspect, 1, 1000);
+  
+  window.virtual_office.camera.aspect = width / height;
+  window.virtual_office.camera.position.set(0, 12, 15 + (window.virtual_office.room_depth / 2));
+
   // Scene Setup. 
   setupScene();
 
   // Setup effects.
-  [ composer, bloomComposer, bloomLayer ] = new setupEffects( renderer, scene );
+  [ composer, bloomComposer, bloomLayer ] = new setupEffects( webGLRenderer, scene );
 
   // Bloom effect materials.
   darkMaterial = new THREE.MeshBasicMaterial( { color: 'black' } );
   materials = {};
 
   // Setup controls.
-  const controls2 = new OrbitControls(window.virtual_office.camera, renderer2.domElement);
+  controls2 = new OrbitControls(window.virtual_office.camera, cssRenderer.domElement);
   controls2.target.set(0, 10, 0);
   controls2.update();
 
-  const controls = new OrbitControls(window.virtual_office.camera, renderer.domElement);
+  controls = new OrbitControls(window.virtual_office.camera, webGLRenderer.domElement);
   controls.target.set(0, 10, 0);
   controls.update();
   
@@ -60,7 +73,7 @@ export function init(pane) {
   }
 
   // Setup Tweens.
-  setupTweens();
+  setupTweens( controls, controls2);
 
   function handleViewportChange() {
     var adjustedGapSize = calculateAdjustedGapSize();
@@ -68,8 +81,11 @@ export function init(pane) {
 
     var width = window.innerWidth;
     var height = window.innerHeight;
+
+    window.virtual_office.camera.fov = 30 + Math.min( 20 , 20 * Math.floor( height / width) );
     window.virtual_office.camera.aspect = width / height;
     window.virtual_office.camera.position.z = - 16 + (window.virtual_office.room_depth / 2);
+    window.virtual_office.camera.rotation.x = - (Math.PI / 40) * window.virtual_office.camera.aspect;
     window.virtual_office.camera.updateProjectionMatrix();
 
     // Adjust desk positions based on the aspect ratio
@@ -93,9 +109,10 @@ export function init(pane) {
 
     window.virtual_office.scene_objects.door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
 
-    renderer.setSize(width, height);
-    renderer2.setSize(width, height);
+    webGLRenderer.setSize(width, height);
+    cssRenderer.setSize(width, height);
     composer.setSize(width, height);
+    bloomComposer.setSize(width, height);
   }
   
   window.addEventListener('orientationchange', handleViewportChange);
@@ -105,13 +122,13 @@ export function init(pane) {
 
 export function animate(currentTime) {
 
-  scaleEffects(currentTime, renderer);
+  requestAnimationFrame(animate);
 
   if ( window.virtual_office.started ) {
-    updateTweens(currentTime);
+    updateTweens(currentTime, controls, controls2);
   }
 
-  requestAnimationFrame(animate);
+  scaleEffects(currentTime, webGLRenderer);  
 
   if (window.virtual_office.debug) {
     stats.update();
@@ -119,16 +136,15 @@ export function animate(currentTime) {
 
   // Render the composer
   if (!window.virtual_office.fast) {
-    
     scene.traverse( darkenNonBloomed );
     bloomComposer.render();
     scene.traverse( restoreMaterial );
     composer.render();
-    renderer2.render(scene2, window.virtual_office.camera);
+    cssRenderer.render(scene2, window.virtual_office.camera);
 
   } else {
-    renderer.render(scene, window.virtual_office.camera); // Render the scene without the effects
-    renderer2.render(scene2, window.virtual_office.camera);
+    webGLRenderer.render(scene, window.virtual_office.camera); // Render the scene without the effects
+    cssRenderer.render(scene2, window.virtual_office.camera);
   }
 
 }
@@ -263,10 +279,6 @@ function setupScene() {
   scene = new THREE.Scene();
   scene2 = new THREE.Scene();
 
-  // Camera.
-  window.virtual_office.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-  window.virtual_office.camera.position.set(0, 10, 15 + (window.virtual_office.room_depth / 2));
-
   [ deskGroup, screenCSSGroup, screenWebGLGroup ] = setupDesks(window.virtual_office.room_depth / 8, gapSize, scale, scene);
   scene2.add(screenCSSGroup);
   scene.add(screenWebGLGroup);
@@ -290,16 +302,16 @@ function setupScene() {
 }
 
 function setupRenderers() {
-   // Main renderer.
-   renderer = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
-   renderer.setPixelRatio(window.devicePixelRatio);
-   renderer.setSize(window.innerWidth, window.innerHeight);
-   document.querySelector("#webgl").appendChild(renderer.domElement);
+   // Main webGLRenderer.
+   webGLRenderer = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
+   webGLRenderer.setPixelRatio(window.devicePixelRatio);
+   webGLRenderer.setSize(window.innerWidth, window.innerHeight);
+   document.querySelector("#webgl").appendChild(webGLRenderer.domElement);
  
-   // Website renderer.
-   renderer2 = new CSS3DRenderer();
-   renderer2.setSize(window.innerWidth, window.innerHeight);
-   renderer2.domElement.style.position = "absolute";
-   renderer2.domElement.style.top = 0;
-   document.querySelector("#css").appendChild(renderer2.domElement);
+   // Website webGLRenderer.
+   cssRenderer = new CSS3DRenderer();
+   cssRenderer.setSize(window.innerWidth, window.innerHeight);
+   cssRenderer.domElement.style.position = "absolute";
+   cssRenderer.domElement.style.top = 0;
+   document.querySelector("#css").appendChild(cssRenderer.domElement);
 }
