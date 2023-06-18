@@ -5,24 +5,30 @@ import { CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
+/**
+ * Setup Back Wall
+ * 
+ * @param { THREE.Scene } scene 
+ * @returns { THREE.Group } wallGroup
+ */
 export function setupBackwall ( scene ) {
   var wallGroup = new THREE.Group();
   
   // About Us Neon sign
   createNeonSign((signMesh) => {
     // Position and rotate the sign
-    signMesh.position.set(-7, 15, 0); // Example position for the sign
+    signMesh.position.set(-5.75, 10, 0); // Example position for the sign
     
     wallGroup.add(signMesh);
   }, scene);
   
   // Add portraits to the scene
   let paulsPortrait = createPortrait('./paul.png', 2.75);
-  paulsPortrait.position.set(-7.5, 8, 0.5);  // Example position for portrait 1
+  paulsPortrait.position.set(-7.5, 4, 0.5);  // Example position for portrait 1
   wallGroup.add(paulsPortrait);
 
   let garrettsPortrait = createPortrait('./garrett.png', 4.);
-  garrettsPortrait.position.set(7.5, 8, 0.5);  // Example position for portrait 1
+  garrettsPortrait.position.set(7.5, 4, 0.5);  // Example position for portrait 1
   wallGroup.add(garrettsPortrait);
 
   return wallGroup;
@@ -32,18 +38,13 @@ export function setupBackwall ( scene ) {
 function createNeonSign(callback, scene) {
   const loader = new FontLoader();
 
-  loader.load('./cursive.json', (font) => {
+  loader.load('./fonts/Stigmature.json', (font) => {
 
     const textGeometry = new TextGeometry('about us', {
       font: font,
-      size: 2,
+      size: 2.5,
       height: 1,
-      curveSegments: 4,
-      bevelEnabled: true,
-      bevelThickness: 0.01,
-      bevelSize: .05,
-      bevelOffset: 0,
-      bevelSegments: 5
+      curveSegments: 4
     });
 
     // Create the emissive material for the text
@@ -115,7 +116,6 @@ function createPortrait(img_url, brightness) {
   return portrait;
 }
 
-
 // Uses createDesk and arranges them in the room.
 export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
   // Create desks
@@ -129,27 +129,40 @@ export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
 
     var [ screenCSS, screenWebGL ] = createScreen(adjustedGapSize);
     screenCSS.rotation.y = - Math.PI / 2;
+    screenCSS.position.y = 3.9;
 
     if (i < 2) {
       desk.position.x = -(gapSize * scale);
       desk.rotation.y += Math.PI; // Rotate the desk on the left side
       updateDeskZ(desk, i, adjustedGapSize);
 
-      screenCSS.position.x = -13.6;
-      screenCSS.rotation.y += Math.PI; // Rotate the screen on the left side
+      screenCSS.position.x = -(gapSize * scale) - 0.45;
+      screenCSS.rotation.y = Math.PI / 4;
       updateDeskZ(screenCSS, i, adjustedGapSize);
+      screenCSS.position.z += .175;
 
     } else {
       desk.position.x = (gapSize * scale);
       updateDeskZ(desk, i, adjustedGapSize);
 
-      screenCSS.position.x = 13.6;
+      screenCSS.position.x = 11.4;
+      screenCSS.rotation.y = - Math.PI / 4;
       updateDeskZ(screenCSS, i, adjustedGapSize);      
+      screenCSS.position.z += .175;
     }
 
     desk.scale.set(scale, scale, scale); // Scale up the desk
 
-    desk.children.forEach((desk_iter, i) => {
+    desk.children.forEach((desk_iter) => {
+      if (desk_iter.name == 'cpu' || desk_iter.name == 'screen') {
+        if ( i < 2 ) {
+          desk_iter.rotation.y = - Math.PI / 4;
+        }
+        else {
+          desk_iter.rotation.y = Math.PI / 4;
+        }
+        desk_iter.updateMatrixWorld();
+      }
       if (desk_iter.type == 'DirectionalLight') {
         let factor = 100;
         desk_iter.position.set(
@@ -237,19 +250,20 @@ function createDesk() {
   var screenGeometry = new THREE.BoxGeometry(0.6, 0.4, 0.02);
   var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0, 0.5, 0.25);
+  screen.position.set(0, 0.35, 0.05);
   screen.castShadow = true; //default is false
   screen.receiveShadow = false; //default
+  screen.name = "screen";
   deskGroup.add(screen);
 
   // Add computer CPU
-  var cpuGeometry = new THREE.BoxGeometry(0.4, 0.2, 0.2);
+  var cpuGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.05);
   var cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
   var cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
-  cpu.position.set(0, 0.2, 0.3);
+  cpu.position.set(0, 0.1, 0.05);
   cpu.castShadow = true; //default is false
   cpu.receiveShadow = false; //default
-
+  cpu.name = "cpu";
   deskGroup.add(cpu);
 
   // Create an overhead office light geometry
@@ -287,6 +301,8 @@ function createDesk() {
 
 /**
  * Create an iFrame based screen that will sit on top of a monitor.
+ * 
+ * @returns [ HTMLObject, THREE.Mesh ];
  */
 function createScreen( adjustedGapSize ){
   //var element = document.createElement("iframe");
@@ -300,7 +316,6 @@ function createScreen( adjustedGapSize ){
   });
 
   var domObject = new CSS3DObject(element);
-  domObject.position.y = 5.5;
   domObject.scale.set( 0.02, 0.02, 0.02); 
 
   var material = new THREE.MeshPhongMaterial({
