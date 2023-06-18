@@ -19,10 +19,15 @@ domReady(
       camera: false,
       debug: false,
       fast: false,
-      room_depth: false,
-      scene_objects: [],
+      scene_dimensions: {
+        adjusted_gap: false,
+        gap: 1,
+        room_depth: false,
+        scale: 11
+      },
+      scene_objects: {},
       started: false,
-      tweens: []
+      tweens: {}
     };
 
     

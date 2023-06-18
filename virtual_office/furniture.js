@@ -117,7 +117,7 @@ function createPortrait(img_url, brightness) {
 }
 
 // Uses createDesk and arranges them in the room.
-export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
+export function setupDesks(gapSize, scale, scene) {
   // Create groups
   var deskGroup = new THREE.Group(),
       screenCSSGroup = new THREE.Group(),
@@ -125,84 +125,34 @@ export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
       screenWebGLGroup = new THREE.Group();
 
   for (var i = 0; i < 4; i++) {
-    var desk = createDesk();
+    var desk = createDesk( i );
     desk.rotation.y = Math.PI / 2;
 
     // Add screens.
-    var [ screenCSS, screenWebGL ] = createScreen(adjustedGapSize);
+    var [ screenCSS, screenWebGL ] = createScreen();
     screenCSS.rotation.y = - Math.PI / 2;
     screenCSS.position.y = 3.9;
 
     if (i < 2) {
-      desk.position.x = -(gapSize * scale);
+      desk.position.x = -(gapSize * scale) * 1.25;
       desk.rotation.y += Math.PI; // Rotate the desk on the left side
-      updateDeskZ(desk, i, adjustedGapSize);
+      updateDeskZ(desk, i);
 
-      screenCSS.position.x = -(gapSize * scale) - 0.45;
+      screenCSS.position.x = -(gapSize * scale) - 3.25 ;
       screenCSS.rotation.y = Math.PI / 4;
-      updateDeskZ(screenCSS, i, adjustedGapSize);
+      updateDeskZ(screenCSS, i);
       screenCSS.position.z += .175;
 
     } else {
-      desk.position.x = (gapSize * scale);
-      updateDeskZ(desk, i, adjustedGapSize);
+      desk.position.x = (gapSize * scale) * 1.25;
+      updateDeskZ(desk, i);
 
-      screenCSS.position.x = (gapSize * scale) + 0.45;
+      screenCSS.position.x = (gapSize * scale) + 3.25;
       screenCSS.rotation.y = - Math.PI / 4;
-      updateDeskZ(screenCSS, i, adjustedGapSize);      
+      updateDeskZ(screenCSS, i);      
       screenCSS.position.z += .175;
     }
-
-    // Add screen labels.
-    let labelText = '';
-    switch ( i ) {
-      case 0:
-        labelText = 'Services';
-        break;
-      case 1:
-        labelText = 'Case studies';
-        break;
-      case 2:
-        labelText = 'Our work';
-        break;
-      case 3:
-        labelText = 'Contact us';
-        break;
-    }
-
-    var deskLabelCallback = (signMesh, i) => {
-
-      signMesh.geometry.computeBoundingBox();
-      const boundingBox = signMesh.geometry.boundingBox;
-
-      // Step 4: Extract dimensions from bounding box
-      const width = boundingBox.max.x - boundingBox.min.x;
-
-      if (i == 0 || i == 2) {
-        signMesh.position.y = 8;
-      }
-      if (i == 1 || i == 3) {
-        signMesh.position.y = 7;
-      }
-
-      if (i < 2) {
-        signMesh.rotation.y = Math.PI / 8;
-        signMesh.position.x = -(gapSize * scale) - width / 2;
-        updateDeskZ(signMesh, i, adjustedGapSize);
-        signMesh.position.z += .175;
   
-      } else { 
-        signMesh.rotation.y = - Math.PI / 8;
-        signMesh.position.x = (gapSize * scale) - width /2;
-        updateDeskZ(signMesh, i, adjustedGapSize);      
-        signMesh.position.z += .175;
-      }
-
-      scene.add(signMesh);
-    };
-    var deskLabelMesh = createDeskLabel( labelText, i, deskLabelCallback, scene );
-    //desk.add(deskLabelMesh);
-
     desk.scale.set(scale, scale, scale); // Scale up the desk
 
     desk.children.forEach((desk_iter) => {
@@ -253,13 +203,12 @@ export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
  * 
  * @param { THREE.Object3D } desk 
  * @param { Number } i 
- * @param { Number } adjustedGapSize 
  */
-export function updateDeskZ(desk, i, adjustedGapSize) {
+export function updateDeskZ(desk, i) {
   if (i < 2) {
-    desk.position.z = - 15 + (i === 0 ? -1.5 : 0.5) * adjustedGapSize;
+    desk.position.z = - 15 + (i === 0 ? -1.5 : 0.5) * window.virtual_office.scene_dimensions.adjusted_gap;
   } else {
-    desk.position.z = - 15 + (i === 2 ? -1.5 : 0.5) * adjustedGapSize;
+    desk.position.z = - 15 + (i === 2 ? -1.5 : 0.5) * window.virtual_office.scene_dimensions.adjusted_gap;
   }
 }
 
@@ -268,7 +217,7 @@ export function updateDeskZ(desk, i, adjustedGapSize) {
  * 
  * @returns THREE.Group containing a desk workstation
  */
-function createDesk() {
+function createDesk( i ) {
   var deskGroup = new THREE.Group();
 
   // Desk Top
@@ -318,6 +267,32 @@ function createDesk() {
   cpu.name = "cpu";
   deskGroup.add(cpu);
 
+  var deskLabelCallback = (signMesh, i, deskGroup) => {
+    signMesh.scale.setScalar( 0.1 );
+    signMesh.geometry.computeBoundingBox();
+    const boundingBox = signMesh.geometry.boundingBox;
+
+    // Step 4: Extract dimensions from bounding box
+    const width = boundingBox.max.x - boundingBox.min.x;
+
+    signMesh.rotation.y = Math.PI;
+    if ( i < 2 ) {
+      signMesh.rotation.y -= Math.PI / 4;
+      signMesh.translateX( - 0.05 - width / 20 );
+    }
+    else {
+      signMesh.rotation.y += Math.PI / 4;
+      signMesh.translateX( 0.05 - width / 20 );
+    }
+
+    signMesh.position.y = 0.65;
+
+    signMesh.updateMatrixWorld();    
+
+    deskGroup.add(signMesh);
+  };
+  createDeskLabel( i, deskLabelCallback, deskGroup );
+
   // Create an overhead office light geometry
   var lightWidth = 0.5;
   var lightHeight = 0.01;
@@ -325,10 +300,12 @@ function createDesk() {
   var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
 
   // Create the overhead office light material
-  var lightMaterial = new THREE.MeshPhongMaterial({ color: 0x00EEff, emissive: 0x00EEff, emissiveIntensity: 0.15 });
+  var lightMaterial = new THREE.MeshPhongMaterial({ color: 0x00EEff, emissive: 0x00EEff, emissiveIntensity: 0.25 });
 
   // Create the overhead office light mesh
   var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
+
+  lightMesh.layers.enable(1);
 
   // Position the overhead office light
   lightMesh.position.set(0, 2.25, 0);
@@ -347,25 +324,44 @@ function createDesk() {
   lightActual.target = deskTop;
 
   deskGroup.add(lightActual);
+  console.log(deskGroup);
 
   return deskGroup;
 }
 
 
 // Create the desks sign, i.e. "Projects"
-function createDeskLabel(labelText, i, callback, scene) {
+function createDeskLabel(i, callback, deskGroup) {
+
+  // Add screen labels.
+  let labelText = '';
+  switch ( i ) {
+    case 0:
+      labelText = 'Services';
+      break;
+    case 1:
+      labelText = 'Case studies';
+      break;
+    case 2:
+      labelText = 'Our work';
+      break;
+    case 3:
+      labelText = 'Contact us';
+      break;
+  }
+  
   const loader = new FontLoader();
 
   loader.load('./fonts/VeraMono.json', (font) => {
 
     const textGeometry = new TextGeometry(labelText, {
       font: font,
-      size: 1,
-      height: 0.1
+      size: 0.8,
+      height: 0.2
     });
 
     // Create the emissive material for the text
-    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 1 });
+    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0x00EEff, emissiveIntensity: 0.5 });
 
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
@@ -373,7 +369,7 @@ function createDeskLabel(labelText, i, callback, scene) {
     signMesh.layers.enable(1);
 
     // Add the sign to the scene
-    callback(signMesh, i);
+    callback(signMesh, i, deskGroup);
   });
 }
 
@@ -382,7 +378,7 @@ function createDeskLabel(labelText, i, callback, scene) {
  * 
  * @returns [ HTMLObject, THREE.Mesh ];
  */
-function createScreen( adjustedGapSize ){
+function createScreen( ){
   //var element = document.createElement("iframe");
   var element = document.createElement("img");
   element.style.width = "300px";

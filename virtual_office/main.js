@@ -14,7 +14,7 @@ import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
-let bloomComposer, bloomLayer, composer, scene, webGLRenderer, stats, gapSize, scale;
+let bloomComposer, bloomLayer, composer, scene, webGLRenderer, stats;
 let deskGroup, room, screenCSSGroup, screenWebGLGroup, wallGroup;
 
 let scene2, cssRenderer;
@@ -30,10 +30,8 @@ export function init(pane) {
   csgEvaluator.useGroups = true;
 
   // Size
-  gapSize = 1; // Gap size between desks
-  scale = 11; // Scale factor
-  var adjustedGapSize = calculateAdjustedGapSize();
-  window.virtual_office.room_depth = 8 * adjustedGapSize;
+  window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
+  window.virtual_office.room_depth = 8 * window.virtual_office.scene_dimensions.adjusted_gap;
 
   // Setup renderers.
   setupRenderers();
@@ -76,8 +74,8 @@ export function init(pane) {
   setupTweens( controls, controls2);
 
   function handleViewportChange() {
-    var adjustedGapSize = calculateAdjustedGapSize();
-    window.virtual_office.room_depth = 8 * adjustedGapSize;
+    window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
+    window.virtual_office.room_depth = 8 * window.virtual_office.scene_dimensions.adjusted_gap;
 
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -90,15 +88,15 @@ export function init(pane) {
 
     // Adjust desk positions based on the aspect ratio
     deskGroup.children.forEach(function (desk, i) {
-      updateDeskZ(desk, i, adjustedGapSize);
+      updateDeskZ(desk, i, window.virtual_office.scene_dimensions.adjusted_gap);
     });
 
     screenCSSGroup.children.forEach(function (screen, i) {
-      updateDeskZ(screen, i, adjustedGapSize);
+      updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
       screen.position.z += .175;
     });
     screenWebGLGroup.children.forEach(function (screen, i) {
-      updateDeskZ(screen, i, adjustedGapSize);
+      updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
       screen.position.z += .175;
     });
 
@@ -176,7 +174,7 @@ function calculateAdjustedGapSize() {
   var height = window.innerHeight;
 
   // Adjust gap size based on the aspect ratio
-  var adjustedGapSize = gapSize * scale;
+  var adjustedGapSize = window.virtual_office.scene_dimensions.gap * window.virtual_office.scene_dimensions.scale;
   if (width < height) {
     adjustedGapSize *= height / width;
   }
@@ -233,7 +231,6 @@ function createDoor() {
 }
 
 function createOfficeRoom() {
-  var adjustedGapSize = calculateAdjustedGapSize();
 
   var doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorDepth);
   const transparentMaterial = new THREE.MeshLambertMaterial({
@@ -246,7 +243,7 @@ function createOfficeRoom() {
   doorBrush.position.x += 4.1;
   doorBrush.updateMatrixWorld();
 
-  const roomGeometry = new THREE.BoxGeometry(60, 30, window.virtual_office.room_depth);
+  const roomGeometry = new THREE.BoxGeometry(80, 30, window.virtual_office.room_depth);
 
   const roomMaterial = new THREE.MeshLambertMaterial({
     color: 0xa0adaf,
@@ -279,7 +276,7 @@ function setupScene() {
   scene = new THREE.Scene();
   scene2 = new THREE.Scene();
 
-  [ deskGroup, screenCSSGroup, screenWebGLGroup ] = setupDesks(window.virtual_office.room_depth / 8, gapSize, scale, scene);
+  [ deskGroup, screenCSSGroup, screenWebGLGroup ] = setupDesks( window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
   scene2.add(screenCSSGroup);
   scene.add(screenWebGLGroup);
   scene.add(deskGroup);

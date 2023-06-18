@@ -13,6 +13,7 @@ export function setupTweens( controls, controls2) {
       window.virtual_office.camera.updateProjectionMatrix();
     })
     .onComplete(() => {
+      window.virtual_office.tweens.panDown.start();
       const roomMaterial = new THREE.MeshLambertMaterial({
         color: 0xa0adaf,
         opacity: 1,
@@ -24,7 +25,6 @@ export function setupTweens( controls, controls2) {
           window.virtual_office.scene_objects.room.material[i] = roomMaterial;
         }
       });
-      window.virtual_office.tweens.panDown.start();
     });
 
   // Define the target rotation of the door when it's open
@@ -43,14 +43,9 @@ export function setupTweens( controls, controls2) {
   var currentRotation = { x: 0 };
 
   // Animate the camera looking down around the room
-  window.virtual_office.tweens.panDown = new TWEEN.Tween( currentRotation )
+  window.virtual_office.tweens.panDown = new TWEEN.Tween( window.virtual_office.camera.rotation )
   .to({ x: targetRotation }, 500) // Set the duration of the animation
-  .onUpdate(() => {
-    // Called after tween.js updates 'coords'.
-    // Move 'box' to the position described by 'coords' with a CSS translation.
-    window.virtual_office.camera.rotation.set( currentRotation.x, 0 , 0);
-    window.virtual_office.camera.updateProjectionMatrix();
-  })
+
   ;
 }
 
