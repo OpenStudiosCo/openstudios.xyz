@@ -15,7 +15,7 @@ import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
 let bloomComposer, bloomLayer, composer, scene, webGLRenderer, stats, gapSize, scale;
-let deskGroup, door, room, screenCSSGroup, screenWebGLGroup, wallGroup;
+let deskGroup, room, screenCSSGroup, screenWebGLGroup, wallGroup;
 
 let scene2, cssRenderer;
 
@@ -103,7 +103,7 @@ export function init(pane) {
     });
 
     const newRoom = createOfficeRoom();
-    room.geometry = newRoom.geometry;
+    window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
 
     wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
 
@@ -289,8 +289,8 @@ function setupScene() {
   scene.add(ambientLight);
 
   window.virtual_office.scene_objects.screens_loaded = 0;
-  room = createOfficeRoom();
-  scene.add(room);
+  window.virtual_office.scene_objects.room = createOfficeRoom();
+  scene.add(window.virtual_office.scene_objects.room);
 
   window.virtual_office.scene_objects.door = createDoor();
   window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));

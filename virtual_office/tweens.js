@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export function setupTweens( controls, controls2) {
   const coords = {x: 15 + (window.virtual_office.room_depth / 2)} // Start at (0, 0)
 
@@ -11,6 +13,17 @@ export function setupTweens( controls, controls2) {
       window.virtual_office.camera.updateProjectionMatrix();
     })
     .onComplete(() => {
+      const roomMaterial = new THREE.MeshLambertMaterial({
+        color: 0xa0adaf,
+        opacity: 1,
+        side: THREE.BackSide,
+        transparent: true
+      });
+      window.virtual_office.scene_objects.room.material.forEach((material, i) => {
+        if (material.opacity > 0) {
+          window.virtual_office.scene_objects.room.material[i] = roomMaterial;
+        }
+      });
       window.virtual_office.tweens.panDown.start();
     });
 
