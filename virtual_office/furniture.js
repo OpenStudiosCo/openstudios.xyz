@@ -54,7 +54,7 @@ function createNeonSign(callback, scene) {
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
     const lightActual = new THREE.PointLight(0xDA68C5, window.virtual_office.fast ? 0.35 : 0.1); // Color: white
-    lightActual.position.set(7.5, 0.25, 5); // Set the position of the light
+    lightActual.position.set(5.5, 0.25, 5); // Set the position of the light
     lightActual.castShadow = true;
 
     //Set up shadow properties for the light
@@ -336,7 +336,7 @@ function createDesk() {
   // Add the overhead office light to the scene
   deskGroup.add(lightMesh);
 
-  const lightActual = new THREE.DirectionalLight(0x00EEff, 0.01); // Color: white
+  const lightActual = new THREE.DirectionalLight(0x00EEff, 0.015); // Color: white
   lightActual.position.set(0, 0.275, 0); // Set the position of the light
   lightActual.castShadow = true;
 
