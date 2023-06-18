@@ -5,24 +5,30 @@ import { CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
+/**
+ * Setup Back Wall
+ * 
+ * @param { THREE.Scene } scene 
+ * @returns { THREE.Group } wallGroup
+ */
 export function setupBackwall ( scene ) {
   var wallGroup = new THREE.Group();
   
   // About Us Neon sign
   createNeonSign((signMesh) => {
     // Position and rotate the sign
-    signMesh.position.set(-7, 15, 0); // Example position for the sign
+    signMesh.position.set(-5.75, 10, 0); // Example position for the sign
     
     wallGroup.add(signMesh);
   }, scene);
   
   // Add portraits to the scene
   let paulsPortrait = createPortrait('./paul.png', 2.75);
-  paulsPortrait.position.set(-7.5, 8, 0.5);  // Example position for portrait 1
+  paulsPortrait.position.set(-7.5, 4, 0.5);  // Example position for portrait 1
   wallGroup.add(paulsPortrait);
 
   let garrettsPortrait = createPortrait('./garrett.png', 4.);
-  garrettsPortrait.position.set(7.5, 8, 0.5);  // Example position for portrait 1
+  garrettsPortrait.position.set(7.5, 4, 0.5);  // Example position for portrait 1
   wallGroup.add(garrettsPortrait);
 
   return wallGroup;
@@ -32,18 +38,13 @@ export function setupBackwall ( scene ) {
 function createNeonSign(callback, scene) {
   const loader = new FontLoader();
 
-  loader.load('./cursive.json', (font) => {
+  loader.load('./fonts/Stigmature.json', (font) => {
 
     const textGeometry = new TextGeometry('about us', {
       font: font,
-      size: 2,
-      height: 1,
-      curveSegments: 4,
-      bevelEnabled: true,
-      bevelThickness: 0.01,
-      bevelSize: .05,
-      bevelOffset: 0,
-      bevelSegments: 5
+      size: 2.5,
+      height: 0.5,
+      curveSegments: 4
     });
 
     // Create the emissive material for the text
@@ -53,7 +54,7 @@ function createNeonSign(callback, scene) {
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
     const lightActual = new THREE.PointLight(0xDA68C5, window.virtual_office.fast ? 0.35 : 0.1); // Color: white
-    lightActual.position.set(7.5, 0.25, 5); // Set the position of the light
+    lightActual.position.set(5.5, 0.25, 5); // Set the position of the light
     lightActual.castShadow = true;
 
     //Set up shadow properties for the light
@@ -115,41 +116,78 @@ function createPortrait(img_url, brightness) {
   return portrait;
 }
 
-
 // Uses createDesk and arranges them in the room.
-export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
-  // Create desks
+export function setupDesks(gapSize, scale, scene) {
+  // Create groups
   var deskGroup = new THREE.Group(),
       screenCSSGroup = new THREE.Group(),
+      // Do these need to be separate?
       screenWebGLGroup = new THREE.Group();
 
   for (var i = 0; i < 4; i++) {
-    var desk = createDesk();
+    var desk = createDesk( i );
     desk.rotation.y = Math.PI / 2;
 
-    var [ screenCSS, screenWebGL ] = createScreen(adjustedGapSize);
+    // Add screens.
+    var [ screenCSS, screenWebGL ] = createScreen();
     screenCSS.rotation.y = - Math.PI / 2;
+    screenCSS.position.y = 3.9;
 
+    // Main position coordinates.
     if (i < 2) {
-      desk.position.x = -(gapSize * scale);
+      desk.position.x = -(gapSize * scale) * 1.25;
       desk.rotation.y += Math.PI; // Rotate the desk on the left side
-      updateDeskZ(desk, i, adjustedGapSize);
+      updateDeskZ(desk, i);
 
-      screenCSS.position.x = -13.6;
-      screenCSS.rotation.y += Math.PI; // Rotate the screen on the left side
-      updateDeskZ(screenCSS, i, adjustedGapSize);
+      screenCSS.position.x = -(gapSize * scale) - 3.25 ;
+      screenCSS.rotation.y = Math.PI / 4;
+      updateDeskZ(screenCSS, i);
+      screenCSS.position.z += .175;
 
     } else {
-      desk.position.x = (gapSize * scale);
-      updateDeskZ(desk, i, adjustedGapSize);
+      desk.position.x = (gapSize * scale) * 1.25;
+      updateDeskZ(desk, i);
 
-      screenCSS.position.x = 13.6;
-      updateDeskZ(screenCSS, i, adjustedGapSize);      
+      screenCSS.position.x = (gapSize * scale) + 3.25;
+      screenCSS.rotation.y = - Math.PI / 4;
+      updateDeskZ(screenCSS, i);      
+      screenCSS.position.z += .175;
     }
 
+    // Space the desks a bit out a wittle.
+    if ( i == 0 || i == 3) {
+      desk.position.x += 1.25;
+    }
+    if ( i == 1 || i == 2 ) {
+      desk.position.x -= 1.25;
+    }
+
+    if ( i == 0 ) {
+      screenCSS.position.x += .5;
+    }
+    if ( i == 1 ) {
+      screenCSS.position.x -= 2;
+    }
+
+    if ( i == 2 ) {
+      screenCSS.position.x -= .5;
+    }
+    if ( i == 3 ) {
+      screenCSS.position.x += 2;
+    }
+  
     desk.scale.set(scale, scale, scale); // Scale up the desk
 
-    desk.children.forEach((desk_iter, i) => {
+    desk.children.forEach((desk_iter) => {
+      if (desk_iter.name == 'cpu' || desk_iter.name == 'screen') {
+        if ( i < 2 ) {
+          desk_iter.rotation.y = - Math.PI / 4;
+        }
+        else {
+          desk_iter.rotation.y = Math.PI / 4;
+        }
+        desk_iter.updateMatrixWorld();
+      }
       if (desk_iter.type == 'DirectionalLight') {
         let factor = 100;
         desk_iter.position.set(
@@ -188,13 +226,12 @@ export function setupDesks(adjustedGapSize, gapSize, scale, scene) {
  * 
  * @param { THREE.Object3D } desk 
  * @param { Number } i 
- * @param { Number } adjustedGapSize 
  */
-export function updateDeskZ(desk, i, adjustedGapSize) {
+export function updateDeskZ(desk, i) {
   if (i < 2) {
-    desk.position.z = - 15 + (i === 0 ? -1.5 : 0.5) * adjustedGapSize;
+    desk.position.z = - 15 + (i === 0 ? -1.5 : 0.5) * window.virtual_office.scene_dimensions.adjusted_gap;
   } else {
-    desk.position.z = - 15 + (i === 2 ? -1.5 : 0.5) * adjustedGapSize;
+    desk.position.z = - 15 + (i === 2 ? -1.5 : 0.5) * window.virtual_office.scene_dimensions.adjusted_gap;
   }
 }
 
@@ -203,7 +240,7 @@ export function updateDeskZ(desk, i, adjustedGapSize) {
  * 
  * @returns THREE.Group containing a desk workstation
  */
-function createDesk() {
+function createDesk( i ) {
   var deskGroup = new THREE.Group();
 
   // Desk Top
@@ -237,20 +274,47 @@ function createDesk() {
   var screenGeometry = new THREE.BoxGeometry(0.6, 0.4, 0.02);
   var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0, 0.5, 0.25);
+  screen.position.set(0, 0.35, 0.05);
   screen.castShadow = true; //default is false
   screen.receiveShadow = false; //default
+  screen.name = "screen";
   deskGroup.add(screen);
 
   // Add computer CPU
-  var cpuGeometry = new THREE.BoxGeometry(0.4, 0.2, 0.2);
+  var cpuGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.05);
   var cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
   var cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
-  cpu.position.set(0, 0.2, 0.3);
+  cpu.position.set(0, 0.1, 0.05);
   cpu.castShadow = true; //default is false
   cpu.receiveShadow = false; //default
-
+  cpu.name = "cpu";
   deskGroup.add(cpu);
+
+  var deskLabelCallback = (signMesh, i, deskGroup) => {
+    signMesh.scale.setScalar( 0.1 );
+    signMesh.geometry.computeBoundingBox();
+    const boundingBox = signMesh.geometry.boundingBox;
+
+    // Step 4: Extract dimensions from bounding box
+    const width = boundingBox.max.x - boundingBox.min.x;
+
+    signMesh.rotation.y = Math.PI;
+    if ( i < 2 ) {
+      signMesh.rotation.y -= Math.PI / 4;
+      signMesh.translateX( - 0.05 - width / 20 );
+    }
+    else {
+      signMesh.rotation.y += Math.PI / 4;
+      signMesh.translateX( 0.05 - width / 20 );
+    }
+
+    signMesh.position.y = 0.65;
+
+    signMesh.updateMatrixWorld();    
+
+    deskGroup.add(signMesh);
+  };
+  createDeskLabel( i, deskLabelCallback, deskGroup );
 
   // Create an overhead office light geometry
   var lightWidth = 0.5;
@@ -259,7 +323,7 @@ function createDesk() {
   var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
 
   // Create the overhead office light material
-  var lightMaterial = new THREE.MeshPhongMaterial({ color: 0x00EEff, emissive: 0x00EEff, emissiveIntensity: 0.15 });
+  var lightMaterial = new THREE.MeshPhongMaterial({ color: 0x00EEff, emissive: 0x00EEff, emissiveIntensity: 0.25 });
 
   // Create the overhead office light mesh
   var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
@@ -270,7 +334,7 @@ function createDesk() {
   // Add the overhead office light to the scene
   deskGroup.add(lightMesh);
 
-  const lightActual = new THREE.DirectionalLight(0x00EEff, 0.01); // Color: white
+  const lightActual = new THREE.DirectionalLight(0x00EEff, 0.015); // Color: white
   lightActual.position.set(0, 0.275, 0); // Set the position of the light
   lightActual.castShadow = true;
 
@@ -281,14 +345,61 @@ function createDesk() {
   lightActual.target = deskTop;
 
   deskGroup.add(lightActual);
+  console.log(deskGroup);
 
   return deskGroup;
 }
 
+
+// Create the desks sign, i.e. "Projects"
+function createDeskLabel(i, callback, deskGroup) {
+
+  // Add screen labels.
+  let labelText = '';
+  switch ( i ) {
+    case 0:
+      labelText = 'Services';
+      break;
+    case 1:
+      labelText = 'Case studies';
+      break;
+    case 2:
+      labelText = 'Our work';
+      break;
+    case 3:
+      labelText = 'Contact us';
+      break;
+  }
+  
+  const loader = new FontLoader();
+
+  loader.load('./fonts/VeraMono.json', (font) => {
+
+    const textGeometry = new TextGeometry(labelText, {
+      font: font,
+      size: 0.8,
+      height: 0.2
+    });
+
+    // Create the emissive material for the text
+    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0x00EEff, emissiveIntensity: 0.5 });
+
+    // Create the "About Us" sign mesh
+    var signMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+    signMesh.layers.enable(1);
+
+    // Add the sign to the scene
+    callback(signMesh, i, deskGroup);
+  });
+}
+
 /**
  * Create an iFrame based screen that will sit on top of a monitor.
+ * 
+ * @returns [ HTMLObject, THREE.Mesh ];
  */
-function createScreen( adjustedGapSize ){
+function createScreen( ){
   //var element = document.createElement("iframe");
   var element = document.createElement("img");
   element.style.width = "300px";
@@ -300,7 +411,6 @@ function createScreen( adjustedGapSize ){
   });
 
   var domObject = new CSS3DObject(element);
-  domObject.position.y = 5.5;
   domObject.scale.set( 0.02, 0.02, 0.02); 
 
   var material = new THREE.MeshPhongMaterial({

@@ -14,75 +14,54 @@ import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
-let bloomComposer, bloomLayer, composer, scene, renderer, stats, gapSize, scale;
-let deskGroup, door, room, screenCSSGroup, screenWebGLGroup, wallGroup;
+let bloomComposer, bloomLayer, composer, scene, webGLRenderer, stats;
+let deskGroup, room, screenCSSGroup, screenWebGLGroup, wallGroup;
 
-let scene2, renderer2;
+let scene2, cssRenderer;
+
+let controls, controls2;
 
 let materials, darkMaterial;
 
 export function init(pane) {
 
+  // Constructive Solid Geometry (csg) Evaluator.
   csgEvaluator = new Evaluator();
   csgEvaluator.useGroups = true;
 
-  // Scene container.
-  scene = new THREE.Scene();
-  scene2 = new THREE.Scene();
+  // Size
+  window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
+  window.virtual_office.room_depth = 8 * window.virtual_office.scene_dimensions.adjusted_gap;
 
-  gapSize = 1; // Gap size between desks
-  scale = 11; // Scale factor
-
-  var adjustedGapSize = calculateAdjustedGapSize();
-
-  [ deskGroup, screenCSSGroup, screenWebGLGroup ] = setupDesks(adjustedGapSize, gapSize, scale, scene);
-  scene2.add(screenCSSGroup);
-  scene.add(screenWebGLGroup);
-  scene.add(deskGroup);
-
-  // Main renderer.
-  renderer = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.querySelector("#webgl").appendChild(renderer.domElement);
-
-  // Website renderer.
-  renderer2 = new CSS3DRenderer();
-  renderer2.setSize(window.innerWidth, window.innerHeight);
-  renderer2.domElement.style.position = "absolute";
-  renderer2.domElement.style.top = 0;
-  document.querySelector("#css").appendChild(renderer2.domElement);
-
-  window.virtual_office.scene_objects.screens_loaded = 0;
-  room = createOfficeRoom();
-  scene.add(room);
-
-  window.virtual_office.scene_objects.door = createDoor();
-  window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
-  scene.add(window.virtual_office.scene_objects.door);
+  // Setup renderers.
+  setupRenderers();
 
   // Camera.
-  window.virtual_office.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-  window.virtual_office.camera.position.set(0, 10, 15 + (window.virtual_office.room_depth / 2));
-
-  setupTweens();
-
+  var width = window.innerWidth;
+  var height = window.innerHeight;
+  var aspect = width / height;
+  var fov = setCameraFOV( aspect );
+  window.virtual_office.camera = new THREE.PerspectiveCamera(fov, aspect, 1, 1000);
+  
+  window.virtual_office.camera.aspect = width / height;
+  window.virtual_office.camera.position.set(0, 12, 15 + (window.virtual_office.room_depth / 2));
 
   // Scene Setup. 
-  wallGroup = setupBackwall(scene);
-  wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
-  scene.add(wallGroup);
+  setupScene();
 
-  [ composer, bloomComposer, bloomLayer ] = new setupEffects( renderer, scene );
+  // Setup effects.
+  [ composer, bloomComposer, bloomLayer ] = new setupEffects( webGLRenderer, scene );
 
+  // Bloom effect materials.
   darkMaterial = new THREE.MeshBasicMaterial( { color: 'black' } );
   materials = {};
 
-  const controls2 = new OrbitControls(window.virtual_office.camera, renderer2.domElement);
+  // Setup controls.
+  controls2 = new OrbitControls(window.virtual_office.camera, cssRenderer.domElement);
   controls2.target.set(0, 10, 0);
   controls2.update();
 
-  const controls = new OrbitControls(window.virtual_office.camera, renderer.domElement);
+  controls = new OrbitControls(window.virtual_office.camera, webGLRenderer.domElement);
   controls.target.set(0, 10, 0);
   controls.update();
   
@@ -91,42 +70,48 @@ export function init(pane) {
     document.body.appendChild(stats.dom);
   }
 
-  // Adjust ambient light intensity
-  var ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x554455 : 0x443344); // Dim ambient light color
-  scene.add(ambientLight);
+  // Setup Tweens.
+  setupTweens( controls, controls2);
 
   function handleViewportChange() {
-    var adjustedGapSize = calculateAdjustedGapSize();
-    window.virtual_office.room_depth = 8 * adjustedGapSize;
+    window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
+    window.virtual_office.room_depth = 8 * window.virtual_office.scene_dimensions.adjusted_gap;
 
     var width = window.innerWidth;
     var height = window.innerHeight;
+
     window.virtual_office.camera.aspect = width / height;
+
+    window.virtual_office.camera.fov = setCameraFOV( window.virtual_office.camera.aspect );
     window.virtual_office.camera.position.z = - 16 + (window.virtual_office.room_depth / 2);
+    window.virtual_office.camera.rotation.x = - (Math.PI / 40) * window.virtual_office.camera.aspect;
     window.virtual_office.camera.updateProjectionMatrix();
 
     // Adjust desk positions based on the aspect ratio
     deskGroup.children.forEach(function (desk, i) {
-      updateDeskZ(desk, i, adjustedGapSize);
+      updateDeskZ(desk, i, window.virtual_office.scene_dimensions.adjusted_gap);
     });
 
     screenCSSGroup.children.forEach(function (screen, i) {
-      updateDeskZ(screen, i, adjustedGapSize);
+      updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
+      screen.position.z += .175;
     });
     screenWebGLGroup.children.forEach(function (screen, i) {
-      updateDeskZ(screen, i, adjustedGapSize);
+      updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
+      screen.position.z += .175;
     });
 
     const newRoom = createOfficeRoom();
-    room.geometry = newRoom.geometry;
+    window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
 
     wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
 
     window.virtual_office.scene_objects.door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
 
-    renderer.setSize(width, height);
-    renderer2.setSize(width, height);
+    webGLRenderer.setSize(width, height);
+    cssRenderer.setSize(width, height);
     composer.setSize(width, height);
+    bloomComposer.setSize(width, height);
   }
   
   window.addEventListener('orientationchange', handleViewportChange);
@@ -134,15 +119,39 @@ export function init(pane) {
 
 }
 
+function setCameraFOV(aspect) {
+  var fov;
+  
+  if (aspect < 1) {
+      // Portrait or square orientation
+      fov = mapRange(aspect, 0.5, 1, 60, 45);
+  } else {
+      // Widescreen orientation
+      if (aspect < 2) {
+        // Tolerance for square to widescreen transition
+        fov = mapRange(aspect, 1, 2, 60, 45);
+      } else {
+        fov = mapRange(aspect, 2, 3, 45, 30);
+      }
+  }
+  
+  return fov;
+}
+
+// Function to map a value from one range to another
+function mapRange(value, inMin, inMax, outMin, outMax) {
+  return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}
+
 export function animate(currentTime) {
 
-  scaleEffects(currentTime, renderer);
+  requestAnimationFrame(animate);
 
   if ( window.virtual_office.started ) {
-    updateTweens(currentTime);
+    updateTweens(currentTime, controls, controls2);
   }
 
-  requestAnimationFrame(animate);
+  scaleEffects(currentTime, webGLRenderer);  
 
   if (window.virtual_office.debug) {
     stats.update();
@@ -150,16 +159,15 @@ export function animate(currentTime) {
 
   // Render the composer
   if (!window.virtual_office.fast) {
-    
     scene.traverse( darkenNonBloomed );
     bloomComposer.render();
     scene.traverse( restoreMaterial );
     composer.render();
-    renderer2.render(scene2, window.virtual_office.camera);
+    cssRenderer.render(scene2, window.virtual_office.camera);
 
   } else {
-    renderer.render(scene, window.virtual_office.camera); // Render the scene without the effects
-    renderer2.render(scene2, window.virtual_office.camera);
+    webGLRenderer.render(scene, window.virtual_office.camera); // Render the scene without the effects
+    cssRenderer.render(scene2, window.virtual_office.camera);
   }
 
 }
@@ -191,7 +199,7 @@ function calculateAdjustedGapSize() {
   var height = window.innerHeight;
 
   // Adjust gap size based on the aspect ratio
-  var adjustedGapSize = gapSize * scale;
+  var adjustedGapSize = window.virtual_office.scene_dimensions.gap * window.virtual_office.scene_dimensions.scale;
   if (width < height) {
     adjustedGapSize *= height / width;
   }
@@ -248,9 +256,6 @@ function createDoor() {
 }
 
 function createOfficeRoom() {
-  var adjustedGapSize = calculateAdjustedGapSize();
-
-  window.virtual_office.room_depth = 8 * adjustedGapSize;
 
   var doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorDepth);
   const transparentMaterial = new THREE.MeshLambertMaterial({
@@ -263,7 +268,7 @@ function createOfficeRoom() {
   doorBrush.position.x += 4.1;
   doorBrush.updateMatrixWorld();
 
-  const roomGeometry = new THREE.BoxGeometry(60, 30, window.virtual_office.room_depth);
+  const roomGeometry = new THREE.BoxGeometry(80, 30, window.virtual_office.room_depth);
 
   const roomMaterial = new THREE.MeshLambertMaterial({
     color: 0xa0adaf,
@@ -289,4 +294,46 @@ function createOfficeRoom() {
   csgEvaluator.evaluate( roomBrush, doorBrush, SUBTRACTION, result );
 
   return result;
+}
+
+function setupScene() {
+  // Scene container.
+  scene = new THREE.Scene();
+  scene2 = new THREE.Scene();
+
+  [ deskGroup, screenCSSGroup, screenWebGLGroup ] = setupDesks( window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
+  scene2.add(screenCSSGroup);
+  scene.add(screenWebGLGroup);
+  scene.add(deskGroup);
+
+  // Adjust ambient light intensity
+  var ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x554455 : 0x443344); // Dim ambient light color
+  scene.add(ambientLight);
+
+  window.virtual_office.scene_objects.screens_loaded = 0;
+  window.virtual_office.scene_objects.room = createOfficeRoom();
+  scene.add(window.virtual_office.scene_objects.room);
+
+  window.virtual_office.scene_objects.door = createDoor();
+  window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
+  scene.add(window.virtual_office.scene_objects.door);
+
+  wallGroup = setupBackwall(scene);
+  wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
+  scene.add(wallGroup);
+}
+
+function setupRenderers() {
+   // Main webGLRenderer.
+   webGLRenderer = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
+   webGLRenderer.setPixelRatio(window.devicePixelRatio);
+   webGLRenderer.setSize(window.innerWidth, window.innerHeight);
+   document.querySelector("#webgl").appendChild(webGLRenderer.domElement);
+ 
+   // Website webGLRenderer.
+   cssRenderer = new CSS3DRenderer();
+   cssRenderer.setSize(window.innerWidth, window.innerHeight);
+   cssRenderer.domElement.style.position = "absolute";
+   cssRenderer.domElement.style.top = 0;
+   document.querySelector("#css").appendChild(cssRenderer.domElement);
 }

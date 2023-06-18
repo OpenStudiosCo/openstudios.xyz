@@ -19,10 +19,15 @@ domReady(
       camera: false,
       debug: false,
       fast: false,
-      room_depth: false,
-      scene_objects: [],
+      scene_dimensions: {
+        adjusted_gap: false,
+        gap: 1.3,
+        room_depth: false,
+        scale: 11 // do not change, braeks css screen sizes
+      },
+      scene_objects: {},
       started: false,
-      tweens: []
+      tweens: {}
     };
 
     
