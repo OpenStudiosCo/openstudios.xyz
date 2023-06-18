@@ -133,6 +133,7 @@ export function setupDesks(gapSize, scale, scene) {
     screenCSS.rotation.y = - Math.PI / 2;
     screenCSS.position.y = 3.9;
 
+    // Main position coordinates.
     if (i < 2) {
       desk.position.x = -(gapSize * scale) * 1.25;
       desk.rotation.y += Math.PI; // Rotate the desk on the left side
@@ -151,6 +152,28 @@ export function setupDesks(gapSize, scale, scene) {
       screenCSS.rotation.y = - Math.PI / 4;
       updateDeskZ(screenCSS, i);      
       screenCSS.position.z += .175;
+    }
+
+    // Space the desks a bit out a wittle.
+    if ( i == 0 || i == 3) {
+      desk.position.x += 1.25;
+    }
+    if ( i == 1 || i == 2 ) {
+      desk.position.x -= 1.25;
+    }
+
+    if ( i == 0 ) {
+      screenCSS.position.x += .5;
+    }
+    if ( i == 1 ) {
+      screenCSS.position.x -= 2;
+    }
+
+    if ( i == 2 ) {
+      screenCSS.position.x -= .5;
+    }
+    if ( i == 3 ) {
+      screenCSS.position.x += 2;
     }
   
     desk.scale.set(scale, scale, scale); // Scale up the desk

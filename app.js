@@ -21,9 +21,9 @@ domReady(
       fast: false,
       scene_dimensions: {
         adjusted_gap: false,
-        gap: 1,
+        gap: 1.3,
         room_depth: false,
-        scale: 11
+        scale: 11 // do not change, braeks css screen sizes
       },
       scene_objects: {},
       started: false,

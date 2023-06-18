@@ -40,7 +40,7 @@ export function init(pane) {
   var width = window.innerWidth;
   var height = window.innerHeight;
   var aspect = width / height;
-  var fov = 30 + Math.min( 20 , 20 * Math.floor( height / width) );
+  var fov = setCameraFOV( aspect );
   window.virtual_office.camera = new THREE.PerspectiveCamera(fov, aspect, 1, 1000);
   
   window.virtual_office.camera.aspect = width / height;
@@ -80,8 +80,9 @@ export function init(pane) {
     var width = window.innerWidth;
     var height = window.innerHeight;
 
-    window.virtual_office.camera.fov = 30 + Math.min( 20 , 20 * Math.floor( height / width) );
     window.virtual_office.camera.aspect = width / height;
+
+    window.virtual_office.camera.fov = setCameraFOV( window.virtual_office.camera.aspect );
     window.virtual_office.camera.position.z = - 16 + (window.virtual_office.room_depth / 2);
     window.virtual_office.camera.rotation.x = - (Math.PI / 40) * window.virtual_office.camera.aspect;
     window.virtual_office.camera.updateProjectionMatrix();
@@ -116,6 +117,30 @@ export function init(pane) {
   window.addEventListener('orientationchange', handleViewportChange);
   window.addEventListener('resize', handleViewportChange);
 
+}
+
+function setCameraFOV(aspect) {
+  var fov;
+  
+  if (aspect < 1) {
+      // Portrait or square orientation
+      fov = mapRange(aspect, 0.5, 1, 60, 45);
+  } else {
+      // Widescreen orientation
+      if (aspect < 2) {
+        // Tolerance for square to widescreen transition
+        fov = mapRange(aspect, 1, 2, 60, 45);
+      } else {
+        fov = mapRange(aspect, 2, 3, 45, 30);
+      }
+  }
+  
+  return fov;
+}
+
+// Function to map a value from one range to another
+function mapRange(value, inMin, inMax, outMin, outMax) {
+  return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
 
 export function animate(currentTime) {
