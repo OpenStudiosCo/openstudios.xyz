@@ -305,8 +305,6 @@ function createDesk( i ) {
   // Create the overhead office light mesh
   var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
 
-  lightMesh.layers.enable(1);
-
   // Position the overhead office light
   lightMesh.position.set(0, 2.25, 0);
   lightMesh.rotation.y = Math.PI / 2;
