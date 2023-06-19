@@ -132,6 +132,16 @@ export function init(pane) {
 
   window.addEventListener( 'pointermove', onPointerMove );
 
+  document.addEventListener('touchend', onDocumentTouchEnd, false);
+
+  function onDocumentTouchEnd(event) {
+      event.preventDefault();
+
+      pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+      pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+
+  }
+
 }
 
 function setCameraFOV(aspect) {
@@ -190,6 +200,9 @@ function handleInteractions() {
     
     if (object.name == "neon") {
       object.material.emissive.set( 0xDA68C5 );
+      object.material.emissiveIntensity = 1 ;
+      object.children[0].color.set(0xDA68C5);
+      object.children[0].intensity = window.virtual_office.fast ? 0.35 : 0.1;
     }
     if (object.name == "portrait") {
       object.brightness.current = object.brightness.target;
@@ -215,7 +228,7 @@ function handleInteractions() {
     if (intersects[ i ].object.name == "screen" || intersects[ i ].object.name == "desk_part") {
       // Set the screens sibling desk_label to active.
       intersects[ i ].object.parent.getObjectByName("desk_label").material.emissive.set( 0xFFFFFF );
-      intersects[ i ].object.parent.getObjectByName("desk_label").material.emissiveIntensity = 1 ;
+      intersects[ i ].object.parent.getObjectByName("desk_label").material.emissiveIntensity = 0.25 ;
       intersects[ i ].object.parent.getObjectByName("ceilLightMesh").material.emissive.set( 0xFFFFFF );
       intersects[ i ].object.parent.getObjectByName("ceilLightMesh").material.emissiveIntensity = 0.5 ;
       //intersects[ i ].object.parent.getObjectByName("ceilLightActual").color.set( 0xFFFFFF );
@@ -228,15 +241,23 @@ function handleInteractions() {
     if (intersects[ i ].object.name == "neon") {
       document.body.style.cursor = "pointer";
       intersects[ i ].object.material.emissive.set( 0xFFFFFF );
+      intersects[ i ].object.material.emissiveIntensity = 0.5;
+
+      let portraits = intersects[ i ].object.parent.getObjectsByProperty( 'name', 'portrait' );
+      portraits.forEach( ( portrait, portraitIndex ) => {
+        portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
+        portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
+      });
       break;
     }
     if (intersects[ i ].object.name == "portrait") {
       document.body.style.cursor = "pointer";
       intersects[ i ].object.parent.getObjectByName("neon").material.emissive.set( 0xFFFFFF );
+      intersects[ i ].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
 
       let portraits = intersects[ i ].object.parent.getObjectsByProperty( 'name', 'portrait' );
       portraits.forEach( ( portrait, portraitIndex ) => {
-        portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.1;
+        portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
         portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
       });
 
