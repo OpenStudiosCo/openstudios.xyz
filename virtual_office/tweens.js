@@ -60,7 +60,47 @@ export function setupTweens( controls, controls2) {
     // Move 'box' to the position described by 'coords' with a CSS translation.
     window.virtual_office.camera.position.y = targetPos.y;
     window.virtual_office.camera.updateProjectionMatrix();
+  });
+
+  // Animate the camera focusing on something and moving to it.
+  window.virtual_office.tweens.moveCamera = new TWEEN.Tween(window.virtual_office.camera.position)
+    .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
+    .onUpdate(() => {
+      window.virtual_office.camera.lookAt( 
+        
+          window.virtual_office.selected.position.x,
+          3.75,
+          window.virtual_office.selected.position.z
+        );
+      window.virtual_office.camera.updateProjectionMatrix();
+
+    })
+    .onComplete(() => {
+      window.virtual_office.moving = false;
+    });
+    ;
+  
+  let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
+      cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
+
+  // Animate the camera resetting from any other position.
+  window.virtual_office.tweens.resetCameraPosition = new TWEEN.Tween(window.virtual_office.camera.position)
+  .to( cameraDefaultPosition, 1000 )
+  .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
+  .onUpdate(() => {
+    window.virtual_office.camera.updateProjectionMatrix();
   })
+  .onComplete(() => {
+    window.virtual_office.moving = false;
+  })
+  ;
+  window.virtual_office.tweens.resetCameraRotation = new TWEEN.Tween(window.virtual_office.camera.rotation)
+  .to( cameraDefaultRotation, 1000 )
+  .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
+  .onUpdate(() => {
+    window.virtual_office.camera.updateProjectionMatrix();
+  })
+  ;
   
 }
 
@@ -73,5 +113,7 @@ export function updateTweens( currentTime ) {
   window.virtual_office.tweens.openDoor.update( currentTime );
   window.virtual_office.tweens.dollyUp.update( currentTime );
   window.virtual_office.tweens.panDown.update( currentTime );
- 
+  window.virtual_office.tweens.moveCamera.update( currentTime );
+  window.virtual_office.tweens.resetCameraPosition.update( currentTime );
+  window.virtual_office.tweens.resetCameraRotation.update( currentTime );
 }

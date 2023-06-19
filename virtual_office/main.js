@@ -25,6 +25,7 @@ let materials, darkMaterial;
 
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
+let isMouseDown = false;
 
 export function init(pane) {
 
@@ -134,15 +135,37 @@ export function init(pane) {
 
   window.addEventListener( 'pointermove', onPointerMove );
 
-  document.addEventListener('touchend', onDocumentTouchEnd, false);
+  function onTouchStart(event) {
+    event.preventDefault();
 
-  function onDocumentTouchEnd(event) {
-      event.preventDefault();
+    pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 
-      pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-      pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-
+    isMouseDown = true;
   }
+  function onTouchEnd(event) {
+    event.preventDefault();
+
+    pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+
+    isMouseDown = false;
+  }
+
+  window.addEventListener('touchstart', onTouchStart, false);
+  window.addEventListener('touchend', onTouchEnd, false);
+
+  function onMouseDown(event) {
+    isMouseDown = true;
+  }
+
+  function onMouseUp(event) {
+    isMouseDown = false;
+  }
+
+  // Attach the mouse down and up event listeners
+  window.addEventListener("pointerdown", onMouseDown, false);
+  window.addEventListener("pointerup", onMouseUp, false);
 
 }
 
@@ -181,6 +204,51 @@ function setCameraFOV(aspect) {
 // Function to map a value from one range to another
 function mapRange(value, inMin, inMax, outMin, outMax) {
   return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}
+
+function handleDeskClick( desk ) {
+  if (isMouseDown && !window.virtual_office.moving ) {
+    if ( !window.virtual_office.selected ) {
+      window.virtual_office.moving = true;
+      window.virtual_office.selected = desk;
+      let newPosition = new THREE.Vector3(
+        window.virtual_office.selected.position.x + ( window.virtual_office.selected.position.x > 0 ? - 3.75 : 3.75 ),
+        3.75 ,
+        window.virtual_office.selected.position.z + 3.75
+      );
+      window.virtual_office.tweens.moveCamera.to(newPosition , 20 * window.virtual_office.camera.position.distanceTo(newPosition)).start();
+    }
+    else {
+      window.virtual_office.moving = true;
+      var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
+
+      let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
+          cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
+
+      // Animate the camera resetting from any other position.
+      window.virtual_office.tweens.resetCameraPosition = new TWEEN.Tween(window.virtual_office.camera.position)
+      .to( cameraDefaultPosition, 1000 )
+      .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
+      .onUpdate(() => {
+        window.virtual_office.camera.updateProjectionMatrix();
+      })
+      .onComplete(() => {
+        window.virtual_office.moving = false;
+      })
+      ;
+      window.virtual_office.tweens.resetCameraRotation = new TWEEN.Tween(window.virtual_office.camera.rotation)
+      .to( cameraDefaultRotation, 1000 )
+      .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
+      .onUpdate(() => {
+        window.virtual_office.camera.updateProjectionMatrix();
+      })
+      ;
+      window.virtual_office.tweens.resetCameraRotation.start();
+      window.virtual_office.tweens.resetCameraPosition.start();
+      window.virtual_office.selected = false;
+    }
+    
+  }
 }
 
 function handleInteractions() {
@@ -235,6 +303,8 @@ function handleInteractions() {
       intersects[ i ].object.material.emissive.set( 0xFFFFFF );
       document.body.style.cursor = "pointer";
 
+      handleDeskClick( intersects[ i ].object.parent );
+
       break;
     }
 
@@ -247,6 +317,8 @@ function handleInteractions() {
       //intersects[ i ].object.parent.getObjectByName("ceilLightActual").color.set( 0xFFFFFF );
       intersects[ i ].object.parent.getObjectByName("ceilLightActual").intensity = 0.03 ;
       document.body.style.cursor = "pointer";
+      
+      handleDeskClick( intersects[ i ].object.parent );
 
       break;
     }
