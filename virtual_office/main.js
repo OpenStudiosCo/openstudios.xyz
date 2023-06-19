@@ -10,7 +10,7 @@ import { MeshBVHVisualizer } from 'three-mesh-bvh';
 
 
 import { scaleEffects, setupEffects } from './effects.js';
-import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
+import { brightenMaterial, setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
@@ -22,6 +22,9 @@ let scene2, cssRenderer;
 let controls, controls2;
 
 let materials, darkMaterial;
+
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
 
 export function init(pane) {
 
@@ -117,6 +120,18 @@ export function init(pane) {
   window.addEventListener('orientationchange', handleViewportChange);
   window.addEventListener('resize', handleViewportChange);
 
+  function onPointerMove( event ) {
+
+    // calculate pointer position in normalized device coordinates
+    // (-1 to +1) for both components
+  
+    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  
+  }
+
+  window.addEventListener( 'pointermove', onPointerMove );
+
 }
 
 function setCameraFOV(aspect) {
@@ -145,6 +160,82 @@ function mapRange(value, inMin, inMax, outMin, outMax) {
   return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
 
+function handleInteractions() {
+  // update the picking ray with the camera and pointer position
+  raycaster.setFromCamera( pointer, window.virtual_office.camera );
+
+  // calculate objects intersecting the picking ray
+  const intersects = raycaster.intersectObjects( scene.children );
+
+  // Reset all the other desk labels to the regular colour.
+  deskGroup.children.forEach( (desk) => {
+    desk.children.forEach( (desk_item) => {
+      if (desk_item.name == "desk_label") {
+        desk_item.material.emissive.set( 0x00EEff );
+        desk_item.material.emissiveIntensity = 0.5 ;
+      }
+    });
+  });
+
+  // Reset the portraits and neon to the regular colour.
+  wallGroup.children.forEach( (object, i) => {
+    
+    if (object.name == "neon") {
+      object.material.emissive.set( 0xDA68C5 );
+    }
+    if (object.name == "portrait") {
+      object.brightness.current = object.brightness.target;
+      let portraitTexture = object.material.map;
+      var portraitMaterial = new THREE.MeshStandardMaterial({ map: portraitTexture });
+
+      let newMaterial =  brightenMaterial(portraitMaterial, object.brightness.current);
+      wallGroup.children[i].material = newMaterial;
+    }
+    
+  });
+
+  document.body.style.cursor = "default";
+
+  for ( let i = 0; i < intersects.length; i ++ ) {
+    if (intersects[ i ].object.name == "desk_label") {
+      // Set the active one to white.
+      intersects[ i ].object.material.emissive.set( 0xFFFFFF );
+      document.body.style.cursor = "pointer";
+
+      break;
+    }
+
+    if (intersects[ i ].object.name == "screen" || intersects[ i ].object.name == "desk_part") {
+      // Set the screens sibling desk_label to active.
+      intersects[ i ].object.parent.getObjectByName("desk_label").material.emissive.set( 0xFFFFFF );
+      intersects[ i ].object.parent.getObjectByName("desk_label").material.emissiveIntensity = 1 ;
+      document.body.style.cursor = "pointer";
+
+      break;
+    }
+
+    if (intersects[ i ].object.name == "neon") {
+      document.body.style.cursor = "pointer";
+      intersects[ i ].object.material.emissive.set( 0xFFFFFF );
+      break;
+    }
+    if (intersects[ i ].object.name == "portrait") {
+      document.body.style.cursor = "pointer";
+      intersects[ i ].object.parent.getObjectByName("neon").material.emissive.set( 0xFFFFFF );
+
+      let portraits = intersects[ i ].object.parent.getObjectsByProperty( 'name', 'portrait' );
+      portraits.forEach( ( portrait, portraitIndex ) => {
+        portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.1;
+        portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
+      });
+
+      
+
+      break;
+    }
+  }
+}
+
 export function animate(currentTime) {
 
   requestAnimationFrame(animate);
@@ -158,6 +249,8 @@ export function animate(currentTime) {
   if (window.virtual_office.debug) {
     stats.update();
   }
+
+  handleInteractions();
 
   // Render the composer
   if (!window.virtual_office.fast) {
@@ -322,6 +415,7 @@ function setupScene() {
 
   wallGroup = setupBackwall(scene);
   wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
+
   scene.add(wallGroup);
 }
 

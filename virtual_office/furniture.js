@@ -18,17 +18,27 @@ export function setupBackwall ( scene ) {
   createNeonSign((signMesh) => {
     // Position and rotate the sign
     signMesh.position.set(-5.75, 10, 0); // Example position for the sign
-    
+    signMesh.name = "neon";
     wallGroup.add(signMesh);
   }, scene);
   
   // Add portraits to the scene
   let paulsPortrait = createPortrait('./paul.png', 2.75);
   paulsPortrait.position.set(-7.5, 4, 0.5);  // Example position for portrait 1
+  paulsPortrait.name = "portrait";
+  paulsPortrait.brightness = {
+    current: 2.75,
+    target: 2.75
+  };
   wallGroup.add(paulsPortrait);
 
   let garrettsPortrait = createPortrait('./garrett.png', 4.);
   garrettsPortrait.position.set(7.5, 4, 0.5);  // Example position for portrait 1
+  garrettsPortrait.brightness = {
+    current: 4,
+    target: 4
+  };
+  garrettsPortrait.name = "portrait";
   wallGroup.add(garrettsPortrait);
 
   return wallGroup;
@@ -87,23 +97,6 @@ function createPortrait(img_url, brightness) {
   // Create portrait materials
   var portraitMaterial = new THREE.MeshStandardMaterial({ map: portraitTexture });
 
-  function brightenMaterial(material, amount) {
-
-    // Increase the brightness of the texture
-    material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
-    material.map.needsUpdate = true; // Update the material
-
-    // Increase the brightness by adjusting the material color
-    const brightness = amount; // Increase the value to make it brighter
-    material.color.setRGB(
-      material.color.r * brightness,
-      material.color.g * brightness,
-      material.color.b * brightness
-    );
-
-    return material;
-  }
-
   portraitMaterial = brightenMaterial(portraitMaterial, brightness);
 
   // Set portrait dimensions
@@ -114,6 +107,23 @@ function createPortrait(img_url, brightness) {
   var portrait = new THREE.Mesh(new THREE.PlaneGeometry(portraitWidth, portraitHeight), portraitMaterial);
 
   return portrait;
+}
+
+export function brightenMaterial(material, amount) {
+
+  // Increase the brightness of the texture
+  material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
+  material.map.needsUpdate = true; // Update the material
+
+  // Increase the brightness by adjusting the material color
+  const brightness = amount; // Increase the value to make it brighter
+  material.color.setRGB(
+    material.color.r * brightness,
+    material.color.g * brightness,
+    material.color.b * brightness
+  );
+
+  return material;
 }
 
 // Uses createDesk and arranges them in the room.
@@ -248,6 +258,7 @@ function createDesk( i ) {
   var deskTopMaterial = new THREE.MeshPhongMaterial({ color: 0x986b41 });
   var deskTop = new THREE.Mesh(deskTopGeometry, deskTopMaterial);
   deskTop.position.y = 0.05;
+  deskTop.name = "desk_part";
 
   // Desk Side Panels
   var panelGeometry = new THREE.BoxGeometry(0.1, 0.6, 0.8);
@@ -255,9 +266,11 @@ function createDesk( i ) {
 
   var leftPanel = new THREE.Mesh(panelGeometry, panelMaterial);
   leftPanel.position.set(-0.8, -0.2, 0);
+  leftPanel.name = "desk_part";
 
   var rightPanel = new THREE.Mesh(panelGeometry, panelMaterial);
   rightPanel.position.set(0.8, -0.2, 0);
+  rightPanel.name = "desk_part";
 
   deskTop.castShadow = true; //default is false
   deskTop.receiveShadow = false; //default
@@ -345,7 +358,6 @@ function createDesk( i ) {
   lightActual.target = deskTop;
 
   deskGroup.add(lightActual);
-  console.log(deskGroup);
 
   return deskGroup;
 }
@@ -388,6 +400,8 @@ function createDeskLabel(i, callback, deskGroup) {
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
     signMesh.layers.enable(1);
+
+    signMesh.name = "desk_label";
 
     // Add the sign to the scene
     callback(signMesh, i, deskGroup);
