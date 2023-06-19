@@ -251,6 +251,51 @@ function handleDeskClick( desk ) {
   }
 }
 
+function handleWallClick( desk ) {
+  if (isMouseDown && !window.virtual_office.moving ) {
+    if ( !window.virtual_office.selected ) {
+      window.virtual_office.moving = true;
+      window.virtual_office.selected = desk;
+      let newPosition = new THREE.Vector3(
+        0,
+        3.75 ,
+        window.virtual_office.selected.position.z + 35
+      );
+      window.virtual_office.tweens.moveCamera.to(newPosition , 20 * window.virtual_office.camera.position.distanceTo(newPosition)).start();
+    }
+    else {
+      window.virtual_office.moving = true;
+      var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
+
+      let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
+          cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
+
+      // Animate the camera resetting from any other position.
+      window.virtual_office.tweens.resetCameraPosition = new TWEEN.Tween(window.virtual_office.camera.position)
+      .to( cameraDefaultPosition, 1000 )
+      .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
+      .onUpdate(() => {
+        window.virtual_office.camera.updateProjectionMatrix();
+      })
+      .onComplete(() => {
+        window.virtual_office.moving = false;
+      })
+      ;
+      window.virtual_office.tweens.resetCameraRotation = new TWEEN.Tween(window.virtual_office.camera.rotation)
+      .to( cameraDefaultRotation, 1000 )
+      .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
+      .onUpdate(() => {
+        window.virtual_office.camera.updateProjectionMatrix();
+      })
+      ;
+      window.virtual_office.tweens.resetCameraRotation.start();
+      window.virtual_office.tweens.resetCameraPosition.start();
+      window.virtual_office.selected = false;
+    }
+    
+  }
+}
+
 function handleInteractions() {
   // update the picking ray with the camera and pointer position
   raycaster.setFromCamera( pointer, window.virtual_office.camera );
@@ -333,6 +378,8 @@ function handleInteractions() {
         portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
         portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
       });
+      handleWallClick( intersects[ i ].object.parent );
+
       break;
     }
     if (intersects[ i ].object.name == "portrait") {
@@ -346,7 +393,8 @@ function handleInteractions() {
         portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
       });
 
-      
+      handleWallClick( intersects[ i ].object.parent );
+
 
       break;
     }
