@@ -121,15 +121,17 @@ export function init(pane) {
 
 function setCameraFOV(aspect) {
   var fov;
+
+  var threshold = 0.88;
   
-  if (aspect < 1) {
+  if (aspect < threshold) {
       // Portrait or square orientation
-      fov = mapRange(aspect, 0.5, 1, 60, 45);
+      fov = mapRange(aspect, 0.5, threshold, 60, 60);
   } else {
       // Widescreen orientation
       if (aspect < 2) {
         // Tolerance for square to widescreen transition
-        fov = mapRange(aspect, 1, 2, 60, 45);
+        fov = mapRange(aspect, threshold, 2, 60, 45);
       } else {
         fov = mapRange(aspect, 2, 3, 45, 30);
       }
