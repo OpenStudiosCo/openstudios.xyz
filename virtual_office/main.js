@@ -164,7 +164,13 @@ function setCameraFOV(aspect) {
           fov = mapRange(aspect, 2, 2.25, 45, 30);
         }
         else {
-          fov = mapRange(aspect, 2.25, 5, 30, 90);
+          if (aspect < 5) {
+            fov = mapRange(aspect, 2.25, 5, 30, 90);
+          }
+          else {
+            fov = 90;
+          }
+
         }
       }
   }
