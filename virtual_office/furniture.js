@@ -24,7 +24,7 @@ export function setupBackwall ( scene ) {
   
   // Add portraits to the scene
   let paulsPortrait = createPortrait('./paul.png', 2.75);
-  paulsPortrait.position.set(-7.5, 4, 0.5);  // Example position for portrait 1
+  paulsPortrait.position.set(-7.5, 4, 1);  // Example position for portrait 1
   paulsPortrait.name = "portrait";
   paulsPortrait.brightness = {
     current: 2.75,
@@ -33,7 +33,7 @@ export function setupBackwall ( scene ) {
   wallGroup.add(paulsPortrait);
 
   let garrettsPortrait = createPortrait('./garrett.png', 4.);
-  garrettsPortrait.position.set(7.5, 4, 0.5);  // Example position for portrait 1
+  garrettsPortrait.position.set(7.5, 4, 1);  // Example position for portrait 1
   garrettsPortrait.brightness = {
     current: 4,
     target: 4
