@@ -160,7 +160,12 @@ function setCameraFOV(aspect) {
         // Tolerance for square to widescreen transition
         fov = mapRange(aspect, threshold, 2, 60, 45);
       } else {
-        fov = mapRange(aspect, 2, 3, 45, 30);
+        if (aspect < 2.25) {
+          fov = mapRange(aspect, 2, 2.25, 45, 30);
+        }
+        else {
+          fov = mapRange(aspect, 2.25, 5, 30, 90);
+        }
       }
   }
   
