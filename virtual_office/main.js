@@ -62,9 +62,11 @@ export function init(pane) {
   // Setup controls.
   controls2 = new OrbitControls(window.virtual_office.camera, cssRenderer.domElement);
   controls2.target.set(0, 10, 0);
+  controls2.enabled = window.virtual_office.debug;
   controls2.update();
 
   controls = new OrbitControls(window.virtual_office.camera, webGLRenderer.domElement);
+  controls.enabled = window.virtual_office.debug;
   controls.target.set(0, 10, 0);
   controls.update();
   
