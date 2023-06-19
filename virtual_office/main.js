@@ -174,6 +174,14 @@ function handleInteractions() {
         desk_item.material.emissive.set( 0x00EEff );
         desk_item.material.emissiveIntensity = 0.5 ;
       }
+      if (desk_item.name == "ceilLightMesh") {
+        desk_item.material.emissive.set( 0x00EEff );
+        desk_item.material.emissiveIntensity = 0.25 ;
+      }
+      if (desk_item.name == "ceilLightActual") {
+        desk_item.color.set( 0x00EEff );
+        desk_item.intensity = 0.015 ;
+      }
     });
   });
 
@@ -191,7 +199,6 @@ function handleInteractions() {
       let newMaterial =  brightenMaterial(portraitMaterial, object.brightness.current);
       wallGroup.children[i].material = newMaterial;
     }
-    
   });
 
   document.body.style.cursor = "default";
@@ -209,6 +216,10 @@ function handleInteractions() {
       // Set the screens sibling desk_label to active.
       intersects[ i ].object.parent.getObjectByName("desk_label").material.emissive.set( 0xFFFFFF );
       intersects[ i ].object.parent.getObjectByName("desk_label").material.emissiveIntensity = 1 ;
+      intersects[ i ].object.parent.getObjectByName("ceilLightMesh").material.emissive.set( 0xFFFFFF );
+      intersects[ i ].object.parent.getObjectByName("ceilLightMesh").material.emissiveIntensity = 0.5 ;
+      //intersects[ i ].object.parent.getObjectByName("ceilLightActual").color.set( 0xFFFFFF );
+      intersects[ i ].object.parent.getObjectByName("ceilLightActual").intensity = 0.03 ;
       document.body.style.cursor = "pointer";
 
       break;

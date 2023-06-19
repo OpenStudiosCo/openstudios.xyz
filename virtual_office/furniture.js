@@ -344,12 +344,14 @@ function createDesk( i ) {
   // Position the overhead office light
   lightMesh.position.set(0, 2.25, 0);
   lightMesh.rotation.y = Math.PI / 2;
+  lightMesh.name = "ceilLightMesh";
   // Add the overhead office light to the scene
   deskGroup.add(lightMesh);
 
   const lightActual = new THREE.DirectionalLight(0x00EEff, 0.015); // Color: white
   lightActual.position.set(0, 0.275, 0); // Set the position of the light
   lightActual.castShadow = true;
+  lightActual.name = "ceilLightActual";
 
   //Set up shadow properties for the light
   lightActual.shadow.mapSize.width = 64; // Adjust the shadow map size
