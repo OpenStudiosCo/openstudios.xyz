@@ -86,8 +86,8 @@ export function init(pane) {
     window.virtual_office.camera.aspect = width / height;
 
     window.virtual_office.camera.fov = setCameraFOV( window.virtual_office.camera.aspect );
-    window.virtual_office.camera.position.z = - 16 + (window.virtual_office.room_depth / 2);
-    window.virtual_office.camera.rotation.x = - (Math.PI / 40) * window.virtual_office.camera.aspect;
+    window.virtual_office.camera.position.z = - 20 + (window.virtual_office.room_depth / 2);
+    window.virtual_office.camera.rotation.x = - (Math.PI / 30) * window.virtual_office.camera.aspect;
     window.virtual_office.camera.updateProjectionMatrix();
 
     // Adjust desk positions based on the aspect ratio
@@ -252,7 +252,11 @@ export function animate(currentTime) {
   requestAnimationFrame(animate);
 
   if ( window.virtual_office.started ) {
+
     updateTweens(currentTime, controls, controls2);
+
+    handleInteractions();
+
   }
 
   scaleEffects(currentTime, webGLRenderer);  
@@ -260,8 +264,6 @@ export function animate(currentTime) {
   if (window.virtual_office.debug) {
     stats.update();
   }
-
-  handleInteractions();
 
   // Render the composer
   if (!window.virtual_office.fast) {
