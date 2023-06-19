@@ -17,7 +17,7 @@ export function setupBackwall ( scene ) {
   // About Us Neon sign
   createNeonSign((signMesh) => {
     // Position and rotate the sign
-    signMesh.position.set(-5.75, 10, 0); // Example position for the sign
+    signMesh.position.set(-5.75, 10, 1); // Example position for the sign
     signMesh.name = "neon";
     wallGroup.add(signMesh);
   }, scene);
