@@ -216,7 +216,7 @@ function handleDeskClick( desk ) {
         3.75 ,
         window.virtual_office.selected.position.z + 3.75
       );
-      window.virtual_office.tweens.moveCamera.to(newPosition , 20 * window.virtual_office.camera.position.distanceTo(newPosition)).start();
+      window.virtual_office.tweens.moveCamera.to(newPosition , 1000).start();
     }
     else {
       window.virtual_office.moving = true;
@@ -261,7 +261,7 @@ function handleWallClick( desk ) {
         3.75 ,
         window.virtual_office.selected.position.z + 35
       );
-      window.virtual_office.tweens.moveCamera.to(newPosition , 20 * window.virtual_office.camera.position.distanceTo(newPosition)).start();
+      window.virtual_office.tweens.moveCamera.to(newPosition , 1000).start();
     }
     else {
       window.virtual_office.moving = true;
