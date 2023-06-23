@@ -139,9 +139,9 @@ export function setupDesks(gapSize, scale, scene) {
     desk.rotation.y = Math.PI / 2;
 
     // Add screens.
-    var [ screenCSS, screenWebGL ] = createScreen();
+    var [ screenCSS, screenWebGL ] = createScreen( i );
     screenCSS.rotation.y = - Math.PI / 2;
-    screenCSS.position.y = 3.9;
+    screenCSS.position.y = 4.4;
 
     // Main position coordinates.
     if (i < 2) {
@@ -288,17 +288,17 @@ function createDesk( i ) {
   var screenGeometry = new THREE.BoxGeometry(0.64, 0.48, 0.02);
   var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0, 4, 0.05);
+  screen.position.set(0, 0.4, 0.05);
   screen.castShadow = true; //default is false
   screen.receiveShadow = false; //default
   screen.name = "screen";
   deskGroup.add(screen);
 
   // Add computer CPU
-  var cpuGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.05);
+  var cpuGeometry = new THREE.BoxGeometry(0.1, 0.125, 0.025);
   var cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
   var cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
-  cpu.position.set(0, 0.1, 0.05);
+  cpu.position.set(0, 0.1, 0.0625);
   cpu.castShadow = true; //default is false
   cpu.receiveShadow = false; //default
   cpu.name = "cpu";
@@ -322,7 +322,7 @@ function createDesk( i ) {
       signMesh.translateX( 0.05 - width / 20 );
     }
 
-    signMesh.position.y = 0.65;
+    signMesh.position.y = 0.7;
 
     signMesh.updateMatrixWorld();    
 
@@ -379,7 +379,7 @@ function createDeskLabel(i, callback, deskGroup) {
       labelText = 'Case studies';
       break;
     case 2:
-      labelText = 'Our work';
+      labelText = 'Projects';
       break;
     case 3:
       labelText = 'Contact us';
@@ -416,19 +416,39 @@ function createDeskLabel(i, callback, deskGroup) {
  * 
  * @returns [ HTMLObject, THREE.Mesh ];
  */
-function createScreen( ){
+function createScreen( i ){
+  let url;
+  switch ( i ) {
+    case 0:
+      url = '../pages/services.html';
+      break;
+    case 1:
+      url = '../pages/case_studies.html';
+      break;
+    case 2:
+      url = '../pages/projects.html';
+      break;
+    case 3:
+      url = '../pages/contact_us.html';
+      break;
+  }
+  
+
   var element = document.createElement("iframe");
   //var element = document.createElement("img");
   element.width = "1024";
   element.height = "768";
   element.style.opacity = 0.999;
-  element.src = "../pages/services.html";
+  
+  element.src = url;
   element.addEventListener("load", function() {
     window.virtual_office.scene_objects.screens_loaded += 1;
   });
+  console.log(element.style.pointerEvents);
 
   var screenCSS = new CSS3DObject(element);
-  screenCSS.scale.multiplyScalar( 0.00625);
+  screenCSS.scale.multiplyScalar( 0.00625 );
+  element.style.pointerEvents = 'none';
 
   var material = new THREE.MeshPhongMaterial({
     opacity: 0,

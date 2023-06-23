@@ -65,19 +65,6 @@ export function setupTweens(controls, controls2) {
   // Animate the camera moving to selected.
   window.virtual_office.tweens.moveCamera = new TWEEN.Tween(window.virtual_office.camera.position)
     .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
-    .onStart(() => {
-      // Rotate to face the screen if this is a desk.
-      if (virtual_office.selected.name == "desk") {
-        virtual_office.selected.children.forEach( ( item ) => {
-          if ( item.name == 'screen' ) {
-            var targetRotation = item.rotation.clone(); // Target quaternion
-            window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: - targetRotation.y, z: targetRotation.z }, 1000) // Tween duration in milliseconds
-            window.virtual_office.tweens.rotateCamera.start()
-          }
-        });
-      
-      }
-    })
     .onUpdate(() => {
       window.virtual_office.camera.updateProjectionMatrix();
     })

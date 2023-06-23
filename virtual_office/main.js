@@ -46,12 +46,18 @@ export function init(pane) {
   var aspect = width / height;
   var fov = setCameraFOV( aspect );
   window.virtual_office.camera = new THREE.PerspectiveCamera(fov, aspect, 1, 1000);
-  
   window.virtual_office.camera.aspect = width / height;
   window.virtual_office.camera.position.set(0, 12, 15 + (window.virtual_office.room_depth / 2));
 
   // Scene Setup. 
   setupScene();
+
+  
+  if ( window.virtual_office.debug ) {
+    const helper = new THREE.CameraHelper( window.virtual_office.camera );
+
+    scene.add( helper );
+  }
 
   // Setup effects.
   [ composer, bloomComposer, bloomLayer ] = new setupEffects( webGLRenderer, scene );
@@ -89,8 +95,10 @@ export function init(pane) {
     window.virtual_office.camera.aspect = width / height;
 
     window.virtual_office.camera.fov = setCameraFOV( window.virtual_office.camera.aspect );
-    window.virtual_office.camera.position.z = - 20 + (window.virtual_office.room_depth / 2);
-    window.virtual_office.camera.rotation.x = - (Math.PI / 30) * window.virtual_office.camera.aspect;
+    if ( ! window.virtual_office.selected ) {
+      window.virtual_office.camera.position.z = - 20 + (window.virtual_office.room_depth / 2);
+      window.virtual_office.camera.rotation.x = - (Math.PI / 30) * window.virtual_office.camera.aspect;
+    }
     window.virtual_office.camera.updateProjectionMatrix();
 
     // Adjust desk positions based on the aspect ratio
@@ -209,14 +217,29 @@ function mapRange(value, inMin, inMax, outMin, outMax) {
 function handleDeskClick( desk ) {
   if (isMouseDown && !window.virtual_office.moving ) {
     if ( !window.virtual_office.selected ) {
+      console.log(desk.position);
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
-      let newPosition = new THREE.Vector3(
-        window.virtual_office.selected.position.x + ( window.virtual_office.selected.position.x < 0 ? 3.5 : - 3.5 ),
-        3.8 ,
-        window.virtual_office.selected.position.z + 4
-      );
-      window.virtual_office.tweens.moveCamera.to(newPosition , 1000).start();
+
+      let tempMesh = new THREE.Object3D();
+      tempMesh.position.set(window.virtual_office.selected.position.x, 4.2, window.virtual_office.selected.position.z);
+
+      var targetRotation;
+      virtual_office.selected.children.forEach( ( item ) => {
+        if ( item.name == 'screen' ) {
+          targetRotation = item.rotation.clone(); // Target quaternion
+        }
+      });
+      tempMesh.rotation.setFromVector3(targetRotation);
+      tempMesh.position.y = 4.2;
+
+      tempMesh.translateX(tempMesh.position.x > 0 ? -7.5 : 7.5);
+      tempMesh.translateZ(tempMesh.position.x > 0 ? .375 : .475);
+      window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: - targetRotation.y, z: targetRotation.z }, 1000).start()
+      window.virtual_office.tweens.moveCamera.to(tempMesh.position , 1000).start();
+      cssRenderer.domElement.style.zIndex = 9999;
+      cssRenderer.domElement.style.pointerEvents = 'auto';
+
     }
     else {
       window.virtual_office.moving = true;
@@ -246,6 +269,8 @@ function handleDeskClick( desk ) {
       window.virtual_office.tweens.resetCameraRotation.start();
       window.virtual_office.tweens.resetCameraPosition.start();
       window.virtual_office.selected = false;
+      cssRenderer.domElement.style.zIndex = 'inherit';
+      cssRenderer.domElement.style.pointerEvents = 'none';
     }
     
   }
@@ -409,7 +434,9 @@ export function animate(currentTime) {
 
     updateTweens(currentTime, controls, controls2);
 
-    handleInteractions();
+    if ( !window.virtual_office.debug) {
+      handleInteractions();
+    }
 
   }
 
@@ -584,6 +611,7 @@ function setupScene() {
   wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
 
   scene.add(wallGroup);
+
 }
 
 function setupRenderers() {
