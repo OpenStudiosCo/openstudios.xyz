@@ -53,12 +53,9 @@ export function setupTweens(controls, controls2) {
   let targetPos = { y: 10 };
 
   // Animate the camera looking down around the room
-  window.virtual_office.tweens.dollyUp = new TWEEN.Tween(targetPos)
+  window.virtual_office.tweens.dollyUp = new TWEEN.Tween(window.virtual_office.camera.position)
     .to({ y: 18 }, 500) // Set the duration of the animation
     .onUpdate(() => {
-      // Called after tween.js updates 'coords'.
-      // Move 'box' to the position described by 'coords' with a CSS translation.
-      window.virtual_office.camera.position.y = targetPos.y;
       window.virtual_office.camera.updateProjectionMatrix();
     });
 
