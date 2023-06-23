@@ -212,9 +212,9 @@ function handleDeskClick( desk ) {
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
       let newPosition = new THREE.Vector3(
-        window.virtual_office.selected.position.x + ( window.virtual_office.selected.position.x > 0 ? - 3.75 : 3.75 ),
-        3.75 ,
-        window.virtual_office.selected.position.z + 3.75
+        window.virtual_office.selected.position.x + ( window.virtual_office.selected.position.x < 0 ? 3.5 : - 3.5 ),
+        3.8 ,
+        window.virtual_office.selected.position.z + 4
       );
       window.virtual_office.tweens.moveCamera.to(newPosition , 1000).start();
     }

@@ -252,6 +252,7 @@ export function updateDeskZ(desk, i) {
  */
 function createDesk( i ) {
   var deskGroup = new THREE.Group();
+  deskGroup.name = "desk";
 
   // Desk Top
   var deskTopGeometry = new THREE.BoxGeometry(1.5, 0.1, 0.8);
@@ -284,10 +285,10 @@ function createDesk( i ) {
   deskGroup.add(deskTop, leftPanel, rightPanel);
 
   // Add computer screen
-  var screenGeometry = new THREE.BoxGeometry(0.6, 0.4, 0.02);
+  var screenGeometry = new THREE.BoxGeometry(0.64, 0.48, 0.02);
   var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0, 0.35, 0.05);
+  screen.position.set(0, 4, 0.05);
   screen.castShadow = true; //default is false
   screen.receiveShadow = false; //default
   screen.name = "screen";
@@ -416,31 +417,33 @@ function createDeskLabel(i, callback, deskGroup) {
  * @returns [ HTMLObject, THREE.Mesh ];
  */
 function createScreen( ){
-  //var element = document.createElement("iframe");
-  var element = document.createElement("img");
-  element.style.width = "300px";
-  element.style.height = "200px";
+  var element = document.createElement("iframe");
+  //var element = document.createElement("img");
+  element.width = "1024";
+  element.height = "768";
   element.style.opacity = 0.999;
-  element.src = "../mockup.png";
+  element.src = "../pages/services.html";
   element.addEventListener("load", function() {
     window.virtual_office.scene_objects.screens_loaded += 1;
   });
 
-  var domObject = new CSS3DObject(element);
-  domObject.scale.set( 0.02, 0.02, 0.02); 
+  var screenCSS = new CSS3DObject(element);
+  screenCSS.scale.multiplyScalar( 0.00625);
 
   var material = new THREE.MeshPhongMaterial({
     opacity: 0,
     color: new THREE.Color("black"),
     blending: THREE.NoBlending,
-    side: THREE.DoubleSide
+    side: THREE.DoubleSide,
+    minFilter: THREE.LinearFilter
+
   });
-  var geometry = new THREE.PlaneGeometry(6, 4);
-  var mesh = new THREE.Mesh(geometry, material);
+  var geometry = new THREE.PlaneGeometry(6.4, 4.8);
+  var screenWebGL = new THREE.Mesh(geometry, material);
   
   //mesh.scale.copy( domObject.scale );
-  mesh.castShadow = false;
-  mesh.receiveShadow = true;
+  screenWebGL.castShadow = false;
+  screenWebGL.receiveShadow = true;
   
-  return [ domObject, mesh ];
+  return [ screenCSS, screenWebGL ];
 }
