@@ -538,12 +538,7 @@ function createDoor() {
         const material = new THREE.MeshLambertMaterial({
           emissiveIntensity: 1,
           emissive: new THREE.Color().setStyle(fillColor),
-          color: new THREE.Color().setStyle(fillColor),
-          opacity: path.userData.style.fillOpacity,
-          transparent: true,
-          side: THREE.DoubleSide,
-          depthWrite: false,
-          wireframe: false
+          color: new THREE.Color().setStyle(fillColor)
         });
 
         const shapes = SVGLoader.createShapes(path);
@@ -556,8 +551,6 @@ function createDoor() {
           mesh.layers.enable(1);
 
           group.add(mesh);
-
-
         }
 
       }
@@ -566,15 +559,10 @@ function createDoor() {
 
       if ( strokeColor !== undefined && strokeColor !== 'none') {
 
-        const material = new THREE.MeshLambertMaterial({
+        const material = new THREE.MeshBasicMaterial({
           emissiveIntensity: 1,
           emissive: new THREE.Color().setStyle(strokeColor),
-          color: new THREE.Color().setStyle(strokeColor),
-          opacity: path.userData.style.strokeOpacity,
-          transparent: true,
-          side: THREE.DoubleSide,
-          depthWrite: false,
-          wireframe: false
+          color: new THREE.Color().setStyle(strokeColor)
         });
         path.userData.style.strokeWidth *= 2;
         for (const subPath of path.subPaths) {
@@ -603,7 +591,6 @@ function createDoor() {
     backWallLogo.position.y = 22.5;
     backWallLogo.position.z = 1.5;
 
-    
     wallGroup.add(backWallLogo);
 
 
