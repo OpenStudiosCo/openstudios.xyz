@@ -448,6 +448,7 @@ function createScreen( i ){
 
   var screenCSS = new CSS3DObject(element);
   screenCSS.scale.multiplyScalar( 0.00625 );
+  element.style.filter = 'blur( 10px )';
   element.style.pointerEvents = 'none';
 
   var material = new THREE.MeshPhongMaterial({
