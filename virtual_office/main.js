@@ -16,7 +16,7 @@ import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
 let bloomComposer, bloomLayer, composer, scene, webGLRenderer, stats;
-let deskGroup, room, screenCSSGroup, screenWebGLGroup, wallGroup;
+let deskGroup, screenWebGLGroup, wallGroup;
 
 let scene2, cssRenderer;
 
@@ -107,7 +107,7 @@ export function init(pane) {
       updateDeskZ(desk, i, window.virtual_office.scene_dimensions.adjusted_gap);
     });
 
-    screenCSSGroup.children.forEach(function (screen, i) {
+    window.virtual_office.scene_objects.screenCSSGroup.children.forEach(function (screen, i) {
       updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
       screen.position.z += .175;
     });
@@ -218,7 +218,7 @@ function mapRange(value, inMin, inMax, outMin, outMax) {
 function handleDeskClick(desk) {
   if (isMouseDown && !window.virtual_office.moving) {
     if (!window.virtual_office.selected) {
-      console.log(desk.position);
+      window.virtual_office.tweens.sharpenScreens.start();
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
 
@@ -243,6 +243,7 @@ function handleDeskClick(desk) {
 
     }
     else {
+      window.virtual_office.tweens.blurScreens.start();
       window.virtual_office.moving = true;
       var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
 
@@ -280,6 +281,7 @@ function handleDeskClick(desk) {
 function handleWallClick(desk) {
   if (isMouseDown && !window.virtual_office.moving) {
     if (!window.virtual_office.selected) {
+      window.virtual_office.tweens.sharpenScreens.start();
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
       let reverseRatio = (window.innerHeight / window.innerWidth);
@@ -294,6 +296,7 @@ function handleWallClick(desk) {
       window.virtual_office.tweens.moveCamera.to(newPosition, 1000).start();
     }
     else {
+      window.virtual_office.tweens.blurScreens.start();
       window.virtual_office.moving = true;
       var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
 
@@ -653,8 +656,8 @@ function setupScene() {
   scene = new THREE.Scene();
   scene2 = new THREE.Scene();
 
-  [deskGroup, screenCSSGroup, screenWebGLGroup] = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
-  scene2.add(screenCSSGroup);
+  [deskGroup, window.virtual_office.scene_objects.screenCSSGroup, screenWebGLGroup] = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
+  scene2.add(window.virtual_office.scene_objects.screenCSSGroup);
   scene.add(screenWebGLGroup);
   scene.add(deskGroup);
 

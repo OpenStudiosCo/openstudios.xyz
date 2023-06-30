@@ -13,6 +13,8 @@ export function updateTweens(currentTime) {
   window.virtual_office.tweens.resetCameraPosition.update(currentTime);
   window.virtual_office.tweens.resetCameraRotation.update(currentTime);
   window.virtual_office.tweens.rotateCamera.update(currentTime);
+  window.virtual_office.tweens.blurScreens.update(currentTime);
+  window.virtual_office.tweens.sharpenScreens.update(currentTime);
 }
 
 export function setupTweens(controls, controls2) {
@@ -28,7 +30,7 @@ export function setupTweens(controls, controls2) {
    * Enter the office
    * Animation: Automatic, single use
    */
-  let coords = { x: 15 + ( window.virtual_office.room_depth / 2 ) } // Start at (0, 0)
+  let coords = { x: 15 + ( window.virtual_office.room_depth / 2 ) }; // Start at (0, 0)
   window.virtual_office.tweens.enterTheOffice = enterTheOffice( coords );
 
   /**
@@ -57,6 +59,14 @@ export function setupTweens(controls, controls2) {
   window.virtual_office.tweens.rotateCamera = rotateCamera();
 
   /**
+   * Blur Screens
+   * Animation: Manual, reusable
+   */
+  window.virtual_office.tweens.blurScreens = blurScreens();
+
+  window.virtual_office.tweens.sharpenScreens = sharpenScreens();
+
+  /**
    * Reset the camera to original position and rotation.
    */
   let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
@@ -65,6 +75,8 @@ export function setupTweens(controls, controls2) {
   window.virtual_office.tweens.resetCameraRotation = resetCameraRotation( cameraDefaultRotation );
 
 }
+
+// Intro sequence.
 
 function enterTheOffice ( coords ) {
   return new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
@@ -120,6 +132,9 @@ function panDown ( cameraRotationX ) {
 
 }
 
+
+// Reusable
+
 function moveCamera( ) {
   return new TWEEN.Tween(window.virtual_office.camera.position)
     .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
@@ -142,6 +157,31 @@ function rotateCamera( ) {
     window.virtual_office.moving = false;
   });
 }
+
+function blurScreens() {
+  let target = { x: 0 };
+  return new TWEEN.Tween( target )
+  .to({ x: 8 }, 1000) // Set the duration of the animation
+  .onUpdate(() => {
+    window.virtual_office.scene_objects.screenCSSGroup.children.forEach(function (screen, i) {
+      screen.element.style.filter = 'blur( ' + target.x + 'px )'
+    });
+  });
+}
+
+function sharpenScreens( ) {
+  let target = { x: 8 };
+  return new TWEEN.Tween( target )
+    .to({ x: 0 }, 1000) // Set the duration of the animation
+    .onUpdate(() => {
+      window.virtual_office.scene_objects.screenCSSGroup.children.forEach((screen) => {
+        screen.element.style.filter = 'blur( ' + target.x + 'px )'
+      });
+    });
+}
+
+
+// Resets 
 
 function resetCameraPosition( cameraDefaultPosition ) {
   return new TWEEN.Tween(window.virtual_office.camera.position)
