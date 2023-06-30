@@ -282,11 +282,15 @@ function handleWallClick(desk) {
     if (!window.virtual_office.selected) {
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
+      let reverseRatio = (window.innerHeight / window.innerWidth);
+      let newPosZ = reverseRatio > 1.25 ? 40 * reverseRatio : 80 * reverseRatio;
+      console.log(newPosZ);
       let newPosition = new THREE.Vector3(
         0,
-        3.75,
-        window.virtual_office.selected.position.z + 35
+        3.75 + (window.innerHeight / window.innerWidth),
+        window.virtual_office.selected.position.z + newPosZ
       );
+      window.virtual_office.tweens.rotateCamera.to({ x:0, y: 0, z: 0 }, 1000).start()
       window.virtual_office.tweens.moveCamera.to(newPosition, 1000).start();
     }
     else {
