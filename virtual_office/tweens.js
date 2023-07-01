@@ -79,8 +79,9 @@ export function setupTweens(controls, controls2) {
 // Intro sequence.
 
 function enterTheOffice ( coords ) {
+  let targetZ = - 20 + (window.virtual_office.room_depth / 2);
   return new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
-  .to({ x: - 20 + (window.virtual_office.room_depth / 2) }, 1000) // Move to (300, 200) in 1 second.
+  .to({ x: targetZ }, 1000) // Move to (300, 200) in 1 second.
   .easing(TWEEN.Easing.Quadratic.InOut) // Use an easing function to make the animation smooth.
   .onUpdate(() => {
     // Called after tween.js updates 'coords'.
@@ -89,8 +90,6 @@ function enterTheOffice ( coords ) {
     window.virtual_office.camera.updateProjectionMatrix();
   })
   .onComplete(() => {
-    window.virtual_office.tweens.panDown.start();
-    window.virtual_office.tweens.dollyUp.start();
     const roomMaterial = new THREE.MeshLambertMaterial({
       color: 0xa0adaf,
       opacity: 1,
@@ -110,7 +109,8 @@ function openDoor ( doorRotation ) {
   .to({ y: doorRotation }, 500) // Set the duration of the animation
   .onComplete(() => {
     window.virtual_office.tweens.enterTheOffice.start();
-
+    window.virtual_office.tweens.panDown.delay(500).start();
+    window.virtual_office.tweens.dollyUp.delay(500).start();
   })
   ;
 }
