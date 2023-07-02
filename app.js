@@ -16,19 +16,108 @@ domReady(
 
     // Create an object to talk to the application.
     window.virtual_office = {
+
+      /**
+       * Primary scene camera
+       * 
+       * @memberof THREE.Camera
+       */
       camera: false,
+
+      /**
+       * Debug mode.
+       * 
+       * @memberof Boolean
+       */
       debug: false,
+
+      /**
+       * Effects composers and their layers.
+       * 
+       * @memberof Object { THREE.EffectsComposer , THREE.Layer }
+       */
+      effects: {
+        main: false,
+        bloom: false,
+        bloomLayer: false
+      },
+
+      /**
+       * Fast mode (bloom off, no shadows)
+       * 
+       * @memberof Boolean
+       */
       fast: false,
+
+      /**
+       * Camera is being moved by tweening.
+       * 
+       * @memberof Boolean
+       */
       moving: false,
+
+      /**
+       * Current position of the users pointer.
+       * 
+       * @memberof THREE.Vector2
+       */
+      pointer: false,
+
+      /**
+       * Raycaster that projects into the scene from the users pointer and picks up collisions for interaction.
+       * 
+       * @memberof THREE.Raycaster
+       */
+      raycaster: false,
+
+      /**
+       * Renderers that create the scene.
+       * 
+       * @memberof Object { THREE.Renderer , ... }
+       */
+      renderers: {
+        css: false,
+        webgl: false
+      },
+
+      /**
+       * Settings that controls the scene.
+       * 
+       * @memberof Object
+       */
       scene_dimensions: {
-        adjusted_gap: false,
-        gap: 1.3,
-        room_depth: false,
+        adjusted_gap: false, // calculated value
+        gap: 1.3, // depth(z axis) gap between desks
+        room_depth: false, // calculated value
         scale: 11 // do not change, braeks css screen sizes
       },
-      scene_objects: {},
+
+      /**
+       * Tracked meshes and mesh groups that compose the scene.
+       * 
+       * @memberof Object
+       */
+      scene_objects: { },
+      
+      /**
+       * Currently selected object.
+       * 
+       * @memberof THREE.Object3d
+       */
       selected: false,
+
+      /**
+       * If the main sequence has begun.
+       * 
+       * @memberof Boolean
+       */
       started: false,
+      
+      /**
+       * All scene tweens.
+       * 
+       * @memberof Object
+       */
       tweens: {}
     };
 

@@ -11,23 +11,18 @@ import { MeshBVHVisualizer } from 'three-mesh-bvh';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 import { scaleEffects, setupEffects } from './effects.js';
-//import { handleInteractions, handleDeskClick, handleWallClick handleViewportChange } from './events.js';
-import { brightenMaterial, setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
+import { handleInteractions, handleViewportChange } from './events.js';
+import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
-let bloomComposer, bloomLayer, composer, scene, webGLRenderer, stats;
-let deskGroup, wallGroup;
+let bloomLayer, scene, stats;
 
-let scene2, cssRenderer;
+let scene2;
 
 let controls, controls2;
 
 let materials, darkMaterial;
-
-const raycaster = new THREE.Raycaster();
-const pointer = new THREE.Vector2();
-let isMouseDown = false;
 
 export function init(pane) {
 
@@ -50,6 +45,12 @@ export function init(pane) {
   window.virtual_office.camera = new THREE.PerspectiveCamera(fov, aspect, 1, 1000);
   window.virtual_office.camera.aspect = width / height;
   window.virtual_office.camera.position.set(0, 12, 15 + (window.virtual_office.room_depth / 2));
+  
+  // Reusable pointer for tracking user interaction.
+  window.virtual_office.pointer = new THREE.Vector2(); 
+
+  // Reusable raycaster for tracking what the user tried to hit.
+  window.virtual_office.raycaster = new THREE.Raycaster();
 
   // Scene Setup. 
   setupScene();
@@ -62,19 +63,19 @@ export function init(pane) {
   }
 
   // Setup effects.
-  [composer, bloomComposer, bloomLayer] = new setupEffects(webGLRenderer, scene);
+  [ window.virtual_office.effects.main, window.virtual_office.effects.bloom, window.virtual_office.effects.bloomLayer ] = new setupEffects(window.virtual_office.renderers.webgl, scene);
 
   // Bloom effect materials.
   darkMaterial = new THREE.MeshBasicMaterial({ color: 'black' });
   materials = {};
 
   // Setup controls.
-  controls2 = new OrbitControls(window.virtual_office.camera, cssRenderer.domElement);
+  controls2 = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.css.domElement);
   controls2.target.set(0, 10, 0);
   controls2.enabled = window.virtual_office.debug;
   controls2.update();
 
-  controls = new OrbitControls(window.virtual_office.camera, webGLRenderer.domElement);
+  controls = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.webgl.domElement);
   controls.enabled = window.virtual_office.debug;
   controls.target.set(0, 10, 0);
   controls.update();
@@ -87,49 +88,6 @@ export function init(pane) {
   // Setup Tweens.
   setupTweens(controls, controls2);
 
-  function handleViewportChange() {
-    window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
-    window.virtual_office.room_depth = 8 * window.virtual_office.scene_dimensions.adjusted_gap;
-
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-
-    window.virtual_office.camera.aspect = width / height;
-
-    window.virtual_office.camera.fov = setCameraFOV(window.virtual_office.camera.aspect);
-    if (!window.virtual_office.selected) {
-      window.virtual_office.camera.position.z = - 20 + (window.virtual_office.room_depth / 2);
-      window.virtual_office.camera.rotation.x = - (Math.PI / 30) * window.virtual_office.camera.aspect;
-    }
-    window.virtual_office.camera.updateProjectionMatrix();
-
-    // Adjust desk positions based on the aspect ratio
-    deskGroup.children.forEach(function (desk, i) {
-      updateDeskZ(desk, i, window.virtual_office.scene_dimensions.adjusted_gap);
-    });
-
-    window.virtual_office.scene_objects.screenCSSGroup.children.forEach(function (screen, i) {
-      updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
-      screen.position.z += .175;
-    });
-    window.virtual_office.scene_objects.screenWebGLGroup.children.forEach(function (screen, i) {
-      updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
-      screen.position.z += .175;
-    });
-
-    const newRoom = createOfficeRoom();
-    window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
-
-    wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
-
-    window.virtual_office.scene_objects.door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
-
-    webGLRenderer.setSize(width, height);
-    cssRenderer.setSize(width, height);
-    composer.setSize(width, height);
-    bloomComposer.setSize(width, height);
-  }
-
   window.addEventListener('orientationchange', handleViewportChange);
   window.addEventListener('resize', handleViewportChange);
 
@@ -138,8 +96,8 @@ export function init(pane) {
     // calculate pointer position in normalized device coordinates
     // (-1 to +1) for both components
 
-    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    window.virtual_office.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    window.virtual_office.pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
 
   }
 
@@ -148,29 +106,27 @@ export function init(pane) {
   function onTouchStart(event) {
     event.preventDefault();
 
-    pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-
-    isMouseDown = true;
+    window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+    window.virtual_office.pointer.z = 1; // previously mouseDown = true
   }
   function onTouchEnd(event) {
     event.preventDefault();
 
-    pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-
-    isMouseDown = false;
+    window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+    window.virtual_office.pointer.z = 0; // previously mouseDown = false
   }
 
   window.addEventListener('touchstart', onTouchStart, false);
   window.addEventListener('touchend', onTouchEnd, false);
 
   function onMouseDown(event) {
-    isMouseDown = true;
+    window.virtual_office.pointer.z = 1; // previously mouseDown = true
   }
 
   function onMouseUp(event) {
-    isMouseDown = false;
+    window.virtual_office.pointer.z = 0; // previously mouseDown = false
   }
 
   // Attach the mouse down and up event listeners
@@ -216,229 +172,6 @@ function mapRange(value, inMin, inMax, outMin, outMax) {
   return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
 
-function handleDeskClick(desk) {
-  if (isMouseDown && !window.virtual_office.moving) {
-    if (!window.virtual_office.selected) {
-      window.virtual_office.moving = true;
-      window.virtual_office.selected = desk;
-      window.virtual_office.tweens.sharpenScreen.start();
-
-      let tempMesh = new THREE.Object3D();
-      tempMesh.position.set(window.virtual_office.selected.position.x, 4.2, window.virtual_office.selected.position.z);
-
-      var targetRotation;
-      virtual_office.selected.children.forEach((item) => {
-        if (item.name == 'screen') {
-          targetRotation = item.rotation.clone(); // Target quaternion
-        }
-      });
-      tempMesh.rotation.setFromVector3(targetRotation);
-      tempMesh.position.y = 4.2;
-
-      tempMesh.translateX(tempMesh.position.x > 0 ? -7.5 : 7.5);
-      tempMesh.translateZ(tempMesh.position.x > 0 ? .375 : .475);
-      window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: - targetRotation.y, z: targetRotation.z }, 1000).start()
-      window.virtual_office.tweens.moveCamera.to(tempMesh.position, 1000).start();
-      cssRenderer.domElement.style.zIndex = 9999;
-      cssRenderer.domElement.style.pointerEvents = 'auto';
-
-    }
-    else {
-      window.virtual_office.moving = true;
-      var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
-
-      let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
-        cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
-
-      // Animate the camera resetting from any other position.
-      window.virtual_office.tweens.resetCameraPosition = new TWEEN.Tween(window.virtual_office.camera.position)
-        .to(cameraDefaultPosition, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
-        .onUpdate(() => {
-          window.virtual_office.camera.updateProjectionMatrix();
-        })
-        .onComplete(() => {
-          window.virtual_office.moving = false;
-        })
-        ;
-      window.virtual_office.tweens.resetCameraRotation = new TWEEN.Tween(window.virtual_office.camera.rotation)
-        .to(cameraDefaultRotation, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
-        .onUpdate(() => {
-          window.virtual_office.camera.updateProjectionMatrix();
-        })
-        ;
-      window.virtual_office.tweens.resetCameraRotation.start();
-      window.virtual_office.tweens.resetCameraPosition.start();
-      window.virtual_office.tweens.blurScreen.start();
-      cssRenderer.domElement.style.zIndex = 'inherit';
-      cssRenderer.domElement.style.pointerEvents = 'none';
-    }
-
-  }
-}
-
-function handleWallClick(desk) {
-  if (isMouseDown && !window.virtual_office.moving) {
-    if (!window.virtual_office.selected) {
-      window.virtual_office.moving = true;
-      window.virtual_office.selected = desk;
-      window.virtual_office.tweens.sharpenScreen.start();
-
-      let reverseRatio = (window.innerHeight / window.innerWidth);
-      let newPosZ = reverseRatio > 1.25 ? 40 * reverseRatio : 80 * reverseRatio;
-
-      let newPosition = new THREE.Vector3(
-        0,
-        3.75 + (window.innerHeight / window.innerWidth),
-        window.virtual_office.selected.position.z + newPosZ
-      );
-
-      window.virtual_office.tweens.rotateCamera.to({ x:0, y: 0, z: 0 }, 1000).start()
-      window.virtual_office.tweens.moveCamera.to(newPosition, 1000).start();
-      cssRenderer.domElement.style.zIndex = 9999;
-      cssRenderer.domElement.style.pointerEvents = 'auto';
-    }
-    else {
-      window.virtual_office.moving = true;
-      var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
-
-      let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
-        cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
-
-      // Animate the camera resetting from any other position.
-      window.virtual_office.tweens.resetCameraPosition = new TWEEN.Tween(window.virtual_office.camera.position)
-        .to(cameraDefaultPosition, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
-        .onUpdate(() => {
-          window.virtual_office.camera.updateProjectionMatrix();
-        })
-        .onComplete(() => {
-          window.virtual_office.moving = false;
-        })
-        ;
-      window.virtual_office.tweens.resetCameraRotation = new TWEEN.Tween(window.virtual_office.camera.rotation)
-        .to(cameraDefaultRotation, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
-        .onUpdate(() => {
-          window.virtual_office.camera.updateProjectionMatrix();
-        })
-        ;
-      window.virtual_office.tweens.resetCameraRotation.start();
-      window.virtual_office.tweens.resetCameraPosition.start();
-      window.virtual_office.tweens.blurScreen.start();
-      cssRenderer.domElement.style.zIndex = 'inherit';
-      cssRenderer.domElement.style.pointerEvents = 'none';
-    }
-
-  }
-}
-
-function handleInteractions() {
-  // update the picking ray with the camera and pointer position
-  raycaster.setFromCamera(pointer, window.virtual_office.camera);
-
-  // calculate objects intersecting the picking ray
-  const intersects = raycaster.intersectObjects(scene.children);
-
-  // Reset all the other desk labels to the regular colour.
-  deskGroup.children.forEach((desk) => {
-    desk.children.forEach((desk_item) => {
-      if (desk_item.name == "desk_label") {
-        desk_item.material.emissive.set(0x00EEff);
-        desk_item.material.emissiveIntensity = 0.5;
-      }
-      if (desk_item.name == "ceilLightMesh") {
-        desk_item.material.emissive.set(0x00EEff);
-        desk_item.material.emissiveIntensity = 0.25;
-      }
-      if (desk_item.name == "ceilLightActual") {
-        desk_item.color.set(0x00EEff);
-        desk_item.intensity = 0.015;
-      }
-    });
-  });
-
-  // Reset the portraits and neon to the regular colour.
-  wallGroup.children.forEach((object, i) => {
-
-    if (object.name == "neon") {
-      object.material.emissive.set(0xDA68C5);
-      object.material.emissiveIntensity = 1;
-      object.children[0].color.set(0xDA68C5);
-      object.children[0].intensity = window.virtual_office.fast ? 0.35 : 0.1;
-    }
-    if (object.name == "portrait") {
-      object.brightness.current = object.brightness.target;
-      let portraitTexture = object.material.map;
-      var portraitMaterial = new THREE.MeshStandardMaterial({ map: portraitTexture });
-
-      let newMaterial = brightenMaterial(portraitMaterial, object.brightness.current);
-      wallGroup.children[i].material = newMaterial;
-    }
-  });
-
-  document.body.style.cursor = "default";
-
-  for (let i = 0; i < intersects.length; i++) {
-    if (intersects[i].object.name == "desk_label") {
-      // Set the active one to white.
-      intersects[i].object.material.emissive.set(0xFFFFFF);
-      document.body.style.cursor = "pointer";
-
-      handleDeskClick(intersects[i].object.parent);
-
-      break;
-    }
-
-    if (intersects[i].object.name == "screen" || intersects[i].object.name == "desk_part") {
-      // Set the screens sibling desk_label to active.
-      intersects[i].object.parent.getObjectByName("desk_label").material.emissive.set(0xFFFFFF);
-      intersects[i].object.parent.getObjectByName("desk_label").material.emissiveIntensity = 0.25;
-      intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissive.set(0xFFFFFF);
-      intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissiveIntensity = 0.5;
-      //intersects[ i ].object.parent.getObjectByName("ceilLightActual").color.set( 0xFFFFFF );
-      intersects[i].object.parent.getObjectByName("ceilLightActual").intensity = 0.03;
-      document.body.style.cursor = "pointer";
-
-      handleDeskClick(intersects[i].object.parent);
-
-      break;
-    }
-
-    if (intersects[i].object.name == "neon") {
-      document.body.style.cursor = "pointer";
-      intersects[i].object.material.emissive.set(0xFFFFFF);
-      intersects[i].object.material.emissiveIntensity = 0.5;
-
-      let portraits = intersects[i].object.parent.getObjectsByProperty('name', 'portrait');
-      portraits.forEach((portrait, portraitIndex) => {
-        portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
-        portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
-      });
-      handleWallClick(intersects[i].object.parent);
-
-      break;
-    }
-    if (intersects[i].object.name == "portrait") {
-      document.body.style.cursor = "pointer";
-      intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
-      intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
-
-      let portraits = intersects[i].object.parent.getObjectsByProperty('name', 'portrait');
-      portraits.forEach((portrait, portraitIndex) => {
-        portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
-        portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
-      });
-
-      handleWallClick(intersects[i].object.parent);
-
-
-      break;
-    }
-  }
-}
-
 export function animate(currentTime) {
 
   requestAnimationFrame(animate);
@@ -448,12 +181,12 @@ export function animate(currentTime) {
     updateTweens(currentTime, controls, controls2);
 
     if (!window.virtual_office.debug) {
-      handleInteractions();
+      handleInteractions( scene );
     }
 
   }
 
-  scaleEffects(currentTime, webGLRenderer);
+  scaleEffects(currentTime, window.virtual_office.renderers.webgl);
 
   if (window.virtual_office.debug) {
     stats.update();
@@ -462,21 +195,21 @@ export function animate(currentTime) {
   // Render the composer
   if (!window.virtual_office.fast) {
     scene.traverse(darkenNonBloomed);
-    bloomComposer.render();
+    window.virtual_office.effects.bloom.render();
     scene.traverse(restoreMaterial);
-    composer.render();
-    cssRenderer.render(scene2, window.virtual_office.camera);
+    window.virtual_office.effects.main.render();
+    window.virtual_office.renderers.css.render(scene2, window.virtual_office.camera);
 
   } else {
-    webGLRenderer.render(scene, window.virtual_office.camera); // Render the scene without the effects
-    cssRenderer.render(scene2, window.virtual_office.camera);
+    window.virtual_office.renderers.webgl.render(scene, window.virtual_office.camera); // Render the scene without the effects
+    window.virtual_office.renderers.css.render(scene2, window.virtual_office.camera);
   }
 
 }
 
 function darkenNonBloomed(obj) {
 
-  if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
+  if (obj.isMesh && window.virtual_office.effects.bloomLayer.test(obj.layers) === false) {
 
     materials[obj.uuid] = obj.material;
     obj.material = darkMaterial;
@@ -603,7 +336,7 @@ function createDoor() {
     backWallLogo.position.y = 22.5;
     backWallLogo.position.z = 1.5;
 
-    wallGroup.add(backWallLogo);
+    window.virtual_office.scene_objects.wallGroup.add(backWallLogo);
 
 
   });
@@ -661,9 +394,9 @@ function setupScene() {
   scene = new THREE.Scene();
   scene2 = new THREE.Scene();
 
-  [ deskGroup, window.virtual_office.scene_objects.screenCSSGroup ] = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
+  [ window.virtual_office.scene_objects.deskGroup, window.virtual_office.scene_objects.screenCSSGroup ] = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
   scene2.add(window.virtual_office.scene_objects.screenCSSGroup);
-  scene.add(deskGroup);
+  scene.add(window.virtual_office.scene_objects.deskGroup);
 
   // Adjust ambient light intensity
   var ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x554455 : 0x443344); // Dim ambient light color
@@ -677,25 +410,25 @@ function setupScene() {
   window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
   scene.add(window.virtual_office.scene_objects.door);
 
-  wallGroup = setupBackwall(scene);
-  wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
-  scene.add(wallGroup);
+  window.virtual_office.scene_objects.wallGroup = setupBackwall(scene);
+  window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
+  scene.add(window.virtual_office.scene_objects.wallGroup);
   scene2.add(window.virtual_office.scene_objects.tvCSS);
   scene.add(window.virtual_office.scene_objects.tvWebGL);
 
 }
 
 function setupRenderers() {
-  // Main webGLRenderer.
-  webGLRenderer = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
-  webGLRenderer.setPixelRatio(window.devicePixelRatio);
-  webGLRenderer.setSize(window.innerWidth, window.innerHeight);
-  document.querySelector("#webgl").appendChild(webGLRenderer.domElement);
+  // Main 3D webGL Renderer.
+  window.virtual_office.renderers.webgl = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
+  window.virtual_office.renderers.webgl.setPixelRatio(window.devicePixelRatio);
+  window.virtual_office.renderers.webgl.setSize(window.innerWidth, window.innerHeight);
+  document.querySelector("#webgl").appendChild(window.virtual_office.renderers.webgl.domElement);
 
-  // Website webGLRenderer.
-  cssRenderer = new CSS3DRenderer();
-  cssRenderer.setSize(window.innerWidth, window.innerHeight);
-  cssRenderer.domElement.style.position = "absolute";
-  cssRenderer.domElement.style.top = 0;
-  document.querySelector("#css").appendChild(cssRenderer.domElement);
+  // Website CSSRenderer.
+  window.virtual_office.renderers.css = new CSS3DRenderer();
+  window.virtual_office.renderers.css.setSize(window.innerWidth, window.innerHeight);
+  window.virtual_office.renderers.css.domElement.style.position = "absolute";
+  window.virtual_office.renderers.css.domElement.style.top = 0;
+  document.querySelector("#css").appendChild(window.virtual_office.renderers.css.domElement);
 }
