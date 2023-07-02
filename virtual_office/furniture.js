@@ -22,24 +22,41 @@ export function setupBackwall ( scene ) {
     wallGroup.add(signMesh);
   }, scene);
   
-  // Add portraits to the scene
-  let paulsPortrait = createPortrait('./paul.png', 2.75);
-  paulsPortrait.position.set(-7.5, 4, 1);  // Example position for portrait 1
-  paulsPortrait.name = "portrait";
-  paulsPortrait.brightness = {
-    current: 2.75,
-    target: 2.75
-  };
-  wallGroup.add(paulsPortrait);
+  // // Add portraits to the scene
+  // let paulsPortrait = createPortrait('./paul.png', 2.75);
+  // paulsPortrait.position.set(-7.5, 4, 1);  // Example position for portrait 1
+  // paulsPortrait.name = "portrait";
+  // paulsPortrait.brightness = {
+  //   current: 2.75,
+  //   target: 2.75
+  // };
+  // wallGroup.add(paulsPortrait);
 
-  let garrettsPortrait = createPortrait('./garrett.png', 4.);
-  garrettsPortrait.position.set(7.5, 4, 1);  // Example position for portrait 1
-  garrettsPortrait.brightness = {
-    current: 4,
-    target: 4
-  };
-  garrettsPortrait.name = "portrait";
-  wallGroup.add(garrettsPortrait);
+  // let garrettsPortrait = createPortrait('./garrett.png', 4.);
+  // garrettsPortrait.position.set(7.5, 4, 1);  // Example position for portrait 1
+  // garrettsPortrait.brightness = {
+  //   current: 4,
+  //   target: 4
+  // };
+  // garrettsPortrait.name = "portrait";
+  // wallGroup.add(garrettsPortrait);
+
+  [ window.virtual_office.scene_objects.tvCSS, window.virtual_office.scene_objects.tvWebGL ] = createScreen( 720 );
+  window.virtual_office.scene_objects.tvWebGL.position.y = 3.5;
+  window.virtual_office.scene_objects.tvWebGL.position.z = - 14 - window.virtual_office.room_depth / 2;
+  window.virtual_office.scene_objects.tvCSS.position.copy(window.virtual_office.scene_objects.tvWebGL.position);
+  window.virtual_office.scene_objects.tvCSS.rotation.copy(window.virtual_office.scene_objects.tvWebGL.rotation);
+  window.virtual_office.scene_objects.tvWebGL.name = "tvWebGL";
+
+  var screenGeometry = new THREE.BoxGeometry(20.8, 11.7, 0.02);
+  var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
+  var screen = new THREE.Mesh(screenGeometry, screenMaterial);
+  screen.position.set(0 , 3.5, 0.5);
+  screen.name = "tv";
+  wallGroup.add(screen);
+
+  wallGroup.name = "backWall";
+  wallGroup.webGLScreen = window.virtual_office.scene_objects.tvWebGL;
 
   return wallGroup;
 }
@@ -130,9 +147,7 @@ export function brightenMaterial(material, amount) {
 export function setupDesks(gapSize, scale, scene) {
   // Create groups
   var deskGroup = new THREE.Group(),
-      screenCSSGroup = new THREE.Group(),
-      // Do these need to be separate?
-      screenWebGLGroup = new THREE.Group();
+      screenCSSGroup = new THREE.Group();
 
   for (var i = 0; i < 4; i++) {
     var desk = createDesk( i );
@@ -142,6 +157,7 @@ export function setupDesks(gapSize, scale, scene) {
     var [ screenCSS, screenWebGL ] = createScreen( i );
     screenCSS.rotation.y = - Math.PI / 2;
     screenCSS.position.y = 4.4;
+    desk.webGLScreen = screenWebGL;
 
     // Main position coordinates.
     if (i < 2) {
@@ -223,12 +239,11 @@ export function setupDesks(gapSize, scale, scene) {
     screenWebGL.rotation.copy(screenCSS.rotation);
 
     deskGroup.add(desk);
-    screenCSSGroup.add(screenCSS);
-    screenWebGLGroup.add(screenWebGL);
-    
+    deskGroup.add(screenWebGL);
+    screenCSSGroup.add(screenCSS);  
 
   }
-  return [deskGroup, screenCSSGroup, screenWebGLGroup ];
+  return [deskGroup, screenCSSGroup ];
 }
 
 /**
@@ -431,40 +446,46 @@ function createScreen( i ){
     case 3:
       url = '../pages/contact_us.html';
       break;
+    case 720:
+      url = '../pages/about_us.html';
+      break;
   }
   
 
   var element = document.createElement("iframe");
   //var element = document.createElement("img");
-  element.width = "1024";
-  element.height = "768";
+  element.width = i == 720 ? "1280" : "1024";
+  element.height = i == 720 ? "720" : "768";
   element.style.opacity = 0.999;
   
   element.src = url;
   element.addEventListener("load", function() {
     window.virtual_office.scene_objects.screens_loaded += 1;
   });
-  console.log(element.style.pointerEvents);
 
   var screenCSS = new CSS3DObject(element);
-  screenCSS.scale.multiplyScalar( 0.00625 );
+  screenCSS.scale.multiplyScalar( i == 720 ? .015 : 0.00625 );
+
   element.style.filter = 'blur( 8px )';
   element.style.pointerEvents = 'none';
 
   var material = new THREE.MeshPhongMaterial({
-    opacity: 0,
+    opacity: 0.,
     color: new THREE.Color("black"),
     blending: THREE.NoBlending,
     side: THREE.DoubleSide,
     minFilter: THREE.LinearFilter
 
   });
-  var geometry = new THREE.PlaneGeometry(6.4, 4.8);
+  var geometry = new THREE.PlaneGeometry(i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8);
   var screenWebGL = new THREE.Mesh(geometry, material);
   
   //mesh.scale.copy( domObject.scale );
   screenWebGL.castShadow = false;
   screenWebGL.receiveShadow = true;
+
+  screenWebGL.cssScreen = screenCSS;
+  screenWebGL.name = "screenWebGL";
   
   return [ screenCSS, screenWebGL ];
 }

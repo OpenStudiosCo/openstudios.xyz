@@ -11,12 +11,13 @@ import { MeshBVHVisualizer } from 'three-mesh-bvh';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 import { scaleEffects, setupEffects } from './effects.js';
+//import { handleInteractions, handleDeskClick, handleWallClick handleViewportChange } from './events.js';
 import { brightenMaterial, setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
 import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
 let bloomComposer, bloomLayer, composer, scene, webGLRenderer, stats;
-let deskGroup, screenWebGLGroup, wallGroup;
+let deskGroup, wallGroup;
 
 let scene2, cssRenderer;
 
@@ -111,7 +112,7 @@ export function init(pane) {
       updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
       screen.position.z += .175;
     });
-    screenWebGLGroup.children.forEach(function (screen, i) {
+    window.virtual_office.scene_objects.screenWebGLGroup.children.forEach(function (screen, i) {
       updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
       screen.position.z += .175;
     });
@@ -218,9 +219,9 @@ function mapRange(value, inMin, inMax, outMin, outMax) {
 function handleDeskClick(desk) {
   if (isMouseDown && !window.virtual_office.moving) {
     if (!window.virtual_office.selected) {
-      window.virtual_office.tweens.sharpenScreens.start();
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
+      window.virtual_office.tweens.sharpenScreen.start();
 
       let tempMesh = new THREE.Object3D();
       tempMesh.position.set(window.virtual_office.selected.position.x, 4.2, window.virtual_office.selected.position.z);
@@ -243,7 +244,6 @@ function handleDeskClick(desk) {
 
     }
     else {
-      window.virtual_office.tweens.blurScreens.start();
       window.virtual_office.moving = true;
       var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
 
@@ -270,7 +270,7 @@ function handleDeskClick(desk) {
         ;
       window.virtual_office.tweens.resetCameraRotation.start();
       window.virtual_office.tweens.resetCameraPosition.start();
-      window.virtual_office.selected = false;
+      window.virtual_office.tweens.blurScreen.start();
       cssRenderer.domElement.style.zIndex = 'inherit';
       cssRenderer.domElement.style.pointerEvents = 'none';
     }
@@ -281,22 +281,25 @@ function handleDeskClick(desk) {
 function handleWallClick(desk) {
   if (isMouseDown && !window.virtual_office.moving) {
     if (!window.virtual_office.selected) {
-      window.virtual_office.tweens.sharpenScreens.start();
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
+      window.virtual_office.tweens.sharpenScreen.start();
+
       let reverseRatio = (window.innerHeight / window.innerWidth);
       let newPosZ = reverseRatio > 1.25 ? 40 * reverseRatio : 80 * reverseRatio;
-      console.log(newPosZ);
+
       let newPosition = new THREE.Vector3(
         0,
         3.75 + (window.innerHeight / window.innerWidth),
         window.virtual_office.selected.position.z + newPosZ
       );
+
       window.virtual_office.tweens.rotateCamera.to({ x:0, y: 0, z: 0 }, 1000).start()
       window.virtual_office.tweens.moveCamera.to(newPosition, 1000).start();
+      cssRenderer.domElement.style.zIndex = 9999;
+      cssRenderer.domElement.style.pointerEvents = 'auto';
     }
     else {
-      window.virtual_office.tweens.blurScreens.start();
       window.virtual_office.moving = true;
       var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
 
@@ -323,7 +326,9 @@ function handleWallClick(desk) {
         ;
       window.virtual_office.tweens.resetCameraRotation.start();
       window.virtual_office.tweens.resetCameraPosition.start();
-      window.virtual_office.selected = false;
+      window.virtual_office.tweens.blurScreen.start();
+      cssRenderer.domElement.style.zIndex = 'inherit';
+      cssRenderer.domElement.style.pointerEvents = 'none';
     }
 
   }
@@ -656,9 +661,8 @@ function setupScene() {
   scene = new THREE.Scene();
   scene2 = new THREE.Scene();
 
-  [deskGroup, window.virtual_office.scene_objects.screenCSSGroup, screenWebGLGroup] = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
+  [ deskGroup, window.virtual_office.scene_objects.screenCSSGroup ] = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
   scene2.add(window.virtual_office.scene_objects.screenCSSGroup);
-  scene.add(screenWebGLGroup);
   scene.add(deskGroup);
 
   // Adjust ambient light intensity
@@ -675,8 +679,9 @@ function setupScene() {
 
   wallGroup = setupBackwall(scene);
   wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
-
   scene.add(wallGroup);
+  scene2.add(window.virtual_office.scene_objects.tvCSS);
+  scene.add(window.virtual_office.scene_objects.tvWebGL);
 
 }
 

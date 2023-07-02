@@ -67,7 +67,7 @@ export function scaleEffects( currentTime, renderer ) {
   }
 
   if (
-    window.virtual_office.scene_objects.screens_loaded == 4 &&
+    window.virtual_office.scene_objects.screens_loaded == 5 &&
     ( delayTimer >= delayDuration ) &&
     window.virtual_office.started == false 
   ) {

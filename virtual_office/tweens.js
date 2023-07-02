@@ -13,8 +13,8 @@ export function updateTweens(currentTime) {
   window.virtual_office.tweens.resetCameraPosition.update(currentTime);
   window.virtual_office.tweens.resetCameraRotation.update(currentTime);
   window.virtual_office.tweens.rotateCamera.update(currentTime);
-  window.virtual_office.tweens.blurScreens.update(currentTime);
-  window.virtual_office.tweens.sharpenScreens.update(currentTime);
+  window.virtual_office.tweens.blurScreen.update(currentTime);
+  window.virtual_office.tweens.sharpenScreen.update(currentTime);
 }
 
 export function setupTweens(controls, controls2) {
@@ -62,9 +62,9 @@ export function setupTweens(controls, controls2) {
    * Blur Screens
    * Animation: Manual, reusable
    */
-  window.virtual_office.tweens.blurScreens = blurScreens();
+  window.virtual_office.tweens.blurScreen = blurScreen();
 
-  window.virtual_office.tweens.sharpenScreens = sharpenScreens();
+  window.virtual_office.tweens.sharpenScreen = sharpenScreen();
 
   /**
    * Reset the camera to original position and rotation.
@@ -158,25 +158,24 @@ function rotateCamera( ) {
   });
 }
 
-function blurScreens() {
+function blurScreen( ) {
   let target = { x: 0 };
   return new TWEEN.Tween( target )
   .to({ x: 8 }, 1000) // Set the duration of the animation
   .onUpdate(() => {
-    window.virtual_office.scene_objects.screenCSSGroup.children.forEach(function (screen, i) {
-      screen.element.style.filter = 'blur( ' + target.x + 'px )'
-    });
+    window.virtual_office.selected.webGLScreen.cssScreen.element.style.filter = 'blur( ' + target.x + 'px )';
+  })
+  .onComplete(() => {
+    window.virtual_office.selected = false;
   });
 }
 
-function sharpenScreens( ) {
+function sharpenScreen( ) {
   let target = { x: 8 };
   return new TWEEN.Tween( target )
     .to({ x: 0 }, 1000) // Set the duration of the animation
     .onUpdate(() => {
-      window.virtual_office.scene_objects.screenCSSGroup.children.forEach((screen) => {
-        screen.element.style.filter = 'blur( ' + target.x + 'px )'
-      });
+      window.virtual_office.selected.webGLScreen.cssScreen.element.style.filter = 'blur( ' + target.x + 'px )';
     });
 }
 
