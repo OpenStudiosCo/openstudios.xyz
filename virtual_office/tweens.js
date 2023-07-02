@@ -5,16 +5,9 @@ export function startTweening() {
 }
 
 export function updateTweens(currentTime) {
-  window.virtual_office.tweens.enterTheOffice.update(currentTime);
-  window.virtual_office.tweens.openDoor.update(currentTime);
-  window.virtual_office.tweens.dollyUp.update(currentTime);
-  window.virtual_office.tweens.panDown.update(currentTime);
-  window.virtual_office.tweens.moveCamera.update(currentTime);
-  window.virtual_office.tweens.resetCameraPosition.update(currentTime);
-  window.virtual_office.tweens.resetCameraRotation.update(currentTime);
-  window.virtual_office.tweens.rotateCamera.update(currentTime);
-  window.virtual_office.tweens.blurScreen.update(currentTime);
-  window.virtual_office.tweens.sharpenScreen.update(currentTime);
+  for (var tween in window.virtual_office.tweens) {
+    window.virtual_office.tweens[tween].update(currentTime);
+  }
 }
 
 export function setupTweens(controls, controls2) {
@@ -64,7 +57,7 @@ export function setupTweens(controls, controls2) {
    */
   window.virtual_office.tweens.blurScreen = blurScreen();
 
-  window.virtual_office.tweens.sharpenScreen = sharpenScreen();
+  //window.virtual_office.tweens.sharpenScreen = sharpenScreen;
 
   /**
    * Reset the camera to original position and rotation.
@@ -170,13 +163,17 @@ function blurScreen( ) {
   });
 }
 
-function sharpenScreen( ) {
-  let target = { x: 8 };
+export function sharpenScreen( ) {
+  let target = { x: window.virtual_office.selected.name == 'backWall' ?  2 : 8 };
   return new TWEEN.Tween( target )
     .to({ x: 0 }, 1000) // Set the duration of the animation
     .onUpdate(() => {
       window.virtual_office.selected.webGLScreen.cssScreen.element.style.filter = 'blur( ' + target.x + 'px )';
-    });
+    })
+    .onComplete(() => {
+      TWEEN.remove(window.virtual_office.tweens.sharpenScreen)
+      delete window.virtual_office.tweens.sharpenScreen;
+    });;
 }
 
 

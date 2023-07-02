@@ -2,6 +2,8 @@ import * as THREE from 'three';
 
 import { updateDeskZ } from './furniture.js';
 
+import { sharpenScreen } from './tweens.js';
+
 export function handleViewportChange() {
   window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
   window.virtual_office.room_depth = 8 * window.virtual_office.scene_dimensions.adjusted_gap;
@@ -131,7 +133,7 @@ export function handleInteractions( scene ) {
 
       break;
     }
-    // if (intersects[i].object.name == "portrait") {
+       // if (intersects[i].object.name == "portrait") {
     //   document.body.style.cursor = "pointer";
     //   intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
     //   intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
@@ -147,6 +149,17 @@ export function handleInteractions( scene ) {
 
     //   break;
     // }
+
+    
+    if (intersects[i].object.name == "tv") {
+      document.body.style.cursor = "pointer";
+      intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
+      intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
+
+      handleWallClick(intersects[i].object.parent);
+
+      break;
+    }
   }
 }
 
@@ -155,6 +168,7 @@ function handleDeskClick(desk) {
     if (!window.virtual_office.selected) {
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
+      window.virtual_office.tweens.sharpenScreen = sharpenScreen();
       window.virtual_office.tweens.sharpenScreen.start();
 
       let tempMesh = new THREE.Object3D();
@@ -204,7 +218,7 @@ function handleDeskClick(desk) {
         ;
       window.virtual_office.tweens.resetCameraRotation.start();
       window.virtual_office.tweens.resetCameraPosition.start();
-      window.virtual_office.tweens.blurScreen.start();
+      window.virtual_office.tweens.blurScreen.to({ x: 8 }).start();
       window.virtual_office.renderers.css.domElement.style.zIndex = 'inherit';
       window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';
     }
@@ -217,6 +231,7 @@ function handleWallClick(desk) {
     if (!window.virtual_office.selected) {
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
+      window.virtual_office.tweens.sharpenScreen = sharpenScreen();
       window.virtual_office.tweens.sharpenScreen.start();
 
       let reverseRatio = (window.innerHeight / window.innerWidth);
@@ -260,7 +275,7 @@ function handleWallClick(desk) {
         ;
       window.virtual_office.tweens.resetCameraRotation.start();
       window.virtual_office.tweens.resetCameraPosition.start();
-      window.virtual_office.tweens.blurScreen.start();
+      window.virtual_office.tweens.blurScreen.to({ x: 2 }).start();
       window.virtual_office.renderers.css.domElement.style.zIndex = 'inherit';
       window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';
     }

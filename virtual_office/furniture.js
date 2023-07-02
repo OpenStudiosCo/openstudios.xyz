@@ -466,7 +466,7 @@ function createScreen( i ){
   var screenCSS = new CSS3DObject(element);
   screenCSS.scale.multiplyScalar( i == 720 ? .015 : 0.00625 );
 
-  element.style.filter = 'blur( 8px )';
+  element.style.filter = 'blur( ' + ( i==720 ? 2 : 8 ) + 'px )';
   element.style.pointerEvents = 'none';
 
   var material = new THREE.MeshPhongMaterial({

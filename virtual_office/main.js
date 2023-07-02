@@ -47,7 +47,7 @@ export function init(pane) {
   window.virtual_office.camera.position.set(0, 12, 15 + (window.virtual_office.room_depth / 2));
   
   // Reusable pointer for tracking user interaction.
-  window.virtual_office.pointer = new THREE.Vector2(); 
+  window.virtual_office.pointer = new THREE.Vector3(); 
 
   // Reusable raycaster for tracking what the user tried to hit.
   window.virtual_office.raycaster = new THREE.Raycaster();
