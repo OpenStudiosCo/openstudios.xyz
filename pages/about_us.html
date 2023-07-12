@@ -4,14 +4,39 @@
 <head>
   <title>About us - Open Studios</title>
   <style>
-    /* Add your CSS styles here */
-    /* Example styles for the layout */
+    @font-face {
+      font-family: SourceSans;
+      src: url(../fonts/SourceSans3-Light.woff);
+      src: url(../fonts/SourceSans3-Light.woff2);
+    }
+    @font-face {
+      font-family: Stigmature;
+      src: url(../fonts/Stigmature.otf);
+    }
+    @font-face {
+      font-family: VeraMono;
+      src: url(../fonts/VeraMono.woff);
+      src: url(../fonts/VeraMono.woff2);
+    }
     body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: SourceSans, Arial, sans-serif;
       background-color: #000;
       color: #FFF;
+    }
+    h1 {
+      font-family: Stigmature, "Brush Script MT", cursive;
+      color: #FF69CB;
+      
+      text-align: center;
+      font-size: 8rem;
+      margin: 4rem 0 2rem;
+    }
+
+    h3 {
+      font-family: VeraMono, Verdana, Geneva, Tahoma, sans-serif;
+      color: #FF69CB;
     }
 
     .line {
@@ -22,9 +47,10 @@
       right: 0;
       z-index: 0;
     }
+
     .line:nth-child(1) {
       top: 27.5%;
-    }
+  }
     .line:nth-child(2) {
       top: 32.5%;
     }
@@ -33,6 +59,16 @@
     }
     .line:nth-child(4) {
       top: 42.5%;
+    }
+
+    .lineset.first .line {
+      right: 49.9%;
+      transform: rotate(5deg);
+    }
+
+    .lineset.second .line {
+      left: 49.9%;
+      transform: rotate(-5deg);
     }
 
     #page-wrapper {
@@ -51,15 +87,16 @@
       min-height: 200px;
     }
 
-    .header h1 {
+    .header .h1 {
       margin: 0;
       position: relative;
       z-index: 1;
     }
 
     .header img {
-      background-color: #000;
-      max-height: 15vh;
+      background: rgb(0,0,0);
+      background: radial-gradient(circle, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 60%);
+      max-height: 25vh;
       width: auto;
     }
 
@@ -73,7 +110,10 @@
 
     .menu li {
       display: inline-block;
+      font-family: VeraMono, Verdana, Geneva, Tahoma, sans-serif;
       font-size: 1.5rem;
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
       margin-left: 0.5rem;
       margin-right: 0.5rem;
     }
@@ -88,12 +128,19 @@
     }
 
     .content {
+      display: flex;
+      flex-direction: row;
       margin: 2rem;
       max-width: 960px;
     }
 
+    .content .column {
+      width: calc(45%);
+      margin: 0 2.5%;
+    }
+
     .footer {
-      min-height: 200px;
+      min-height: 266px;
     }
 
 
@@ -102,12 +149,25 @@
         align-items: center;
       }
       .header, .menu, .content, .footer {
-        width: calc(100vh * 4/3);
+        width: 100vw;
       }
 
       .menu li {
         margin-left: 1.5rem;
         margin-right: 1.5rem;
+      }
+      
+      .line:nth-child(1) {
+        top: 17.5%;
+      }
+      .line:nth-child(2) {
+        top: 22.5%;
+      }
+      .line:nth-child(3) {
+        top: 27.5%;
+      }
+      .line:nth-child(4) {
+        top: 32.5%;
       }
     }
   </style>
@@ -116,13 +176,21 @@
 <body>
   <div id="page-wrapper">
     <div class="header">
-      <hr class="line">
-      <hr class="line">
-      <hr class="line">
-      <hr class="line">
-      <h1>
-        <a href="#"><img src="../logo-wide.png" alt="Logo"></a>
-      </h1>
+      <div class="lineset first">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+      </div>
+      <div class="h1">
+        <a href="#" title="Home"><img src="../logo-wide.png" alt="Logo"></a>
+      </div>
+      <div class="lineset second">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+      </div>
     </div>
     <div class="menu">
       <ul>
@@ -133,24 +201,38 @@
         <li><a href="./contact_us.html">Contact Us</a></li>
       </ul>
     </div>
+    <h1>About us</h1>
     <div class="content">
-      <h2>VIDEO PLACEHOLDER</h2>
-      <h3>Humble beginnings</h3>
-      <p>Offer expertise in designing intuitive user interfaces and seamless user experiences for websites,
-        applications, and digital products.</p>
-      <h3>Garrett Kinder - Owner</h3>
-      <p>Provide services in developing responsive and interactive front-end solutions using HTML, CSS, JavaScript,
-        and
-        frameworks like Vue.</p>
-      <h3>Paul Brzeski - Owner</h3>
-      <p>Offer the creation of interactive media content, immersive experiences, interactive installations, or
-        multimedia presentations for events or marketing campaigns.</p>
+
+      <div class="column">
+        <h2>VIDEO PLACEHOLDER</h2>
+        <h3>Humble beginnings</h3>
+        <p>Offer expertise in designing intuitive user interfaces and seamless user experiences for websites,
+          applications, and digital products.</p>
+      </div>
+      <div class="column">
+        <h3>Garrett Kinder - Owner</h3>
+        <p>Provide services in developing responsive and interactive front-end solutions using HTML, CSS, JavaScript,
+          and
+          frameworks like Vue.</p>
+        <h3>Paul Brzeski - Owner</h3>
+        <p>Offer the creation of interactive media content, immersive experiences, interactive installations, or
+          multimedia presentations for events or marketing campaigns.</p>
+      </div>
     </div>
     <div class="footer">
-      <hr class="line">
-      <hr class="line">
-      <hr class="line">
-      <hr class="line">
+      <div class="lineset second">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+      </div>
+      <div class="lineset first">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+      </div>
     </div>
   </div>
 
