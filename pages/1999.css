@@ -25,17 +25,23 @@ body {
 
 h1 {
   font-family: Stigmature, "Brush Script MT", cursive;
-  color: #FF69CB;
-  text-shadow: 10px 10px 10px #540037;
+  color: white;
+  text-shadow: 2.5px 2.5px 5px #FF69CB;
   text-align: center;
   font-size: 8rem;
-  margin: 2rem 0;
+  font-weight: 100;
+  margin: 2vh 0;
   text-transform: lowercase;
 }
 
 h3 {
   font-family: VeraMono, Verdana, Geneva, Tahoma, sans-serif;
   color: #FF69CB;
+  margin: 1.5rem 0;
+}
+
+p {
+  line-height: 1.5rem;
 }
 
 .line {
@@ -135,7 +141,7 @@ h3 {
 .content {
   display: flex;
   flex-wrap: wrap;
-  margin: 2rem 2rem 266px;
+  margin: 0rem 2rem 266px;
   max-width: 960px;
 }
 

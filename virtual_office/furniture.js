@@ -441,7 +441,7 @@ function createScreen( i ){
       url = '../pages/case_studies.html';
       break;
     case 2:
-      url = '../pages/projects.html';
+      url = '../pages/portfolio.html';
       break;
     case 3:
       url = '../pages/contact_us.html';
