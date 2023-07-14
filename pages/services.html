@@ -3,172 +3,90 @@
 
 <head>
   <title>Services - Open Studios</title>
-  <style>
-    /* Add your CSS styles here */
-    /* Example styles for the layout */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #000;
-      color: #FFF;
-    }
-
-    .line {
-      border: none;
-      border-top: 4px solid #FFDFFF;
-      position: absolute;
-      left:0;
-      right: 0;
-      z-index: 0;
-    }
-    .line:nth-child(1) {
-      top: 27.5%;
-    }
-    .line:nth-child(2) {
-      top: 32.5%;
-    }
-    .line:nth-child(3) {
-      top: 37.5%;
-    }
-    .line:nth-child(4) {
-      top: 42.5%;
-    }
-
-    #page-wrapper {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .header, .menu, .content, .footer {
-      position: relative;
-    }
-
-    .header {
-      text-align: center;
-      min-height: 200px;
-    }
-
-    .header h1 {
-      margin: 0;
-      position: relative;
-      z-index: 1;
-    }
-
-    .header img {
-      background-color: #000;
-      max-height: 15vh;
-      width: auto;
-    }
-
-    .menu {
-      margin: 1rem;
-      border-top: solid 4px #FFDFFF;
-      border-bottom: solid 4px #FFDFFF;
-      color: #fff;
-      text-align: center;
-    }
-
-    .menu li {
-      display: inline-block;
-      font-size: 1.5rem;
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-    }
-
-    .menu a {
-      color: #01CDFE;
-      text-decoration: none;
-    }
-
-    .menu a.active {
-      color: #ffffff;
-    }
-
-    .content {
-      margin: 2rem;
-      max-width: 960px;
-    }
-
-    .footer {
-      min-height: 200px;
-    }
-
-
-    @media screen and (min-width: 960px) {
-      #page-wrapper {
-        align-items: center;
-      }
-      .header, .menu, .content, .footer {
-        width: calc(100vh * 4/3);
-      }
-
-      .menu li {
-        margin-left: 1.5rem;
-        margin-right: 1.5rem;
-      }
-    }
-  </style>
+  <link href="./1999.css" rel="stylesheet" />
 </head>
 
 <body>
   <div id="page-wrapper">
     <div class="header">
-      <hr class="line">
-      <hr class="line">
-      <hr class="line">
-      <hr class="line">
-      <h1>
-        <a href="#"><img src="../logo-wide.png" alt="Logo"></a>
-      </h1>
+      <div class="lineset first">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+      </div>
+      <div class="h1">
+        <a href="#" title="Home"><img src="../logo-wide.png" alt="Logo"></a>
+      </div>
+      <div class="lineset second">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+      </div>
     </div>
-    <div class="menu">
-      <ul>
-        <li><a href="./about_us.html">About Us</a></li>
-        <li><a class="active" href="#">Services</a></li>
-        <li><a href="./case_studies.html">Case Studies</a></li>
-        <li><a href="./portfolio.html">Portfolio</a></li>
-        <li><a href="./contact_us.html">Contact Us</a></li>
-      </ul>
-    </div>
+    <noscript>
+      <div class="menu">
+        <ul>
+          <li><a href="./about_us.html">About Us</a></li>
+          <li><a class="active" href="./services.html">Services</a></li>
+          <li><a href="./case_studies.html">Case Studies</a></li>
+          <li><a href="./portfolio.html">Portfolio</a></li>
+          <li><a href="./contact_us.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </noscript>
+    <h1>Services</h1>
     <div class="content">
-      <h3>UI/UX Design and Development</h3>
-      <p>Offer expertise in designing intuitive user interfaces and seamless user experiences for websites,
-        applications, and digital products.</p>
-      <h3>Front-end Development</h3>
-      <p>Provide services in developing responsive and interactive front-end solutions using HTML, CSS, JavaScript,
-        and
-        frameworks like Vue.</p>
-      <h3>Interactive Media and Experiences</h3>
-      <p>Offer the creation of interactive media content, immersive experiences, interactive installations, or
-        multimedia presentations for events or marketing campaigns.</p>
-      <h3>Creative Prototyping</h3>
-      <p>Help clients bring their ideas to life by providing prototyping services, creating interactive mock-ups, or
-        developing proof-of-concept solutions.</p>
-      <h3>Web Development and Customization</h3>
-      <p>Offer website development services, including building custom websites, content management systems (CMS), or
-        e-commerce platforms tailored to client specifications.</p>
-      <h3>Data Visualization</h3>
-      <p>Help clients visualize complex data sets through interactive and visually appealing charts, graphs, and
-        dashboards to facilitate data-driven decision-making.</p>
-      <h3>Emerging Technologies</h3>
-      <p>Stay up-to-date with emerging technologies and offer services related to AI integration, machine learning,
-        blockchain development, Internet of Things (IoT), or wearable technology solutions.</p>
-      <h3>Technical Consulting</h3>
-      <p>Provide technical consulting services, helping clients identify and implement the most effective creative
-        technology solutions for their specific business needs.</p>
-      <h3>Project Management and Coordination</h3>
-      <p>Offer project management services, overseeing the implementation of creative technology projects from start
-        to
-        finish, ensuring smooth execution and timely delivery.</p>
+      <div class="row">
+        <div class="column">
+          <h3>UI/UX Design and Development</h3>
+          <p>Offer expertise in designing intuitive user interfaces and seamless user experiences for websites,
+            applications, and digital products.</p>
+          <h3>Front-end Development</h3>
+          <p>Provide services in developing responsive and interactive front-end solutions using HTML, CSS, JavaScript,
+            and
+            frameworks like Vue.</p>
+          <h3>Interactive Media and Experiences</h3>
+          <p>Offer the creation of interactive media content, immersive experiences, interactive installations, or
+            multimedia presentations for events or marketing campaigns.</p>
+          <h3>Creative Prototyping</h3>
+          <p>Help clients bring their ideas to life by providing prototyping services, creating interactive mock-ups, or
+            developing proof-of-concept solutions.</p>
+          <h3>Web Development and Customization</h3>
+          <p>Offer website development services, including building custom websites, content management systems (CMS), or
+            e-commerce platforms tailored to client specifications.</p>
+        </div>
+        <div class="column">
+          <h3>Data Visualization</h3>
+          <p>Help clients visualize complex data sets through interactive and visually appealing charts, graphs, and
+            dashboards to facilitate data-driven decision-making.</p>
+          <h3>Emerging Technologies</h3>
+          <p>Stay up-to-date with emerging technologies and offer services related to AI integration, machine learning,
+            blockchain development, Internet of Things (IoT), or wearable technology solutions.</p>
+          <h3>Technical Consulting</h3>
+          <p>Provide technical consulting services, helping clients identify and implement the most effective creative
+            technology solutions for their specific business needs.</p>
+          <h3>Project Management and Coordination</h3>
+          <p>Offer project management services, overseeing the implementation of creative technology projects from start
+            to
+            finish, ensuring smooth execution and timely delivery.</p>
+        </div>
+      </div>
     </div>
     <div class="footer">
-      <hr class="line">
-      <hr class="line">
-      <hr class="line">
-      <hr class="line">
+      <div class="lineset second">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+      </div>
+      <div class="lineset first">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+        <hr class="line">
+      </div>
     </div>
   </div>
 
