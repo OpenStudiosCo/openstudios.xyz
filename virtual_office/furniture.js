@@ -394,7 +394,7 @@ function createDeskLabel(i, callback, deskGroup) {
       labelText = 'Case studies';
       break;
     case 2:
-      labelText = 'Projects';
+      labelText = 'Portfolio';
       break;
     case 3:
       labelText = 'Contact us';
