@@ -474,9 +474,7 @@ function createScreen( i ){
     opacity: 0.,
     color: new THREE.Color("black"),
     blending: THREE.NoBlending,
-    side: THREE.DoubleSide,
-    minFilter: THREE.LinearFilter
-
+    side: THREE.DoubleSide
   });
   var geometry = new THREE.PlaneGeometry(i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8);
   var screenWebGL = new THREE.Mesh(geometry, material);

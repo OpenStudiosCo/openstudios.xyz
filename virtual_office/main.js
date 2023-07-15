@@ -302,7 +302,7 @@ function createDoor() {
 
       if ( strokeColor !== undefined && strokeColor !== 'none') {
 
-        const material = new THREE.MeshBasicMaterial({
+        const material = new THREE.MeshLambertMaterial({
           emissiveIntensity: 1,
           emissive: new THREE.Color().setStyle(strokeColor),
           color: new THREE.Color().setStyle(strokeColor)
@@ -419,7 +419,7 @@ function setupScene() {
 function setupRenderers() {
   // Main 3D webGL Renderer.
   window.virtual_office.renderers.webgl = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
-  window.virtual_office.renderers.webgl.setPixelRatio(window.devicePixelRatio);
+  //window.virtual_office.renderers.webgl.setPixelRatio(window.devicePixelRatio);
   window.virtual_office.renderers.webgl.setSize(window.innerWidth, window.innerHeight);
   document.querySelector("#webgl").appendChild(window.virtual_office.renderers.webgl.domElement);
 
