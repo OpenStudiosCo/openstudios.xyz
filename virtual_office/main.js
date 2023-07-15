@@ -135,7 +135,7 @@ export function init(pane) {
 
 }
 
-function setCameraFOV(aspect) {
+export function setCameraFOV(aspect) {
   var fov;
 
   var threshold = 0.88;
@@ -229,7 +229,7 @@ function restoreMaterial(obj) {
 
 }
 
-function calculateAdjustedGapSize() {
+export function calculateAdjustedGapSize() {
   var width = window.innerWidth;
   var height = window.innerHeight;
 
@@ -243,9 +243,9 @@ function calculateAdjustedGapSize() {
 }
 
 // Create door geometry
-var doorWidth = 8.2;
-var doorHeight = 20.4;
-var doorDepth = 0.2;
+export var doorWidth = 8.2;
+export var doorHeight = 20.4;
+export var doorDepth = 0.2;
 function createDoor() {
   var doorParent = new THREE.Object3D();
 
@@ -348,7 +348,7 @@ function createDoor() {
   return doorParent;
 }
 
-function createOfficeRoom() {
+export function createOfficeRoom() {
 
   var doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorDepth);
   const transparentMaterial = new THREE.MeshLambertMaterial({

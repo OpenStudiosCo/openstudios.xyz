@@ -238,6 +238,9 @@ export function setupDesks(gapSize, scale, scene) {
     screenWebGL.position.copy(screenCSS.position);
     screenWebGL.rotation.copy(screenCSS.rotation);
 
+    // desk.deskIndex = i;
+    // screenWebGL.deskIndex = i;
+    // screenCSS.deskIndex = i;
     deskGroup.add(desk);
     deskGroup.add(screenWebGL);
     screenCSSGroup.add(screenCSS);  
@@ -253,7 +256,7 @@ export function setupDesks(gapSize, scale, scene) {
  * @param { Number } i 
  */
 export function updateDeskZ(desk, i) {
-  if (i < 2) {
+    if (i < 2) {
     desk.position.z = - 15 + (i === 0 ? -1.5 : 0.5) * window.virtual_office.scene_dimensions.adjusted_gap;
   } else {
     desk.position.z = - 15 + (i === 2 ? -1.5 : 0.5) * window.virtual_office.scene_dimensions.adjusted_gap;

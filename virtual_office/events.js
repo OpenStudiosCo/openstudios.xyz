@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import { calculateAdjustedGapSize, createOfficeRoom, setCameraFOV, doorWidth, doorDepth, doorHeight } from './main.js';
+
 import { updateDeskZ } from './furniture.js';
 
 import { sharpenScreen } from './tweens.js';
@@ -21,23 +23,24 @@ export function handleViewportChange() {
   window.virtual_office.camera.updateProjectionMatrix();
 
   // Adjust desk positions based on the aspect ratio
-  window.virtual_office.scene_objects.deskGroup.children.forEach(function (desk, i) {
-    updateDeskZ(desk, i, window.virtual_office.scene_dimensions.adjusted_gap);
-  });
+  // window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
+  //   if (mesh.name == 'desk') {
+  //     updateDeskZ(mesh, mesh.deskIndex);
+  //   }
+  // });
 
-  window.virtual_office.scene_objects.screenCSSGroup.children.forEach(function (screen, i) {
-    updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
-    screen.position.z += .175;
-  });
-  window.virtual_office.scene_objects.screenWebGLGroup.children.forEach(function (screen, i) {
-    updateDeskZ(screen, i, window.virtual_office.scene_dimensions.adjusted_gap);
-    screen.position.z += .175;
-  });
+  // window.virtual_office.scene_objects.screenCSSGroup.children.forEach(function (screen, i) {
+  //   updateDeskZ(screen, i);
+  //   screenCSS.position.z += .175;
+  // });
 
   const newRoom = createOfficeRoom();
   window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
 
-  window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
+  let backWallZ = - 15 - window.virtual_office.room_depth / 2;
+  window.virtual_office.scene_objects.wallGroup.position.z = backWallZ;
+  window.virtual_office.scene_objects.tvCSS.position.z = backWallZ +1;
+  window.virtual_office.scene_objects.tvWebGL.position.z =  backWallZ +1;
 
   window.virtual_office.scene_objects.door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
 
