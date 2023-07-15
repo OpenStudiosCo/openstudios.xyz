@@ -17,7 +17,7 @@ export function setupBackwall ( scene ) {
   // About Us Neon sign
   createNeonSign((signMesh) => {
     // Position and rotate the sign
-    signMesh.position.set(-5.75, 10, 1); // Example position for the sign
+    signMesh.position.set(-5.75, 12.5, 1); // Example position for the sign
     signMesh.name = "neon";
     wallGroup.add(signMesh);
   }, scene);
@@ -42,7 +42,7 @@ export function setupBackwall ( scene ) {
   // wallGroup.add(garrettsPortrait);
 
   [ window.virtual_office.scene_objects.tvCSS, window.virtual_office.scene_objects.tvWebGL ] = createScreen( 720 );
-  window.virtual_office.scene_objects.tvWebGL.position.y = 3.5;
+  window.virtual_office.scene_objects.tvWebGL.position.y = 6;
   window.virtual_office.scene_objects.tvWebGL.position.z = - 14 - window.virtual_office.room_depth / 2;
   window.virtual_office.scene_objects.tvCSS.position.copy(window.virtual_office.scene_objects.tvWebGL.position);
   window.virtual_office.scene_objects.tvCSS.rotation.copy(window.virtual_office.scene_objects.tvWebGL.rotation);
@@ -51,7 +51,7 @@ export function setupBackwall ( scene ) {
   var screenGeometry = new THREE.BoxGeometry(20.8, 11.7, 0.02);
   var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0 , 3.5, 0.5);
+  screen.position.set(0 , 6, 0.5);
   screen.name = "tv";
   wallGroup.add(screen);
 

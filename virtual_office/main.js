@@ -333,7 +333,7 @@ function createDoor() {
     let backWallLogo = group.clone();
     backWallLogo.scale.multiplyScalar(2);
     backWallLogo.position.x = -5.75;
-    backWallLogo.position.y = 22.5;
+    backWallLogo.position.y = 23.5;
     backWallLogo.position.z = 1.5;
 
     window.virtual_office.scene_objects.wallGroup.add(backWallLogo);

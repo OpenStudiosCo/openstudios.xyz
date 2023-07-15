@@ -107,7 +107,6 @@ p {
 .header img {
   background: rgb(0, 0, 0);
   background: radial-gradient(circle, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 60%);
-  max-height: 25vh;
   width: auto;
 }
 
