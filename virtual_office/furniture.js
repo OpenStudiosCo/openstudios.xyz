@@ -238,9 +238,7 @@ export function setupDesks(gapSize, scale, scene) {
     screenWebGL.position.copy(screenCSS.position);
     screenWebGL.rotation.copy(screenCSS.rotation);
 
-    // desk.deskIndex = i;
-    // screenWebGL.deskIndex = i;
-    // screenCSS.deskIndex = i;
+    desk.deskIndex = i; // hack for storing the webgl screens in the same group.
     deskGroup.add(desk);
     deskGroup.add(screenWebGL);
     screenCSSGroup.add(screenCSS);  

@@ -20,8 +20,6 @@ let bloomLayer, scene, stats;
 
 let scene2;
 
-let controls, controls2;
-
 let materials, darkMaterial;
 
 export function init(pane) {
@@ -178,7 +176,7 @@ export function animate(currentTime) {
 
   if (window.virtual_office.started) {
 
-    updateTweens(currentTime, controls, controls2);
+    updateTweens(currentTime);
 
     if (!window.virtual_office.debug) {
       handleInteractions( scene );

@@ -23,16 +23,18 @@ export function handleViewportChange() {
   window.virtual_office.camera.updateProjectionMatrix();
 
   // Adjust desk positions based on the aspect ratio
-  // window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
-  //   if (mesh.name == 'desk') {
-  //     updateDeskZ(mesh, mesh.deskIndex);
-  //   }
-  // });
+  window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
+    if ( mesh.name == 'desk') {
+      updateDeskZ(mesh, mesh.deskIndex);
 
-  // window.virtual_office.scene_objects.screenCSSGroup.children.forEach(function (screen, i) {
-  //   updateDeskZ(screen, i);
-  //   screenCSS.position.z += .175;
-  // });
+      updateDeskZ(mesh.webGLScreen, mesh.deskIndex);
+      updateDeskZ(mesh.webGLScreen.cssScreen, mesh.deskIndex);
+
+      mesh.webGLScreen.position.z += .175;
+      mesh.webGLScreen.cssScreen.position.z += .175;
+
+    }
+  });
 
   const newRoom = createOfficeRoom();
   window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
