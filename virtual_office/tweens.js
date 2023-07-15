@@ -10,7 +10,7 @@ export function updateTweens(currentTime) {
   }
 }
 
-export function setupTweens(controls, controls2) {
+export function setupTweens( ) {
 
   /**
    * Open the door

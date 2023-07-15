@@ -25,6 +25,14 @@ domReady(
       camera: false,
 
       /**
+       * Orbit Controls
+       * 
+       * @memberof THREE.OrbitControls
+       */
+      controls: false,
+      controls2: false, // clone of main controls for the CSS scene.
+
+      /**
        * Debug mode.
        * 
        * @memberof Boolean

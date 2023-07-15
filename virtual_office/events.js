@@ -175,21 +175,22 @@ function handleDeskClick(desk) {
       window.virtual_office.tweens.sharpenScreen.start();
 
       let tempMesh = new THREE.Object3D();
-      tempMesh.position.set(window.virtual_office.selected.position.x, 4.2, window.virtual_office.selected.position.z);
+      tempMesh.scale.copy(virtual_office.selected.webGLScreen.scale);
+      tempMesh.position.copy(virtual_office.selected.webGLScreen.cssScreen.position);
 
-      var targetRotation;
-      virtual_office.selected.children.forEach((item) => {
-        if (item.name == 'screen') {
-          targetRotation = item.rotation.clone(); // Target quaternion
-        }
-      });
-      tempMesh.rotation.setFromVector3(targetRotation);
-      tempMesh.position.y = 4.2;
+      var targetRotation = virtual_office.selected.webGLScreen.cssScreen.rotation.clone();
 
-      tempMesh.translateX(tempMesh.position.x > 0 ? -7.5 : 7.5);
-      tempMesh.translateZ(tempMesh.position.x > 0 ? .375 : .475);
-      window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: - targetRotation.y, z: targetRotation.z }, 1000).start()
-      window.virtual_office.tweens.moveCamera.to(tempMesh.position, 1000).start();
+      const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
+      const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
+      const distanceHorizontal = window.innerWidth / (2 * Math.tan(fovHorizontal / 2));
+      const roomSide = tempMesh.position.x > 0 ? -1 : 1;
+      const diffZ = distanceHorizontal * 0.00625;
+      tempMesh.translateX(roomSide * diffZ / 1.4);
+      tempMesh.translateZ(diffZ / 1.4);
+
+
+      window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000).start();
+      window.virtual_office.tweens.moveCamera.to(tempMesh.position, 1000).onComplete(stretchSelectedScreen).start();
       window.virtual_office.renderers.css.domElement.style.zIndex = 9999;
       window.virtual_office.renderers.css.domElement.style.pointerEvents = 'auto';
 
@@ -220,7 +221,7 @@ function handleDeskClick(desk) {
         })
         ;
       window.virtual_office.tweens.resetCameraRotation.start();
-      window.virtual_office.tweens.resetCameraPosition.start();
+      window.virtual_office.tweens.resetCameraPosition.onStart(shrinkScreenBack).start();
       window.virtual_office.tweens.blurScreen.to({ x: 8 }).start();
       window.virtual_office.renderers.css.domElement.style.zIndex = 'inherit';
       window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';
@@ -228,6 +229,25 @@ function handleDeskClick(desk) {
 
   }
 }
+
+// Function to update the CSS object's size to fit the visible space
+function stretchSelectedScreen() {
+  window.virtual_office.selected.webGLScreen.cssScreen.element.width = window.innerWidth;
+  window.virtual_office.selected.webGLScreen.cssScreen.element.height = window.innerHeight;
+}
+
+// Restore the CSS object to its original size.
+function shrinkScreenBack() {
+  if ( window.virtual_office.selected.name == 'backWall' ) {
+    window.virtual_office.selected.webGLScreen.cssScreen.element.width = '1280';
+    window.virtual_office.selected.webGLScreen.cssScreen.element.height =  '720';
+  }
+  else {
+    window.virtual_office.selected.webGLScreen.cssScreen.element.width = '1024';
+    window.virtual_office.selected.webGLScreen.cssScreen.element.height = '768';
+  }
+}
+
 
 function handleWallClick(desk) {
   if (window.virtual_office.pointer.z && !window.virtual_office.moving) {
@@ -237,17 +257,22 @@ function handleWallClick(desk) {
       window.virtual_office.tweens.sharpenScreen = sharpenScreen();
       window.virtual_office.tweens.sharpenScreen.start();
 
-      let reverseRatio = (window.innerHeight / window.innerWidth);
-      let newPosZ = reverseRatio > 1.25 ? 40 * reverseRatio : 80 * reverseRatio;
+      let newPosZ = window.virtual_office.selected.webGLScreen.cssScreen.position.z;
+
+      const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
+      const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
+      const distanceHorizontal = window.innerWidth / (2 * Math.tan(fovHorizontal / 2));
+
+      newPosZ += distanceHorizontal * 0.015;
 
       let newPosition = new THREE.Vector3(
         0,
-        3.75 + (window.innerHeight / window.innerWidth),
-        window.virtual_office.selected.position.z + newPosZ
+        virtual_office.selected.webGLScreen.cssScreen.position.y,
+        newPosZ
       );
 
       window.virtual_office.tweens.rotateCamera.to({ x:0, y: 0, z: 0 }, 1000).start()
-      window.virtual_office.tweens.moveCamera.to(newPosition, 1000).start();
+      window.virtual_office.tweens.moveCamera.to(newPosition, 1000).onComplete(stretchSelectedScreen).start();
       window.virtual_office.renderers.css.domElement.style.zIndex = 9999;
       window.virtual_office.renderers.css.domElement.style.pointerEvents = 'auto';
     }
@@ -277,7 +302,7 @@ function handleWallClick(desk) {
         })
         ;
       window.virtual_office.tweens.resetCameraRotation.start();
-      window.virtual_office.tweens.resetCameraPosition.start();
+      window.virtual_office.tweens.resetCameraPosition.onStart(shrinkScreenBack).start();
       window.virtual_office.tweens.blurScreen.to({ x: 2 }).start();
       window.virtual_office.renderers.css.domElement.style.zIndex = 'inherit';
       window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';

@@ -70,15 +70,15 @@ export function init(pane) {
   materials = {};
 
   // Setup controls.
-  controls2 = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.css.domElement);
-  controls2.target.set(0, 10, 0);
-  controls2.enabled = window.virtual_office.debug;
-  controls2.update();
+  window.virtual_office.controls2 = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.css.domElement);
+  window.virtual_office.controls2.target.set(0, 10, 0);
+  window.virtual_office.controls2.enabled = window.virtual_office.debug;
+  window.virtual_office.controls2.update();
 
-  controls = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.webgl.domElement);
-  controls.enabled = window.virtual_office.debug;
-  controls.target.set(0, 10, 0);
-  controls.update();
+  window.virtual_office.controls = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.webgl.domElement);
+  window.virtual_office.controls.enabled = window.virtual_office.debug;
+  window.virtual_office.controls.target.set(0, 10, 0);
+  window.virtual_office.controls.update();
 
   if (window.virtual_office.debug) {
     stats = new Stats();
@@ -86,7 +86,7 @@ export function init(pane) {
   }
 
   // Setup Tweens.
-  setupTweens(controls, controls2);
+  setupTweens( );
 
   window.addEventListener('orientationchange', handleViewportChange);
   window.addEventListener('resize', handleViewportChange);
