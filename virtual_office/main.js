@@ -11,8 +11,8 @@ import { MeshBVHVisualizer } from 'three-mesh-bvh';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 import { scaleEffects, setupEffects } from './effects.js';
-import { handleInteractions, handleViewportChange } from './events.js';
-import { setupBackwall, setupDesks, updateDeskZ } from './furniture.js';
+import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
+import { setupBackwall, setupDesks } from './furniture.js';
 import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
@@ -88,6 +88,9 @@ export function init(pane) {
 
   window.addEventListener('orientationchange', handleViewportChange);
   window.addEventListener('resize', handleViewportChange);
+
+  document.getElementById('exitSign').addEventListener('click', handleExitSign);
+  document.getElementById('exitSign').addEventListener('touchend', handleExitSign);
 
   function onPointerMove(event) {
 

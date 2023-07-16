@@ -51,6 +51,15 @@ domReady(
       },
 
       /**
+       * Exit sign.
+       * 
+       * @todo: Consolidate scene rigs.
+       * 
+       * @memberOf function
+       */
+      exitSignClick: false,
+
+      /**
        * Fast mode (bloom off, no shadows)
        * 
        * @memberof Boolean

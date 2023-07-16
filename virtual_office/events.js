@@ -99,71 +99,78 @@ export function handleInteractions( scene ) {
   document.body.style.cursor = "default";
 
   for (let i = 0; i < intersects.length; i++) {
-    if (intersects[i].object.name == "desk_label") {
-      // Set the active one to white.
-      intersects[i].object.material.emissive.set(0xFFFFFF);
-      document.body.style.cursor = "pointer";
 
-      handleDeskClick(intersects[i].object.parent);
-
-      break;
+    // If nothing is selected, allow hover effects.
+    if (!window.virtual_office.selected) {
+      if (intersects[i].object.name == "desk_label") {
+        // Set the active one to white.
+        intersects[i].object.material.emissive.set(0xFFFFFF);
+        document.body.style.cursor = "pointer";
+  
+        handleDeskClick(intersects[i].object.parent);
+  
+        break;
+      }
+  
+      if (intersects[i].object.name == "screen" || intersects[i].object.name == "desk_part") {
+        // Set the screens sibling desk_label to active.
+        intersects[i].object.parent.getObjectByName("desk_label").material.emissive.set(0xFFFFFF);
+        intersects[i].object.parent.getObjectByName("desk_label").material.emissiveIntensity = 0.25;
+        intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissive.set(0xFFFFFF);
+        intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissiveIntensity = 0.5;
+        //intersects[ i ].object.parent.getObjectByName("ceilLightActual").color.set( 0xFFFFFF );
+        intersects[i].object.parent.getObjectByName("ceilLightActual").intensity = 0.03;
+        document.body.style.cursor = "pointer";
+  
+        handleDeskClick(intersects[i].object.parent);
+  
+        break;
+      }
+  
+      if (intersects[i].object.name == "neon") {
+        document.body.style.cursor = "pointer";
+        intersects[i].object.material.emissive.set(0xFFFFFF);
+        intersects[i].object.material.emissiveIntensity = 0.5;
+  
+        // let portraits = intersects[i].object.parent.getObjectsByProperty('name', 'portrait');
+        // portraits.forEach((portrait, portraitIndex) => {
+        //   portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
+        //   portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
+        // });
+        handleWallClick(intersects[i].object.parent);
+  
+        break;
+      }
+         // if (intersects[i].object.name == "portrait") {
+      //   document.body.style.cursor = "pointer";
+      //   intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
+      //   intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
+  
+      //   let portraits = intersects[i].object.parent.getObjectsByProperty('name', 'portrait');
+      //   portraits.forEach((portrait, portraitIndex) => {
+      //     portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
+      //     portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
+      //   });
+  
+      //   handleWallClick(intersects[i].object.parent);
+  
+  
+      //   break;
+      // }
+  
+      if (intersects[i].object.name == "tv") {
+        document.body.style.cursor = "pointer";
+        intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
+        intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
+  
+        handleWallClick(intersects[i].object.parent);
+  
+        break;
+      }
     }
+    // Otherwise we're only tracking interaction with the exit sign.
+    else {
 
-    if (intersects[i].object.name == "screen" || intersects[i].object.name == "desk_part") {
-      // Set the screens sibling desk_label to active.
-      intersects[i].object.parent.getObjectByName("desk_label").material.emissive.set(0xFFFFFF);
-      intersects[i].object.parent.getObjectByName("desk_label").material.emissiveIntensity = 0.25;
-      intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissive.set(0xFFFFFF);
-      intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissiveIntensity = 0.5;
-      //intersects[ i ].object.parent.getObjectByName("ceilLightActual").color.set( 0xFFFFFF );
-      intersects[i].object.parent.getObjectByName("ceilLightActual").intensity = 0.03;
-      document.body.style.cursor = "pointer";
-
-      handleDeskClick(intersects[i].object.parent);
-
-      break;
-    }
-
-    if (intersects[i].object.name == "neon") {
-      document.body.style.cursor = "pointer";
-      intersects[i].object.material.emissive.set(0xFFFFFF);
-      intersects[i].object.material.emissiveIntensity = 0.5;
-
-      // let portraits = intersects[i].object.parent.getObjectsByProperty('name', 'portrait');
-      // portraits.forEach((portrait, portraitIndex) => {
-      //   portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
-      //   portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
-      // });
-      handleWallClick(intersects[i].object.parent);
-
-      break;
-    }
-       // if (intersects[i].object.name == "portrait") {
-    //   document.body.style.cursor = "pointer";
-    //   intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
-    //   intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
-
-    //   let portraits = intersects[i].object.parent.getObjectsByProperty('name', 'portrait');
-    //   portraits.forEach((portrait, portraitIndex) => {
-    //     portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
-    //     portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
-    //   });
-
-    //   handleWallClick(intersects[i].object.parent);
-
-
-    //   break;
-    // }
-
-    
-    if (intersects[i].object.name == "tv") {
-      document.body.style.cursor = "pointer";
-      intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
-      intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
-
-      handleWallClick(intersects[i].object.parent);
-
-      break;
     }
   }
 }
@@ -236,6 +243,7 @@ function handleDeskClick(desk) {
 function stretchSelectedScreen() {
   window.virtual_office.selected.webGLScreen.cssScreen.element.width = window.innerWidth;
   window.virtual_office.selected.webGLScreen.cssScreen.element.height = window.innerHeight;
+  document.getElementById('exitSign').style.display = 'block';
 }
 
 // Restore the CSS object to its original size.
@@ -248,6 +256,8 @@ function shrinkScreenBack() {
     window.virtual_office.selected.webGLScreen.cssScreen.element.width = '1024';
     window.virtual_office.selected.webGLScreen.cssScreen.element.height = '768';
   }
+
+  document.getElementById('exitSign').style.display = 'none';
 }
 
 
@@ -311,4 +321,36 @@ function handleWallClick(desk) {
     }
 
   }
+}
+
+export function handleExitSign() {
+  window.virtual_office.moving = true;
+  var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
+
+  let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
+    cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
+
+  // Animate the camera resetting from any other position.
+  window.virtual_office.tweens.resetCameraPosition = new TWEEN.Tween(window.virtual_office.camera.position)
+    .to(cameraDefaultPosition, 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
+    .onUpdate(() => {
+      window.virtual_office.camera.updateProjectionMatrix();
+    })
+    .onComplete(() => {
+      window.virtual_office.moving = false;
+    })
+    ;
+  window.virtual_office.tweens.resetCameraRotation = new TWEEN.Tween(window.virtual_office.camera.rotation)
+    .to(cameraDefaultRotation, 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
+    .onUpdate(() => {
+      window.virtual_office.camera.updateProjectionMatrix();
+    })
+    ;
+  window.virtual_office.tweens.resetCameraRotation.start();
+  window.virtual_office.tweens.resetCameraPosition.onStart(shrinkScreenBack).start();
+  window.virtual_office.tweens.blurScreen.to({ x: 2 }).start();
+  window.virtual_office.renderers.css.domElement.style.zIndex = 'inherit';
+  window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';
 }
