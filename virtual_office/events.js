@@ -96,12 +96,11 @@ export function handleInteractions( scene ) {
     // }
   });
 
-  document.body.style.cursor = "default";
-
   for (let i = 0; i < intersects.length; i++) {
 
     // If nothing is selected, allow hover effects.
     if (!window.virtual_office.selected) {
+      document.body.style.cursor = "default";
       if (intersects[i].object.name == "desk_label") {
         // Set the active one to white.
         intersects[i].object.material.emissive.set(0xFFFFFF);
@@ -170,7 +169,7 @@ export function handleInteractions( scene ) {
     }
     // Otherwise we're only tracking interaction with the exit sign.
     else {
-
+      document.body.style.cursor = "inherit";
     }
   }
 }
@@ -243,6 +242,9 @@ function handleDeskClick(desk) {
 function stretchSelectedScreen() {
   window.virtual_office.selected.webGLScreen.cssScreen.element.width = window.innerWidth;
   window.virtual_office.selected.webGLScreen.cssScreen.element.height = window.innerHeight;
+
+  window.virtual_office.selected.webGLScreen.cssScreen.element.style.pointerEvents = 'auto';
+  
   document.getElementById('exitSign').style.display = 'block';
 }
 
@@ -256,6 +258,8 @@ function shrinkScreenBack() {
     window.virtual_office.selected.webGLScreen.cssScreen.element.width = '1024';
     window.virtual_office.selected.webGLScreen.cssScreen.element.height = '768';
   }
+
+  window.virtual_office.selected.webGLScreen.cssScreen.element.style.pointerEvents = 'none';
 
   document.getElementById('exitSign').style.display = 'none';
 }

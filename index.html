@@ -49,8 +49,14 @@
 			}
 
 			#exitSign {
+				background: black;
+				font-weight: bold;
+				color: #fff;
+				box-shadow: 0px 0px 5px 5px #077f58;
+				text-shadow: 2.5px 2.5px 5px #999;
+				cursor: pointer;
 				display: none;
-				background: #077f58;
+				border: solid 1px #077f58;
 				border-radius: 1rem;
 				padding: 1rem;
 				position: absolute;
@@ -59,13 +65,18 @@
 				z-index: 10000;
 			}
 
+			#exitSign:hover {
+				box-shadow: 0px 0px 7.5px 7.5px #75f7cd;
+				border-color:  #75f7cd;
+			}
+
 		</style>
 	</head>
 	<body>
 		<noscript>
 			This website requires Javascript for the full experience. As you don't have Javascript enabled, you are seeing the 1999 experience.
 		</noscript>
-		<a id="exitSign"><img src="./exit.svg" width="90" height="47.6" /></a>
+		<a id="exitSign">EXIT</a>
 		<div id="css"></div>
     <div id="webgl"></div>
 		<script type="module" src="./app.js"></script>
