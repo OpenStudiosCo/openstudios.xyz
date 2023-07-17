@@ -105,18 +105,22 @@ export function init(pane) {
   window.addEventListener('pointermove', onPointerMove);
 
   function onTouchStart(event) {
-    event.preventDefault();
+    if (!window.virtual_office.selected) {
+      event.preventDefault();
 
-    window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-    window.virtual_office.pointer.z = 1; // previously mouseDown = true
+      window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+      window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+      window.virtual_office.pointer.z = 1; // previously mouseDown = true
+    }
   }
   function onTouchEnd(event) {
-    event.preventDefault();
+    if (!window.virtual_office.selected) {
+      event.preventDefault();
 
-    window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-    window.virtual_office.pointer.z = 0; // previously mouseDown = false
+      window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+      window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+      window.virtual_office.pointer.z = 0; // previously mouseDown = false
+    }
   }
 
   window.addEventListener('touchstart', onTouchStart, false);

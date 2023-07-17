@@ -200,7 +200,7 @@ function handleDeskClick(desk) {
       window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000).start();
       window.virtual_office.tweens.moveCamera.to(tempMesh.position, 1000).onComplete(stretchSelectedScreen).start();
       window.virtual_office.renderers.css.domElement.style.zIndex = 9999;
-      window.virtual_office.renderers.css.domElement.style.pointerEvents = 'auto';
+      //window.virtual_office.renderers.css.domElement.style.pointerEvents = 'auto';
 
     }
     else {
@@ -232,7 +232,7 @@ function handleDeskClick(desk) {
       window.virtual_office.tweens.resetCameraPosition.onStart(shrinkScreenBack).start();
       window.virtual_office.tweens.blurScreen.to({ x: 8 }).start();
       window.virtual_office.renderers.css.domElement.style.zIndex = 'inherit';
-      window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';
+      //window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';
     }
 
   }
@@ -244,6 +244,8 @@ function stretchSelectedScreen() {
   window.virtual_office.selected.webGLScreen.cssScreen.element.height = window.innerHeight;
 
   window.virtual_office.selected.webGLScreen.cssScreen.element.style.pointerEvents = 'auto';
+
+  virtual_office.selected.webGLScreen.cssScreen.element.parentElement.parentElement.parentElement.style.touchAction = 'auto';
   
   document.getElementById('exitSign').style.display = 'block';
 }
@@ -260,6 +262,7 @@ function shrinkScreenBack() {
   }
 
   window.virtual_office.selected.webGLScreen.cssScreen.element.style.pointerEvents = 'none';
+  virtual_office.selected.webGLScreen.cssScreen.element.parentElement.parentElement.parentElement.style.touchAction = 'none';
 
   document.getElementById('exitSign').style.display = 'none';
 }
@@ -290,40 +293,8 @@ function handleWallClick(desk) {
       window.virtual_office.tweens.rotateCamera.to({ x:0, y: 0, z: 0 }, 1000).start()
       window.virtual_office.tweens.moveCamera.to(newPosition, 1000).onComplete(stretchSelectedScreen).start();
       window.virtual_office.renderers.css.domElement.style.zIndex = 9999;
-      window.virtual_office.renderers.css.domElement.style.pointerEvents = 'auto';
+      //window.virtual_office.renderers.css.domElement.style.pointerEvents = 'auto';
     }
-    else {
-      window.virtual_office.moving = true;
-      var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
-
-      let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
-        cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
-
-      // Animate the camera resetting from any other position.
-      window.virtual_office.tweens.resetCameraPosition = new TWEEN.Tween(window.virtual_office.camera.position)
-        .to(cameraDefaultPosition, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
-        .onUpdate(() => {
-          window.virtual_office.camera.updateProjectionMatrix();
-        })
-        .onComplete(() => {
-          window.virtual_office.moving = false;
-        })
-        ;
-      window.virtual_office.tweens.resetCameraRotation = new TWEEN.Tween(window.virtual_office.camera.rotation)
-        .to(cameraDefaultRotation, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
-        .onUpdate(() => {
-          window.virtual_office.camera.updateProjectionMatrix();
-        })
-        ;
-      window.virtual_office.tweens.resetCameraRotation.start();
-      window.virtual_office.tweens.resetCameraPosition.onStart(shrinkScreenBack).start();
-      window.virtual_office.tweens.blurScreen.to({ x: 2 }).start();
-      window.virtual_office.renderers.css.domElement.style.zIndex = 'inherit';
-      window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';
-    }
-
   }
 }
 
@@ -354,7 +325,7 @@ export function handleExitSign() {
     ;
   window.virtual_office.tweens.resetCameraRotation.start();
   window.virtual_office.tweens.resetCameraPosition.onStart(shrinkScreenBack).start();
-  window.virtual_office.tweens.blurScreen.to({ x: 2 }).start();
+  window.virtual_office.tweens.blurScreen.to({ x: 2 }).start(); // @todo: make this dynamic to 8 when it's a screen.
   window.virtual_office.renderers.css.domElement.style.zIndex = 'inherit';
-  window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';
+  //window.virtual_office.renderers.css.domElement.style.pointerEvents = 'none';
 }
