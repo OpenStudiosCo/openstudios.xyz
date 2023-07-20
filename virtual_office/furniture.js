@@ -436,25 +436,25 @@ function createScreen( i ){
   let url;
   switch ( i ) {
     case 0:
-      url = '../pages/services.html';
+      url = '../pages/services.png';
       break;
     case 1:
-      url = '../pages/case_studies.html';
+      url = '../pages/case_studies.png';
       break;
     case 2:
-      url = '../pages/portfolio.html';
+      url = '../pages/portfolio.png';
       break;
     case 3:
-      url = '../pages/contact_us.html';
+      url = '../pages/contact_us.png';
       break;
     case 720:
-      url = '../pages/about_us.html';
+      url = '../pages/about_us.png';
       break;
   }
   
 
-  var element = document.createElement("iframe");
-  //var element = document.createElement("img");
+  //var element = document.createElement("iframe");
+  var element = document.createElement("img");
   element.width = i == 720 ? "1280" : "1024";
   element.height = i == 720 ? "720" : "768";
   element.style.opacity = 0.999;
@@ -463,7 +463,7 @@ function createScreen( i ){
   element.addEventListener("load", function() {
     window.virtual_office.scene_objects.screens_loaded += 1;
   });
-
+ 
   var screenCSS = new CSS3DObject(element);
   screenCSS.scale.multiplyScalar( i == 720 ? .015 : 0.00625 );
 

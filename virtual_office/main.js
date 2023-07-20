@@ -16,7 +16,7 @@ import { setupBackwall, setupDesks } from './furniture.js';
 import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
-let bloomLayer, scene, stats;
+let scene, stats;
 
 let scene2;
 
@@ -386,10 +386,10 @@ export function createOfficeRoom() {
     new THREE.MeshBasicMaterial()
   );
 
+  csgEvaluator.evaluate(roomBrush, doorBrush, SUBTRACTION, result);
   result.receiveShadow = true;
   result.layers.enable(1);
-
-  csgEvaluator.evaluate(roomBrush, doorBrush, SUBTRACTION, result);
+  
 
   return result;
 }
