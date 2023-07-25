@@ -243,9 +243,14 @@ function createDoor() {
   var doorParent = new THREE.Object3D();
 
   var doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorDepth);
+  
+  const doorTexture = new THREE.TextureLoader().load('./models/desk-diffuse.jpg');
+  doorTexture.wrapS = THREE.RepeatWrapping;
+  doorTexture.wrapT = THREE.RepeatWrapping;
+  doorTexture.repeat.set( 3, 3 );
 
   // Create door material
-  var doorMaterial = new THREE.MeshLambertMaterial({ color: 0x986b41 });
+  var doorMaterial = new THREE.MeshLambertMaterial({ map: doorTexture });
 
   // Create door mesh
   var door = new THREE.Mesh(doorGeometry, doorMaterial);
@@ -403,6 +408,10 @@ function setupScene() {
   // Scene container.
   scene = new THREE.Scene();
 
+  window.virtual_office.scene_objects.door = createDoor();
+  window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
+  scene.add(window.virtual_office.scene_objects.door);
+
   window.virtual_office.scene_objects.deskGroup = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
   scene.add(window.virtual_office.scene_objects.deskGroup);
 
@@ -413,10 +422,6 @@ function setupScene() {
   window.virtual_office.scene_objects.screens_loaded = 0;
   window.virtual_office.scene_objects.room = createOfficeRoom();
   scene.add(window.virtual_office.scene_objects.room);
-
-  window.virtual_office.scene_objects.door = createDoor();
-  window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
-  scene.add(window.virtual_office.scene_objects.door);
 
   window.virtual_office.scene_objects.wallGroup = setupBackwall(scene);
   window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
