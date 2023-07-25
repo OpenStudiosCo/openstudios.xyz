@@ -424,6 +424,7 @@ function setupScene() {
 }
 
 function setupRenderers() {
+
   // Main 3D webGL Renderer.
   window.virtual_office.renderers.webgl = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
   window.virtual_office.renderers.webgl.setPixelRatio(window.devicePixelRatio);
@@ -436,4 +437,8 @@ function setupRenderers() {
   window.virtual_office.renderers.css.domElement.style.position = "absolute";
   window.virtual_office.renderers.css.domElement.style.top = 0;
   document.querySelector("#css").appendChild(window.virtual_office.renderers.css.domElement);
+
+  // Hide body element scrollbars as the 3D viewport takes over.
+  document.querySelector("body").style.overflow = 'hidden';
+
 }

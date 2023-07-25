@@ -433,22 +433,27 @@ function createDeskLabel(i, callback, deskGroup) {
  * @returns [ HTMLObject, THREE.Mesh ];
  */
 function createScreen( i ){
-  let url;
+  let url, pageUrl;
   switch ( i ) {
     case 0:
       url = '../pages/services.png';
+      pageUrl = '../pages/services.html';
       break;
     case 1:
       url = '../pages/case_studies.png';
+      pageUrl = '../pages/case_studies.html';
       break;
     case 2:
       url = '../pages/portfolio.png';
+      pageUrl = '../pages/portfolio.html';
       break;
     case 3:
       url = '../pages/contact_us.png';
+      pageUrl = '../pages/contact_us.html';
       break;
     case 720:
       url = '../pages/about_us.png';
+      pageUrl = '../pages/about_us.html';
       break;
   }
   
@@ -460,6 +465,7 @@ function createScreen( i ){
   element.style.opacity = 0.999;
   
   element.src = url;
+  element.dataset.pageUrl = pageUrl; 
   element.addEventListener("load", function() {
     window.virtual_office.scene_objects.screens_loaded += 1;
   });
