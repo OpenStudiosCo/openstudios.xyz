@@ -6,7 +6,7 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
-import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
+import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
 
 import { startTweening } from './tweens.js';
 
@@ -94,6 +94,10 @@ export function setupEffects( renderer, scene ) {
     ssaoPass.kernelRadius = 20;
     ssaoPass.output = SSAOPass.OUTPUT.Beauty;
     composer.addPass( ssaoPass );
+
+    const ssaaPass = new SSAARenderPass ( scene, window.virtual_office.camera );
+    ssaaPass.sampleLevel = 1;
+    composer.addPass( ssaaPass );
       
     bloomLayer = new THREE.Layers();
     bloomLayer.set( 1 );

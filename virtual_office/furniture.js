@@ -112,7 +112,7 @@ export function setupDesks(gapSize, scale, scene) {
     // Add screens.
     var screenWebGL = createScreen( i );
     screenWebGL.rotation.y = - Math.PI / 2;
-    screenWebGL.position.y = 4.4;
+    screenWebGL.position.y = 6.6;
     desk.webGLScreen = screenWebGL;
 
     // Main position coordinates.
@@ -161,7 +161,7 @@ export function setupDesks(gapSize, scale, scene) {
     desk.scale.set(scale, scale, scale); // Scale up the desk
 
     desk.children.forEach((desk_iter) => {
-      if (desk_iter.name == 'cpu' || desk_iter.name == 'screen') {
+      if (desk_iter.name == 'cpu' || desk_iter.name == 'screen' || desk_iter.name == 'base' ) {
         if ( i < 2 ) {
           desk_iter.rotation.y = - Math.PI / 4;
         }
@@ -281,56 +281,54 @@ export function updateDeskZ(desk, i) {
 function createDesk( i ) {
   var deskGroup = new THREE.Group();
   deskGroup.name = "desk";
+ // model
+ const loader = new FBXLoader();
+ loader.load( './models/Desk.fbx', function ( object ) {
 
-  // Desk Top
-  var deskTopGeometry = new THREE.BoxGeometry(1.5, 0.1, 0.8);
-  var deskTopMaterial = new THREE.MeshPhongMaterial({ color: 0x986b41 });
-  var deskTop = new THREE.Mesh(deskTopGeometry, deskTopMaterial);
-  deskTop.position.y = 0.05;
-  deskTop.name = "desk_part";
+   object.scale.setScalar(0.01);
 
-  // Desk Side Panels
-  var panelGeometry = new THREE.BoxGeometry(0.1, 0.6, 0.8);
-  var panelMaterial = new THREE.MeshPhongMaterial({ color: 0x986b41 });
+   object.traverse( function ( child ) {
 
-  var leftPanel = new THREE.Mesh(panelGeometry, panelMaterial);
-  leftPanel.position.set(-0.8, -0.2, 0);
-  leftPanel.name = "desk_part";
+     if ( child.isMesh ) {
 
-  var rightPanel = new THREE.Mesh(panelGeometry, panelMaterial);
-  rightPanel.position.set(0.8, -0.2, 0);
-  rightPanel.name = "desk_part";
+       child.castShadow = true;
 
-  deskTop.castShadow = true; //default is false
-  deskTop.receiveShadow = false; //default
+     }
 
-  leftPanel.castShadow = true; //default is false
-  leftPanel.receiveShadow = false; //default
-
-  rightPanel.castShadow = true; //default is false
-  rightPanel.receiveShadow = false; //default
-
-  deskGroup.add(deskTop, leftPanel, rightPanel);
+   } );
+   object.position.y = -0.55;
+   object.rotation.y = - Math.PI ;
+   deskGroup.add(object);
+  }); 
 
   // Add computer screen
   var screenGeometry = new THREE.BoxGeometry(0.64, 0.48, 0.02);
-  var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
+  var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x222222 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0, 0.4, 0.05);
+  screen.position.set(0, 0.6, 0.05);
   screen.castShadow = true; //default is false
   screen.receiveShadow = false; //default
   screen.name = "screen";
   deskGroup.add(screen);
 
-  // Add computer CPU
-  var cpuGeometry = new THREE.BoxGeometry(0.1, 0.125, 0.025);
+  // Add screen stand (formerly CPU)
+  var cpuGeometry = new THREE.BoxGeometry(0.1, 0.15, 0.025);
   var cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
   var cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
-  cpu.position.set(0, 0.1, 0.0625);
+  cpu.position.set(0, 0.3, 0.0625);
   cpu.castShadow = true; //default is false
   cpu.receiveShadow = false; //default
   cpu.name = "cpu";
   deskGroup.add(cpu);
+
+  // Add screen stand base.
+  var baseGeo = new THREE.BoxGeometry(0.25, 0.01, 0.125);
+  var base = new THREE.Mesh(baseGeo, cpuMaterial);
+  base.position.set(0, 0.22, 0.0625);
+  base.castShadow = true; //default is false
+  base.receiveShadow = false; //default
+  base.name = "base";
+  deskGroup.add(base);
 
   var deskLabelCallback = (signMesh, i, deskGroup) => {
     signMesh.scale.setScalar( 0.1 );
@@ -350,7 +348,7 @@ function createDesk( i ) {
       signMesh.translateX( 0.05 - width / 20 );
     }
 
-    signMesh.position.y = 0.7;
+    signMesh.position.y = 0.9;
 
     signMesh.updateMatrixWorld();    
 
@@ -386,7 +384,7 @@ function createDesk( i ) {
   lightActual.shadow.mapSize.width = 64; // Adjust the shadow map size
   lightActual.shadow.mapSize.height = 64;
 
-  lightActual.target = deskTop;
+  lightActual.target = screen;
 
   deskGroup.add(lightActual);
 
