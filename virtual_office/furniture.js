@@ -348,7 +348,7 @@ function createDesk( i ) {
 
   // Create an overhead office light geometry
   var lightWidth = 0.5;
-  var lightHeight = 0.01;
+  var lightHeight = 0.05;
   var lightDepth = 1.5;
   var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
 
