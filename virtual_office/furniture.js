@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
@@ -195,6 +196,50 @@ export function setupDesks(gapSize, scale, scene) {
     deskGroup.add(screenWebGL);
 
   }
+
+  // model
+  const loader = new FBXLoader();
+  loader.load( './models/Office Chair.fbx', function ( object ) {
+
+    object.scale.setScalar(0.1);
+
+    object.traverse( function ( child ) {
+
+      if ( child.isMesh ) {
+
+        child.castShadow = true;
+
+      }
+
+    } );
+
+    object.name = "chair";
+    object.position.y = -5;
+    object.rotation.y = - Math.PI /2;
+
+    for (var i = 0; i < 4; i++) {
+      let chair = object.clone();
+      chair.deskIndex = i;
+      updateDeskZ(chair, i);
+      if (i < 2) {
+        chair.rotation.y -= Math.PI; // Rotate the desk on the left side
+        chair.position.x = -(gapSize * scale) * 0.7;
+      }
+      else {
+        chair.position.x = (gapSize * scale) * 0.7;
+      }
+
+       // Space the desks a bit out a wittle.
+      if ( i == 0 || i == 3) {
+        chair.position.x += 1.25;
+      }
+      if ( i == 1 || i == 2 ) {
+        chair.position.x -= 1.25;
+      }
+      deskGroup.add( chair );
+    }
+
+  } );
   return deskGroup;
 }
 

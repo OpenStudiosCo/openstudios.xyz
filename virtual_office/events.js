@@ -30,6 +30,10 @@ export function handleViewportChange() {
       mesh.webGLScreen.position.z += .175;
 
     }
+
+    if ( mesh.name == 'chair') {
+      updateDeskZ(mesh, mesh.deskIndex);
+    }
   });
 
   const newRoom = createOfficeRoom();
