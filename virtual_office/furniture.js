@@ -462,10 +462,10 @@ function createScreen( i ){
   var element = document.createElement("img");
   element.width = i == 720 ? "1280" : "1024";
   element.height = i == 720 ? "720" : "768";
-  element.style.opacity = 0.999;
+  element.style.opacity = 0.;
   
   element.src = url;
-  element.dataset.pageUrl = pageUrl; 
+  
   element.addEventListener("load", function() {
     window.virtual_office.scene_objects.screens_loaded += 1;
   });
@@ -476,14 +476,14 @@ function createScreen( i ){
   element.style.filter = 'blur( ' + ( i==720 ? 2 : 8 ) + 'px )';
   element.style.pointerEvents = 'none';
 
+  var screenTexture = new THREE.TextureLoader().load(url);
   var material = new THREE.MeshPhongMaterial({
-    opacity: 0.,
-    color: new THREE.Color("black"),
-    blending: THREE.NoBlending,
-    side: THREE.DoubleSide
+    map: screenTexture
   });
   var geometry = new THREE.PlaneGeometry(i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8);
-  var screenWebGL = new THREE.Mesh(geometry, material);
+  var screenWebGL = new THREE.Mesh(geometry, brightenMaterial(material, ( i==720 ? 12 : 8 )));
+
+  screenWebGL.pageUrl = pageUrl; 
   
   //mesh.scale.copy( domObject.scale );
   screenWebGL.castShadow = false;

@@ -114,9 +114,9 @@ export function handleInteractions( scene ) {
       if (intersects[i].object.name == "screen" || intersects[i].object.name == "desk_part") {
         // Set the screens sibling desk_label to active.
         intersects[i].object.parent.getObjectByName("desk_label").material.emissive.set(0xFFFFFF);
-        intersects[i].object.parent.getObjectByName("desk_label").material.emissiveIntensity = 0.25;
+        intersects[i].object.parent.getObjectByName("desk_label").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.25;
         intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissive.set(0xFFFFFF);
-        intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissiveIntensity = 0.5;
+        intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
         //intersects[ i ].object.parent.getObjectByName("ceilLightActual").color.set( 0xFFFFFF );
         intersects[i].object.parent.getObjectByName("ceilLightActual").intensity = 0.03;
         document.body.style.cursor = "pointer";
@@ -160,7 +160,7 @@ export function handleInteractions( scene ) {
       if (intersects[i].object.name == "tv") {
         document.body.style.cursor = "pointer";
         intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
-        intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
+        intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
   
         handleWallClick(intersects[i].object.parent);
   
@@ -186,7 +186,7 @@ function handleDeskClick(desk) {
       tempMesh.scale.copy(virtual_office.selected.webGLScreen.scale);
       tempMesh.position.copy(virtual_office.selected.webGLScreen.cssScreen.position);
 
-      var targetRotation = virtual_office.selected.webGLScreen.cssScreen.rotation.clone();
+      var targetRotation = window.wvirtual_office.selected.webGLScreen.cssScreen.rotation.clone();
 
       const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
       const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
@@ -197,7 +197,7 @@ function handleDeskClick(desk) {
       tempMesh.translateZ(diffZ / 1.4);
 
       // Start loading the screen.
-      document.getElementById('pageOverlay').src = window.virtual_office.selected.webGLScreen.cssScreen.element.dataset.pageUrl;
+      document.getElementById('pageOverlay').src = window.virtual_office.selected.webGLScreen.pageUrl;
 
       window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000).start();
       window.virtual_office.tweens.moveCamera.to(tempMesh.position, 1000).onComplete(stretchSelectedScreen).start();
@@ -215,7 +215,7 @@ function stretchSelectedScreen() {
 
   window.virtual_office.selected.webGLScreen.cssScreen.element.style.pointerEvents = 'auto';
 
-  virtual_office.selected.webGLScreen.cssScreen.element.parentElement.parentElement.parentElement.style.touchAction = 'auto';
+  window.virtual_office.selected.webGLScreen.cssScreen.element.parentElement.parentElement.parentElement.style.touchAction = 'auto';
 
   document.getElementById('pageOverlay').style.display = 'block';
   
@@ -234,7 +234,7 @@ function shrinkScreenBack() {
   }
 
   window.virtual_office.selected.webGLScreen.cssScreen.element.style.pointerEvents = 'none';
-  virtual_office.selected.webGLScreen.cssScreen.element.parentElement.parentElement.parentElement.style.touchAction = 'none';
+  window.virtual_office.selected.webGLScreen.cssScreen.element.parentElement.parentElement.parentElement.style.touchAction = 'none';
 
   document.getElementById('pageOverlay').style.display = 'none';
 
@@ -261,12 +261,12 @@ function handleWallClick(desk) {
 
       let newPosition = new THREE.Vector3(
         0,
-        virtual_office.selected.webGLScreen.cssScreen.position.y,
+        window.virtual_office.selected.webGLScreen.cssScreen.position.y,
         newPosZ
       );
 
       // Start loading the screen.
-      document.getElementById('pageOverlay').src = virtual_office.selected.webGLScreen.cssScreen.element.dataset.pageUrl;
+      document.getElementById('pageOverlay').src = window.virtual_office.selected.webGLScreen.pageUrl;
 
       window.virtual_office.tweens.rotateCamera.to({ x:0, y: 0, z: 0 }, 1000).start()
       window.virtual_office.tweens.moveCamera.to(newPosition, 1000).onComplete(stretchSelectedScreen).start();

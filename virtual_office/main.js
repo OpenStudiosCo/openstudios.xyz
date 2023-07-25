@@ -404,7 +404,7 @@ function setupScene() {
   scene.add(window.virtual_office.scene_objects.deskGroup);
 
   // Adjust ambient light intensity
-  var ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x554455 : 0x443344); // Dim ambient light color
+  var ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x555555 : 0x444444); // Dim ambient light color
   scene.add(ambientLight);
 
   window.virtual_office.scene_objects.screens_loaded = 0;
