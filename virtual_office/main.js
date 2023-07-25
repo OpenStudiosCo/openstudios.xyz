@@ -359,15 +359,20 @@ export function createOfficeRoom() {
   const floorTexture = new THREE.TextureLoader().load('./checkers.jpg');
   floorTexture.wrapS = THREE.RepeatWrapping;
   floorTexture.wrapT = THREE.RepeatWrapping;
-  floorTexture.repeat.set( 2, 2 );
+  floorTexture.repeat.set( 3, 3 );
 
   // Create two materials: one for the floor face and one for the other faces
-  const floorMaterial = new THREE.MeshLambertMaterial({ map: floorTexture, side: THREE.DoubleSide });
+  const floorMaterial = new THREE.MeshPhongMaterial({
+    map: floorTexture,
+    shininess: 25,
+    side: THREE.DoubleSide
+  });
   floorMaterial.name = 'floor';
-  const otherFacesMaterial = new THREE.MeshLambertMaterial({
+  const otherFacesMaterial = new THREE.MeshPhongMaterial({
     color: 0xa0adaf,
     opacity: 1,
     side: THREE.DoubleSide,
+    shininess: 12.5,
     transparent: true
   });
   const materials = [
@@ -394,6 +399,7 @@ export function createOfficeRoom() {
 }
 
 function setupScene() {
+  
   // Scene container.
   scene = new THREE.Scene();
 

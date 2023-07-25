@@ -75,10 +75,11 @@ function enterTheOffice ( coords ) {
     window.virtual_office.camera.updateProjectionMatrix();
   })
   .onComplete(() => {
-    const roomMaterial = new THREE.MeshLambertMaterial({
+    const roomMaterial = new THREE.MeshPhongMaterial({
       color: 0xa0adaf,
       opacity: 1,
       side: THREE.BackSide,
+      shininess: 12.5,
       transparent: true
     });
     window.virtual_office.scene_objects.room.material.forEach((material, i) => {

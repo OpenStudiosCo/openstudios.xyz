@@ -392,12 +392,12 @@ function createDesk( i ) {
 
   // Create an overhead office light geometry
   var lightWidth = 0.5;
-  var lightHeight = 0.05;
+  var lightHeight = 0.01;
   var lightDepth = 1.5;
   var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
 
   // Create the overhead office light material
-  var lightMaterial = new THREE.MeshPhongMaterial({ color: 0x00EEff, emissive: 0x00EEff, emissiveIntensity: 0.25 });
+  var lightMaterial = new THREE.MeshPhongMaterial({ color: 0x00EEff, emissive: 0x00EEff, emissiveIntensity: 0.25, shininess: 100 });
 
   // Create the overhead office light mesh
   var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
