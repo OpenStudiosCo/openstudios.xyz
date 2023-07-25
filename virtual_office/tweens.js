@@ -52,14 +52,6 @@ export function setupTweens( ) {
   window.virtual_office.tweens.rotateCamera = rotateCamera();
 
   /**
-   * Blur Screens
-   * Animation: Manual, reusable
-   */
-  window.virtual_office.tweens.blurScreen = blurScreen();
-
-  //window.virtual_office.tweens.sharpenScreen = sharpenScreen;
-
-  /**
    * Reset the camera to original position and rotation.
    */
   let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
@@ -150,32 +142,6 @@ function rotateCamera( ) {
     window.virtual_office.moving = false;
   });
 }
-
-function blurScreen( ) {
-  let target = { x: 0 };
-  return new TWEEN.Tween( target )
-  .to({ x: 8 }, 1000) // Set the duration of the animation
-  .onUpdate(() => {
-    window.virtual_office.selected.webGLScreen.cssScreen.element.style.filter = 'blur( ' + target.x + 'px )';
-  })
-  .onComplete(() => {
-    window.virtual_office.selected = false;
-  });
-}
-
-export function sharpenScreen( ) {
-  let target = { x: window.virtual_office.selected.name == 'backWall' ?  2 : 8 };
-  return new TWEEN.Tween( target )
-    .to({ x: 0 }, 1000) // Set the duration of the animation
-    .onUpdate(() => {
-      window.virtual_office.selected.webGLScreen.cssScreen.element.style.filter = 'blur( ' + target.x + 'px )';
-    })
-    .onComplete(() => {
-      TWEEN.remove(window.virtual_office.tweens.sharpenScreen)
-      delete window.virtual_office.tweens.sharpenScreen;
-    });;
-}
-
 
 // Resets 
 

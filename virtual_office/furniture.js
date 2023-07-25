@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 
-import { CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
-
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
@@ -21,31 +19,10 @@ export function setupBackwall ( scene ) {
     signMesh.name = "neon";
     wallGroup.add(signMesh);
   }, scene);
-  
-  // // Add portraits to the scene
-  // let paulsPortrait = createPortrait('./paul.png', 2.75);
-  // paulsPortrait.position.set(-7.5, 4, 1);  // Example position for portrait 1
-  // paulsPortrait.name = "portrait";
-  // paulsPortrait.brightness = {
-  //   current: 2.75,
-  //   target: 2.75
-  // };
-  // wallGroup.add(paulsPortrait);
 
-  // let garrettsPortrait = createPortrait('./garrett.png', 4.);
-  // garrettsPortrait.position.set(7.5, 4, 1);  // Example position for portrait 1
-  // garrettsPortrait.brightness = {
-  //   current: 4,
-  //   target: 4
-  // };
-  // garrettsPortrait.name = "portrait";
-  // wallGroup.add(garrettsPortrait);
-
-  [ window.virtual_office.scene_objects.tvCSS, window.virtual_office.scene_objects.tvWebGL ] = createScreen( 720 );
+  window.virtual_office.scene_objects.tvWebGL = createScreen( 720 );
   window.virtual_office.scene_objects.tvWebGL.position.y = 6;
   window.virtual_office.scene_objects.tvWebGL.position.z = - 14 - window.virtual_office.room_depth / 2;
-  window.virtual_office.scene_objects.tvCSS.position.copy(window.virtual_office.scene_objects.tvWebGL.position);
-  window.virtual_office.scene_objects.tvCSS.rotation.copy(window.virtual_office.scene_objects.tvWebGL.rotation);
   window.virtual_office.scene_objects.tvWebGL.name = "tvWebGL";
 
   var screenGeometry = new THREE.BoxGeometry(20.8, 11.7, 0.02);
@@ -105,27 +82,6 @@ function createNeonSign(callback, scene) {
   });
 }
 
-// Creates a portrait plane based on provided image
-function createPortrait(img_url, brightness) {
-
-  // Load textures
-  var portraitTexture = new THREE.TextureLoader().load(img_url);
-
-  // Create portrait materials
-  var portraitMaterial = new THREE.MeshStandardMaterial({ map: portraitTexture });
-
-  portraitMaterial = brightenMaterial(portraitMaterial, brightness);
-
-  // Set portrait dimensions
-  var portraitWidth = 8;
-  var portraitHeight = 8;
-
-  // Create portrait planes
-  var portrait = new THREE.Mesh(new THREE.PlaneGeometry(portraitWidth, portraitHeight), portraitMaterial);
-
-  return portrait;
-}
-
 export function brightenMaterial(material, amount) {
 
   // Increase the brightness of the texture
@@ -146,17 +102,16 @@ export function brightenMaterial(material, amount) {
 // Uses createDesk and arranges them in the room.
 export function setupDesks(gapSize, scale, scene) {
   // Create groups
-  var deskGroup = new THREE.Group(),
-      screenCSSGroup = new THREE.Group();
+  var deskGroup = new THREE.Group();
 
   for (var i = 0; i < 4; i++) {
     var desk = createDesk( i );
     desk.rotation.y = Math.PI / 2;
 
     // Add screens.
-    var [ screenCSS, screenWebGL ] = createScreen( i );
-    screenCSS.rotation.y = - Math.PI / 2;
-    screenCSS.position.y = 4.4;
+    var screenWebGL = createScreen( i );
+    screenWebGL.rotation.y = - Math.PI / 2;
+    screenWebGL.position.y = 4.4;
     desk.webGLScreen = screenWebGL;
 
     // Main position coordinates.
@@ -165,19 +120,19 @@ export function setupDesks(gapSize, scale, scene) {
       desk.rotation.y += Math.PI; // Rotate the desk on the left side
       updateDeskZ(desk, i);
 
-      screenCSS.position.x = -(gapSize * scale) - 3.25 ;
-      screenCSS.rotation.y = Math.PI / 4;
-      updateDeskZ(screenCSS, i);
-      screenCSS.position.z += .175;
+      screenWebGL.position.x = -(gapSize * scale) - 3.25 ;
+      screenWebGL.rotation.y = Math.PI / 4;
+      updateDeskZ(screenWebGL, i);
+      screenWebGL.position.z += .175;
 
     } else {
       desk.position.x = (gapSize * scale) * 1.25;
       updateDeskZ(desk, i);
 
-      screenCSS.position.x = (gapSize * scale) + 3.25;
-      screenCSS.rotation.y = - Math.PI / 4;
-      updateDeskZ(screenCSS, i);      
-      screenCSS.position.z += .175;
+      screenWebGL.position.x = (gapSize * scale) + 3.25;
+      screenWebGL.rotation.y = - Math.PI / 4;
+      updateDeskZ(screenWebGL, i);      
+      screenWebGL.position.z += .175;
     }
 
     // Space the desks a bit out a wittle.
@@ -189,17 +144,17 @@ export function setupDesks(gapSize, scale, scene) {
     }
 
     if ( i == 0 ) {
-      screenCSS.position.x += .5;
+      screenWebGL.position.x += .5;
     }
     if ( i == 1 ) {
-      screenCSS.position.x -= 2;
+      screenWebGL.position.x -= 2;
     }
 
     if ( i == 2 ) {
-      screenCSS.position.x -= .5;
+      screenWebGL.position.x -= .5;
     }
     if ( i == 3 ) {
-      screenCSS.position.x += 2;
+      screenWebGL.position.x += 2;
     }
   
     desk.scale.set(scale, scale, scale); // Scale up the desk
@@ -235,16 +190,12 @@ export function setupDesks(gapSize, scale, scene) {
       }
     });
 
-    screenWebGL.position.copy(screenCSS.position);
-    screenWebGL.rotation.copy(screenCSS.rotation);
-
     desk.deskIndex = i; // hack for storing the webgl screens in the same group.
     deskGroup.add(desk);
     deskGroup.add(screenWebGL);
-    screenCSSGroup.add(screenCSS);  
 
   }
-  return [deskGroup, screenCSSGroup ];
+  return deskGroup;
 }
 
 /**
@@ -457,25 +408,6 @@ function createScreen( i ){
       break;
   }
   
-
-  //var element = document.createElement("iframe");
-  var element = document.createElement("img");
-  element.width = i == 720 ? "1280" : "1024";
-  element.height = i == 720 ? "720" : "768";
-  element.style.opacity = 0.;
-  
-  element.src = url;
-  
-  element.addEventListener("load", function() {
-    window.virtual_office.scene_objects.screens_loaded += 1;
-  });
- 
-  var screenCSS = new CSS3DObject(element);
-  screenCSS.scale.multiplyScalar( i == 720 ? .015 : 0.00625 );
-
-  element.style.filter = 'blur( ' + ( i==720 ? 2 : 8 ) + 'px )';
-  element.style.pointerEvents = 'none';
-
   var screenTexture = new THREE.TextureLoader().load(url);
   var material = new THREE.MeshPhongMaterial({
     map: screenTexture
@@ -489,8 +421,7 @@ function createScreen( i ){
   screenWebGL.castShadow = false;
   screenWebGL.receiveShadow = true;
 
-  screenWebGL.cssScreen = screenCSS;
   screenWebGL.name = "screenWebGL";
   
-  return [ screenCSS, screenWebGL ];
+  return screenWebGL ;
 }

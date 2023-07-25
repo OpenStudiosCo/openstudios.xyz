@@ -30,8 +30,6 @@ domReady(
        * @memberof THREE.OrbitControls
        */
       controls: false,
-      controls2: false, // clone of main controls for the CSS scene.
-
       /**
        * Debug mode.
        * 
@@ -93,7 +91,6 @@ domReady(
        * @memberof Object { THREE.Renderer , ... }
        */
       renderers: {
-        css: false,
         webgl: false
       },
 

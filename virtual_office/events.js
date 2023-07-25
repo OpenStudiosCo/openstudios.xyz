@@ -4,8 +4,6 @@ import { calculateAdjustedGapSize, createOfficeRoom, setCameraFOV, doorWidth, do
 
 import { updateDeskZ } from './furniture.js';
 
-import { sharpenScreen } from './tweens.js';
-
 export function handleViewportChange() {
   window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
   window.virtual_office.room_depth = 8 * window.virtual_office.scene_dimensions.adjusted_gap;
@@ -28,10 +26,8 @@ export function handleViewportChange() {
       updateDeskZ(mesh, mesh.deskIndex);
 
       updateDeskZ(mesh.webGLScreen, mesh.deskIndex);
-      updateDeskZ(mesh.webGLScreen.cssScreen, mesh.deskIndex);
 
       mesh.webGLScreen.position.z += .175;
-      mesh.webGLScreen.cssScreen.position.z += .175;
 
     }
   });
@@ -41,13 +37,11 @@ export function handleViewportChange() {
 
   let backWallZ = - 15 - window.virtual_office.room_depth / 2;
   window.virtual_office.scene_objects.wallGroup.position.z = backWallZ;
-  window.virtual_office.scene_objects.tvCSS.position.z = backWallZ +1;
   window.virtual_office.scene_objects.tvWebGL.position.z =  backWallZ +1;
 
   window.virtual_office.scene_objects.door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
 
   window.virtual_office.renderers.webgl.setSize(width, height);
-  window.virtual_office.renderers.css.setSize(width, height);
   window.virtual_office.effects.main.setSize(width, height);
   window.virtual_office.effects.bloom.setSize(width, height);
 }
@@ -86,25 +80,17 @@ export function handleInteractions( scene ) {
       object.children[0].color.set(0xDA68C5);
       object.children[0].intensity = window.virtual_office.fast ? 0.35 : 0.1;
     }
-    // if (object.name == "portrait") {
-    //   object.brightness.current = object.brightness.target;
-    //   let portraitTexture = object.material.map;
-    //   var portraitMaterial = new THREE.MeshStandardMaterial({ map: portraitTexture });
-
-    //   let newMaterial = brightenMaterial(portraitMaterial, object.brightness.current);
-    //   wallGroup.children[i].material = newMaterial;
-    // }
   });
 
   for (let i = 0; i < intersects.length; i++) {
 
     // If nothing is selected, allow hover effects.
     if (!window.virtual_office.selected) {
-      document.body.style.cursor = "default";
+      document.documentElement.style.cursor = "default";
       if (intersects[i].object.name == "desk_label") {
         // Set the active one to white.
         intersects[i].object.material.emissive.set(0xFFFFFF);
-        document.body.style.cursor = "pointer";
+        document.documentElement.style.cursor = "pointer";
   
         handleDeskClick(intersects[i].object.parent);
   
@@ -119,7 +105,7 @@ export function handleInteractions( scene ) {
         intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
         //intersects[ i ].object.parent.getObjectByName("ceilLightActual").color.set( 0xFFFFFF );
         intersects[i].object.parent.getObjectByName("ceilLightActual").intensity = 0.03;
-        document.body.style.cursor = "pointer";
+        document.documentElement.style.cursor = "pointer";
   
         handleDeskClick(intersects[i].object.parent);
   
@@ -127,38 +113,17 @@ export function handleInteractions( scene ) {
       }
   
       if (intersects[i].object.name == "neon") {
-        document.body.style.cursor = "pointer";
+        document.documentElement.style.cursor = "pointer";
         intersects[i].object.material.emissive.set(0xFFFFFF);
         intersects[i].object.material.emissiveIntensity = 0.5;
-  
-        // let portraits = intersects[i].object.parent.getObjectsByProperty('name', 'portrait');
-        // portraits.forEach((portrait, portraitIndex) => {
-        //   portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
-        //   portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
-        // });
+
         handleWallClick(intersects[i].object.parent);
   
         break;
       }
-         // if (intersects[i].object.name == "portrait") {
-      //   document.body.style.cursor = "pointer";
-      //   intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
-      //   intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = 0.5;
-  
-      //   let portraits = intersects[i].object.parent.getObjectsByProperty('name', 'portrait');
-      //   portraits.forEach((portrait, portraitIndex) => {
-      //     portraits[portraitIndex].brightness.current = portraits[portraitIndex].brightness.target * 1.0125;
-      //     portraits[portraitIndex].material = brightenMaterial(portraits[portraitIndex].material, portraits[portraitIndex].brightness.current);
-      //   });
-  
-      //   handleWallClick(intersects[i].object.parent);
-  
-  
-      //   break;
-      // }
   
       if (intersects[i].object.name == "tv") {
-        document.body.style.cursor = "pointer";
+        document.documentElement.style.cursor = "pointer";
         intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
         intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
   
@@ -169,7 +134,7 @@ export function handleInteractions( scene ) {
     }
     // Otherwise we're only tracking interaction with the exit sign.
     else {
-      document.body.style.cursor = "inherit";
+      document.documentElement.style.cursor = "inherit";
     }
   }
 }
@@ -179,14 +144,12 @@ function handleDeskClick(desk) {
     if (!window.virtual_office.selected) {
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
-      window.virtual_office.tweens.sharpenScreen = sharpenScreen();
-      window.virtual_office.tweens.sharpenScreen.start();
 
       let tempMesh = new THREE.Object3D();
       tempMesh.scale.copy(virtual_office.selected.webGLScreen.scale);
-      tempMesh.position.copy(virtual_office.selected.webGLScreen.cssScreen.position);
-
-      var targetRotation = window.wvirtual_office.selected.webGLScreen.cssScreen.rotation.clone();
+      tempMesh.position.copy(virtual_office.selected.webGLScreen.position);
+      
+      var targetRotation = window.virtual_office.selected.webGLScreen.rotation.clone();
 
       const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
       const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
@@ -201,7 +164,6 @@ function handleDeskClick(desk) {
 
       window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000).start();
       window.virtual_office.tweens.moveCamera.to(tempMesh.position, 1000).onComplete(stretchSelectedScreen).start();
-      window.virtual_office.renderers.css.domElement.style.zIndex = 9999;
 
     }
 
@@ -210,12 +172,6 @@ function handleDeskClick(desk) {
 
 // Function to update the CSS object's size to fit the visible space
 function stretchSelectedScreen() {
-  window.virtual_office.selected.webGLScreen.cssScreen.element.width = window.innerWidth;
-  window.virtual_office.selected.webGLScreen.cssScreen.element.height = window.innerHeight;
-
-  window.virtual_office.selected.webGLScreen.cssScreen.element.style.pointerEvents = 'auto';
-
-  window.virtual_office.selected.webGLScreen.cssScreen.element.parentElement.parentElement.parentElement.style.touchAction = 'auto';
 
   document.getElementById('pageOverlay').style.display = 'block';
   
@@ -224,17 +180,6 @@ function stretchSelectedScreen() {
 
 // Restore the CSS object to its original size.
 function shrinkScreenBack() {
-  if ( window.virtual_office.selected.name == 'backWall' ) {
-    window.virtual_office.selected.webGLScreen.cssScreen.element.width = '1280';
-    window.virtual_office.selected.webGLScreen.cssScreen.element.height =  '720';
-  }
-  else {
-    window.virtual_office.selected.webGLScreen.cssScreen.element.width = '1024';
-    window.virtual_office.selected.webGLScreen.cssScreen.element.height = '768';
-  }
-
-  window.virtual_office.selected.webGLScreen.cssScreen.element.style.pointerEvents = 'none';
-  window.virtual_office.selected.webGLScreen.cssScreen.element.parentElement.parentElement.parentElement.style.touchAction = 'none';
 
   document.getElementById('pageOverlay').style.display = 'none';
 
@@ -248,10 +193,8 @@ function handleWallClick(desk) {
     if (!window.virtual_office.selected) {
       window.virtual_office.moving = true;
       window.virtual_office.selected = desk;
-      window.virtual_office.tweens.sharpenScreen = sharpenScreen();
-      window.virtual_office.tweens.sharpenScreen.start();
 
-      let newPosZ = window.virtual_office.selected.webGLScreen.cssScreen.position.z;
+      let newPosZ = window.virtual_office.selected.webGLScreen.position.z;
 
       const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
       const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
@@ -261,7 +204,7 @@ function handleWallClick(desk) {
 
       let newPosition = new THREE.Vector3(
         0,
-        window.virtual_office.selected.webGLScreen.cssScreen.position.y,
+        window.virtual_office.selected.webGLScreen.position.y,
         newPosZ
       );
 
@@ -270,7 +213,6 @@ function handleWallClick(desk) {
 
       window.virtual_office.tweens.rotateCamera.to({ x:0, y: 0, z: 0 }, 1000).start()
       window.virtual_office.tweens.moveCamera.to(newPosition, 1000).onComplete(stretchSelectedScreen).start();
-      window.virtual_office.renderers.css.domElement.style.zIndex = 9999;
     }
   }
 }
@@ -303,12 +245,6 @@ export function handleExitSign() {
   window.virtual_office.tweens.resetCameraRotation.start();
   window.virtual_office.tweens.resetCameraPosition.onStart(shrinkScreenBack).start();
 
-  if (window.virtual_office.selected.name == 'backWall') {
-    window.virtual_office.tweens.blurScreen.to({ x: 2 }).start();
-  }
-  if (window.virtual_office.selected.name == 'desk') {
-    window.virtual_office.tweens.blurScreen.to({ x: 8 }).start();
-  }
+  window.virtual_office.selected = false;
   
-  window.virtual_office.renderers.css.domElement.style.zIndex = 'inherit';
 }

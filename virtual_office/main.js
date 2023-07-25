@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { CSS3DRenderer } from 'three/addons/renderers/CSS3DRenderer.js';
 
 import { SUBTRACTION, Brush, Evaluator } from 'three-bvh-csg';
 import { MeshBVHVisualizer } from 'three-mesh-bvh';
@@ -17,8 +16,6 @@ import { setupTweens, updateTweens } from './tweens.js';
 
 let csgEvaluator;
 let scene, stats;
-
-let scene2;
 
 let materials, darkMaterial;
 
@@ -66,12 +63,6 @@ export function init(pane) {
   // Bloom effect materials.
   darkMaterial = new THREE.MeshBasicMaterial({ color: 'black' });
   materials = {};
-
-  // Setup controls.
-  window.virtual_office.controls2 = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.css.domElement);
-  window.virtual_office.controls2.target.set(0, 10, 0);
-  window.virtual_office.controls2.enabled = window.virtual_office.debug;
-  window.virtual_office.controls2.update();
 
   window.virtual_office.controls = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.webgl.domElement);
   window.virtual_office.controls.enabled = window.virtual_office.debug;
@@ -203,11 +194,8 @@ export function animate(currentTime) {
     window.virtual_office.effects.bloom.render();
     scene.traverse(restoreMaterial);
     window.virtual_office.effects.main.render();
-    window.virtual_office.renderers.css.render(scene2, window.virtual_office.camera);
-
   } else {
     window.virtual_office.renderers.webgl.render(scene, window.virtual_office.camera); // Render the scene without the effects
-    window.virtual_office.renderers.css.render(scene2, window.virtual_office.camera);
   }
 
 }
@@ -397,10 +385,8 @@ export function createOfficeRoom() {
 function setupScene() {
   // Scene container.
   scene = new THREE.Scene();
-  scene2 = new THREE.Scene();
 
-  [ window.virtual_office.scene_objects.deskGroup, window.virtual_office.scene_objects.screenCSSGroup ] = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
-  scene2.add(window.virtual_office.scene_objects.screenCSSGroup);
+  window.virtual_office.scene_objects.deskGroup = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
   scene.add(window.virtual_office.scene_objects.deskGroup);
 
   // Adjust ambient light intensity
@@ -418,7 +404,6 @@ function setupScene() {
   window.virtual_office.scene_objects.wallGroup = setupBackwall(scene);
   window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
   scene.add(window.virtual_office.scene_objects.wallGroup);
-  scene2.add(window.virtual_office.scene_objects.tvCSS);
   scene.add(window.virtual_office.scene_objects.tvWebGL);
 
 }
@@ -430,13 +415,6 @@ function setupRenderers() {
   window.virtual_office.renderers.webgl.setPixelRatio(window.devicePixelRatio);
   window.virtual_office.renderers.webgl.setSize(window.innerWidth, window.innerHeight);
   document.querySelector("#webgl").appendChild(window.virtual_office.renderers.webgl.domElement);
-
-  // Website CSSRenderer.
-  window.virtual_office.renderers.css = new CSS3DRenderer();
-  window.virtual_office.renderers.css.setSize(window.innerWidth, window.innerHeight);
-  window.virtual_office.renderers.css.domElement.style.position = "absolute";
-  window.virtual_office.renderers.css.domElement.style.top = 0;
-  document.querySelector("#css").appendChild(window.virtual_office.renderers.css.domElement);
 
   // Hide body element scrollbars as the 3D viewport takes over.
   document.querySelector("body").style.overflow = 'hidden';
