@@ -39,8 +39,6 @@ export function setupBackwall ( scene ) {
   const loader = new FBXLoader();
   loader.load( './models/Small Monstera.fbx', function ( object ) {
 
-    
-
     object.traverse( function ( child ) {
 
       if ( child.isMesh ) {
@@ -51,7 +49,6 @@ export function setupBackwall ( scene ) {
 
     object.scale.setScalar(7.5);
     object.position.set(30, -5, window.virtual_office.scene_dimensions.adjusted_gap);
-    window.virtual_office.scene_objects.plant = object;
 
     wallGroup.add(object);
 
@@ -113,6 +110,8 @@ export function brightenMaterial(material, amount) {
   // Increase the brightness of the texture
   material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
   material.map.needsUpdate = true; // Update the material
+
+  amount = window.virtual_office.fast ? amount / 4 : amount;
 
   // Increase the brightness by adjusting the material color
   const brightness = amount; // Increase the value to make it brighter
@@ -233,6 +232,9 @@ export function setupDesks(gapSize, scale, scene) {
       if ( child.isMesh ) {
 
         child.castShadow = true;
+        child.material.forEach((material) =>{         
+          material.color.setScalar(material.color.r * 100);
+        });
 
       }
 
