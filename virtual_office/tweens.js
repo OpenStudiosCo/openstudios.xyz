@@ -82,7 +82,7 @@ function enterTheOffice ( coords ) {
       transparent: true
     });
     window.virtual_office.scene_objects.room.material.forEach((material, i) => {
-      if (material.opacity > 0) {
+      if (material.opacity > 0 && material.name != 'floor') {
         window.virtual_office.scene_objects.room.material[i] = roomMaterial;
       }
     });

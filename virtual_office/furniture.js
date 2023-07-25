@@ -107,10 +107,12 @@ function createNeonSign(callback, scene) {
 
 export function brightenMaterial(material, amount) {
 
-  // Increase the brightness of the texture
-  material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
-  material.map.needsUpdate = true; // Update the material
-
+  if (material.map) {
+    // Increase the brightness of the texture
+    material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
+    material.map.needsUpdate = true; // Update the material
+  }
+  
   amount = window.virtual_office.fast ? amount / 4 : amount;
 
   // Increase the brightness by adjusting the material color
@@ -233,7 +235,7 @@ export function setupDesks(gapSize, scale, scene) {
 
         child.castShadow = true;
         child.material.forEach((material) =>{         
-          material.color.setScalar(material.color.r * 100);
+          material.color.setScalar(material.color.r * (window.virtual_office.fast ? 25 : 100));
         });
 
       }
@@ -312,20 +314,25 @@ function createDesk( i ) {
  const loader = new FBXLoader();
  loader.load( './models/Desk.fbx', function ( object ) {
 
-   object.scale.setScalar(0.01);
+  object.scale.setScalar(0.01);
+  window.desk = object;
+  let amount = window.virtual_office.fast ? 3 : 1.5;
 
-   object.traverse( function ( child ) {
+  object.traverse( function ( child ) {
 
-     if ( child.isMesh ) {
+      if ( child.isMesh ) {
 
-       child.castShadow = true;
+        child.castShadow = true;
+        child.material.forEach((material) =>{
+          brightenMaterial(material, amount);
+        });
 
-     }
+      }
 
-   } );
-   object.position.y = -0.55;
-   object.rotation.y = - Math.PI ;
-   deskGroup.add(object);
+    } );
+    object.position.y = -0.55;
+    object.rotation.y = - Math.PI ;
+    deskGroup.add(object);
   }); 
 
   // Add computer screen

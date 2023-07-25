@@ -356,14 +356,25 @@ export function createOfficeRoom() {
 
   const roomGeometry = new THREE.BoxGeometry(80, 30, window.virtual_office.room_depth);
 
-  const roomMaterial = new THREE.MeshLambertMaterial({
+  const floorTexture = new THREE.TextureLoader().load('./checkers.jpg');
+  floorTexture.wrapS = THREE.RepeatWrapping;
+  floorTexture.wrapT = THREE.RepeatWrapping;
+  floorTexture.repeat.set( 2, 2 );
+
+  // Create two materials: one for the floor face and one for the other faces
+  const floorMaterial = new THREE.MeshLambertMaterial({ map: floorTexture, side: THREE.DoubleSide });
+  floorMaterial.name = 'floor';
+  const otherFacesMaterial = new THREE.MeshLambertMaterial({
     color: 0xa0adaf,
     opacity: 1,
     side: THREE.DoubleSide,
     transparent: true
   });
+  const materials = [
+    otherFacesMaterial, otherFacesMaterial, otherFacesMaterial, floorMaterial, otherFacesMaterial, otherFacesMaterial
+  ];
 
-  const roomBrush = new Brush(roomGeometry, roomMaterial);
+  const roomBrush = new Brush(roomGeometry, materials);
   roomBrush.position.y = 10;
   roomBrush.position.z = -15;
 
