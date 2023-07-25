@@ -36,6 +36,31 @@ export function setupBackwall ( scene ) {
   wallGroup.name = "backWall";
   wallGroup.webGLScreen = window.virtual_office.scene_objects.tvWebGL;
 
+  const loader = new FBXLoader();
+  loader.load( './models/Small Monstera.fbx', function ( object ) {
+
+    
+
+    object.traverse( function ( child ) {
+
+      if ( child.isMesh ) {
+        child.castShadow = true;
+      }
+
+    } );
+
+    object.scale.setScalar(7.5);
+    object.position.set(30, -5, window.virtual_office.scene_dimensions.adjusted_gap);
+    window.virtual_office.scene_objects.plant = object;
+
+    wallGroup.add(object);
+
+    let plant_left = object.clone();
+    plant_left.position.x = -plant_left.position.x;
+    plant_left.rotation.z = - Math.PI /2 ;
+    wallGroup.add(plant_left);
+  });
+
   return wallGroup;
 }
 
