@@ -396,8 +396,20 @@ function createDesk( i ) {
   var lightDepth = 1.5;
   var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
 
+  const lightTexture = new THREE.TextureLoader().load('./textures/istockphoto-623308802-612x612.jpg');
+  lightTexture.wrapS = THREE.RepeatWrapping;
+  lightTexture.wrapT = THREE.RepeatWrapping;
+  lightTexture.repeat.set( 10, 10 );
+
   // Create the overhead office light material
-  var lightMaterial = new THREE.MeshPhongMaterial({ color: 0x00EEff, emissive: 0x00EEff, emissiveIntensity: 0.25, shininess: 100 });
+  var lightMaterial = new THREE.MeshPhongMaterial({
+    color: 0x00EEff,
+    emissive: 0x00EEff,
+    emissiveIntensity: 0.25,
+    bumpMap: lightTexture,
+    bumpScale:10,
+    shininess: 200
+  });
 
   // Create the overhead office light mesh
   var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);

@@ -415,7 +415,7 @@ export function createOfficeRoom() {
   backwallRough.wrapT = THREE.RepeatWrapping;
   backwallRough.repeat.set( roomWidth / 10, roomHeight / 10 );
 
-  const backwallMaterial = new THREE.MeshPhongMaterial({
+  const backwallMaterial = new THREE.MeshStandardMaterial({
     alphaTest: 0.99,
     color: 0xa0adaf,
     displacementMap: backwallHeight,
@@ -424,7 +424,6 @@ export function createOfficeRoom() {
     opacity: 1,
     roughnessMap: backwallRough,
     side: THREE.DoubleSide,
-    shininess: 12.5,
     transparent: true
   });
 
