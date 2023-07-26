@@ -38,28 +38,9 @@ export function setupTweens( ) {
    * Camera pan down.
    * Animation: Automatic, single use
    */
-  let cameraRotationX = - (Math.PI / 30) * window.virtual_office.camera.aspect;
-  window.virtual_office.tweens.panDown = panDown( cameraRotationX );
+  window.virtual_office.tweens.panDown = panDown( );
 
-  /**
-   * Move camera to "x"
-   * Animation: Manual, reusable
-   */
-  window.virtual_office.tweens.moveCamera = moveCamera();
-
-  /**
-   * Rotate camera to "x"
-   * Animation: Manual, reusable
-   */
-  window.virtual_office.tweens.rotateCamera = rotateCamera();
-
-  /**
-   * Reset the camera to original position and rotation.
-   */
-  let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
-      cameraDefaultRotation = { x: cameraRotationX, y: 0, z: 0 };
-  window.virtual_office.tweens.resetCameraPosition = resetCameraPosition( cameraDefaultPosition );
-  window.virtual_office.tweens.resetCameraRotation = resetCameraRotation( cameraDefaultRotation );
+  resetReusables();
 
 }
 
@@ -176,7 +157,8 @@ function dollyUp ( ) {
   });
 }
 
-function panDown ( cameraRotationX ) {
+function panDown ( ) {
+  let cameraRotationX = - (Math.PI / 30) * window.virtual_office.camera.aspect;
   return new TWEEN.Tween(window.virtual_office.camera.rotation)
   .to({ x: cameraRotationX }, 500) // Set the duration of the animation
   .onUpdate(() => {
@@ -186,6 +168,28 @@ function panDown ( cameraRotationX ) {
 }
 
 // Reusable
+export function resetReusables( ) {
+  /**
+     * Move camera to "x"
+     * Animation: Manual, reusable
+     */
+  window.virtual_office.tweens.moveCamera = moveCamera();
+
+  /**
+    * Rotate camera to "x"
+    * Animation: Manual, reusable
+    */
+  window.virtual_office.tweens.rotateCamera = rotateCamera();
+
+  /**
+    * Reset the camera to original position and rotation.
+    */
+  let cameraRotationX = - (Math.PI / 30) * window.virtual_office.camera.aspect;
+  let cameraDefaultPosition = { x: 0, y: 18, z: -20 + (window.virtual_office.room_depth / 2) },
+      cameraDefaultRotation = { x: cameraRotationX, y: 0, z: 0 };
+  window.virtual_office.tweens.resetCameraPosition = resetCameraPosition( cameraDefaultPosition );
+  window.virtual_office.tweens.resetCameraRotation = resetCameraRotation( cameraDefaultRotation );
+}
 
 function moveCamera( ) {
   return new TWEEN.Tween(window.virtual_office.camera.position)

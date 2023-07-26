@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { calculateAdjustedGapSize, createOfficeRoom, setCameraFOV, doorWidth, doorDepth, doorHeight } from './main.js';
 
 import { updateDeskZ } from './furniture.js';
+import { resetReusables } from './tweens.js';
 
 export function handleViewportChange() {
   window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
@@ -194,23 +195,6 @@ function handleDeskClick(desk) {
   }
 }
 
-// Function to update the CSS object's size to fit the visible space
-function stretchSelectedScreen() {
-
-  document.getElementById('pageOverlay').style.display = 'block';
-  
-  document.getElementById('exitSign').style.display = 'block';
-}
-
-// Restore the CSS object to its original size.
-function shrinkScreenBack() {
-
-  document.getElementById('pageOverlay').style.display = 'none';
-
-  document.getElementById('exitSign').style.display = 'none';  
-
-}
-
 
 function handleWallClick(desk) {
   if (window.virtual_office.pointer.z && !window.virtual_office.moving) {
@@ -249,26 +233,31 @@ export function handleExitSign() {
     cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
 
   // Animate the camera resetting from any other position.
-  window.virtual_office.tweens.resetCameraPosition = new TWEEN.Tween(window.virtual_office.camera.position)
-    .to(cameraDefaultPosition, 1000)
-    .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
-    .onUpdate(() => {
-      window.virtual_office.camera.updateProjectionMatrix();
-    })
-    .onComplete(() => {
-      window.virtual_office.moving = false;
-    })
-    ;
-  window.virtual_office.tweens.resetCameraRotation = new TWEEN.Tween(window.virtual_office.camera.rotation)
-    .to(cameraDefaultRotation, 1000)
-    .easing(TWEEN.Easing.Quadratic.InOut) // Use desired easing function
-    .onUpdate(() => {
-      window.virtual_office.camera.updateProjectionMatrix();
-    })
-    ;
+  resetReusables();
   window.virtual_office.tweens.resetCameraRotation.start();
   window.virtual_office.tweens.resetCameraPosition.onStart(shrinkScreenBack).start();
 
   window.virtual_office.selected = false;
   
+}
+
+/**
+ * Helpers
+ */
+
+// Function to update the CSS object's size to fit the visible space
+function stretchSelectedScreen() {
+
+  document.getElementById('pageOverlay').style.display = 'block';
+  
+  document.getElementById('exitSign').style.display = 'block';
+}
+
+// Restore the CSS object to its original size.
+function shrinkScreenBack() {
+
+  document.getElementById('pageOverlay').style.display = 'none';
+
+  document.getElementById('exitSign').style.display = 'none';  
+
 }
