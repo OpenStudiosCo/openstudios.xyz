@@ -396,6 +396,7 @@ export function createOfficeRoom() {
     displacementMap: ceilHeight,
     map: ceilTexture,
     normalMap: ceilNormal,
+    normalScale: new THREE.Vector2(7.5, 7.5),
     side: THREE.DoubleSide
   });
   ceilMaterial.name = 'ceiling';

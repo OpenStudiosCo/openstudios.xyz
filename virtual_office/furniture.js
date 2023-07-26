@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
@@ -197,11 +198,10 @@ export function setupDesks(gapSize, scale, scene) {
         desk_iter.updateMatrixWorld();
       }
       if (desk_iter.type == 'DirectionalLight') {
-        let factor = 100;
         desk_iter.position.set(
-          desk.position.x / factor,
-          2.5,
-          desk.position.z / factor
+          0,
+          1.6,
+          0
         );
         desk_iter.updateMatrixWorld();
 
@@ -315,7 +315,6 @@ function createDesk( i ) {
  loader.load( './models/Desk.fbx', function ( object ) {
 
   object.scale.setScalar(0.01);
-  window.desk = object;
   let amount = window.virtual_office.fast ? 3 : 1.5;
 
   object.traverse( function ( child ) {
@@ -390,39 +389,48 @@ function createDesk( i ) {
   };
   createDeskLabel( i, deskLabelCallback, deskGroup );
 
-  // Create an overhead office light geometry
-  var lightWidth = 0.5;
-  var lightHeight = 0.01;
-  var lightDepth = 1.5;
-  var lightGeometry = new THREE.BoxGeometry(lightWidth, lightHeight, lightDepth);
 
-  const lightTexture = new THREE.TextureLoader().load('./textures/istockphoto-623308802-612x612.jpg');
-  lightTexture.wrapS = THREE.RepeatWrapping;
-  lightTexture.wrapT = THREE.RepeatWrapping;
-  lightTexture.repeat.set( 10, 10 );
+  const glbLoader = new GLTFLoader();
 
-  // Create the overhead office light material
-  var lightMaterial = new THREE.MeshPhongMaterial({
-    color: 0x00EEff,
-    emissive: 0x00EEff,
-    emissiveIntensity: 0.25,
-    bumpMap: lightTexture,
-    bumpScale:10,
-    shininess: 200
-  });
+  glbLoader.load( './models/Ceiling Light.glb', function ( glb ) {
+    let object = glb.scene.children[0];
+    object.scale.setScalar(1);
+    window.desk = object;
+    let amount = window.virtual_office.fast ? 120 : 60;
 
-  // Create the overhead office light mesh
-  var lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
+    object.traverse( function ( child ) {
 
-  // Position the overhead office light
-  lightMesh.position.set(0, 2.25, 0);
-  lightMesh.rotation.y = Math.PI / 2;
-  lightMesh.name = "ceilLightMesh";
-  // Add the overhead office light to the scene
-  deskGroup.add(lightMesh);
+      if ( child.isMesh ) {
+
+        child.castShadow = true;
+        
+        brightenMaterial(child.material, amount);
+
+
+        if (child.name == "CUBezierCurve006_3") {
+
+          // Create the overhead office light material
+          var lightMaterial = new THREE.MeshPhongMaterial({
+            color: 0x00EEff,
+            emissive: 0x00EEff,
+            emissiveIntensity: 100,
+            shininess: 200
+          });
+  
+          child.material = lightMaterial;
+
+          child.layers.enable(1);
+        }
+        
+      }
+
+    } );
+    object.position.set(0, 1.75, 0);
+    object.name = "ceilLightMesh2";
+    deskGroup.add(object);
+  }); 
 
   const lightActual = new THREE.DirectionalLight(0x00EEff, 0.015); // Color: white
-  lightActual.position.set(0, 0.275, 0); // Set the position of the light
   lightActual.castShadow = true;
   lightActual.name = "ceilLightActual";
 

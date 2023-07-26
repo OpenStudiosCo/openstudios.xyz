@@ -68,6 +68,15 @@ export function handleInteractions( scene ) {
         desk_item.material.emissive.set(0x00EEff);
         desk_item.material.emissiveIntensity = 0.25;
       }
+      if (desk_item.name == "ceilLightMesh2") {
+        desk_item.children.forEach((child)=>{
+          // (light bub curves name is currently "CUBezierCurve006_3")
+          if (child.name == "CUBezierCurve006_3") {
+            child.material.emissive.set(0x00EEff);
+            child.material.emissiveIntensity = 0.25;
+          }
+        });
+      }
       if (desk_item.name == "ceilLightActual") {
         desk_item.color.set(0x00EEff);
         desk_item.intensity = 0.015;
@@ -105,10 +114,16 @@ export function handleInteractions( scene ) {
         // Set the screens sibling desk_label to active.
         intersects[i].object.parent.getObjectByName("desk_label").material.emissive.set(0xFFFFFF);
         intersects[i].object.parent.getObjectByName("desk_label").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.25;
-        intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissive.set(0xFFFFFF);
-        intersects[i].object.parent.getObjectByName("ceilLightMesh").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
-        //intersects[ i ].object.parent.getObjectByName("ceilLightActual").color.set( 0xFFFFFF );
-        intersects[i].object.parent.getObjectByName("ceilLightActual").intensity = 0.03;
+        if (intersects[i].object.name == "ceilLightMesh2") {
+          intersects[i].object.children.forEach((child)=>{
+            // (light bub curves name is currently "CUBezierCurve006_3")
+            if (child.name == "CUBezierCurve006_3") {
+              child.material.emissive.set(0xFFFFFF);
+              child.material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
+            }
+          });
+        }
+        intersects[i].object.parent.getObjectByName("ceilLightActual").intensity = window.virtual_office.fast ? 0.05 : 0.035;
         document.documentElement.style.cursor = "pointer";
   
         handleDeskClick(intersects[i].object.parent);
