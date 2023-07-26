@@ -371,96 +371,112 @@ export function createOfficeRoom() {
   const roomHeight = 37.5;
   const roomGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, window.virtual_office.room_depth);
 
-  const floorTexture = window.virtual_office.loaders.texture.load('./textures/EAK309.png');
-  floorTexture.wrapS = THREE.RepeatWrapping;
-  floorTexture.wrapT = THREE.RepeatWrapping;
-  floorTexture.repeat.set( 8, 8 );
-
   // Create two materials: one for the floor face and one for the other faces
   const floorMaterial = new THREE.MeshPhongMaterial({
-    map: floorTexture,
     shininess: 5,
     side: THREE.DoubleSide
   });
   floorMaterial.name = 'floor';
 
-  const ceilAO = window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_ambientOcclusion.jpg', );
-  ceilAO.wrapS = THREE.RepeatWrapping;
-  ceilAO.wrapT = THREE.RepeatWrapping;
-  ceilAO.repeat.set( 4, 4 );
 
-  const ceilTexture = window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_basecolor.jpg', );
-  ceilTexture.wrapS = THREE.RepeatWrapping;
-  ceilTexture.wrapT = THREE.RepeatWrapping;
-  ceilTexture.repeat.set( 4, 4 );
-
-  const ceilHeight = window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_height.png');
-  ceilHeight.wrapS = THREE.RepeatWrapping;
-  ceilHeight.wrapT = THREE.RepeatWrapping;
-  ceilHeight.repeat.set( 4, 4 );
-
-  const ceilNormal = window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_normal.jpg');
-  ceilNormal.wrapS = THREE.RepeatWrapping;
-  ceilNormal.wrapT = THREE.RepeatWrapping;
-  ceilNormal.repeat.set( 4, 4 );
+  window.virtual_office.loaders.texture.load('./textures/EAK309.png', (floorTexture) => {
+    floorTexture.wrapS = THREE.RepeatWrapping;
+    floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set( 8, 8 );
+    floorMaterial.map = floorTexture;
+  });
 
   // Create two materials: one for the floor face and one for the other faces
   const ceilMaterial = new THREE.MeshLambertMaterial({
-    aoMap: ceilAO,
     aoMapIntensity: 1.5,
-    displacementMap: ceilHeight,
-    map: ceilTexture,
-    normalMap: ceilNormal,
+    //map: ceilTexture,
+    //normalMap: ceilNormal,
     normalScale: new THREE.Vector2(7.5, 7.5),
     side: THREE.DoubleSide
   });
   ceilMaterial.name = 'ceiling';
 
-  const backwallHeight = window.virtual_office.loaders.texture.load('./textures/brick_wall_001_displacement_4k.jpg');
-  backwallHeight.wrapS = THREE.RepeatWrapping;
-  backwallHeight.wrapT = THREE.RepeatWrapping;
-  backwallHeight.repeat.set( roomWidth / 10, roomHeight / 10 );
+  window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_height.png', (ceilHeight) => {
+    ceilHeight.wrapS = THREE.RepeatWrapping;
+    ceilHeight.wrapT = THREE.RepeatWrapping;
+    ceilHeight.repeat.set( 4, 4 );
+    ceilMaterial.displacementMap = ceilHeight;
+  });
 
-  const backwallNormal = window.virtual_office.loaders.texture.load('./textures/brick_wall_001_nor_gl_4k.jpg');
-  backwallNormal.wrapS = THREE.RepeatWrapping;
-  backwallNormal.wrapT = THREE.RepeatWrapping;
-  backwallNormal.repeat.set( roomWidth / 10, roomHeight / 10 );
+  window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_ambientOcclusion.jpg', (ceilAO) => {
+    ceilAO.wrapS = THREE.RepeatWrapping;
+    ceilAO.wrapT = THREE.RepeatWrapping;
+    ceilAO.repeat.set( 4, 4 );
+    ceilMaterial.aoMap = ceilAO;
+  } );
 
-  const backwallRough = window.virtual_office.loaders.texture.load('./textures/brick_wall_001_rough_4k.jpg');
-  backwallRough.wrapS = THREE.RepeatWrapping;
-  backwallRough.wrapT = THREE.RepeatWrapping;
-  backwallRough.repeat.set( roomWidth / 10, roomHeight / 10 );
+  window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_basecolor.jpg', (ceilTexture) => {
+    ceilTexture.wrapS = THREE.RepeatWrapping;
+    ceilTexture.wrapT = THREE.RepeatWrapping;
+    ceilTexture.repeat.set( 4, 4 );
+    ceilMaterial.map = ceilTexture;
+  } );
+  
+
+  window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_normal.jpg', (ceilNormal) => {
+    ceilNormal.wrapS = THREE.RepeatWrapping;
+    ceilNormal.wrapT = THREE.RepeatWrapping;
+    ceilNormal.repeat.set( 4, 4 );
+    ceilMaterial.normalMap = ceilNormal;
+  });
+
 
   const backwallMaterial = new THREE.MeshStandardMaterial({
     alphaTest: 0.99,
-    aoMap: backwallHeight, 
+    //aoMap: backwallHeight, 
     aoMapIntensity: .5,
     color: 0xa0adaf,
-    displacementMap: backwallHeight,
+    //displacementMap: backwallHeight,
     displacementScale: 0.001,
     name: 'backwall',
-    normalMap: backwallNormal,
+    //normalMap: backwallNormal,
     opacity: 1,
-    roughnessMap: backwallRough,
+    //roughnessMap: backwallRough,
     side: THREE.DoubleSide,
     transparent: true
   });
-
-  const sideWallHeight = backwallHeight.clone();
-  sideWallHeight.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
-
-  const sideWallNormal = backwallNormal.clone();
-  sideWallNormal.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
-
-  const sideWallRough = backwallRough.clone();
-  sideWallRough.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
-
-  const sidewallMaterial = backwallMaterial.clone();
-  sidewallMaterial.displacementMap = sideWallHeight;
-  sidewallMaterial.normalMap = sideWallNormal;
-  sidewallMaterial.roughnessMap = sideWallRough;
-
+  
+  const sidewallMaterial = backwallMaterial.clone();  
   sidewallMaterial.name = 'sidewall';
+
+  window.virtual_office.loaders.texture.load('./textures/brick_wall_001_displacement_4k.jpg', ( backwallHeight ) => {
+    backwallHeight.wrapS = THREE.RepeatWrapping;
+    backwallHeight.wrapT = THREE.RepeatWrapping;
+    backwallHeight.repeat.set( roomWidth / 10, roomHeight / 10 );
+    backwallMaterial.aoMap = backwallHeight;
+    backwallMaterial.displacementMap = backwallHeight;
+
+    const sideWallHeight = backwallHeight.clone();
+    sideWallHeight.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );  
+    sidewallMaterial.displacementMap = sideWallHeight;
+  });
+
+  window.virtual_office.loaders.texture.load('./textures/brick_wall_001_nor_gl_4k.jpg', ( backwallNormal ) => {
+    backwallNormal.wrapS = THREE.RepeatWrapping;
+    backwallNormal.wrapT = THREE.RepeatWrapping;
+    backwallNormal.repeat.set( roomWidth / 10, roomHeight / 10 );
+    backwallMaterial.normalMap = backwallNormal;
+
+    const sideWallNormal = backwallNormal.clone();
+    sideWallNormal.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
+    sidewallMaterial.normalMap = sideWallNormal;
+  });
+
+  window.virtual_office.loaders.texture.load('./textures/brick_wall_001_rough_4k.jpg', ( backwallRough ) => {
+    backwallRough.wrapS = THREE.RepeatWrapping;
+    backwallRough.wrapT = THREE.RepeatWrapping;
+    backwallRough.repeat.set( roomWidth / 10, roomHeight / 10 );
+    backwallMaterial.roughnessMap = backwallRough;
+
+    const sideWallRough = backwallRough.clone();
+    sideWallRough.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
+    sidewallMaterial.roughnessMap = sideWallRough;
+  });
 
   const materials = [
     // Right
