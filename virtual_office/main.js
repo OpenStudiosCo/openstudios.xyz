@@ -7,6 +7,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { SUBTRACTION, Brush, Evaluator } from 'three-bvh-csg';
 import { MeshBVHVisualizer } from 'three-mesh-bvh';
 
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 import { scaleEffects, setupEffects } from './effects.js';
@@ -20,6 +21,9 @@ let scene, stats;
 let materials, darkMaterial;
 
 export function init(pane) {
+
+  window.virtual_office.loaders.gtlf = new GLTFLoader();
+  window.virtual_office.loaders.texture =  new THREE.TextureLoader();
 
   // Constructive Solid Geometry (csg) Evaluator.
   csgEvaluator = new Evaluator();
@@ -242,21 +246,25 @@ export var doorDepth = 0.2;
 function createDoor() {
   var doorParent = new THREE.Object3D();
 
-  var doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorDepth);
   
-  const doorTexture = new THREE.TextureLoader().load('./models/desk-diffuse.jpg');
-  doorTexture.wrapS = THREE.RepeatWrapping;
-  doorTexture.wrapT = THREE.RepeatWrapping;
-  doorTexture.repeat.set( 3, 3 );
+  window.virtual_office.loaders.texture.load('./models/desk-diffuse.jpg', (doorTexture) => {
+    doorTexture.wrapS = THREE.RepeatWrapping;
+    doorTexture.wrapT = THREE.RepeatWrapping;
+    doorTexture.repeat.set( doorWidth / 8, doorHeight / 8 );
 
-  // Create door material
-  var doorMaterial = new THREE.MeshLambertMaterial({ map: doorTexture });
+    var doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorDepth);
 
-  // Create door mesh
-  var door = new THREE.Mesh(doorGeometry, doorMaterial);
-  // Set initial position and rotation of the door
-  door.position.set(doorWidth / 2, 0, 0);
-  door.updateMatrixWorld();
+    // Create door material
+    var doorMaterial = new THREE.MeshLambertMaterial({ map: doorTexture, name: 'door' });
+
+    // Create door mesh
+    var door = new THREE.Mesh(doorGeometry, doorMaterial);
+    // Set initial position and rotation of the door
+    door.position.set(doorWidth / 2, 0, 0);
+    door.updateMatrixWorld();
+
+    doorParent.add(door);
+  });
 
   // instantiate a loader
   const loader = new SVGLoader();
@@ -329,9 +337,9 @@ function createDoor() {
 
     doorParent.add(group);
     let backWallLogo = group.clone();
-    backWallLogo.scale.multiplyScalar(2);
-    backWallLogo.position.x = -5.75;
-    backWallLogo.position.y = 23.5;
+    backWallLogo.scale.multiplyScalar(2.5);
+    backWallLogo.position.x = -6.5;
+    backWallLogo.position.y = 25;
     backWallLogo.position.z = 1.5;
 
     window.virtual_office.scene_objects.wallGroup.add(backWallLogo);
@@ -339,8 +347,6 @@ function createDoor() {
 
   });
 
-
-  doorParent.add(door);
 
   // Add the door to the scene
   return doorParent;
@@ -363,7 +369,7 @@ export function createOfficeRoom() {
   const roomHeight = 30;
   const roomGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, window.virtual_office.room_depth);
 
-  const floorTexture = new THREE.TextureLoader().load('./textures/EAK309.png');
+  const floorTexture = window.virtual_office.loaders.texture.load('./textures/EAK309.png');
   floorTexture.wrapS = THREE.RepeatWrapping;
   floorTexture.wrapT = THREE.RepeatWrapping;
   floorTexture.repeat.set( 8, 8 );
@@ -376,17 +382,17 @@ export function createOfficeRoom() {
   });
   floorMaterial.name = 'floor';
 
-  const ceilTexture = new THREE.TextureLoader().load('./textures/Ceiling_Drop_Tiles_001_basecolor.jpg');
+  const ceilTexture = window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_basecolor.jpg', );
   ceilTexture.wrapS = THREE.RepeatWrapping;
   ceilTexture.wrapT = THREE.RepeatWrapping;
   ceilTexture.repeat.set( 4, 4 );
 
-  const ceilHeight = new THREE.TextureLoader().load('./textures/Ceiling_Drop_Tiles_001_height.png');
+  const ceilHeight = window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_height.png');
   ceilHeight.wrapS = THREE.RepeatWrapping;
   ceilHeight.wrapT = THREE.RepeatWrapping;
   ceilHeight.repeat.set( 4, 4 );
 
-  const ceilNormal = new THREE.TextureLoader().load('./textures/Ceiling_Drop_Tiles_001_normal.jpg');
+  const ceilNormal = window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_normal.jpg');
   ceilNormal.wrapS = THREE.RepeatWrapping;
   ceilNormal.wrapT = THREE.RepeatWrapping;
   ceilNormal.repeat.set( 4, 4 );
@@ -401,17 +407,17 @@ export function createOfficeRoom() {
   });
   ceilMaterial.name = 'ceiling';
 
-  const backwallHeight = new THREE.TextureLoader().load('./textures/brick_wall_001_displacement_4k.jpg');
+  const backwallHeight = window.virtual_office.loaders.texture.load('./textures/brick_wall_001_displacement_4k.jpg');
   backwallHeight.wrapS = THREE.RepeatWrapping;
   backwallHeight.wrapT = THREE.RepeatWrapping;
   backwallHeight.repeat.set( roomWidth / 10, roomHeight / 10 );
 
-  const backwallNormal = new THREE.TextureLoader().load('./textures/brick_wall_001_nor_gl_4k.jpg');
+  const backwallNormal = window.virtual_office.loaders.texture.load('./textures/brick_wall_001_nor_gl_4k.jpg');
   backwallNormal.wrapS = THREE.RepeatWrapping;
   backwallNormal.wrapT = THREE.RepeatWrapping;
   backwallNormal.repeat.set( roomWidth / 10, roomHeight / 10 );
 
-  const backwallRough = new THREE.TextureLoader().load('./textures/brick_wall_001_rough_4k.jpg');
+  const backwallRough = window.virtual_office.loaders.texture.load('./textures/brick_wall_001_rough_4k.jpg');
   backwallRough.wrapS = THREE.RepeatWrapping;
   backwallRough.wrapT = THREE.RepeatWrapping;
   backwallRough.repeat.set( roomWidth / 10, roomHeight / 10 );
@@ -421,6 +427,7 @@ export function createOfficeRoom() {
     color: 0xa0adaf,
     displacementMap: backwallHeight,
     displacementScale: 0.001,
+    name: 'backwall',
     normalMap: backwallNormal,
     opacity: 1,
     roughnessMap: backwallRough,
@@ -441,6 +448,8 @@ export function createOfficeRoom() {
   sidewallMaterial.displacementMap = sideWallHeight;
   sidewallMaterial.normalMap = sideWallNormal;
   sidewallMaterial.roughnessMap = sideWallRough;
+
+  sidewallMaterial.name = 'sidewall';
 
   const materials = [
     // Right

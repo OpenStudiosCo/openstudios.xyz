@@ -35,6 +35,11 @@ export function handleViewportChange() {
       updateDeskZ(mesh, mesh.deskIndex);
     }
   });
+  window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
+    if ( mesh.name == 'plant') {
+      mesh.position.z = window.virtual_office.scene_dimensions.adjusted_gap;
+    }
+  });
 
   const newRoom = createOfficeRoom();
   window.virtual_office.scene_objects.room.geometry = newRoom.geometry;

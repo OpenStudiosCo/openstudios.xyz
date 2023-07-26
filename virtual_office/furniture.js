@@ -1,13 +1,9 @@
 import * as THREE from 'three';
 
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-
-
-const glbLoader = new GLTFLoader();
 
 /**
  * Setup Back Wall
@@ -41,8 +37,8 @@ export function setupBackwall ( scene ) {
   wallGroup.name = "backWall";
   wallGroup.webGLScreen = window.virtual_office.scene_objects.tvWebGL;
 
-  const loader = new FBXLoader();
-  loader.load( './models/Small Monstera.fbx', function ( object ) {
+  window.virtual_office.loaders.gtlf.load( './models/Small Monstera.glb', function ( glb ) {
+    let object = glb.scene.children[0];
 
     object.traverse( function ( child ) {
 
@@ -52,6 +48,8 @@ export function setupBackwall ( scene ) {
 
     } );
 
+    object.name = 'plant';
+
     object.scale.setScalar(7.5);
     object.position.set(30, -5, window.virtual_office.scene_dimensions.adjusted_gap);
 
@@ -59,7 +57,7 @@ export function setupBackwall ( scene ) {
 
     let plant_left = object.clone();
     plant_left.position.x = -plant_left.position.x;
-    plant_left.rotation.z = - Math.PI /2 ;
+    plant_left.rotation.y = - Math.PI /2 ;
     wallGroup.add(plant_left);
   });
 
@@ -74,7 +72,7 @@ function createNeonSign(callback, scene) {
 
     const textGeometry = new TextGeometry('about us', {
       font: font,
-      size: 2.5,
+      size: 2.7,
       height: 0.5,
       curveSegments: 4
     });
@@ -228,7 +226,7 @@ export function setupDesks(gapSize, scale, scene) {
   }
 
    
-  glbLoader.load( './models/Office Chair.glb', function ( glb ) {
+  window.virtual_office.loaders.gtlf.load( './models/Office Chair.glb', function ( glb ) {
     let object = glb.scene.children[0];
 
     object.scale.setScalar(12);
@@ -312,7 +310,7 @@ function createDesk( i ) {
   var deskGroup = new THREE.Group();
   deskGroup.name = "desk";
  
-  glbLoader.load( './models/Desk.glb', function ( glb ) {
+  window.virtual_office.loaders.gtlf.load( './models/Desk.glb', function ( glb ) {
     let object = glb.scene.children[0];
     
     let amount = window.virtual_office.fast ? 3 : 1.5;
@@ -323,7 +321,7 @@ function createDesk( i ) {
 
         child.castShadow = true;
         
-          brightenMaterial(child.material, amount);
+        brightenMaterial(child.material, amount);
         
 
       }
@@ -389,7 +387,7 @@ function createDesk( i ) {
   };
   createDeskLabel( i, deskLabelCallback, deskGroup );
 
-  glbLoader.load( './models/Ceiling Light.glb', function ( glb ) {
+  window.virtual_office.loaders.gtlf.load( './models/Ceiling Light.glb', function ( glb ) {
     let object = glb.scene.children[0];
     object.scale.setScalar(1);
     window.desk = object;
@@ -402,7 +400,6 @@ function createDesk( i ) {
         child.castShadow = true;
         
         brightenMaterial(child.material, amount);
-
 
         if (child.name == "CUBezierCurve006_3") {
 
@@ -465,7 +462,7 @@ function createDeskLabel(i, callback, deskGroup) {
 
     const textGeometry = new TextGeometry(labelText, {
       font: font,
-      size: 0.8,
+      size: 1.1,
       height: 0.2
     });
 
@@ -514,9 +511,9 @@ function createScreen( i ){
       break;
   }
   
-  var screenTexture = new THREE.TextureLoader().load(url);
-  var material = new THREE.MeshPhongMaterial({
-    map: screenTexture
+  var material = new THREE.MeshPhongMaterial();
+  window.virtual_office.loaders.texture.load(url, (screenTexture)=>{
+    material.map = screenTexture;
   });
   var geometry = new THREE.PlaneGeometry(i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8);
   var screenWebGL = new THREE.Mesh(geometry, brightenMaterial(material, ( i==720 ? 12 : 8 )));

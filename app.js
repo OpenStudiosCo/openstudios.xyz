@@ -65,6 +65,14 @@ domReady(
       fast: false,
 
       /**
+       * Reusable loaders for assets.
+       */
+      loaders: {
+        gltf: false,
+        texture: false,
+      },
+
+      /**
        * Camera is being moved by tweening.
        * 
        * @memberof Boolean
