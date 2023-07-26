@@ -359,29 +359,102 @@ export function createOfficeRoom() {
   doorBrush.position.x += 4.1;
   doorBrush.updateMatrixWorld();
 
-  const roomGeometry = new THREE.BoxGeometry(80, 30, window.virtual_office.room_depth);
+  const roomWidth = 80;
+  const roomHeight = 30;
+  const roomGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, window.virtual_office.room_depth);
 
-  const floorTexture = new THREE.TextureLoader().load('./checkers.jpg');
+  const floorTexture = new THREE.TextureLoader().load('./textures/EAK309.png');
   floorTexture.wrapS = THREE.RepeatWrapping;
   floorTexture.wrapT = THREE.RepeatWrapping;
-  floorTexture.repeat.set( 3, 3 );
+  floorTexture.repeat.set( 8, 8 );
 
   // Create two materials: one for the floor face and one for the other faces
   const floorMaterial = new THREE.MeshPhongMaterial({
     map: floorTexture,
-    shininess: 25,
+    shininess: 5,
     side: THREE.DoubleSide
   });
   floorMaterial.name = 'floor';
-  const otherFacesMaterial = new THREE.MeshPhongMaterial({
+
+  const ceilTexture = new THREE.TextureLoader().load('./textures/Ceiling_Drop_Tiles_001_basecolor.jpg');
+  ceilTexture.wrapS = THREE.RepeatWrapping;
+  ceilTexture.wrapT = THREE.RepeatWrapping;
+  ceilTexture.repeat.set( 4, 4 );
+
+  const ceilHeight = new THREE.TextureLoader().load('./textures/Ceiling_Drop_Tiles_001_height.png');
+  ceilHeight.wrapS = THREE.RepeatWrapping;
+  ceilHeight.wrapT = THREE.RepeatWrapping;
+  ceilHeight.repeat.set( 4, 4 );
+
+  const ceilNormal = new THREE.TextureLoader().load('./textures/Ceiling_Drop_Tiles_001_normal.jpg');
+  ceilNormal.wrapS = THREE.RepeatWrapping;
+  ceilNormal.wrapT = THREE.RepeatWrapping;
+  ceilNormal.repeat.set( 4, 4 );
+
+  // Create two materials: one for the floor face and one for the other faces
+  const ceilMaterial = new THREE.MeshLambertMaterial({
+    displacementMap: ceilHeight,
+    map: ceilTexture,
+    normalMap: ceilNormal,
+    side: THREE.DoubleSide
+  });
+  ceilMaterial.name = 'ceiling';
+
+  const backwallHeight = new THREE.TextureLoader().load('./textures/brick_wall_001_displacement_4k.jpg');
+  backwallHeight.wrapS = THREE.RepeatWrapping;
+  backwallHeight.wrapT = THREE.RepeatWrapping;
+  backwallHeight.repeat.set( roomWidth / 10, roomHeight / 10 );
+
+  const backwallNormal = new THREE.TextureLoader().load('./textures/brick_wall_001_nor_gl_4k.jpg');
+  backwallNormal.wrapS = THREE.RepeatWrapping;
+  backwallNormal.wrapT = THREE.RepeatWrapping;
+  backwallNormal.repeat.set( roomWidth / 10, roomHeight / 10 );
+
+  const backwallRough = new THREE.TextureLoader().load('./textures/brick_wall_001_rough_4k.jpg');
+  backwallRough.wrapS = THREE.RepeatWrapping;
+  backwallRough.wrapT = THREE.RepeatWrapping;
+  backwallRough.repeat.set( roomWidth / 10, roomHeight / 10 );
+
+  const backwallMaterial = new THREE.MeshPhongMaterial({
+    alphaTest: 0.99,
     color: 0xa0adaf,
+    displacementMap: backwallHeight,
+    displacementScale: 0.001,
+    normalMap: backwallNormal,
     opacity: 1,
+    roughnessMap: backwallRough,
     side: THREE.DoubleSide,
     shininess: 12.5,
     transparent: true
   });
+
+  const sideWallHeight = backwallHeight.clone();
+  sideWallHeight.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
+
+  const sideWallNormal = backwallNormal.clone();
+  sideWallNormal.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
+
+  const sideWallRough = backwallRough.clone();
+  sideWallRough.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
+
+  const sidewallMaterial = backwallMaterial.clone();
+  sidewallMaterial.displacementMap = sideWallHeight;
+  sidewallMaterial.normalMap = sideWallNormal;
+  sidewallMaterial.roughnessMap = sideWallRough;
+
   const materials = [
-    otherFacesMaterial, otherFacesMaterial, otherFacesMaterial, floorMaterial, otherFacesMaterial, otherFacesMaterial
+    // Right
+    sidewallMaterial,
+    // Left
+    sidewallMaterial,
+    // Ceiling
+    ceilMaterial,
+    // Floor
+    floorMaterial,
+    // Front
+    backwallMaterial,
+    // Back
+    backwallMaterial
   ];
 
   const roomBrush = new Brush(roomGeometry, materials);

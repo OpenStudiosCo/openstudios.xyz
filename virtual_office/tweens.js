@@ -75,16 +75,9 @@ function enterTheOffice ( coords ) {
     window.virtual_office.camera.updateProjectionMatrix();
   })
   .onComplete(() => {
-    const roomMaterial = new THREE.MeshPhongMaterial({
-      color: 0xa0adaf,
-      opacity: 1,
-      side: THREE.BackSide,
-      shininess: 12.5,
-      transparent: true
-    });
     window.virtual_office.scene_objects.room.material.forEach((material, i) => {
-      if (material.opacity > 0 && material.name != 'floor') {
-        window.virtual_office.scene_objects.room.material[i] = roomMaterial;
+      if (material.opacity > 0 && material.name != 'floor' && material.name != 'ceiling') {
+        window.virtual_office.scene_objects.room.material.side = THREE.BackSide;
       }
     });
   });
