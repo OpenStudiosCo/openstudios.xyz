@@ -5,6 +5,10 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
+
+
+const glbLoader = new GLTFLoader();
+
 /**
  * Setup Back Wall
  * 
@@ -139,7 +143,7 @@ export function setupDesks(gapSize, scale, scene) {
     // Add screens.
     var screenWebGL = createScreen( i );
     screenWebGL.rotation.y = - Math.PI / 2;
-    screenWebGL.position.y = 6.6;
+    screenWebGL.position.y = 7.7;
     desk.webGLScreen = screenWebGL;
 
     // Main position coordinates.
@@ -310,26 +314,25 @@ export function updateDeskZ(desk, i) {
 function createDesk( i ) {
   var deskGroup = new THREE.Group();
   deskGroup.name = "desk";
- // model
- const loader = new FBXLoader();
- loader.load( './models/Desk.fbx', function ( object ) {
+ 
+  glbLoader.load( './models/Desk.glb', function ( glb ) {
+    let object = glb.scene.children[0];
+    
+    let amount = window.virtual_office.fast ? 3 : 1.5;
 
-  object.scale.setScalar(0.01);
-  let amount = window.virtual_office.fast ? 3 : 1.5;
-
-  object.traverse( function ( child ) {
+    object.traverse( function ( child ) {
 
       if ( child.isMesh ) {
 
         child.castShadow = true;
-        child.material.forEach((material) =>{
-          brightenMaterial(material, amount);
-        });
+        
+          brightenMaterial(child.material, amount);
+        
 
       }
 
     } );
-    object.position.y = -0.55;
+    object.position.y = -0.4555;
     object.rotation.y = - Math.PI ;
     deskGroup.add(object);
   }); 
@@ -338,7 +341,7 @@ function createDesk( i ) {
   var screenGeometry = new THREE.BoxGeometry(0.64, 0.48, 0.02);
   var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x222222 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0, 0.6, 0.05);
+  screen.position.set(0, 0.7, 0.05);
   screen.castShadow = true; //default is false
   screen.receiveShadow = false; //default
   screen.name = "screen";
@@ -348,7 +351,7 @@ function createDesk( i ) {
   var cpuGeometry = new THREE.BoxGeometry(0.1, 0.15, 0.025);
   var cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
   var cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
-  cpu.position.set(0, 0.3, 0.0625);
+  cpu.position.set(0, 0.4, 0.0625);
   cpu.castShadow = true; //default is false
   cpu.receiveShadow = false; //default
   cpu.name = "cpu";
@@ -357,7 +360,7 @@ function createDesk( i ) {
   // Add screen stand base.
   var baseGeo = new THREE.BoxGeometry(0.25, 0.01, 0.125);
   var base = new THREE.Mesh(baseGeo, cpuMaterial);
-  base.position.set(0, 0.22, 0.0625);
+  base.position.set(0, 0.32, 0.0625);
   base.castShadow = true; //default is false
   base.receiveShadow = false; //default
   base.name = "base";
@@ -381,16 +384,13 @@ function createDesk( i ) {
       signMesh.translateX( 0.05 - width / 20 );
     }
 
-    signMesh.position.y = 0.9;
+    signMesh.position.y = 1;
 
     signMesh.updateMatrixWorld();    
 
     deskGroup.add(signMesh);
   };
   createDeskLabel( i, deskLabelCallback, deskGroup );
-
-
-  const glbLoader = new GLTFLoader();
 
   glbLoader.load( './models/Ceiling Light.glb', function ( glb ) {
     let object = glb.scene.children[0];
