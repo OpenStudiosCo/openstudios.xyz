@@ -13,7 +13,7 @@ import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 import { scaleEffects, setupEffects } from './effects.js';
 import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
 import { setupBackwall, setupDesks } from './furniture.js';
-import { setupTweens, initFlicker, updateTweens } from './tweens.js';
+import { setupTweens, updateTweens, startTweening } from './tweens.js';
 
 let csgEvaluator;
 let scene, stats;
@@ -185,6 +185,22 @@ export function animate(currentTime) {
     }
 
   }
+  else {
+    let ready = false;
+    // Check if we can start.
+    for ( var measure in window.virtual_office.loaders.stats ) {
+      if ( window.virtual_office.loaders.stats[measure].loaded == window.virtual_office.loaders.stats[measure].target ) {
+        ready = true;
+      }
+      else {
+        ready = false;
+      }
+    }
+
+    if (ready) {
+      startTweening();
+    }
+  }
 
   scaleEffects(currentTime, window.virtual_office.renderers.webgl);
 
@@ -246,7 +262,6 @@ export var doorDepth = 0.2;
 function createDoor() {
   var doorParent = new THREE.Object3D();
 
-  
   window.virtual_office.loaders.texture.load('./models/desk-diffuse.jpg', (doorTexture) => {
     doorTexture.wrapS = THREE.RepeatWrapping;
     doorTexture.wrapT = THREE.RepeatWrapping;
@@ -264,6 +279,7 @@ function createDoor() {
     door.updateMatrixWorld();
 
     doorParent.add(door);
+    window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
   // instantiate a loader
@@ -344,9 +360,8 @@ function createDoor() {
     backWallLogo.name = 'backWallLogo';
 
     window.virtual_office.scene_objects.wallGroup.add(backWallLogo);
-    
-    // Setup Tweens.
-    initFlicker();
+
+    window.virtual_office.loaders.stats.svg.loaded ++;
   });
 
 
@@ -378,12 +393,12 @@ export function createOfficeRoom() {
   });
   floorMaterial.name = 'floor';
 
-
   window.virtual_office.loaders.texture.load('./textures/EAK309.png', (floorTexture) => {
     floorTexture.wrapS = THREE.RepeatWrapping;
     floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set( 8, 8 );
     floorMaterial.map = floorTexture;
+    window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
   // Create two materials: one for the floor face and one for the other faces
@@ -401,6 +416,7 @@ export function createOfficeRoom() {
     ceilHeight.wrapT = THREE.RepeatWrapping;
     ceilHeight.repeat.set( 4, 4 );
     ceilMaterial.displacementMap = ceilHeight;
+    window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
   window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_ambientOcclusion.jpg', (ceilAO) => {
@@ -408,6 +424,7 @@ export function createOfficeRoom() {
     ceilAO.wrapT = THREE.RepeatWrapping;
     ceilAO.repeat.set( 4, 4 );
     ceilMaterial.aoMap = ceilAO;
+    window.virtual_office.loaders.stats.textures.loaded ++;
   } );
 
   window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_basecolor.jpg', (ceilTexture) => {
@@ -415,6 +432,7 @@ export function createOfficeRoom() {
     ceilTexture.wrapT = THREE.RepeatWrapping;
     ceilTexture.repeat.set( 4, 4 );
     ceilMaterial.map = ceilTexture;
+    window.virtual_office.loaders.stats.textures.loaded ++;
   } );
   
 
@@ -423,20 +441,16 @@ export function createOfficeRoom() {
     ceilNormal.wrapT = THREE.RepeatWrapping;
     ceilNormal.repeat.set( 4, 4 );
     ceilMaterial.normalMap = ceilNormal;
+    window.virtual_office.loaders.stats.textures.loaded ++;
   });
-
 
   const backwallMaterial = new THREE.MeshStandardMaterial({
     alphaTest: 0.99,
-    //aoMap: backwallHeight, 
     aoMapIntensity: .5,
     color: 0xa0adaf,
-    //displacementMap: backwallHeight,
     displacementScale: 0.001,
     name: 'backwall',
-    //normalMap: backwallNormal,
     opacity: 1,
-    //roughnessMap: backwallRough,
     side: THREE.DoubleSide,
     transparent: true
   });
@@ -453,7 +467,9 @@ export function createOfficeRoom() {
 
     const sideWallHeight = backwallHeight.clone();
     sideWallHeight.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );  
+    sidewallMaterial.aoMap = sideWallHeight;
     sidewallMaterial.displacementMap = sideWallHeight;
+    window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
   window.virtual_office.loaders.texture.load('./textures/brick_wall_001_nor_gl_4k.jpg', ( backwallNormal ) => {
@@ -465,6 +481,7 @@ export function createOfficeRoom() {
     const sideWallNormal = backwallNormal.clone();
     sideWallNormal.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
     sidewallMaterial.normalMap = sideWallNormal;
+    window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
   window.virtual_office.loaders.texture.load('./textures/brick_wall_001_rough_4k.jpg', ( backwallRough ) => {
@@ -476,6 +493,7 @@ export function createOfficeRoom() {
     const sideWallRough = backwallRough.clone();
     sideWallRough.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
     sidewallMaterial.roughnessMap = sideWallRough;
+    window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
   const materials = [

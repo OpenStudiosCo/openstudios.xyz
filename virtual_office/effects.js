@@ -8,7 +8,6 @@ import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
 
-import { startTweening } from './tweens.js';
 
 
 let composer, bloomComposer, bloomLayer;
@@ -64,14 +63,6 @@ export function scaleEffects( currentTime, renderer ) {
       frameRates.push( currentFrameRate );
     }
 
-  }
-
-  if (
-    ( delayTimer >= delayDuration ) &&
-    window.virtual_office.started == false 
-  ) {
-    window.virtual_office.started = true;
-    startTweening();
   }
 
 }

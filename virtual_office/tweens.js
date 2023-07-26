@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 
 export function startTweening() {
-  //window.virtual_office.tweens.openDoor.start();
+  window.virtual_office.started = true;
+  flickerEffect();
 }
 
 export function updateTweens(currentTime) {
@@ -64,10 +65,6 @@ export function setupTweens( ) {
 
 // Intro sequence.
 
-// Manually bind this one as it relies on material existing.
-export function initFlicker() {
-  flickerEffect();
-}
 
 // Create the flickering effect with emissive intensity
 function flickerEffect() {

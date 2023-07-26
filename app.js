@@ -70,6 +70,28 @@ domReady(
       loaders: {
         gltf: false,
         texture: false,
+        stats: {
+          fonts: {
+            target: 5, // @todo: Check if this affects double loads, shouldn't with caching.
+            loaded: 0
+          },
+          gtlf: {
+            target: 10, // @todo: Check if this affects double loads, shouldn't with caching.
+            loaded: 0
+          },
+          screens: {
+            target: 5,
+            loaded: 0
+          },
+          svg: {
+            target: 1,
+            loaded: 0
+          },
+          textures: {
+            target: 9,
+            loaded: 0
+          }
+        }
       },
 
       /**

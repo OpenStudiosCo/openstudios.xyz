@@ -59,6 +59,8 @@ export function setupBackwall ( scene ) {
     plant_left.position.x = -plant_left.position.x;
     plant_left.rotation.y = - Math.PI /2 ;
     wallGroup.add(plant_left);
+
+    window.virtual_office.loaders.stats.gtlf.loaded ++;
   });
 
   return wallGroup;
@@ -105,6 +107,7 @@ function createNeonSign(callback, scene) {
 
     // Add the sign to the scene
     callback(signMesh);
+    window.virtual_office.loaders.stats.fonts.loaded ++;
   });
 }
 
@@ -283,6 +286,8 @@ export function setupDesks(gapSize, scale, scene) {
       deskGroup.add( chair );
     }
 
+    window.virtual_office.loaders.stats.gtlf.loaded ++;
+
   } );
   return deskGroup;
 }
@@ -330,6 +335,7 @@ function createDesk( i ) {
     object.position.y = -0.4555;
     object.rotation.y = - Math.PI ;
     deskGroup.add(object);
+    window.virtual_office.loaders.stats.gtlf.loaded ++;
   }); 
 
   // Add computer screen
@@ -422,6 +428,7 @@ function createDesk( i ) {
     object.position.set(0, 1.95, 0);
     object.name = "ceilLightMesh2";
     deskGroup.add(object);
+    window.virtual_office.loaders.stats.gtlf.loaded ++;
   }); 
 
   const lightActual = new THREE.DirectionalLight(0x00EEff, 0.015); // Color: white
@@ -478,6 +485,7 @@ function createDeskLabel(i, callback, deskGroup) {
 
     // Add the sign to the scene
     callback(signMesh, i, deskGroup);
+    window.virtual_office.loaders.stats.fonts.loaded ++;
   });
 }
 
@@ -525,6 +533,7 @@ function createScreen( i ){
   screenWebGL.receiveShadow = true;
 
   screenWebGL.name = "screenWebGL";
+  window.virtual_office.loaders.stats.screens.loaded ++;
   
   return screenWebGL ;
 }
