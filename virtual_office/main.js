@@ -184,6 +184,14 @@ export function animate(currentTime) {
       handleInteractions( scene );
     }
 
+    window.virtual_office.scene_objects.desk_labels.forEach( (desk_label, index) => {
+      const phaseShift = index * (Math.PI / 2); // Adjust the phase shift as needed
+      const yOffset = Math.sin(currentTime * 0.0025 + phaseShift) * .010; // Adjust the amplitude (10 in this case)
+
+      // Update the label's position based on the calculated yOffset
+      desk_label.mesh.position.y = desk_label.originalPosition.y + yOffset;
+    } );
+
   }
   else {
     let ready = false;

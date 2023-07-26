@@ -136,7 +136,7 @@ export function brightenMaterial(material, amount) {
 export function setupDesks(gapSize, scale, scene) {
   // Create groups
   var deskGroup = new THREE.Group();
-
+  window.virtual_office.scene_objects.desk_labels = [];
   for (var i = 0; i < 4; i++) {
     var desk = createDesk( i );
     desk.rotation.y = Math.PI / 2;
@@ -485,7 +485,12 @@ function createDeskLabel(i, callback, deskGroup) {
 
     // Add the sign to the scene
     callback(signMesh, i, deskGroup);
+
     window.virtual_office.loaders.stats.fonts.loaded ++;
+    window.virtual_office.scene_objects.desk_labels.push({
+      mesh: signMesh,
+      originalPosition: signMesh.position.clone()
+    });
   });
 }
 
