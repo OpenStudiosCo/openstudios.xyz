@@ -17,20 +17,20 @@ export function setupBackwall ( scene ) {
   // About Us Neon sign
   createNeonSign((signMesh) => {
     // Position and rotate the sign
-    signMesh.position.set(-5.75, 12.5, 1); // Example position for the sign
+    signMesh.position.set(-6.4, 15, 1); // Example position for the sign
     signMesh.name = "neon";
     wallGroup.add(signMesh);
   }, scene);
 
   window.virtual_office.scene_objects.tvWebGL = createScreen( 720 );
-  window.virtual_office.scene_objects.tvWebGL.position.y = 6;
+  window.virtual_office.scene_objects.tvWebGL.position.y = 8;
   window.virtual_office.scene_objects.tvWebGL.position.z = - 14 - window.virtual_office.room_depth / 2;
   window.virtual_office.scene_objects.tvWebGL.name = "tvWebGL";
 
   var screenGeometry = new THREE.BoxGeometry(20.8, 11.7, 0.02);
   var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
   var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0 , 6, 0.5);
+  screen.position.set(0 , 8, 0.5);
   screen.name = "tv";
   wallGroup.add(screen);
 
@@ -419,7 +419,7 @@ function createDesk( i ) {
       }
 
     } );
-    object.position.set(0, 1.75, 0);
+    object.position.set(0, 1.95, 0);
     object.name = "ceilLightMesh2";
     deskGroup.add(object);
   }); 

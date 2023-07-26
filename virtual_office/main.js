@@ -338,9 +338,10 @@ function createDoor() {
     doorParent.add(group);
     let backWallLogo = group.clone();
     backWallLogo.scale.multiplyScalar(2.5);
-    backWallLogo.position.x = -6.5;
-    backWallLogo.position.y = 25;
+    backWallLogo.position.x = -6.85;
+    backWallLogo.position.y = 28.5;
     backWallLogo.position.z = 1.5;
+    backWallLogo.name = 'backWallLogo';
 
     window.virtual_office.scene_objects.wallGroup.add(backWallLogo);
     
@@ -367,7 +368,7 @@ export function createOfficeRoom() {
   doorBrush.updateMatrixWorld();
 
   const roomWidth = 80;
-  const roomHeight = 30;
+  const roomHeight = 37.5;
   const roomGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, window.virtual_office.room_depth);
 
   const floorTexture = window.virtual_office.loaders.texture.load('./textures/EAK309.png');
@@ -477,7 +478,7 @@ export function createOfficeRoom() {
   ];
 
   const roomBrush = new Brush(roomGeometry, materials);
-  roomBrush.position.y = 10;
+  roomBrush.position.y = 13.75;
   roomBrush.position.z = -15;
 
   roomBrush.updateMatrixWorld();
