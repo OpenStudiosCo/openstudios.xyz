@@ -227,21 +227,18 @@ export function setupDesks(gapSize, scale, scene) {
 
   }
 
-  // model
-  const loader = new FBXLoader();
-  loader.load( './models/Office Chair.fbx', function ( object ) {
+   
+  glbLoader.load( './models/Office Chair.glb', function ( glb ) {
+    let object = glb.scene.children[0];
 
-    object.scale.setScalar(0.1);
+    object.scale.setScalar(12);
 
     object.traverse( function ( child ) {
 
       if ( child.isMesh ) {
 
         child.castShadow = true;
-        child.material.forEach((material) =>{         
-          material.color.setScalar(material.color.r * (window.virtual_office.fast ? 25 : 100));
-        });
-
+ 
       }
 
     } );
@@ -433,10 +430,6 @@ function createDesk( i ) {
   const lightActual = new THREE.DirectionalLight(0x00EEff, 0.015); // Color: white
   lightActual.castShadow = true;
   lightActual.name = "ceilLightActual";
-
-  //Set up shadow properties for the light
-  lightActual.shadow.mapSize.width = 64; // Adjust the shadow map size
-  lightActual.shadow.mapSize.height = 64;
 
   lightActual.target = screen;
 
