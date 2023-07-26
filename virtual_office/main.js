@@ -13,7 +13,7 @@ import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 import { scaleEffects, setupEffects } from './effects.js';
 import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
 import { setupBackwall, setupDesks } from './furniture.js';
-import { setupTweens, updateTweens } from './tweens.js';
+import { setupTweens, initFlicker, updateTweens } from './tweens.js';
 
 let csgEvaluator;
 let scene, stats;
@@ -282,14 +282,14 @@ function createDoor() {
 
     for (const path of data.paths) {
 
+      // Grab the desired color from the SVG fill.
       const fillColor = path.userData.style.fill;
 
       if ( fillColor !== undefined && fillColor !== 'none') {
 
         const material = new THREE.MeshLambertMaterial({
-          emissiveIntensity: 1,
-          emissive: new THREE.Color().setStyle(fillColor),
-          color: new THREE.Color().setStyle(fillColor)
+          emissiveIntensity: 0,
+          emissive: new THREE.Color().setStyle(fillColor)
         });
 
         const shapes = SVGLoader.createShapes(path);
@@ -311,9 +311,8 @@ function createDoor() {
       if ( strokeColor !== undefined && strokeColor !== 'none') {
 
         const material = new THREE.MeshLambertMaterial({
-          emissiveIntensity: 1,
-          emissive: new THREE.Color().setStyle(strokeColor),
-          color: new THREE.Color().setStyle(strokeColor)
+          emissiveIntensity: 0,
+          emissive: new THREE.Color().setStyle(strokeColor)
         });
         path.userData.style.strokeWidth *= 2;
         for (const subPath of path.subPaths) {
@@ -334,6 +333,7 @@ function createDoor() {
       }
 
     }
+    window.virtual_office.scene_objects.door_sign = group;
 
     doorParent.add(group);
     let backWallLogo = group.clone();
@@ -343,8 +343,9 @@ function createDoor() {
     backWallLogo.position.z = 1.5;
 
     window.virtual_office.scene_objects.wallGroup.add(backWallLogo);
-
-
+    
+    // Setup Tweens.
+    initFlicker();
   });
 
 

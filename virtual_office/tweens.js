@@ -1,13 +1,14 @@
 import * as THREE from 'three';
 
 export function startTweening() {
-  window.virtual_office.tweens.openDoor.start();
+  //window.virtual_office.tweens.openDoor.start();
 }
 
 export function updateTweens(currentTime) {
   for (var tween in window.virtual_office.tweens) {
     window.virtual_office.tweens[tween].update(currentTime);
   }
+  //TWEEN.update(currentTime);
 }
 
 export function setupTweens( ) {
@@ -63,6 +64,82 @@ export function setupTweens( ) {
 
 // Intro sequence.
 
+// Manually bind this one as it relies on material existing.
+export function initFlicker() {
+  flickerEffect();
+}
+
+// Create the flickering effect with emissive intensity
+function flickerEffect() {
+  const duration = 0.5; // Duration of the startup flickering (adjust as needed)
+  const delay = 1; // Delay before the flickering starts (adjust as needed)
+
+  // Use a sine wave function to generate flickering values
+  const intensityValues = [];
+  const numSteps = 30; // Number of steps in the flickering animation
+  for (let i = 0; i < numSteps; i++) {
+    const t = i / (numSteps - 1); // Normalize time from 0 to 1
+    const intensity = Math.sin(t * Math.PI) ** 2; // Sine wave function for flickering effect
+    const randomVariation = Math.random() * 0.2 + 0.9; // Random variation between 0.9 and 1.1
+
+    intensityValues.push(intensity * randomVariation);
+  }
+
+  let dummy = { emissiveIntensity: 0 };
+
+  // Chain the tweens to create the flickering effect
+  window.virtual_office.tweens.doorSignFlickerA = new TWEEN.Tween( dummy )
+    .easing(TWEEN.Easing.Quadratic.Out)
+    .to({ emissiveIntensity: 0.8 }, duration * 1000) // Start at 0 intensity
+    .onUpdate((obj) => { updateFlickering(obj) });
+  window.virtual_office.tweens.doorSignFlickerB = new TWEEN.Tween( dummy )
+    .delay( duration * 1000)
+    .to({ emissiveIntensity: 0 }, 0.1 * 1000)
+    .onUpdate((obj) => { updateFlickering(obj) });
+  window.virtual_office.tweens.doorSignFlickerC = new TWEEN.Tween( dummy )
+    .delay( (duration + 0.1 ) * 1000)
+    .easing(TWEEN.Easing.Quadratic.Out)
+    .to({ emissiveIntensity: 0.4 }, 0.2 * 1000)
+    .onUpdate((obj) => { updateFlickering(obj) });
+  window.virtual_office.tweens.doorSignFlickerD = new TWEEN.Tween( dummy )
+    .delay( (duration + 0.1 + 0.2 ) * 1000)
+    .to({ emissiveIntensity: 0 }, 0.1 * 1000)
+    .onUpdate((obj) => { updateFlickering(obj) });
+  window.virtual_office.tweens.doorSignFlickerE = new TWEEN.Tween( dummy )
+    .easing(TWEEN.Easing.Quadratic.Out)
+    .to({ emissiveIntensity: 0.4 }, 0.2 * 1000)
+    .onUpdate((obj) => { updateFlickering(obj) });
+  window.virtual_office.tweens.doorSignFlickerF = new TWEEN.Tween( dummy )
+    .to({ emissiveIntensity: 0 }, 0.1 * 1000)
+    .onUpdate((obj) => { updateFlickering(obj) });
+  window.virtual_office.tweens.doorSignFlickerG = new TWEEN.Tween( dummy )
+    .easing(TWEEN.Easing.Quadratic.Out)
+    .to({ emissiveIntensity: 1 }, 0.2 * 1000)
+    .onUpdate((obj) => { updateFlickering(obj) })
+    .onComplete(()=>{
+      window.virtual_office.tweens.openDoor.start();
+    });
+
+  window.virtual_office.tweens.doorSignFlickerA.chain( window.virtual_office.tweens.doorSignFlickerB );
+  window.virtual_office.tweens.doorSignFlickerB.chain( window.virtual_office.tweens.doorSignFlickerC );
+  window.virtual_office.tweens.doorSignFlickerC.chain( window.virtual_office.tweens.doorSignFlickerD );
+  window.virtual_office.tweens.doorSignFlickerD.chain( window.virtual_office.tweens.doorSignFlickerE );
+  window.virtual_office.tweens.doorSignFlickerE.chain( window.virtual_office.tweens.doorSignFlickerF );
+  window.virtual_office.tweens.doorSignFlickerF.chain( window.virtual_office.tweens.doorSignFlickerG );
+
+  window.virtual_office.tweens.doorSignFlickerA.start();
+}
+
+function updateFlickering(obj) {
+  window.virtual_office.scene_objects.door_sign.traverse((mesh) => {
+    if (mesh.isMesh) {
+      // console.log(mesh);
+      // debugger;
+      mesh.material.emissiveIntensity = obj.emissiveIntensity;
+    }
+  });
+}
+
 function enterTheOffice ( coords ) {
   let targetZ = - 20 + (window.virtual_office.room_depth / 2);
   return new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
@@ -110,7 +187,6 @@ function panDown ( cameraRotationX ) {
   });
 
 }
-
 
 // Reusable
 
