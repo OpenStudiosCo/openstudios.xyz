@@ -382,6 +382,11 @@ export function createOfficeRoom() {
   });
   floorMaterial.name = 'floor';
 
+  const ceilAO = window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_ambientOcclusion.jpg', );
+  ceilAO.wrapS = THREE.RepeatWrapping;
+  ceilAO.wrapT = THREE.RepeatWrapping;
+  ceilAO.repeat.set( 4, 4 );
+
   const ceilTexture = window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_basecolor.jpg', );
   ceilTexture.wrapS = THREE.RepeatWrapping;
   ceilTexture.wrapT = THREE.RepeatWrapping;
@@ -399,6 +404,8 @@ export function createOfficeRoom() {
 
   // Create two materials: one for the floor face and one for the other faces
   const ceilMaterial = new THREE.MeshLambertMaterial({
+    aoMap: ceilAO,
+    aoMapIntensity: 1.5,
     displacementMap: ceilHeight,
     map: ceilTexture,
     normalMap: ceilNormal,
@@ -424,6 +431,8 @@ export function createOfficeRoom() {
 
   const backwallMaterial = new THREE.MeshStandardMaterial({
     alphaTest: 0.99,
+    aoMap: backwallHeight, 
+    aoMapIntensity: .5,
     color: 0xa0adaf,
     displacementMap: backwallHeight,
     displacementScale: 0.001,
