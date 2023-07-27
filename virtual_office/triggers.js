@@ -36,10 +36,8 @@ function updateSigns ( ) {
                         const [ colorHex, colorRgb ] = interpolateRgb(currentRgb, targetRgb);
 
                         if (thresholdRgb(currentRgb, colorRgb)) {
-                            console.log('forward', colorHex);
                             window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
                         }
-                        
                     }
 
                     if ( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity != 0.5){
@@ -58,8 +56,7 @@ function updateSigns ( ) {
                         const targetRgb = { r: 218, g: 104, b: 197 };
 
                         const [ colorHex, colorRgb ] = interpolateRgb(currentRgb, targetRgb);
-                        // console.log('back', colorHex);
-                        // window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
+
                         if (thresholdRgb(currentRgb, colorRgb)) {
                             window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
                         }
