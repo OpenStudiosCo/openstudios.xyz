@@ -385,7 +385,7 @@ function createDesk( i ) {
       signMesh.translateX( 0.05 - width / 20 );
     }
 
-    signMesh.position.y = 1;
+    signMesh.position.y = 1.1;
 
     signMesh.updateMatrixWorld();    
 
