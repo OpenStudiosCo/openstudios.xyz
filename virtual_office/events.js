@@ -1,3 +1,8 @@
+/**
+ * Events
+ * 
+ * Handles user interaction with the scene.
+ */
 import * as THREE from 'three';
 
 import { calculateAdjustedGapSize, createOfficeRoom, setCameraFOV, doorWidth, doorDepth, doorHeight } from './main.js';
@@ -93,15 +98,17 @@ export function handleInteractions( scene ) {
   // Reset the portraits and neon to the regular colour.
   window.virtual_office.scene_objects.wallGroup.children.forEach((object, i) => {
 
-    if (object.name == "neon") {
-      object.material.emissive.set(0xDA68C5);
+    if (object.name == "neon_sign") {
+      //object.material.emissive.set(0xDA68C5);
       object.material.emissiveIntensity = 1;
-      object.children[0].color.set(0xDA68C5);
-      object.children[0].intensity = window.virtual_office.fast ? 0.35 : 0.1;
+      // object.children[0].color.set(0xDA68C5);
+      // object.children[0].intensity = window.virtual_office.fast ? 0.35 : 0.1;
     }
   });
 
   for (let i = 0; i < intersects.length; i++) {
+    // Clear the hovered object.
+    window.virtual_office.hovered = intersects[i].object;
 
     // If nothing is selected, allow hover effects.
     if (!window.virtual_office.selected) {
@@ -137,10 +144,9 @@ export function handleInteractions( scene ) {
         break;
       }
   
-      if (intersects[i].object.name == "neon") {
+      if (intersects[i].object.name == "neon_sign") {
         document.documentElement.style.cursor = "pointer";
-        intersects[i].object.material.emissive.set(0xFFFFFF);
-        intersects[i].object.material.emissiveIntensity = 0.5;
+        window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = 0.5;
 
         handleWallClick(intersects[i].object.parent);
   
@@ -149,8 +155,7 @@ export function handleInteractions( scene ) {
   
       if (intersects[i].object.name == "tv") {
         document.documentElement.style.cursor = "pointer";
-        intersects[i].object.parent.getObjectByName("neon").material.emissive.set(0xFFFFFF);
-        intersects[i].object.parent.getObjectByName("neon").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
+        window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
   
         handleWallClick(intersects[i].object.parent);
   

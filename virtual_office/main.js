@@ -13,6 +13,7 @@ import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 import { scaleEffects, setupEffects } from './effects.js';
 import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
 import { setupBackwall, setupDesks } from './furniture.js';
+import { setupTriggers, updateTriggers } from './triggers.js';
 import { setupTweens, updateTweens, startTweening } from './tweens.js';
 
 let csgEvaluator;
@@ -77,6 +78,9 @@ export function init(pane) {
     stats = new Stats();
     document.body.appendChild(stats.dom);
   }
+
+  // Setup triggersw
+  setupTriggers( );
 
   // Setup Tweens.
   setupTweens( );
@@ -172,11 +176,30 @@ function mapRange(value, inMin, inMax, outMin, outMax) {
   return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
 
+let frameCount = 0;
+let lastTime = performance.now();
+
+function updateFPS() {
+  // Calculate FPS
+  const currentTime = performance.now();
+  const timeDiff = currentTime - lastTime;
+  frameCount++;
+  if (timeDiff >= 1000) {
+    window.virtual_office.fps = Math.round((frameCount * 1000) / timeDiff);
+    frameCount = 0;
+    lastTime = currentTime;
+  }
+}
+
 export function animate(currentTime) {
+
+  updateFPS();
 
   requestAnimationFrame(animate);
 
   if (window.virtual_office.started) {
+
+    updateTriggers(currentTime);
 
     updateTweens(currentTime);
 

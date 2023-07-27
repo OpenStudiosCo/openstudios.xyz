@@ -65,6 +65,13 @@ domReady(
       fast: false,
 
       /**
+       * Frames Per Second (FPS)
+       * 
+       * @memberof Integer
+       */
+      fps: 0,
+
+      /**
        * Reusable loaders for assets.
        */
       loaders: {
@@ -156,6 +163,13 @@ domReady(
        * @memberof Boolean
        */
       started: false,
+
+      /**
+       * All scene triggers.
+       * 
+       * @memberof Object
+       */
+      triggers: {},
       
       /**
        * All scene tweens.

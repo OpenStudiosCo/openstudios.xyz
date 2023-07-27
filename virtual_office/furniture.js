@@ -18,7 +18,8 @@ export function setupBackwall ( scene ) {
   createNeonSign((signMesh) => {
     // Position and rotate the sign
     signMesh.position.set(-6.4, 15, 1); // Example position for the sign
-    signMesh.name = "neon";
+    signMesh.name = "neon_sign";
+    window.virtual_office.scene_objects.neon_sign = signMesh;
     wallGroup.add(signMesh);
   }, scene);
 
