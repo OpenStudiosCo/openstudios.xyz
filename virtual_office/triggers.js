@@ -28,52 +28,63 @@ function updateSigns ( ) {
                 if ( window.virtual_office.hovered &&
                     ( window.virtual_office.hovered.name == 'neon_sign' || window.virtual_office.hovered.name == 'tv' )
                 ) {
-                    // Check it's not already white
-                    if ( window.virtual_office.scene_objects.neon_sign.material.emissive.getHex() != 0xFFFFFF ) {
-                        const currentRgb = hexToRgb(window.virtual_office.scene_objects.neon_sign.material.emissive.getHex());
-                        const targetRgb = { r: 255, g: 255, b: 255 };
-                        
-                        const [ colorHex, colorRgb ] = interpolateRgb(currentRgb, targetRgb);
 
-                        if (thresholdRgb(currentRgb, colorRgb)) {
-                            window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
-                        }
-                    }
+                    // Update emissive color to white.
+                    interpolateRgbProperty( window.virtual_office.scene_objects.neon_sign.material.emissive, 0xFFFFFF, { r: 255, g: 255, b: 255 } );
 
-                    if ( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity != 0.5){
-                        const newIntensity = interpolateFloat( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 0.5 );
-                        
-                        if ( Math.abs(window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity - newIntensity) > tolerance ) {
-                            window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = newIntensity;
-                        }                        
-                    }
-
+                    // Drop emissive intensity to half for the super bright white.
+                    window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 0.5 );
                 }
                 else {
-                    // Check it's not already white
-                    if ( window.virtual_office.scene_objects.neon_sign.material.emissive.getHex() != 0xDA68C5 ) {
-                        const currentRgb = hexToRgb(window.virtual_office.scene_objects.neon_sign.material.emissive.getHex());
-                        const targetRgb = { r: 218, g: 104, b: 197 };
+                    interpolateRgbProperty( window.virtual_office.scene_objects.neon_sign.material.emissive, 0xDA68C5, { r: 218, g: 104, b: 197 } );
 
-                        const [ colorHex, colorRgb ] = interpolateRgb(currentRgb, targetRgb);
-
-                        if (thresholdRgb(currentRgb, colorRgb)) {
-                            window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
-                        }
-                    }
-
-                    if ( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity != 1){
-                        const newIntensity = interpolateFloat( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 1 );
-                        
-                        if ( Math.abs(window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity - newIntensity) > tolerance ) {
-                            window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = newIntensity;
-                        }
-                    }
+                    // Restore emissive intensity to 1.
+                    window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 1 );
 
                 }
             }
         }
     };
+}
+
+function interpolateRgbProperty( property, targetHex, targetRgb ) {
+
+    // Check it's not already on target
+    if ( property.getHex() != targetHex ) {
+
+        // get current property rgb from material hex
+        const currentRgb = hexToRgb( property.getHex() );
+        
+        // Grab interpolated values. 
+        const [ colorHex, colorRgb ] = interpolateRgb(currentRgb, targetRgb);
+
+        // Check if within threshold.
+        if (thresholdRgb(currentRgb, colorRgb)) {
+
+            // Update property color.
+            property.set( `${colorHex.toString(16).toUpperCase().padStart(6, '0')}` );
+
+        }
+
+    }
+
+}
+
+function interpolateFloatProperty( property, target ) {
+
+    // Check it's not already on target
+    if ( property != target){
+
+        const newValue = interpolateFloat( property, target );
+        
+        if ( Math.abs(property - newValue) > tolerance ) {
+            property = newValue;
+        }
+
+    }
+
+    return property;
+
 }
 
 function thresholdRgb( currentRgb, targetRgb ) {
