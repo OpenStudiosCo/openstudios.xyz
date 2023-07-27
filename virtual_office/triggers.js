@@ -20,9 +20,7 @@ export function updateTriggers ( currentTime ) {
 function updateSigns ( ) {
     return {
         update: () => {
-            const seconds = 0.1;
-            const updateSpeed = seconds * window.virtual_office.fps;
-
+            
             if ( window.virtual_office.scene_objects.neon_sign ) {
                 // Run neon sign update if the TV or neon sign are being hovered.
                 if ( window.virtual_office.hovered &&
@@ -33,15 +31,14 @@ function updateSigns ( ) {
                         const currentRgb = hexToRgb(window.virtual_office.scene_objects.neon_sign.material.emissive.getHex());
                         const targetRgb = { r: 255, g: 255, b: 255 };
                         
-                        // Get new RGB based on the delta / fps
-                        const newRgb = {
-                            r: currentRgb.r + ((targetRgb.r - currentRgb.r)/updateSpeed),
-                            g: currentRgb.g + ((targetRgb.g - currentRgb.g)/updateSpeed),
-                            b: currentRgb.b + ((targetRgb.b - currentRgb.b)/updateSpeed)
-                        };
-                        const colorHex = rgbToHex(Math.ceil(newRgb.r), Math.ceil(newRgb.g), Math.ceil(newRgb.b));
+                        const colorHex = interpolateRgb(currentRgb, targetRgb);
                         window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
 
+                    }
+
+                    if ( window.virtual_office.scene_objects.neon_sign.emissiveIntensity != 0.5){
+                        const newIntensity = interpolateFloat( window.virtual_office.scene_objects.neon_sign.emissiveIntensity, 0.5 );
+                        window.virtual_office.scene_objects.neon_sign.emissiveIntensity = newIntensity;
                     }
                 }
                 else {
@@ -49,20 +46,44 @@ function updateSigns ( ) {
                     if ( window.virtual_office.scene_objects.neon_sign.emissive != 0xDA68C5 ) {
                         const currentRgb = hexToRgb(window.virtual_office.scene_objects.neon_sign.material.emissive.getHex());
                         const targetRgb = { r: 218, g: 104, b: 197 };
-                        
-                        // Get new RGB based on the delta / fps
-                        const newRgb = {
-                            r: currentRgb.r + ((targetRgb.r - currentRgb.r)/updateSpeed),
-                            g: currentRgb.g + ((targetRgb.g - currentRgb.g)/updateSpeed),
-                            b: currentRgb.b + ((targetRgb.b - currentRgb.b)/updateSpeed)
-                        };
-                        const colorHex = rgbToHex(Math.ceil(newRgb.r), Math.ceil(newRgb.g), Math.ceil(newRgb.b));
+                        const colorHex = interpolateRgb(currentRgb, targetRgb);
                         window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
+                    }
+
+                    if ( window.virtual_office.scene_objects.neon_sign.emissiveIntensity != 1){
+                        const newIntensity = interpolateFloat( window.virtual_office.scene_objects.neon_sign.emissiveIntensity, 1 );
+                        window.virtual_office.scene_objects.neon_sign.emissiveIntensity = newIntensity;
                     }
                 }
             }
         }
     };
+}
+
+function interpolateFloat( current, target, seconds = 0.1 ) {
+    const updateSpeed = seconds * window.virtual_office.fps;
+
+    // Defensive check for overflow issues.
+    if (current != target) {
+        const newVal = current + ((target - current) / updateSpeed);
+        return newVal;
+    }
+    else {
+        return target;
+    }
+    
+}
+
+function interpolateRgb( currentRgb, targetRgb, seconds = 0.1 ) {
+
+    // Get new RGB based on the delta / fps
+    const newRgb = {
+        r: interpolateFloat(currentRgb.r, targetRgb.r, seconds),
+        g: interpolateFloat(currentRgb.g, targetRgb.g, seconds),
+        b: interpolateFloat(currentRgb.b, targetRgb.b, seconds),
+    };
+
+    return rgbToHex(Math.ceil(newRgb.r), Math.ceil(newRgb.g), Math.ceil(newRgb.b));
 }
 
 // Function to convert hex to RGB

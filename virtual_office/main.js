@@ -220,14 +220,18 @@ export function animate(currentTime) {
     let ready = false;
     // Check if we can start.
     for ( var measure in window.virtual_office.loaders.stats ) {
-      if ( window.virtual_office.loaders.stats[measure].loaded == window.virtual_office.loaders.stats[measure].target ) {
+      if (
+        // Check everything has loaded.
+        window.virtual_office.loaders.stats[measure].loaded == window.virtual_office.loaders.stats[measure].target &&
+        // Check door sign is loaded up.
+        window.virtual_office.scene_objects.door_sign
+      ) {
         ready = true;
       }
       else {
         ready = false;
       }
     }
-
     if (ready) {
       startTweening();
     }

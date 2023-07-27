@@ -95,16 +95,6 @@ export function handleInteractions( scene ) {
     });
   });
 
-  // Reset the portraits and neon to the regular colour.
-  window.virtual_office.scene_objects.wallGroup.children.forEach((object, i) => {
-
-    if (object.name == "neon_sign") {
-      //object.material.emissive.set(0xDA68C5);
-      object.material.emissiveIntensity = 1;
-      // object.children[0].color.set(0xDA68C5);
-      // object.children[0].intensity = window.virtual_office.fast ? 0.35 : 0.1;
-    }
-  });
 
   for (let i = 0; i < intersects.length; i++) {
     // Clear the hovered object.
@@ -146,7 +136,6 @@ export function handleInteractions( scene ) {
   
       if (intersects[i].object.name == "neon_sign") {
         document.documentElement.style.cursor = "pointer";
-        window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = 0.5;
 
         handleWallClick(intersects[i].object.parent);
   
@@ -155,7 +144,6 @@ export function handleInteractions( scene ) {
   
       if (intersects[i].object.name == "tv") {
         document.documentElement.style.cursor = "pointer";
-        window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
   
         handleWallClick(intersects[i].object.parent);
   
