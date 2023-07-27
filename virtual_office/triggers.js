@@ -22,40 +22,43 @@ function updateSigns ( ) {
         update: () => {
             const seconds = 0.1;
             const updateSpeed = seconds * window.virtual_office.fps;
-            // Run neon sign update if the TV or neon sign are being hovered.
-            if ( window.virtual_office.hovered &&
-                ( window.virtual_office.hovered.name == 'neon_sign' || window.virtual_office.hovered.name == 'tv' )
-            ) {
-                // Check it's not already white
-                if ( window.virtual_office.scene_objects.neon_sign.emissive != 0xFFFFFF ) {
-                    const currentRgb = hexToRgb(window.virtual_office.scene_objects.neon_sign.material.emissive.getHex());
-                    const targetRgb = { r: 255, g: 255, b: 255 };
-                    
-                    // Get new RGB based on the delta / fps
-                    const newRgb = {
-                        r: currentRgb.r + ((targetRgb.r - currentRgb.r)/updateSpeed),
-                        g: currentRgb.g + ((targetRgb.g - currentRgb.g)/updateSpeed),
-                        b: currentRgb.b + ((targetRgb.b - currentRgb.b)/updateSpeed)
-                    };
-                    const colorHex = rgbToHex(Math.ceil(newRgb.r), Math.ceil(newRgb.g), Math.ceil(newRgb.b));
-                    window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
 
+            if ( window.virtual_office.scene_objects.neon_sign ) {
+                // Run neon sign update if the TV or neon sign are being hovered.
+                if ( window.virtual_office.hovered &&
+                    ( window.virtual_office.hovered.name == 'neon_sign' || window.virtual_office.hovered.name == 'tv' )
+                ) {
+                    // Check it's not already white
+                    if ( window.virtual_office.scene_objects.neon_sign.emissive != 0xFFFFFF ) {
+                        const currentRgb = hexToRgb(window.virtual_office.scene_objects.neon_sign.material.emissive.getHex());
+                        const targetRgb = { r: 255, g: 255, b: 255 };
+                        
+                        // Get new RGB based on the delta / fps
+                        const newRgb = {
+                            r: currentRgb.r + ((targetRgb.r - currentRgb.r)/updateSpeed),
+                            g: currentRgb.g + ((targetRgb.g - currentRgb.g)/updateSpeed),
+                            b: currentRgb.b + ((targetRgb.b - currentRgb.b)/updateSpeed)
+                        };
+                        const colorHex = rgbToHex(Math.ceil(newRgb.r), Math.ceil(newRgb.g), Math.ceil(newRgb.b));
+                        window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
+
+                    }
                 }
-            }
-            else {
-                // Check it's not already white
-                if ( window.virtual_office.scene_objects.neon_sign.emissive != 0xDA68C5 ) {
-                    const currentRgb = hexToRgb(window.virtual_office.scene_objects.neon_sign.material.emissive.getHex());
-                    const targetRgb = { r: 218, g: 104, b: 197 };
-                    
-                    // Get new RGB based on the delta / fps
-                    const newRgb = {
-                        r: currentRgb.r + ((targetRgb.r - currentRgb.r)/updateSpeed),
-                        g: currentRgb.g + ((targetRgb.g - currentRgb.g)/updateSpeed),
-                        b: currentRgb.b + ((targetRgb.b - currentRgb.b)/updateSpeed)
-                    };
-                    const colorHex = rgbToHex(Math.ceil(newRgb.r), Math.ceil(newRgb.g), Math.ceil(newRgb.b));
-                    window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
+                else {
+                    // Check it's not already white
+                    if ( window.virtual_office.scene_objects.neon_sign.emissive != 0xDA68C5 ) {
+                        const currentRgb = hexToRgb(window.virtual_office.scene_objects.neon_sign.material.emissive.getHex());
+                        const targetRgb = { r: 218, g: 104, b: 197 };
+                        
+                        // Get new RGB based on the delta / fps
+                        const newRgb = {
+                            r: currentRgb.r + ((targetRgb.r - currentRgb.r)/updateSpeed),
+                            g: currentRgb.g + ((targetRgb.g - currentRgb.g)/updateSpeed),
+                            b: currentRgb.b + ((targetRgb.b - currentRgb.b)/updateSpeed)
+                        };
+                        const colorHex = rgbToHex(Math.ceil(newRgb.r), Math.ceil(newRgb.g), Math.ceil(newRgb.b));
+                        window.virtual_office.scene_objects.neon_sign.material.emissive.set(`${colorHex.toString(16).toUpperCase().padStart(6, '0')}`);
+                    }
                 }
             }
         }
