@@ -23,9 +23,13 @@ function updateSigns ( ) {
     return {
         update: () => {
             
-            if ( window.virtual_office.scene_objects.neon_sign ) {
+            if (    
+                window.virtual_office.hovered &&
+                window.virtual_office.scene_objects.neon_sign &&
+                window.virtual_office.scene_objects.desk_labels && window.virtual_office.scene_objects.desk_labels.length == 4
+            ) {
                 // Run neon sign update if the TV or neon sign are being hovered.
-                if ( window.virtual_office.hovered &&
+                if (
                     ( window.virtual_office.hovered.name == 'neon_sign' || window.virtual_office.hovered.name == 'tv' )
                 ) {
 
@@ -40,6 +44,42 @@ function updateSigns ( ) {
 
                     // Restore emissive intensity to 1.
                     window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 1 );
+
+                }
+
+                // Run neon sign update if the screen or neon sign are being hovered.
+                if ( 
+                    ( window.virtual_office.hovered.name == 'screen' || window.virtual_office.hovered.name == 'desk_part' || window.virtual_office.hovered.name == 'desk_label' )
+                ) {
+                    const material = window.virtual_office.hovered.parent.getObjectByName("desk_label").material;
+                    //console.log( material.emissive);
+                    // Update emissive color to white.
+                    interpolateRgbProperty(window.virtual_office.hovered.parent.getObjectByName("desk_label").material.emissive, 0xFFFFFF, { r: 255, g: 255, b: 255 } );
+                    //material.emissive.set(0xffffff);
+                    //console.log( material.emissive);
+                    // Drop emissive intensity to half for the super bright white.
+                    //window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 0.5 );
+                }
+                else {
+                    // window.virtual_office.scene_objects.deskGroup.children.forEach((desk) => {
+                    //     desk.children.forEach((desk_item) => {
+                    //         if (desk_item.name == "desk_label" && (
+                    //             window.virtual_office.hovered &&
+                    //             ( window.virtual_office.hovered.name == 'screen' || window.virtual_office.hovered.name == 'desk_part' || window.virtual_office.hovered.name == 'desk_label' ) &&
+                    //             window.virtual_office.hovered.parent.getObjectByName("desk_label").uuid != desk_item.uuid
+                    //         )) {
+                    //             console.log(desk_item.material.emissive);
+                    //           interpolateRgbProperty( desk_item.material.emissive, 0x00EEff, { r: 0, g: 238, b: 255 } );
+                    //           console.log(desk_item.material.emissive);
+                    //         }
+                    //     });
+                    // });
+                    //const material = window.virtual_office.hovered.parent.getObjectByName("desk_label").material;
+                    //material.emissive.set(0x00EEff);
+                    //interpolateRgbProperty( window.virtual_office.hovered.parent.getObjectByName("desk_label").material.emissive, 0x00EEff, { r: 0, g: 238, b: 255 } );
+
+                    // Restore emissive intensity to 1.
+                    //window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 1 );
 
                 }
             }
@@ -98,8 +138,8 @@ function thresholdRgb( currentRgb, targetRgb ) {
     };
 
     const isWithinTolerance = (
-        checkThreshold(currentRgb.r, targetRgb.r) &&
-        checkThreshold(currentRgb.g, targetRgb.g) &&
+        checkThreshold(currentRgb.r, targetRgb.r) ||
+        checkThreshold(currentRgb.g, targetRgb.g) ||
         checkThreshold(currentRgb.b, targetRgb.b)
     );
     return isWithinTolerance;

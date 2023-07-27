@@ -71,14 +71,10 @@ export function handleInteractions( scene ) {
   // Reset all the other desk labels to the regular colour.
   window.virtual_office.scene_objects.deskGroup.children.forEach((desk) => {
     desk.children.forEach((desk_item) => {
-      if (desk_item.name == "desk_label") {
-        desk_item.material.emissive.set(0x00EEff);
-        desk_item.material.emissiveIntensity = 0.5;
-      }
-      if (desk_item.name == "ceilLightMesh") {
-        desk_item.material.emissive.set(0x00EEff);
-        desk_item.material.emissiveIntensity = 0.25;
-      }
+      // if (desk_item.name == "desk_label") {
+      //   desk_item.material.emissive.set(0x00EEff);
+      //   desk_item.material.emissiveIntensity = 0.5;
+      // }
       if (desk_item.name == "ceilLightMesh2") {
         desk_item.children.forEach((child)=>{
           // (light bub curves name is currently "CUBezierCurve006_3")
@@ -104,8 +100,8 @@ export function handleInteractions( scene ) {
     if (!window.virtual_office.selected) {
       document.documentElement.style.cursor = "default";
       if (intersects[i].object.name == "desk_label") {
-        // Set the active one to white.
-        intersects[i].object.material.emissive.set(0xFFFFFF);
+        // // Set the active one to white.
+        // intersects[i].object.material.emissive.set(0xFFFFFF);
         document.documentElement.style.cursor = "pointer";
   
         handleDeskClick(intersects[i].object.parent);
@@ -115,7 +111,7 @@ export function handleInteractions( scene ) {
   
       if (intersects[i].object.name == "screen" || intersects[i].object.name == "desk_part") {
         // Set the screens sibling desk_label to active.
-        intersects[i].object.parent.getObjectByName("desk_label").material.emissive.set(0xFFFFFF);
+        //intersects[i].object.parent.getObjectByName("desk_label").material.emissive.set(0xFFFFFF);
         intersects[i].object.parent.getObjectByName("desk_label").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.25;
         if (intersects[i].object.name == "ceilLightMesh2") {
           intersects[i].object.children.forEach((child)=>{
@@ -134,7 +130,7 @@ export function handleInteractions( scene ) {
         break;
       }
   
-      if (intersects[i].object.name == "neon_sign") {
+      if (intersects[i].object.name == "neon_sign" || intersects[i].object.name == "tv") {
         document.documentElement.style.cursor = "pointer";
 
         handleWallClick(intersects[i].object.parent);
@@ -142,13 +138,6 @@ export function handleInteractions( scene ) {
         break;
       }
   
-      if (intersects[i].object.name == "tv") {
-        document.documentElement.style.cursor = "pointer";
-  
-        handleWallClick(intersects[i].object.parent);
-  
-        break;
-      }
     }
     // Otherwise we're only tracking interaction with the exit sign.
     else {
