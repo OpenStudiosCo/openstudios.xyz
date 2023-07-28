@@ -21,7 +21,7 @@ const tolerance = 0.001;
 // Brights whatever sign is currently hovered over.
 function updateSigns ( ) {
     return {
-        update: () => {
+        update: ( currentTime ) => {
             
             if (    
                 window.virtual_office.hovered &&
@@ -44,8 +44,10 @@ function updateSigns ( ) {
                     // Return to original color.
                     interpolateRgbProperty( window.virtual_office.scene_objects.neon_sign.material.emissive, 0xDA68C5, { r: 218, g: 104, b: 197 } );
 
+                    let targetEmissiveIntensity = Math.min(Math.max(1 + Math.sin( currentTime / 400 ), 0), 1);
+
                     // Restore emissive intensity to 1.
-                    window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 1 );
+                    window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = targetEmissiveIntensity;
 
                 }
 
