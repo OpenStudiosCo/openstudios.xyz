@@ -54,7 +54,8 @@ export function handleViewportChange() {
   window.virtual_office.scene_objects.wallGroup.position.z = backWallZ;
   window.virtual_office.scene_objects.tvWebGL.position.z =  backWallZ +1;
 
-  window.virtual_office.scene_objects.door.position.set(- doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
+  window.virtual_office.scene_objects.door.position.z = - 15 + (window.virtual_office.room_depth / 2);
+  window.virtual_office.scene_objects.door_frame.position.z = - 15 + (window.virtual_office.room_depth / 2);
 
   window.virtual_office.renderers.webgl.setSize(width, height);
   window.virtual_office.effects.main.setSize(width, height);

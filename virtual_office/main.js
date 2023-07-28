@@ -314,6 +314,48 @@ function createDoor() {
     door.updateMatrixWorld();
 
     doorParent.add(door);
+
+    const frameGroup = new THREE.Group();
+    frameGroup.name = "doorFrame";
+    frameGroup.position.z = - 15 + (window.virtual_office.room_depth / 2);
+
+    var frameWidth = 0.4;
+    var frameDepth = 0.4;
+
+    // Create the top of the door frame geometry
+    var topFrameGeometry = new THREE.BoxGeometry(doorWidth + 2 * frameWidth, frameWidth, frameDepth);
+
+    // Create the top of the door frame mesh
+    var topFrame = new THREE.Mesh(topFrameGeometry, doorMaterial);
+
+    // Position the top of the door frame above the door
+    topFrame.position.set(0 ,  5 + (doorHeight / 2) + frameWidth, 0);
+    frameGroup.add(topFrame);
+
+    // Create the sides of the door frame geometry
+    var sideFrameGeometry = new THREE.BoxGeometry(frameWidth, doorHeight + frameWidth, frameDepth);
+
+    // Create the door frame material (you can change the color or add a texture here)
+    var doorFrameMaterial = new THREE.MeshBasicMaterial({ color: 0x808080 });
+
+    // Create the left side of the door frame mesh
+    var leftSideFrame = new THREE.Mesh(sideFrameGeometry, doorMaterial);
+
+    // Position the left side of the door frame to the left of the door
+    leftSideFrame.position.set(-(doorWidth / 2)  - frameWidth /2, - 5 + (doorHeight / 2) - frameWidth/2, 0);
+    frameGroup.add(leftSideFrame);
+
+    // Create the right side of the door frame mesh
+    var rightSideFrame = new THREE.Mesh(sideFrameGeometry, doorMaterial);
+
+    // Position the right side of the door frame to the right of the door
+    rightSideFrame.position.set((doorWidth / 2) + frameWidth /2, - 5 + (doorHeight / 2) - frameWidth/2, 0);
+    frameGroup.add(rightSideFrame);
+
+    window.virtual_office.scene_objects.door_frame = frameGroup;
+    
+    scene.add(window.virtual_office.scene_objects.door_frame);
+
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
