@@ -56,6 +56,8 @@ export function scaleEffects( currentTime, renderer ) {
         window.virtual_office.fast = true;
         renderer.shadowMap.enabled = false;
       }
+
+      window.virtual_office.effects.scaleDone = true;
     }
     else {
       // Calculate the current frame rate

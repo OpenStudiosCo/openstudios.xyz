@@ -224,7 +224,9 @@ export function animate(currentTime) {
         // Check everything has loaded.
         window.virtual_office.loaders.stats[measure].loaded == window.virtual_office.loaders.stats[measure].target &&
         // Check door sign is loaded up.
-        window.virtual_office.scene_objects.door_sign
+        window.virtual_office.scene_objects.door_sign &&
+        // Check the effects scaler has run, which also delays start.
+        window.virtual_office.effects.scaleDone
       ) {
         ready = true;
       }

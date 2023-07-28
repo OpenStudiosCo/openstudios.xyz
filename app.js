@@ -45,7 +45,8 @@ domReady(
       effects: {
         main: false,
         bloom: false,
-        bloomLayer: false
+        bloomLayer: false,
+        scaleDone: false
       },
 
       /**
