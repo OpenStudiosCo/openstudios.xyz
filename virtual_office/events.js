@@ -68,29 +68,6 @@ export function handleInteractions( scene ) {
   // calculate objects intersecting the picking ray
   const intersects = window.virtual_office.raycaster.intersectObjects(scene.children);
 
-  // Reset all the other desk labels to the regular colour.
-  window.virtual_office.scene_objects.deskGroup.children.forEach((desk) => {
-    desk.children.forEach((desk_item) => {
-      // if (desk_item.name == "desk_label") {
-      //   desk_item.material.emissive.set(0x00EEff);
-      //   desk_item.material.emissiveIntensity = 0.5;
-      // }
-      // if (desk_item.name == "ceilLightMesh2") {
-      //   desk_item.children.forEach((child)=>{
-      //     // (light bub curves name is currently "CUBezierCurve006_3")
-      //     if (child.name == "CUBezierCurve006_3") {
-      //       child.material.emissive.set(0x00EEff);
-      //       child.material.emissiveIntensity = 0.25;
-      //     }
-      //   });
-      // }
-      // if (desk_item.name == "ceilLightActual") {
-      //   desk_item.color.set(0x00EEff);
-      //   desk_item.intensity = 0.015;
-      // }
-    });
-  });
-
   if (intersects.length > 0) {  
     for (let i = 0; i < intersects.length; i++) {
       // Clear the hovered object.
@@ -99,30 +76,8 @@ export function handleInteractions( scene ) {
       // If nothing is selected, allow hover effects.
       if (!window.virtual_office.selected) {
         document.documentElement.style.cursor = "default";
-        if (intersects[i].object.name == "desk_label") {
-          // // Set the active one to white.
-          // intersects[i].object.material.emissive.set(0xFFFFFF);
-          document.documentElement.style.cursor = "pointer";
-    
-          handleDeskClick(intersects[i].object.parent);
-    
-          break;
-        }
-    
-        if (intersects[i].object.name == "screen" || intersects[i].object.name == "desk_part") {
-          // Set the screens sibling desk_label to active.
-          //intersects[i].object.parent.getObjectByName("desk_label").material.emissive.set(0xFFFFFF);
-          //intersects[i].object.parent.getObjectByName("desk_label").material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.25;
-          // if (intersects[i].object.name == "ceilLightMesh2") {
-          //   intersects[i].object.children.forEach((child)=>{
-          //     // (light bub curves name is currently "CUBezierCurve006_3")
-          //     if (child.name == "CUBezierCurve006_3") {
-          //       child.material.emissive.set(0xFFFFFF);
-          //       child.material.emissiveIntensity = window.virtual_office.fast ? 1 : 0.5;
-          //     }
-          //   });
-          // }
-          //intersects[i].object.parent.getObjectByName("ceilLightActual").intensity = window.virtual_office.fast ? 0.05 : 0.035;
+
+        if (intersects[i].object.name == "screen" || intersects[i].object.name == "desk_part" || intersects[i].object.name == "desk_label") {
           document.documentElement.style.cursor = "pointer";
     
           handleDeskClick(intersects[i].object.parent);
