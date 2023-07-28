@@ -26,7 +26,8 @@ function updateSigns ( ) {
             if (    
                 window.virtual_office.hovered &&
                 window.virtual_office.scene_objects.neon_sign &&
-                window.virtual_office.scene_objects.desk_labels && window.virtual_office.scene_objects.desk_labels.length == 4
+                window.virtual_office.scene_objects.desk_labels && window.virtual_office.scene_objects.desk_labels.length == 4 &&
+                window.virtual_office.scene_objects.deskGroup && window.virtual_office.scene_objects.deskGroup.children.length == 12
             ) {
                 // Run neon sign update if the TV or neon sign are being hovered.
                 if (
@@ -40,6 +41,7 @@ function updateSigns ( ) {
                     window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 0.5 );
                 }
                 else {
+                    // Return to original color.
                     interpolateRgbProperty( window.virtual_office.scene_objects.neon_sign.material.emissive, 0xDA68C5, { r: 218, g: 104, b: 197 } );
 
                     // Restore emissive intensity to 1.
@@ -47,41 +49,79 @@ function updateSigns ( ) {
 
                 }
 
-                // Run neon sign update if the screen or neon sign are being hovered.
-                if ( 
-                    ( window.virtual_office.hovered.name == 'screen' || window.virtual_office.hovered.name == 'desk_part' || window.virtual_office.hovered.name == 'desk_label' )
-                ) {
-                    const material = window.virtual_office.hovered.parent.getObjectByName("desk_label").material;
-                    //console.log( material.emissive);
-                    // Update emissive color to white.
-                    interpolateRgbProperty(window.virtual_office.hovered.parent.getObjectByName("desk_label").material.emissive, 0xFFFFFF, { r: 255, g: 255, b: 255 } );
-                    //material.emissive.set(0xffffff);
-                    //console.log( material.emissive);
-                    // Drop emissive intensity to half for the super bright white.
-                    //window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 0.5 );
-                }
-                else {
-                    // window.virtual_office.scene_objects.deskGroup.children.forEach((desk) => {
-                    //     desk.children.forEach((desk_item) => {
-                    //         if (desk_item.name == "desk_label" && (
-                    //             window.virtual_office.hovered &&
-                    //             ( window.virtual_office.hovered.name == 'screen' || window.virtual_office.hovered.name == 'desk_part' || window.virtual_office.hovered.name == 'desk_label' ) &&
-                    //             window.virtual_office.hovered.parent.getObjectByName("desk_label").uuid != desk_item.uuid
-                    //         )) {
-                    //             console.log(desk_item.material.emissive);
-                    //           interpolateRgbProperty( desk_item.material.emissive, 0x00EEff, { r: 0, g: 238, b: 255 } );
-                    //           console.log(desk_item.material.emissive);
-                    //         }
-                    //     });
-                    // });
-                    //const material = window.virtual_office.hovered.parent.getObjectByName("desk_label").material;
-                    //material.emissive.set(0x00EEff);
-                    //interpolateRgbProperty( window.virtual_office.hovered.parent.getObjectByName("desk_label").material.emissive, 0x00EEff, { r: 0, g: 238, b: 255 } );
+                // Update each desk and desk item as needed
+                window.virtual_office.scene_objects.deskGroup.children.forEach((desk) => {
+                    const isHovered =   window.virtual_office.hovered &&
+                                        ( window.virtual_office.hovered.name == 'screen' || window.virtual_office.hovered.name == 'desk_part' || window.virtual_office.hovered.name == 'desk_label' ) &&
+                                        (  window.virtual_office.hovered.parent.uuid == desk.uuid );
 
-                    // Restore emissive intensity to 1.
-                    //window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.neon_sign.material.emissiveIntensity, 1 );
+                    desk.children.forEach((desk_item) => {
+                        
+                        if (desk_item.name == "desk_label") {
 
-                }
+                            // Changes depend on whether this desk is hovered.
+                            if ( isHovered ) {
+
+                                // Update emissive color to white.
+                                interpolateRgbProperty(desk_item.material.emissive, 0xFFFFFF, { r: 255, g: 255, b: 255 } );
+                                                               
+                            }
+                            else {
+                                // Return to original color.
+                                interpolateRgbProperty( desk_item.material.emissive, 0x00EEff, { r: 0, g: 238, b: 255 } );
+                            }
+                        }
+
+                        if (desk_item.name == "ceilLightActual") {
+
+                            // Changes depend on whether this desk is hovered.
+                            if ( isHovered ) {
+
+                                // Increase light intensity.
+                                desk_item.intensity = interpolateFloatProperty( desk_item.intensity, window.virtual_office.fast ? 0.05 : 0.035 );
+                            }
+                            else {
+                                // Reduce light intensity.
+                                desk_item.intensity = interpolateFloatProperty( desk_item.intensity, 0.015 );
+   
+                            }
+                           
+                        }
+
+                        if (desk_item.name == "ceilLightMesh2") {
+                            
+                            desk_item.children.forEach((child)=>{
+
+                                // (light bub curves name is currently "CUBezierCurve006_3")
+                                if (child.name == "CUBezierCurve006_3") {
+
+                                    // Changes depend on whether this desk is hovered.
+                                    if ( isHovered ) {
+
+                                        // Update emissive color to white.
+                                        interpolateRgbProperty( child.material.emissive, 0xFFFFFF, { r: 255, g: 255, b: 255 } );
+
+                                        // Drop emissive intensity to half for the super bright white.
+                                        child.material.emissiveIntensity = interpolateFloatProperty( child.material.emissiveIntensity, window.virtual_office.fast ? 1 : 0.5 );
+
+                                    }
+                                    else {
+                                        // Return to original color.
+                                        interpolateRgbProperty( child.material.emissive, 0x00EEff, { r: 0, g: 238, b: 255 } );
+
+                                        // Drop emissive intensity to original.
+                                        child.material.emissiveIntensity = interpolateFloatProperty( child.material.emissiveIntensity, 0.25 );
+                                    }
+
+                                }
+                            });
+                           
+                          }
+
+                    });
+                });
+    
+                
             }
         }
     };
