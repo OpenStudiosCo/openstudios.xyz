@@ -21,7 +21,16 @@ export function handleViewportChange() {
 
   window.virtual_office.camera.fov = setCameraFOV(window.virtual_office.camera.aspect);
   if (!window.virtual_office.selected) {
-    window.virtual_office.camera.position.z = - 20 + (window.virtual_office.room_depth / 2);
+    let posZ = -20;
+    if (!window.virtual_office.started) {
+      if (window.virtual_office.camera.aspect < 0.88) {
+        window.virtual_office.scene_dimensions.startPosZ = -5;
+      }
+      else {
+        window.virtual_office.scene_dimensions.startPosZ = -10;
+      }
+    }
+    window.virtual_office.camera.position.z = posZ + (window.virtual_office.room_depth / 2);
     window.virtual_office.camera.rotation.x = - (Math.PI / 30) * window.virtual_office.camera.aspect;
   }
   window.virtual_office.camera.updateProjectionMatrix();

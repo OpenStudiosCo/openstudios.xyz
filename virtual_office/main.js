@@ -44,7 +44,11 @@ export function init(pane) {
   var fov = setCameraFOV(aspect);
   window.virtual_office.camera = new THREE.PerspectiveCamera(fov, aspect, 1, 1000);
   window.virtual_office.camera.aspect = width / height;
-  window.virtual_office.camera.position.set(0, 12, 15 + (window.virtual_office.room_depth / 2));
+  
+  if (aspect < 0.88) {
+    window.virtual_office.scene_dimensions.startPosZ = -5;
+  }
+  window.virtual_office.camera.position.set(0, 10.775, window.virtual_office.scene_dimensions.startPosZ + (window.virtual_office.room_depth / 2));
   
   // Reusable pointer for tracking user interaction.
   window.virtual_office.pointer = new THREE.Vector3(); 

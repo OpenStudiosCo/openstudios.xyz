@@ -15,6 +15,12 @@ export function updateTweens(currentTime) {
 export function setupTweens( ) {
 
   /**
+   * Slide back
+   * Animation: Automatic, single use
+   */
+   window.virtual_office.tweens.slideBack = slideBack( );
+
+  /**
    * Open the door
    * Animation: Automatic, single use
    */
@@ -25,8 +31,7 @@ export function setupTweens( ) {
    * Enter the office
    * Animation: Automatic, single use
    */
-  let coords = { x: 15 + ( window.virtual_office.room_depth / 2 ) }; // Start at (0, 0)
-  window.virtual_office.tweens.enterTheOffice = enterTheOffice( coords );
+  window.virtual_office.tweens.enterTheOffice = enterTheOffice( );
 
   /**
    * Camera dolly up.
@@ -95,7 +100,7 @@ function flickerEffect() {
     .to({ emissiveIntensity: 1 }, 0.2 * 1000)
     .onUpdate((obj) => { updateFlickering(obj) })
     .onComplete(()=>{
-      window.virtual_office.tweens.openDoor.start();
+      window.virtual_office.tweens.slideBack.start();
     });
 
   window.virtual_office.tweens.doorSignFlickerA.chain( window.virtual_office.tweens.doorSignFlickerB );
@@ -118,7 +123,8 @@ function updateFlickering(obj) {
   });
 }
 
-function enterTheOffice ( coords ) {
+function enterTheOffice ( ) {
+  let coords = { x: 15 + ( window.virtual_office.room_depth / 2 ) }; // Start at (0, 0)
   let targetZ = - 20 + (window.virtual_office.room_depth / 2);
   return new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
   .to({ x: targetZ }, 1000) // Move to (300, 200) in 1 second.
@@ -136,6 +142,23 @@ function enterTheOffice ( coords ) {
       }
     });
   });
+}
+
+function slideBack ( ) {
+  let coords = { x: window.virtual_office.scene_dimensions.startPosZ + ( window.virtual_office.room_depth / 2 ) }; // Start at (0, 0)
+  let targetZ = 15 + (window.virtual_office.room_depth / 2);
+  return new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
+  .to({ x: targetZ }, 1000) // Move to (300, 200) in 1 second.
+  .easing(TWEEN.Easing.Quadratic.InOut) // Use an easing function to make the animation smooth.
+  .onUpdate(() => {
+    // Called after tween.js updates 'coords'.
+    // Move 'box' to the position described by 'coords' with a CSS translation.
+    window.virtual_office.camera.position.z = coords.x;
+    window.virtual_office.camera.updateProjectionMatrix();
+  })
+  .onComplete(() => {
+    window.virtual_office.tweens.openDoor.start();
+  })
 }
 
 function openDoor ( doorRotation ) {

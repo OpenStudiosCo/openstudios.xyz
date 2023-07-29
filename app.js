@@ -141,7 +141,8 @@ domReady(
         adjusted_gap: false, // calculated value
         gap: 1.3, // depth(z axis) gap between desks
         room_depth: false, // calculated value
-        scale: 11 // do not change, braeks css screen sizes
+        scale: 11, // do not change, braeks css screen sizes
+        startPosZ: - 10 // updated responsive eugene levy
       },
 
       /**
