@@ -368,7 +368,7 @@ function createDoor() {
   // instantiate a loader
   const loader = new SVGLoader();
 
-  loader.load("../logo.svg", function (data) {
+  loader.load("./assets/logo.svg", function (data) {
 
     const group = new THREE.Group();
     group.scale.multiplyScalar(0.0025);
