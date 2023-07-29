@@ -272,16 +272,23 @@ export function setupDesks(gapSize, scale, scene) {
       // Final rotation tweaks to match design reference.
       switch (i) {
         case 0:
-          chair.position.x += gapSize;
+          chair.position.x -= gapSize * 4;
+          chair.position.z += gapSize * 2;
           break;
         case 1:
+          chair.position.x -= gapSize;
           chair.rotation.y += Math.PI / 8;
+          chair.position.z += gapSize;
           break;
         case 2:
+          chair.position.x += gapSize * 4;
           chair.rotation.y -= Math.PI / 12;
+          chair.position.z -= gapSize * 2;
           break;
         case 3:
+          chair.position.x += gapSize;
           chair.rotation.y -= Math.PI / 3;
+          chair.position.z -= gapSize;
           break;
       }
       deskGroup.add( chair );
