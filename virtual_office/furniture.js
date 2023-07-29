@@ -451,10 +451,10 @@ function createDeskLabel(i, callback, deskGroup) {
   let labelText = '';
   switch ( i ) {
     case 0:
-      labelText = 'Services';
+      labelText = 'Case studies';  
       break;
     case 1:
-      labelText = 'Case studies';
+      labelText = 'Services';      
       break;
     case 2:
       labelText = 'Portfolio';
@@ -504,12 +504,12 @@ function createScreen( i ){
   let url, pageUrl;
   switch ( i ) {
     case 0:
-      url = '../pages/services.png';
-      pageUrl = '../pages/services.html';
-      break;
-    case 1:
       url = '../pages/case_studies.png';
       pageUrl = '../pages/case_studies.html';
+      break;  
+    case 1:
+      url = '../pages/services.png';
+      pageUrl = '../pages/services.html';
       break;
     case 2:
       url = '../pages/portfolio.png';
