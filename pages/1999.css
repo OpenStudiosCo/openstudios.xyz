@@ -27,12 +27,12 @@ a {
   color: #00EEff;
 }
 
-a:hover {
+.content a:hover {
   text-decoration: none;
   color: #99FFff;
 }
 
-a img:hover {
+.content a img:hover {
   opacity: 0.9;
 }
 
