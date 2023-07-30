@@ -13,7 +13,7 @@ import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
 let composer, bloomComposer, bloomLayer;
 
 // Define a threshold frame rate below which effects will be disabled
-const frameRateThreshold = 30; // Adjust as needed
+const frameRateThreshold = 25; // Adjust as needed
 
 // Store the previous frame time
 let previousFrameTime = 0;
@@ -56,8 +56,7 @@ export function scaleEffects( currentTime, renderer ) {
         window.virtual_office.fast = true;
         renderer.shadowMap.enabled = false;
       }
-
-      window.virtual_office.effects.scaleDone = true;
+      
     }
     else {
       // Calculate the current frame rate
@@ -65,6 +64,10 @@ export function scaleEffects( currentTime, renderer ) {
       frameRates.push( currentFrameRate );
     }
 
+  }
+
+  if  ( delayTimer >= delayDuration ) {
+    window.virtual_office.effects.scaleDone = true;
   }
 
 }
