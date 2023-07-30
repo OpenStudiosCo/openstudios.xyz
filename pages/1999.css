@@ -23,6 +23,19 @@ body {
   color: #FFF;
 }
 
+a {
+  color: #00EEff;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #99FFff;
+}
+
+a img:hover {
+  opacity: 0.9;
+}
+
 h1 {
   font-family: Stigmature, "Brush Script MT", cursive;
   color: white;
