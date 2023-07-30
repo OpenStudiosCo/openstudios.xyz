@@ -36,6 +36,17 @@ a {
   opacity: 0.9;
 }
 
+.linkedin_profile img {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 4px;
+}
+
+.linkedin_profile img:hover {
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 4px #FFFFFF;
+}
+
 h1 {
   font-family: Stigmature, "Brush Script MT", cursive;
   color: white;
