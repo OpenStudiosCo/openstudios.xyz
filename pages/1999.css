@@ -37,18 +37,11 @@ a {
 }
 
 .icon_button {
-  display: flex;
-  align-items: center;
-  flex-flow: row;
   text-decoration: none;
 }
 
-.icon_button label {
-  margin: 0.5rem 0;
-}
-
 .icon_button img {
-  width: 1.5rem;
+  width: 1.1rem;
   height: auto;
   border-radius: 4px;
   margin: 0 0.5rem 0 0;
@@ -57,6 +50,16 @@ a {
 a.icon_button img:hover {
   background-color: #FFFFFF;
   box-shadow: 0px 0px 4px #FFFFFF;
+}
+
+.contact_page .icon_button {
+  display: flex;
+  align-items: center;
+  flex-flow: row;
+}
+
+.contact_page .icon_button img {
+  width: 1.5rem;
 }
 
 h1 {
