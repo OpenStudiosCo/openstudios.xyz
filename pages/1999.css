@@ -37,11 +37,18 @@ a {
 }
 
 .icon_button {
+  display: flex;
+  align-items: center;
+  flex-flow: row;
   text-decoration: none;
 }
 
+.icon_button label {
+  margin: 0.5rem 0;
+}
+
 .icon_button img {
-  width: 1.1rem;
+  width: 1.5rem;
   height: auto;
   border-radius: 4px;
   margin: 0 0.5rem 0 0;
@@ -106,6 +113,39 @@ p {
 .lineset.second .line {
   left: 49.9%;
   transform: rotate(-5deg);
+}
+
+form {
+  border: 2px dotted #FF69CB;
+  border-radius: 0.75rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+}
+
+form textarea,
+form input {
+  width: calc(100% - 2rem);
+  margin: 0.75rem 0rem 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: solid 1px #FF69CB;
+  background: none transparent;
+  color: #FFFFFF;
+}
+
+form input[type='submit'] {
+  border-color:#00EEff;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+form input[type='submit']:hover {
+  background:#0099AA;
+  cursor: pointer;
+}
+
+.cf-turnstile iframe {
+  width: 100% !important;
 }
 
 #page-wrapper {
