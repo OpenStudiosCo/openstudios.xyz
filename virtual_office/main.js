@@ -363,6 +363,7 @@ function createDoor() {
     scene.add(window.virtual_office.scene_objects.door_frame);
 
     window.virtual_office.loaders.stats.textures.loaded ++;
+    scene.visible = true;
   });
 
   // instantiate a loader
@@ -617,6 +618,7 @@ function setupScene() {
   
   // Scene container.
   scene = new THREE.Scene();
+  scene.visible = false;
 
   window.virtual_office.scene_objects.door = createDoor();
   window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
