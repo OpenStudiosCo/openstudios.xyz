@@ -482,6 +482,7 @@ export function createOfficeRoom() {
     floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set( 8, 8 );
     floorMaterial.map = floorTexture;
+    floorMaterial.needsUpdate = true;
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
@@ -500,6 +501,7 @@ export function createOfficeRoom() {
     ceilHeight.wrapT = THREE.RepeatWrapping;
     ceilHeight.repeat.set( 4, 4 );
     ceilMaterial.displacementMap = ceilHeight;
+    ceilMaterial.needsUpdate = true;
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
@@ -508,6 +510,7 @@ export function createOfficeRoom() {
     ceilAO.wrapT = THREE.RepeatWrapping;
     ceilAO.repeat.set( 4, 4 );
     ceilMaterial.aoMap = ceilAO;
+    ceilMaterial.needsUpdate = true;
     window.virtual_office.loaders.stats.textures.loaded ++;
   } );
 
@@ -516,6 +519,7 @@ export function createOfficeRoom() {
     ceilTexture.wrapT = THREE.RepeatWrapping;
     ceilTexture.repeat.set( 4, 4 );
     ceilMaterial.map = ceilTexture;
+    ceilMaterial.needsUpdate = true;
     window.virtual_office.loaders.stats.textures.loaded ++;
   } );
   
@@ -525,6 +529,7 @@ export function createOfficeRoom() {
     ceilNormal.wrapT = THREE.RepeatWrapping;
     ceilNormal.repeat.set( 4, 4 );
     ceilMaterial.normalMap = ceilNormal;
+    ceilMaterial.needsUpdate = true;
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
@@ -548,11 +553,15 @@ export function createOfficeRoom() {
     backwallHeight.repeat.set( roomWidth / 10, roomHeight / 10 );
     backwallMaterial.aoMap = backwallHeight;
     backwallMaterial.displacementMap = backwallHeight;
+    backwallMaterial.needsUpdate = true;
 
     const sideWallHeight = backwallHeight.clone();
     sideWallHeight.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );  
     sidewallMaterial.aoMap = sideWallHeight;
     sidewallMaterial.displacementMap = sideWallHeight;
+
+    sidewallMaterial.needsUpdate = true;
+
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
@@ -561,10 +570,13 @@ export function createOfficeRoom() {
     backwallNormal.wrapT = THREE.RepeatWrapping;
     backwallNormal.repeat.set( roomWidth / 10, roomHeight / 10 );
     backwallMaterial.normalMap = backwallNormal;
+    backwallMaterial.needsUpdate = true;
 
     const sideWallNormal = backwallNormal.clone();
     sideWallNormal.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
     sidewallMaterial.normalMap = sideWallNormal;
+    sidewallMaterial.needsUpdate = true;
+
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
@@ -573,10 +585,13 @@ export function createOfficeRoom() {
     backwallRough.wrapT = THREE.RepeatWrapping;
     backwallRough.repeat.set( roomWidth / 10, roomHeight / 10 );
     backwallMaterial.roughnessMap = backwallRough;
+    backwallMaterial.needsUpdate = true;
 
     const sideWallRough = backwallRough.clone();
     sideWallRough.repeat.set( window.virtual_office.room_depth / 10, roomHeight / 10  );
     sidewallMaterial.roughnessMap = sideWallRough;
+    sidewallMaterial.needsUpdate = true;
+
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 

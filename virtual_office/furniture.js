@@ -534,6 +534,7 @@ function createScreen( i ){
   
   var material = new THREE.MeshPhongMaterial();
   window.virtual_office.loaders.texture.load(url, (screenTexture)=>{
+    material.needsUpdate = true;
     material.map = screenTexture;
   });
   var geometry = new THREE.PlaneGeometry(i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8);
