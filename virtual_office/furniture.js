@@ -511,24 +511,24 @@ function createScreen( i ){
   let url, pageUrl;
   switch ( i ) {
     case 0:
-      url = '../pages/case_studies.png';
-      pageUrl = '../pages/case_studies.html';
+      url = '../assets/images/pages/case_studies.png';
+      pageUrl = '../case_studies.html';
       break;  
     case 1:
-      url = '../pages/services.png';
-      pageUrl = '../pages/services.html';
+      url = '../assets/images/pages/services.png';
+      pageUrl = '../services.html';
       break;
     case 2:
-      url = '../pages/portfolio.png';
-      pageUrl = '../pages/portfolio.html';
+      url = '../assets/images/pages/portfolio.png';
+      pageUrl = '../portfolio.html';
       break;
     case 3:
-      url = '../pages/contact_us.png';
-      pageUrl = '../pages/contact_us.html';
+      url = '../assets/images/pages/contact_us.png';
+      pageUrl = '../contact_us.html';
       break;
     case 720:
-      url = '../pages/about_us.png';
-      pageUrl = '../pages/about_us.html';
+      url = '../assets/images/pages/about_us.png';
+      pageUrl = '../about_us.html';
       break;
   }
   
