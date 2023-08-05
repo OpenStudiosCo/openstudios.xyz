@@ -1,30 +1,4 @@
-<head><title>HTML5 Canvas Matrix Effect</title><style>body {
-    margin: 0;
-}
-canvas {
-    display: block;
-    position:absolute;
-    top:0;
-    left:0;
-}
-h1 {
-    color: #dedede;
-    display: flex;
-    position: absolute;
-    z-index: 2;
-    bottom: 1rem;
-    right: 2rem;
-}
-h1 div {
-    display: inline-block;
-    font-family: monospace;
-    font-size: 2.5rem;
-    padding: 1rem 2.5rem 1rem 0;
-}
-h1 img {
-    height: 5rem;
-    width: 5rem;
-}</style></head><canvas id="loader_symbols">Canvas is not supported in your browser.</canvas><canvas id="loader_symbols2">Canvas is not supported in your browser.</canvas><canvas id="loader_image">Canvas is not supported in your browser.</canvas><h1><div>Loading</div><img src="/assets/images/tail-spin.svg"/></h1><script>/**
+/**
  * Matrix rain effect based on a few sources,
  * - https://dev.to/gnsp/making-the-matrix-effect-in-javascript-din
  * - https://github.com/Rezmason/matrix
@@ -136,4 +110,3 @@ window.addEventListener('orientationchange', handleViewportChange);
 window.addEventListener('resize', handleViewportChange);
 
 setInterval(matrix, 75);
-</script>
