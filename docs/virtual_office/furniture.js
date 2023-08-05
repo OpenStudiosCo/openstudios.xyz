@@ -38,7 +38,7 @@ export function setupBackwall ( scene ) {
   wallGroup.name = "backWall";
   wallGroup.webGLScreen = window.virtual_office.scene_objects.tvWebGL;
 
-  window.virtual_office.loaders.gtlf.load( './models/Small Monstera.glb', function ( glb ) {
+  window.virtual_office.loaders.gtlf.load( './assets/models/Small Monstera.glb', function ( glb ) {
     let object = glb.scene.children[0];
 
     object.traverse( function ( child ) {
@@ -71,7 +71,7 @@ export function setupBackwall ( scene ) {
 function createNeonSign(callback, scene) {
   const loader = new FontLoader();
 
-  loader.load('./fonts/Stigmature.json', (font) => {
+  loader.load('./assets/fonts/Stigmature.json', (font) => {
 
     const textGeometry = new TextGeometry('about us', {
       font: font,
@@ -230,7 +230,7 @@ export function setupDesks(gapSize, scale, scene) {
   }
 
    
-  window.virtual_office.loaders.gtlf.load( './models/Office Chair.glb', function ( glb ) {
+  window.virtual_office.loaders.gtlf.load( './assets/models/Office Chair.glb', function ( glb ) {
     let object = glb.scene.children[0];
 
     object.scale.setScalar(12);
@@ -323,7 +323,7 @@ function createDesk( i ) {
   var deskGroup = new THREE.Group();
   deskGroup.name = "desk";
  
-  window.virtual_office.loaders.gtlf.load( './models/Desk.glb', function ( glb ) {
+  window.virtual_office.loaders.gtlf.load( './assets/models/Desk.glb', function ( glb ) {
     let object = glb.scene.children[0];
     
     let amount = window.virtual_office.fast ? 3 : 1.5;
@@ -401,7 +401,7 @@ function createDesk( i ) {
   };
   createDeskLabel( i, deskLabelCallback, deskGroup );
 
-  window.virtual_office.loaders.gtlf.load( './models/Ceiling Light.glb', function ( glb ) {
+  window.virtual_office.loaders.gtlf.load( './assets/models/Ceiling Light.glb', function ( glb ) {
     let object = glb.scene.children[0];
     object.scale.setScalar(1);
     window.desk = object;
@@ -473,7 +473,7 @@ function createDeskLabel(i, callback, deskGroup) {
   
   const loader = new FontLoader();
 
-  loader.load('./fonts/VeraMono.json', (font) => {
+  loader.load('./assets/fonts/VeraMono.json', (font) => {
 
     const textGeometry = new TextGeometry(labelText, {
       font: font,
