@@ -303,7 +303,7 @@ export var doorDepth = 0.2;
 function createDoor() {
   var doorParent = new THREE.Object3D();
 
-  window.virtual_office.loaders.texture.load('./assets/models/desk-diffuse.jpg', (doorTexture) => {
+  window.virtual_office.loaders.texture.load('./models/desk-diffuse.jpg', (doorTexture) => {
     doorTexture.wrapS = THREE.RepeatWrapping;
     doorTexture.wrapT = THREE.RepeatWrapping;
     doorTexture.repeat.set( doorWidth / 8, doorHeight / 8 );
@@ -477,7 +477,7 @@ export function createOfficeRoom() {
   });
   floorMaterial.name = 'floor';
 
-  window.virtual_office.loaders.texture.load('./assets/textures/EAK309.png', (floorTexture) => {
+  window.virtual_office.loaders.texture.load('./textures/EAK309.png', (floorTexture) => {
     floorTexture.wrapS = THREE.RepeatWrapping;
     floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set( 8, 8 );
@@ -496,7 +496,7 @@ export function createOfficeRoom() {
   });
   ceilMaterial.name = 'ceiling';
 
-  window.virtual_office.loaders.texture.load('./assets/textures/Ceiling_Drop_Tiles_001_height.png', (ceilHeight) => {
+  window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_height.png', (ceilHeight) => {
     ceilHeight.wrapS = THREE.RepeatWrapping;
     ceilHeight.wrapT = THREE.RepeatWrapping;
     ceilHeight.repeat.set( 4, 4 );
@@ -505,7 +505,7 @@ export function createOfficeRoom() {
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
-  window.virtual_office.loaders.texture.load('./assets/textures/Ceiling_Drop_Tiles_001_ambientOcclusion.jpg', (ceilAO) => {
+  window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_ambientOcclusion.jpg', (ceilAO) => {
     ceilAO.wrapS = THREE.RepeatWrapping;
     ceilAO.wrapT = THREE.RepeatWrapping;
     ceilAO.repeat.set( 4, 4 );
@@ -514,7 +514,7 @@ export function createOfficeRoom() {
     window.virtual_office.loaders.stats.textures.loaded ++;
   } );
 
-  window.virtual_office.loaders.texture.load('./assets/textures/Ceiling_Drop_Tiles_001_basecolor.jpg', (ceilTexture) => {
+  window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_basecolor.jpg', (ceilTexture) => {
     ceilTexture.wrapS = THREE.RepeatWrapping;
     ceilTexture.wrapT = THREE.RepeatWrapping;
     ceilTexture.repeat.set( 4, 4 );
@@ -524,7 +524,7 @@ export function createOfficeRoom() {
   } );
   
 
-  window.virtual_office.loaders.texture.load('./assets/textures/Ceiling_Drop_Tiles_001_normal.jpg', (ceilNormal) => {
+  window.virtual_office.loaders.texture.load('./textures/Ceiling_Drop_Tiles_001_normal.jpg', (ceilNormal) => {
     ceilNormal.wrapS = THREE.RepeatWrapping;
     ceilNormal.wrapT = THREE.RepeatWrapping;
     ceilNormal.repeat.set( 4, 4 );
@@ -547,7 +547,7 @@ export function createOfficeRoom() {
   const sidewallMaterial = backwallMaterial.clone();  
   sidewallMaterial.name = 'sidewall';
 
-  window.virtual_office.loaders.texture.load('./assets/textures/brick_wall_001_displacement_4k.jpg', ( backwallHeight ) => {
+  window.virtual_office.loaders.texture.load('./textures/brick_wall_001_displacement_4k.jpg', ( backwallHeight ) => {
     backwallHeight.wrapS = THREE.RepeatWrapping;
     backwallHeight.wrapT = THREE.RepeatWrapping;
     backwallHeight.repeat.set( roomWidth / 10, roomHeight / 10 );
@@ -565,7 +565,7 @@ export function createOfficeRoom() {
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
-  window.virtual_office.loaders.texture.load('./assets/textures/brick_wall_001_nor_gl_4k.jpg', ( backwallNormal ) => {
+  window.virtual_office.loaders.texture.load('./textures/brick_wall_001_nor_gl_4k.jpg', ( backwallNormal ) => {
     backwallNormal.wrapS = THREE.RepeatWrapping;
     backwallNormal.wrapT = THREE.RepeatWrapping;
     backwallNormal.repeat.set( roomWidth / 10, roomHeight / 10 );
@@ -580,7 +580,7 @@ export function createOfficeRoom() {
     window.virtual_office.loaders.stats.textures.loaded ++;
   });
 
-  window.virtual_office.loaders.texture.load('./assets/textures/brick_wall_001_rough_4k.jpg', ( backwallRough ) => {
+  window.virtual_office.loaders.texture.load('./textures/brick_wall_001_rough_4k.jpg', ( backwallRough ) => {
     backwallRough.wrapS = THREE.RepeatWrapping;
     backwallRough.wrapT = THREE.RepeatWrapping;
     backwallRough.repeat.set( roomWidth / 10, roomHeight / 10 );
