@@ -1,0 +1,21 @@
+{
+  "name": "openstudios.xyz",
+  "author": "Open Studios < team@openstudios.xyz >",
+  "version": "3.0.0",
+  "description": "The homepage of Open Studios and a Kettlefish inspired Eleventy boilerplate",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production npm-run-all clean -p build:*",
+    "build:11ty": "eleventy --quiet",
+    "build:rollup": "rollup -c",
+    "clean": "rimraf dist",
+    "dev": "npm-run-all clean build:* -p dev:*",
+    "dev:11ty": "eleventy --serve --quiet",
+    "dev:rollup": "rollup -c -w"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "cross-env": "^7.0.3",
+    "npm-run-all": "^4.1.5",
+    "pug": "^3.0.2"
+  }
+}
