@@ -48,10 +48,11 @@ function getAverageColor(context, x, y) {
   let r = 0,
       g = 0,
       b = 0;
+  let randomDelta = Math.tan(randomInt( 1 , 50)) * 2;
   for (let i = 0; i < imageData.length; i += 4) {
-      r += imageData[i];
-      g += imageData[i + 1];
-      b += imageData[i + 2];
+      r += imageData[i] + randomDelta;
+      g += imageData[i + 1] + randomDelta;
+      b += imageData[i + 2] + randomDelta;
   }
   const count = imageData.length / 4;
   return `rgb(${Math.floor(r / count)}, ${Math.floor(g / count)}, ${Math.floor(b / count)})`;
@@ -84,4 +85,4 @@ function matrix () {
 
 
 
-setInterval(matrix, 50);
+setInterval(matrix, 75);
