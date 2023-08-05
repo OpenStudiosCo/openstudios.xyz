@@ -11,11 +11,40 @@ display: block;
 position:absolute;
 top:0;
 left:0;
-  }</style>
+  }
+
+  h1 {
+    color: white;
+    display: flex;
+    position: absolute;
+    z-index: 2;
+    bottom: max(5vw, 5vh);
+    right: max(5vw, 5vh);
+  }
+
+  h1 div {
+    display: inline-block;
+    font-family: monospace;
+    font-size: max(2.5vw,2.5vh);
+    padding: 1rem max(4vw, 4vh) 1rem 0;
+  }
+
+  h1 img {
+    height: max(5vw, 5vh);
+    width: max(5vw, 5vh);
+  }
+  
+  </style>
   </head>
   <body>
 
-    <canvas id="canv">Canvas is not supported in your browser.</canvas>
+    <canvas id="canvas">Canvas is not supported in your browser.</canvas>
+    <canvas id="canvas2">Canvas is not supported in your browser.</canvas>
+    <h1>
+      <div>Loading</div>
+      <img src="/assets/images/tail-spin.svg" />
+    </h1>
+    
     <script src="script.js"></script>
 </body>
 </html>
