@@ -1,18 +1,18 @@
 @font-face {
   font-family: SourceSans;
-  src: url(../fonts/SourceSans3-Light.woff);
-  src: url(../fonts/SourceSans3-Light.woff2);
+  src: url(../assets/fonts/SourceSans3-Light.woff);
+  src: url(../assets/fonts/SourceSans3-Light.woff2);
 }
 
 @font-face {
   font-family: Stigmature;
-  src: url(../fonts/Stigmature.otf);
+  src: url(../assets/fonts/Stigmature.otf);
 }
 
 @font-face {
   font-family: VeraMono;
-  src: url(../fonts/VeraMono.woff);
-  src: url(../fonts/VeraMono.woff2);
+  src: url(../assets/fonts/VeraMono.woff);
+  src: url(../assets/fonts/VeraMono.woff2);
 }
 
 body {
