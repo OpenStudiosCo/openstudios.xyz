@@ -20,18 +20,18 @@ head
             display: flex;
             position: absolute;
             z-index: 2;
-            bottom: min(5vw, 5vh);
-            right: max(5vw, 5vh);
+            bottom: 1rem;
+            right: 2rem;
         }
         h1 div {
             display: inline-block;
             font-family: monospace;
-            font-size: max(2.5vw,2.5vh);
-            padding: 1rem max(4vw, 4vh) 1rem 0;
+            font-size: 2.5rem;
+            padding: 1rem 4rem 1rem 0;
         }
         h1 img {
-            height: max(5vw, 5vh);
-            width: max(5vw, 5vh);
+            height: 5rem;
+            width: 5rem;
         }
 canvas#canvas Canvas is not supported in your browser.
 canvas#canvas2 Canvas is not supported in your browser.
@@ -49,39 +49,39 @@ script.
 
     const canvas2 = document.getElementById('canvas2');
     canvas2.style.display = 'none';
-    const ctx2 = canvas2.getContext('2d');
+    const ctx2 = canvas2.getContext('2d', { willReadFrequently: true });
 
-    const w = canvas.width = canvas2.width = document.body.offsetWidth;
-    const h = canvas.height = canvas2.height = document.body.offsetHeight;
-    const cols = Math.floor(w / 20) + 1;
-    const ypos = Array(cols).fill(0);
+    let w = canvas.width = canvas2.width = document.body.offsetWidth;
+    let h = canvas.height = canvas2.height = document.body.offsetHeight;
+    let cols = Math.floor(w / 20) + 1;
+    let ypos = Array(cols).fill(0);
 
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, w, h);
 
     // Function to draw the background image
     function drawBackground() {
-    var imageAspectRatio = backgroundImage.width / backgroundImage.height;
-    var canvasAspectRatio = w / h;
-    var scale = 1;
+        var imageAspectRatio = backgroundImage.width / backgroundImage.height;
+        var canvasAspectRatio = w / h;
+        var scale = 1;
 
-    if (imageAspectRatio > canvasAspectRatio) {
-        // Image is wider than the canvas, scale based on width
-        scale = w / (backgroundImage.width * 0.125);
-    } else {
-        // Image is taller than the canvas, scale based on height
-        scale = h / (backgroundImage.height * 0.125);
-    }
+        if (imageAspectRatio > canvasAspectRatio) {
+            // Image is wider than the canvas, scale based on width
+            scale = w / (backgroundImage.width * 0.125);
+        } else {
+            // Image is taller than the canvas, scale based on height
+            scale = h / (backgroundImage.height * 0.125);
+        }
 
-    var scaledWidth = backgroundImage.width * scale;
-    var scaledHeight = backgroundImage.height * scale;
+        var scaledWidth = backgroundImage.width * scale;
+        var scaledHeight = backgroundImage.height * scale;
 
-    // Calculate the top-left coordinates of the image to center it
-    var imageX = (w - scaledWidth) / 2;
-    var imageY = (-scaledHeight / 55) + (h - scaledHeight) / 2;
+        // Calculate the top-left coordinates of the image to center it
+        var imageX = (w - scaledWidth) / 2;
+        var imageY = (-scaledHeight / 55) + (h - scaledHeight) / 2;
 
-    // Draw the image on the canvas at the calculated position
-    ctx2.drawImage(backgroundImage, imageX, imageY, scaledWidth, scaledHeight);
+        // Draw the image on the canvas at the calculated position
+        ctx2.drawImage(backgroundImage, imageX, imageY, scaledWidth, scaledHeight);
     }
 
     function getAverageColor(context, x, y) {
@@ -105,26 +105,37 @@ script.
     }
 
     function matrix () {
-    drawBackground();
-    ctx.fillStyle = "rgba(0,0,0,0.001)";
-    ctx.fillRect(0, 0, w, h);
-    
-    ctx.font = '15pt monospace';
-    
-    ypos.forEach((y, ind) => {
-        const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
-        const x = ind * 20;
-
-        ctx.fillStyle = getAverageColor(ctx2, x,y);
-        ctx.fillText(text, x, y);
+        drawBackground();
+        ctx.fillStyle = "rgba(0,0,0,0.001)";
+        ctx.fillRect(0, 0, w, h);
         
-        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
-        else ypos[ind] = y + 20;
+        ctx.font = '15pt monospace';
+        
+        ypos.forEach((y, ind) => {
+            const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
+            const x = ind * 20;
 
-    });
+            ctx.fillStyle = getAverageColor(ctx2, x,y);
+            ctx.fillText(text, x, y);
+            
+            if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+            else ypos[ind] = y + 20;
+
+        });
     }
 
+    function handleViewportChange() {
+        w = canvas.width = canvas2.width = document.body.offsetWidth;
+        h = canvas.height = canvas2.height = document.body.offsetHeight;
+        cols = Math.floor(w / 20) + 1;
+        ypos = Array(cols).fill(0);
 
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, w, h);
+    }
+
+    window.addEventListener('orientationchange', handleViewportChange);
+    window.addEventListener('resize', handleViewportChange);
 
     setInterval(matrix, 75);
 
