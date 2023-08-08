@@ -35,6 +35,7 @@ function _init() {
 
 }
 
+// Checks URL and determines environment.
 function _check_environment () {
 	var env;
 	switch(location.hostname.split('.')[0]) {
@@ -49,7 +50,7 @@ function _check_environment () {
 	
 }
 
-// Old Langenium 0.5.1-1 code
+// Execute an arbitrary function attached to the window global s.
 function _execute(functionName, arguments, context ) {
 	// Usage: executeFunctionByName("s.scenograph.director"., window, arguments);
 	var namespaces = functionName.split(".");
@@ -60,7 +61,7 @@ function _execute(functionName, arguments, context ) {
 	return context[func].apply(this, arguments);
 }
 
-
+// Loads a module and its attachments
 function _load_modules (modules, modules_class) {
 	console.log('[ ' + modules.length + ' modules to load ]');
 	var modules_loaded = 0;	

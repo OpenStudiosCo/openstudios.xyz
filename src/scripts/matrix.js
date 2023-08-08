@@ -97,6 +97,11 @@ function matrix() {
         else ypos[ind] = y + fontSize;
 
     });
+
+    if ( window.virtual_office &&  window.virtual_office.started) {
+        document.getElementById('loadingSign').style.display = 'none';
+        clearInterval(matrixScene);
+    }
 }
 
 function handleViewportChange() {
@@ -112,4 +117,4 @@ function handleViewportChange() {
 window.addEventListener('orientationchange', handleViewportChange);
 window.addEventListener('resize', handleViewportChange);
 
-setInterval(matrix, 75);
+const matrixScene = setInterval(matrix, 75);
