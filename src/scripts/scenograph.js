@@ -27,8 +27,13 @@ function _init() {
 	
 	// Default modules
 	var modules = [
+		// {
+		// 	name: "TWEEN.js",
+		// 	files: [ { path: './vendor/three-0.153.0.module.min.js' } ]
+		// },
 		{ 
-			name: "Virtual Office" ,
+			name: "Virtual Office",
+			// requires: [ 'three.js' ],
 			files: [ { path: "./virtual_office/app.js" } ]
 		}
 	];

@@ -6,6 +6,47 @@
  * 
  */
 
+/**
+ * Stages:
+ *  - 0 Intro
+ *  - 1 Fill viewport with numbers
+ *  - 2 Enter the matrix
+ */
+window.matrix_scene = {
+    progress: 0, //out of ~50k approx
+    stage: 0,
+    update: function () {
+        drawBackground();
+        ctx.fillStyle = "rgba(0,0,0,0.001)";
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.font = '15pt monospace';
+
+        ypos.forEach((y, ind) => {
+            const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
+            const x = ind * 20;
+
+            ctx.fillStyle = getAverageColor(ctx2, x, y);
+            ctx.fillText(text, x, y);
+
+            window.matrix_scene.progress++;
+
+            if (y > 1 + randomInt(1, window.matrix_scene.progress)) ypos[ind] = 0;
+            else ypos[ind] = y + fontSize;
+
+        });
+
+        if 
+        (( ! window.virtual_office ) || 
+        ( window.virtual_office && ! window.virtual_office.started)) {
+            requestAnimationFrame( window.matrix_scene.update );           
+        }
+        else {
+            document.getElementById('loadingSign').style.display = 'none';
+        }
+    }
+};
+
 const charArr = ['モ', 'エ', 'ヤ', 'キ', 'オ', 'カ', '7', 'ケ', 'サ', 'ス', 'z', '1', '5', '2', 'ヨ', 'タ', 'ワ', '4', 'ネ', 'ヌ', 'ナ', '9', '8', 'ヒ', '0', 'ホ', 'ア', '3', 'ウ', ' ', 'セ', '¦', ':', '"', '꞊', 'ミ', 'ラ', 'リ', '╌', 'ツ', 'テ', 'ニ', 'ハ', 'ソ', '▪', '—', '<', '>', '0', '|', '+', '*', 'コ', 'シ', 'マ', 'ム', 'メ'];
 
 const backgroundImage = new Image();
@@ -29,6 +70,14 @@ let ypos = Array(cols).fill(0);
 
 ctx.fillStyle = '#000';
 ctx.fillRect(0, 0, w, h);
+
+
+
+window.addEventListener('orientationchange', handleViewportChange);
+window.addEventListener('resize', handleViewportChange);
+
+window.matrix_scene.update();
+
 
 // Function to draw the background image
 function drawBackground() {
@@ -75,34 +124,6 @@ function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-let clock = 0;
-
-function matrix() {
-    drawBackground();
-    ctx.fillStyle = "rgba(0,0,0,0.001)";
-    ctx.fillRect(0, 0, w, h);
-
-    ctx.font = '15pt monospace';
-
-    ypos.forEach((y, ind) => {
-        const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
-        const x = ind * 20;
-
-        ctx.fillStyle = getAverageColor(ctx2, x, y);
-        ctx.fillText(text, x, y);
-
-        clock++;
-
-        if (y > 1 + randomInt(1, clock)) ypos[ind] = 0;
-        else ypos[ind] = y + fontSize;
-
-    });
-
-    if ( window.virtual_office &&  window.virtual_office.started) {
-        document.getElementById('loadingSign').style.display = 'none';
-        clearInterval(matrixScene);
-    }
-}
 
 function handleViewportChange() {
     w = canvas.width = canvas2.width = document.body.offsetWidth;
@@ -113,13 +134,3 @@ function handleViewportChange() {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, w, h);
 }
-
-window.addEventListener('orientationchange', handleViewportChange);
-window.addEventListener('resize', handleViewportChange);
-
-const matrixScene = setInterval(matrix, 75);
-
-
-window.matrix_preloader = {
-
-};
