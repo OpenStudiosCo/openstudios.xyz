@@ -142,7 +142,6 @@ window.addEventListener('resize', handleViewportChange);
 
 requestAnimationFrame( window.matrix_scene.animate );
 
-
 // Function to draw the background image
 function drawBackground() {
     var imageAspectRatio = backgroundImage.width / backgroundImage.height;
@@ -188,10 +187,9 @@ function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-
 function handleViewportChange() {
-    w = canvas.width = canvas2.width = document.body.offsetWidth;
-    h = canvas.height = canvas2.height = document.body.offsetHeight;
+    w = canvas.width = canvas2.width = window.innerWidth;
+    h = canvas.height = canvas2.height = window.innerHeight;
     cols = Math.floor(w / 20) + 1;
     ypos = Array(cols).fill(0);
 
