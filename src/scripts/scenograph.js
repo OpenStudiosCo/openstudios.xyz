@@ -1,11 +1,13 @@
 /**
  * Multi purpose scenograph for displaying "Scenes".
  * 
- * Components:
- * - Animation Loop
+ * Components
  * - Asset Loader
  * - Event handler
  * 
+ * Todo:
+ * - Animation Loop
+ * - UI Templates
  */
 
 // Boot up the Scenograph and populate the window accessor
