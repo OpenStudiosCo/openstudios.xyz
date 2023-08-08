@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 export function startTweening() {
   window.virtual_office.started = true;
+  document.getElementById('loadingSign').style.display = 'none';
   flickerEffect();
 }
 

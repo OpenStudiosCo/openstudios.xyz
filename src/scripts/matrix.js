@@ -13,36 +13,98 @@
  *  - 2 Enter the matrix
  */
 window.matrix_scene = {
-    progress: 0, //out of ~50k approx
+    currentTime: 0,
+    lastTime: 0,
+    // used by stage 0
+    elapsed: 0, 
+    // used by stage 1
+    loaded_done: 0, 
+    loaded_target: 0,
+    // used by stage 2
+    transition_elapsed: 0,
+    transition_total: 1000, // in milliseconds
     stage: 0,
-    update: function () {
+    animate: function (currentTime) {
+        const elapsedSinceLast = currentTime - window.matrix_scene.lastTime;
+        window.matrix_scene.lastTime = currentTime;
         drawBackground();
         ctx.fillStyle = "rgba(0,0,0,0.001)";
         ctx.fillRect(0, 0, w, h);
 
         ctx.font = '15pt monospace';
 
-        ypos.forEach((y, ind) => {
-            const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
-            const x = ind * 20;
+        if ( window.matrix_scene.stage == 0 ) {
 
-            ctx.fillStyle = getAverageColor(ctx2, x, y);
-            ctx.fillText(text, x, y);
+            // @todo: implement the intro sequence here - column reduce?
 
-            window.matrix_scene.progress++;
+            ypos.forEach((y, ind) => {
+                const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
+                const x = ind * 20;
 
-            if (y > 1 + randomInt(1, window.matrix_scene.progress)) ypos[ind] = 0;
-            else ypos[ind] = y + fontSize;
+                ctx.fillStyle = getAverageColor(ctx2, x, y);
+                ctx.fillText(text, x, y);
 
-        });
+                window.matrix_scene.elapsed += Math.abs(Math.sin(elapsedSinceLast));
+                
+                if ((y+1) % 2 === 0 || (y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
+                else ypos[ind] = y + fontSize;
 
-        if 
-        (( ! window.virtual_office ) || 
-        ( window.virtual_office && ! window.virtual_office.started)) {
-            requestAnimationFrame( window.matrix_scene.update );           
+            });
+
+            if ( ! window.virtual_office ) {
+                requestAnimationFrame( window.matrix_scene.animate );
+            }
+            else {
+                window.matrix_scene.stage = 1;
+                for ( var measure in window.virtual_office.loaders.stats ) {
+                    window.matrix_scene.loaded_target += window.virtual_office.loaders.stats[measure].target;
+                }
+            }
         }
-        else {
-            document.getElementById('loadingSign').style.display = 'none';
+
+        if ( window.matrix_scene.stage == 1 ) {
+            ypos.forEach((y, ind) => {
+                const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
+                const x = ind * 20;
+
+                ctx.fillStyle = getAverageColor(ctx2, x, y);
+                ctx.fillText(text, x, y);
+                window.matrix_scene.elapsed++;
+
+                if (y > 1 + randomInt(1, 2000 * window.matrix_scene.loaded_done)) ypos[ind] = 0;
+                else ypos[ind] = y + fontSize;
+
+            });
+
+            window.matrix_scene.loaded_done = 0;
+            for ( var measure in window.virtual_office.loaders.stats ) {
+                window.matrix_scene.loaded_done += window.virtual_office.loaders.stats[measure].loaded;
+            }
+
+            if (
+                window.matrix_scene.loaded_done < window.matrix_scene.loaded_target
+            ) {
+                requestAnimationFrame( window.matrix_scene.animate );
+            }
+            else {
+                window.matrix_scene.stage = 2;
+            }
+            
+        }
+        if ( window.matrix_scene.stage == 2 ) {
+
+            window.matrix_scene.transition_elapsed += elapsedSinceLast / 2;
+
+            let zoomFactor = 1 + (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
+            canvas.style.transform = "scale(" + zoomFactor + ")";
+            canvas.style.opacity = 1 - (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
+            webgl.style.opacity = (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
+
+            if (
+                window.matrix_scene.transition_elapsed < window.matrix_scene.transition_total
+            ) {
+                requestAnimationFrame( window.matrix_scene.animate );
+            }
         }
     }
 };
@@ -51,6 +113,8 @@ const charArr = ['モ', 'エ', 'ヤ', 'キ', 'オ', 'カ', '7', 'ケ', 'サ', '�
 
 const backgroundImage = new Image();
 backgroundImage.src = document.getElementById('door_image').src;
+
+const webgl = document.getElementById('webgl');
 
 const canvas = document.getElementById('loader_symbols');
 const ctx = canvas.getContext('2d');
@@ -76,7 +140,7 @@ ctx.fillRect(0, 0, w, h);
 window.addEventListener('orientationchange', handleViewportChange);
 window.addEventListener('resize', handleViewportChange);
 
-window.matrix_scene.update();
+requestAnimationFrame( window.matrix_scene.animate );
 
 
 // Function to draw the background image
