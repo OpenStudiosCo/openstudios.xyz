@@ -1,123 +1,136 @@
 doctype html
-head
-    title HTML5 Canvas Matrix Effect
-    style.
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0')
+        meta(name="description" content="We are Open Studios. Perth based digital production studio.")
 
-        #loader_symbols {
-            display: block;
-            position:absolute;
-            top:0;
-            left:0;
-        }
-        h1 {
-            color: #dedede;
-            display: flex;
-            position: absolute;
-            z-index: 2;
-            bottom: 1rem;
-            right: 2rem;
-        }
-        h1 div {
-            display: inline-block;
-            font-family: monospace;
-            font-size: 2.5rem;
-            padding: 1rem 2.5rem 1rem 0;
-        }
-        h1 img {
-            height: 5rem;
-            width: 5rem;
-        }
+        title Open Studios - Perth, Western Australia
 
-        body {
-            background-color: #000;
-            margin: 0;
-            padding: 0;
-        }
-        #pageOverlay,
-        #webgl {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: block;
-        }
-        #pageOverlay {
-            border: 0 none;
-            display: none;
-            z-index: 10000;
-        }
-        #exitSign {
-            background: black;
-            font-weight: bold;
-            color: #fff;
-            box-shadow: 0px 0px 5px 5px #00DD00;
-            text-shadow: 2.5px 2.5px 5px #999;
-            cursor: pointer;
-            display: none;
-            border: solid 1px #00DD00;
-            border-radius: 1rem;
-            padding: 1rem;
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            z-index: 10001;
-        }
-        #exitSign img {
-            max-width: min(80px, 10vw);
-            height: auto;
-        }
-        #exitSign:hover {
-            box-shadow: 0px 0px 7.5px 7.5px #00FF00;
-            border-color: #00FF00;
-        }
-    script(type='importmap').
-        {
-            "imports": {
-                "three": "./vendor/three-0.153.0.module.min.js",
-                "three/addons/": "./vendor/addons-1.5.3/",
-                "three-mesh-bvh": "./vendor/three-mesh-bvh-0.5.24.module.js",
-                "three-bvh-csg": "./vendor/three-bvh-csg-0.0.4.module.js",
-                "virtual-office": "./virtual_office/main.js"
+        link(rel='apple-touch-icon' sizes='180x180' href='/assets/favicon/apple-touch-icon.png')
+        link(rel='icon' type='image/png' sizes='32x32' href='/assets/favicon/favicon-32x32.png')
+        link(rel='icon' type='image/png' sizes='16x16' href='/assets/favicon/favicon-16x16.png')
+        link(rel='manifest' href='/assets/favicon/site.webmanifest')
+        link(rel='mask-icon' href='/assets/favicon/safari-pinned-tab.svg' color='#5bbad5')
+        meta(name='msapplication-TileColor' content='#da532c')
+        meta(name='theme-color' content='#000000')
+        style.
+
+            #loader_symbols {
+                display: block;
+                position:absolute;
+                top:0;
+                left:0;
             }
-        }
-body( onload = "_init()" )
-    canvas#loader_symbols Canvas is not supported in your browser.
-    canvas#loader_image Canvas is not supported in your browser.
-    h1#loadingSign
-        div Loading
-        img(src='/assets/images/tail-spin.svg')
-    include ../templates/door_image.pug
-    noscript
-        | This website requires Javascript for the full experience. As you don&apos;t have Javascript enabled, you are seeing
-        | the 1999 experience.
-    a#exitSign
-        img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
-    iframe#pageOverlay
-    #webgl
-    script#vertexshader(type='x-shader/x-vertex').
-        varying vec2 vUv;
-        void main() {
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-        }
-    script#fragmentshader(type='x-shader/x-fragment').
-        // Kudos to https://github.com/mrdoob/three.js/issues/14104#issuecomment-1536582334
-        uniform sampler2D baseTexture;
-        uniform sampler2D bloomTexture;
-        varying vec2 vUv;
-        void main() {
-            vec4 base_color = texture2D(baseTexture, vUv);
-            vec4 bloom_color = texture2D(bloomTexture, vUv);
-            float lum = 0.21 * bloom_color.r + 0.71 * bloom_color.g + 0.07 * bloom_color.b;
-            gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
-        }
+            h1 {
+                color: #dedede;
+                display: flex;
+                position: absolute;
+                z-index: 2;
+                bottom: 1rem;
+                right: 2rem;
+            }
+            h1 div {
+                display: inline-block;
+                font-family: monospace;
+                font-size: 2.5rem;
+                padding: 1rem 2.5rem 1rem 0;
+            }
+            h1 img {
+                height: 5rem;
+                width: 5rem;
+            }
 
-    script(src='./vendor/tweakpane-3.1.10.min.js')
-    script(src='./vendor/tween-21.0.0.umd.min.js')
-    script(async src='./vendor/es-module-shims-1.8.0.js')
-    
-    script
-        include ../scripts/scenograph.js
-    script
-        include ../scripts/matrix.js
+            body {
+                background-color: #000;
+                margin: 0;
+                padding: 0;
+            }
+            #pageOverlay,
+            #webgl {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+            }
+            #pageOverlay {
+                border: 0 none;
+                display: none;
+                z-index: 10000;
+            }
+            #exitSign {
+                background: black;
+                font-weight: bold;
+                color: #fff;
+                box-shadow: 0px 0px 5px 5px #00DD00;
+                text-shadow: 2.5px 2.5px 5px #999;
+                cursor: pointer;
+                display: none;
+                border: solid 1px #00DD00;
+                border-radius: 1rem;
+                padding: 1rem;
+                position: absolute;
+                top: 2rem;
+                right: 2rem;
+                z-index: 10001;
+            }
+            #exitSign img {
+                max-width: min(80px, 10vw);
+                height: auto;
+            }
+            #exitSign:hover {
+                box-shadow: 0px 0px 7.5px 7.5px #00FF00;
+                border-color: #00FF00;
+            }
+        script(type='importmap').
+            {
+                "imports": {
+                    "three": "./vendor/three-0.153.0.module.min.js",
+                    "three/addons/": "./vendor/addons-1.5.3/",
+                    "three-mesh-bvh": "./vendor/three-mesh-bvh-0.5.24.module.js",
+                    "three-bvh-csg": "./vendor/three-bvh-csg-0.0.4.module.js",
+                    "virtual-office": "./virtual_office/main.js"
+                }
+            }
+    body( onload = "_init()" )
+        canvas#loader_symbols Canvas is not supported in your browser.
+        canvas#loader_image Canvas is not supported in your browser.
+        h1#loadingSign
+            div Loading
+            img(src='/assets/images/tail-spin.svg')
+        include ../templates/door_image.pug
+        noscript
+            | This website requires Javascript for the full experience. As you don&apos;t have Javascript enabled, you are seeing
+            | the 1999 experience.
+        a#exitSign
+            img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
+        iframe#pageOverlay
+        #webgl
+        script#vertexshader(type='x-shader/x-vertex').
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            }
+        script#fragmentshader(type='x-shader/x-fragment').
+            // Kudos to https://github.com/mrdoob/three.js/issues/14104#issuecomment-1536582334
+            uniform sampler2D baseTexture;
+            uniform sampler2D bloomTexture;
+            varying vec2 vUv;
+            void main() {
+                vec4 base_color = texture2D(baseTexture, vUv);
+                vec4 bloom_color = texture2D(bloomTexture, vUv);
+                float lum = 0.21 * bloom_color.r + 0.71 * bloom_color.g + 0.07 * bloom_color.b;
+                gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
+            }
+
+        script(src='./vendor/tweakpane-3.1.10.min.js')
+        script(src='./vendor/tween-21.0.0.umd.min.js')
+        script(async src='./vendor/es-module-shims-1.8.0.js')
+        
+        script
+            include ../scripts/scenograph.js
+        script
+            include ../scripts/matrix.js
