@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export function startTweening() {
-  //window.virtual_office.started = true;
+  window.virtual_office.started = true;
   flickerEffect();
 }
 

@@ -9,7 +9,7 @@
 const charArr = ['モ', 'エ', 'ヤ', 'キ', 'オ', 'カ', '7', 'ケ', 'サ', 'ス', 'z', '1', '5', '2', 'ヨ', 'タ', 'ワ', '4', 'ネ', 'ヌ', 'ナ', '9', '8', 'ヒ', '0', 'ホ', 'ア', '3', 'ウ', ' ', 'セ', '¦', ':', '"', '꞊', 'ミ', 'ラ', 'リ', '╌', 'ツ', 'テ', 'ニ', 'ハ', 'ソ', '▪', '—', '<', '>', '0', '|', '+', '*', 'コ', 'シ', 'マ', 'ム', 'メ'];
 
 const backgroundImage = new Image();
-backgroundImage.src = "/assets/images/cs1xl.jpg"; // Replace with your image's path
+backgroundImage.src = document.getElementById('doorImage').src;
 
 const canvas = document.getElementById('loader_symbols');
 const ctx = canvas.getContext('2d');
