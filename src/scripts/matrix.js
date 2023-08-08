@@ -9,7 +9,7 @@
 const charArr = ['モ', 'エ', 'ヤ', 'キ', 'オ', 'カ', '7', 'ケ', 'サ', 'ス', 'z', '1', '5', '2', 'ヨ', 'タ', 'ワ', '4', 'ネ', 'ヌ', 'ナ', '9', '8', 'ヒ', '0', 'ホ', 'ア', '3', 'ウ', ' ', 'セ', '¦', ':', '"', '꞊', 'ミ', 'ラ', 'リ', '╌', 'ツ', 'テ', 'ニ', 'ハ', 'ソ', '▪', '—', '<', '>', '0', '|', '+', '*', 'コ', 'シ', 'マ', 'ム', 'メ'];
 
 const backgroundImage = new Image();
-backgroundImage.src = document.getElementById('doorImage').src;
+backgroundImage.src = document.getElementById('door_image').src;
 
 const canvas = document.getElementById('loader_symbols');
 const ctx = canvas.getContext('2d');
@@ -118,3 +118,8 @@ window.addEventListener('orientationchange', handleViewportChange);
 window.addEventListener('resize', handleViewportChange);
 
 const matrixScene = setInterval(matrix, 75);
+
+
+window.matrix_preloader = {
+
+};
