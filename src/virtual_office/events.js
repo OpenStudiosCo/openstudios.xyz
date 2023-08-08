@@ -17,58 +17,59 @@ export function handleViewportChange() {
   var width = window.innerWidth;
   var height = window.innerHeight;
 
-  window.virtual_office.camera.aspect = width / height;
-
-  window.virtual_office.camera.fov = setCameraFOV(window.virtual_office.camera.aspect);
-  if (!window.virtual_office.selected) {
-    let posZ = -20;
-    if (!window.virtual_office.started) {
-      if (window.virtual_office.camera.aspect < 0.88) {
-        window.virtual_office.scene_dimensions.startPosZ = -5;
-      }
-      else {
-        window.virtual_office.scene_dimensions.startPosZ = -10;
-      }
-    }
-    window.virtual_office.camera.position.z = posZ + (window.virtual_office.room_depth / 2);
-    window.virtual_office.camera.rotation.x = - (Math.PI / 30) * window.virtual_office.camera.aspect;
-  }
-  window.virtual_office.camera.updateProjectionMatrix();
-
-  // Adjust desk positions based on the aspect ratio
-  window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
-    if ( mesh.name == 'desk') {
-      updateDeskZ(mesh, mesh.deskIndex);
-
-      updateDeskZ(mesh.webGLScreen, mesh.deskIndex);
-
-      mesh.webGLScreen.position.z += .175;
-
-    }
-
-    if ( mesh.name == 'chair') {
-      updateDeskZ(mesh, mesh.deskIndex);
-    }
-  });
-  window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
-    if ( mesh.name == 'plant') {
-      mesh.position.z = window.virtual_office.scene_dimensions.adjusted_gap;
-    }
-  });
-
-  const newRoom = createOfficeRoom();
-  window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
-
-  let backWallZ = - 15 - window.virtual_office.room_depth / 2;
-  window.virtual_office.scene_objects.wallGroup.position.z = backWallZ;
-  window.virtual_office.scene_objects.tvWebGL.position.z =  backWallZ +1;
-
-  window.virtual_office.scene_objects.door.position.z = - 15 + (window.virtual_office.room_depth / 2);
-  window.virtual_office.scene_objects.door_frame.position.z = - 15 + (window.virtual_office.room_depth / 2);
-
   window.virtual_office.renderers.webgl.setSize(width, height);
   window.virtual_office.effects.main.setSize(width, height);
   window.virtual_office.effects.bloom.setSize(width, height);
+
+  if ( ! window.virtual_office.started ) {
+    if (window.virtual_office.camera.aspect < 0.88) {
+      window.virtual_office.scene_dimensions.startPosZ = -5;
+    }
+    else {
+      window.virtual_office.scene_dimensions.startPosZ = -10;
+    }
+  }
+  else {
+    window.virtual_office.camera.aspect = width / height;
+
+    window.virtual_office.camera.fov = setCameraFOV(window.virtual_office.camera.aspect);
+    if (!window.virtual_office.selected &&  ! window.virtual_office.moving) {
+      let posZ = -20;
+      window.virtual_office.camera.position.z = posZ + (window.virtual_office.room_depth / 2);
+      window.virtual_office.camera.rotation.x = - (Math.PI / 30) * window.virtual_office.camera.aspect;
+    }
+    window.virtual_office.camera.updateProjectionMatrix();
+    
+    const newRoom = createOfficeRoom();
+    window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
+    // Adjust desk positions based on the aspect ratio
+    window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
+      if ( mesh.name == 'desk') {
+        updateDeskZ(mesh, mesh.deskIndex);
+
+        updateDeskZ(mesh.webGLScreen, mesh.deskIndex);
+
+        mesh.webGLScreen.position.z += .175;
+
+      }
+
+      if ( mesh.name == 'chair') {
+        updateDeskZ(mesh, mesh.deskIndex);
+      }
+    });
+    window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
+      if ( mesh.name == 'plant') {
+        mesh.position.z = window.virtual_office.scene_dimensions.adjusted_gap;
+      }
+    });
+
+    let backWallZ = - 15 - window.virtual_office.room_depth / 2;
+    window.virtual_office.scene_objects.wallGroup.position.z = backWallZ;
+    window.virtual_office.scene_objects.tvWebGL.position.z =  backWallZ +1;
+
+    window.virtual_office.scene_objects.door.position.z = - 15 + (window.virtual_office.room_depth / 2);
+    window.virtual_office.scene_objects.door_frame.position.z = - 15 + (window.virtual_office.room_depth / 2);
+  }
 }
 
 export function handleInteractions( scene ) {
