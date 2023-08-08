@@ -3,29 +3,52 @@ html
     head
         meta(charset='utf-8')
         meta(name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0')
+        meta(name="description" content="We are Open Studios. Perth based digital production studio.")
+
         title Open Studios - Perth, Western Australia
+
+        link(rel='apple-touch-icon' sizes='180x180' href='/assets/favicon/apple-touch-icon.png')
+        link(rel='icon' type='image/png' sizes='32x32' href='/assets/favicon/favicon-32x32.png')
+        link(rel='icon' type='image/png' sizes='16x16' href='/assets/favicon/favicon-16x16.png')
+        link(rel='manifest' href='/assets/favicon/site.webmanifest')
+        link(rel='mask-icon' href='/assets/favicon/safari-pinned-tab.svg' color='#5bbad5')
+        meta(name='msapplication-TileColor' content='#da532c')
+        meta(name='theme-color' content='#000000')
         style.
-            body {
-                margin: 0;
+
+            #loader_symbols {
+                display: block;
+                position:absolute;
+                top:0;
+                left:0;
+                z-index: 2;
             }
-        script(src='./vendor/tweakpane-3.1.10.min.js')
-        script(src='./vendor/tween-21.0.0.umd.min.js')
-        script(async src='./vendor/es-module-shims-1.8.0.js')
-        script(type='importmap').
-            {
-                "imports": {
-                    "three": "./vendor/three-0.153.0.module.min.js",
-                    "three/addons/": "./vendor/addons-1.5.3/",
-                    "three-mesh-bvh": "./vendor/three-mesh-bvh-0.5.24.module.js",
-                    "three-bvh-csg": "./vendor/three-bvh-csg-0.0.4.module.js",
-                    "virtual-office": "./virtual_office/main.js"
-                }
+            h1 {
+                color: #dedede;
+                display: flex;
+                position: absolute;
+                z-index: 2;
+                bottom: 1rem;
+                right: 2rem;
             }
-        style.
+            h1 div {
+                display: inline-block;
+                font-family: monospace;
+                font-size: 2.5rem;
+                padding: 1rem 2.5rem 1rem 0;
+            }
+            h1 img {
+                height: 5rem;
+                width: 5rem;
+            }
+
             body {
                 background-color: #000;
                 margin: 0;
                 padding: 0;
+            }
+            #webgl {
+                opacity: 0;
             }
             #pageOverlay,
             #webgl {
@@ -65,7 +88,23 @@ html
                 box-shadow: 0px 0px 7.5px 7.5px #00FF00;
                 border-color: #00FF00;
             }
-    body
+        script(type='importmap').
+            {
+                "imports": {
+                    "three": "./vendor/three-0.153.0.module.min.js",
+                    "three/addons/": "./vendor/addons-1.5.3/",
+                    "three-mesh-bvh": "./vendor/three-mesh-bvh-0.5.24.module.js",
+                    "three-bvh-csg": "./vendor/three-bvh-csg-0.0.4.module.js",
+                    "virtual-office": "./virtual_office/main.js"
+                }
+            }
+    body( onload = "_init()" )
+        canvas#loader_symbols Canvas is not supported in your browser.
+        canvas#loader_image Canvas is not supported in your browser.
+        h1#loadingSign
+            div Loading
+            img(src='/assets/images/tail-spin.svg')
+        include ../templates/door_image.pug
         noscript
             | This website requires Javascript for the full experience. As you don&apos;t have Javascript enabled, you are seeing
             | the 1999 experience.
@@ -73,7 +112,6 @@ html
             img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
         iframe#pageOverlay
         #webgl
-        script(type='module' src='./virtual_office/app.js')
         script#vertexshader(type='x-shader/x-vertex').
             varying vec2 vUv;
             void main() {
@@ -91,3 +129,12 @@ html
                 float lum = 0.21 * bloom_color.r + 0.71 * bloom_color.g + 0.07 * bloom_color.b;
                 gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
             }
+
+        script(src='./vendor/tweakpane-3.1.10.min.js')
+        script(src='./vendor/tween-21.0.0.umd.min.js')
+        script(async src='./vendor/es-module-shims-1.8.0.js')
+        
+        script
+            include ../scripts/scenograph.js
+        script
+            include ../scripts/matrix.js

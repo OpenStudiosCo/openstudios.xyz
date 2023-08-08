@@ -1,141 +1,67 @@
-<head><title>HTML5 Canvas Matrix Effect</title><style>body {
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"><title>Open Studios - Perth, Western Australia</title><style>body {
     margin: 0;
+}</style><script src="./vendor/tweakpane-3.1.10.min.js"></script><script src="./vendor/tween-21.0.0.umd.min.js"></script><script async src="./vendor/es-module-shims-1.8.0.js"></script><script type="importmap">{
+    "imports": {
+        "three": "./vendor/three-0.153.0.module.min.js",
+        "three/addons/": "./vendor/addons-1.5.3/",
+        "three-mesh-bvh": "./vendor/three-mesh-bvh-0.5.24.module.js",
+        "three-bvh-csg": "./vendor/three-bvh-csg-0.0.4.module.js",
+        "virtual-office": "./virtual_office/main.js"
+    }
+}</script><style>body {
+    background-color: #000;
+    margin: 0;
+    padding: 0;
 }
-canvas {
-    display: block;
-    position:absolute;
-    top:0;
-    left:0;
-}
-h1 {
-    color: #dedede;
-    display: flex;
+#pageOverlay,
+#webgl {
+    width: 100%;
+    height: 100%;
     position: absolute;
-    z-index: 2;
-    bottom: 1rem;
+    top: 0;
+    left: 0;
+    display: block;
+}
+#pageOverlay {
+    border: 0 none;
+    display: none;
+    z-index: 10000;
+}
+#exitSign {
+    background: black;
+    font-weight: bold;
+    color: #fff;
+    box-shadow: 0px 0px 5px 5px #00DD00;
+    text-shadow: 2.5px 2.5px 5px #999;
+    cursor: pointer;
+    display: none;
+    border: solid 1px #00DD00;
+    border-radius: 1rem;
+    padding: 1rem;
+    position: absolute;
+    top: 2rem;
     right: 2rem;
+    z-index: 10001;
 }
-h1 div {
-    display: inline-block;
-    font-family: monospace;
-    font-size: 2.5rem;
-    padding: 1rem 2.5rem 1rem 0;
+#exitSign img {
+    max-width: min(80px, 10vw);
+    height: auto;
 }
-h1 img {
-    height: 5rem;
-    width: 5rem;
-}</style></head><canvas id="loader_symbols">Canvas is not supported in your browser.</canvas><canvas id="loader_image">Canvas is not supported in your browser.</canvas><h1><div>Loading</div><img src="/assets/images/tail-spin.svg"/></h1><script>/**
- * Matrix rain effect based on a few sources,
- * - https://dev.to/gnsp/making-the-matrix-effect-in-javascript-din
- * - https://github.com/Rezmason/matrix
- * - https://codepen.io/riazxrazor/pen/Gjomdp
- * 
- */
-
-const charArr = ['モ', 'エ', 'ヤ', 'キ', 'オ', 'カ', '7', 'ケ', 'サ', 'ス', 'z', '1', '5', '2', 'ヨ', 'タ', 'ワ', '4', 'ネ', 'ヌ', 'ナ', '9', '8', 'ヒ', '0', 'ホ', 'ア', '3', 'ウ', ' ', 'セ', '¦', ':', '"', '꞊', 'ミ', 'ラ', 'リ', '╌', 'ツ', 'テ', 'ニ', 'ハ', 'ソ', '▪', '—', '<', '>', '0', '|', '+', '*', 'コ', 'シ', 'マ', 'ム', 'メ'];
-
-const backgroundImage = new Image();
-backgroundImage.src = "/assets/images/cs1xl.jpg"; // Replace with your image's path
-
-const canvas = document.getElementById('loader_symbols');
-const ctx = canvas.getContext('2d');
-
-const fontSize = 20;
-
-const canvas2 = document.getElementById('loader_image');
-canvas2.style.display = 'none';
-const ctx2 = canvas2.getContext('2d', {
-    willReadFrequently: true
-});
-
-let w = canvas.width = canvas2.width = document.body.offsetWidth;
-let h = canvas.height = canvas2.height = document.body.offsetHeight;
-let cols = Math.floor(w / 20) + 1;
-let ypos = Array(cols).fill(0);
-
-ctx.fillStyle = '#000';
-ctx.fillRect(0, 0, w, h);
-
-// Function to draw the background image
-function drawBackground() {
-    var imageAspectRatio = backgroundImage.width / backgroundImage.height;
-    var canvasAspectRatio = w / h;
-    var scale = 1;
-
-    if (imageAspectRatio > canvasAspectRatio) {
-        // Image is wider than the canvas, scale based on width
-        scale = w / (backgroundImage.width * 0.125);
-    } else {
-        // Image is taller than the canvas, scale based on height
-        scale = h / (backgroundImage.height * 0.125);
-    }
-
-    var scaledWidth = backgroundImage.width * scale;
-    var scaledHeight = backgroundImage.height * scale;
-
-    // Calculate the top-left coordinates of the image to center it
-    var imageX = (w - scaledWidth) / 2;
-    var imageY = (-scaledHeight / 55) + (h - scaledHeight) / 2;
-
-    // Draw the image on the canvas at the calculated position
-    ctx2.drawImage(backgroundImage, imageX, imageY, scaledWidth, scaledHeight);
-}
-
-function getAverageColor(context, x, y) {
-    const imageData = context.getImageData(x, y, 5, 5).data;
-    let r = 0,
-        g = 0,
-        b = 0;
-    let randomDelta = Math.tan(randomInt(1, 50)) * 2;
-    for (let i = 0; i < imageData.length; i += 4) {
-        r += imageData[i] + randomDelta;
-        g += imageData[i + 1] + randomDelta;
-        b += imageData[i + 2] + randomDelta;
-    }
-    const count = imageData.length / 4;
-    return `rgb(${Math.floor(r / count)}, ${Math.floor(g / count)}, ${Math.floor(b / count)})`;
-}
-
-
-function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-}
-
-let clock = 0;
-
-function matrix() {
-    drawBackground();
-    ctx.fillStyle = "rgba(0,0,0,0.001)";
-    ctx.fillRect(0, 0, w, h);
-
-    ctx.font = '15pt monospace';
-
-    ypos.forEach((y, ind) => {
-        const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
-        const x = ind * 20;
-
-        ctx.fillStyle = getAverageColor(ctx2, x, y);
-        ctx.fillText(text, x, y);
-
-        clock++;
-
-        if (y > 1 + randomInt(1, clock)) ypos[ind] = 0;
-        else ypos[ind] = y + fontSize;
-
-    });
-}
-
-function handleViewportChange() {
-    w = canvas.width = canvas2.width = document.body.offsetWidth;
-    h = canvas.height = canvas2.height = document.body.offsetHeight;
-    cols = Math.floor(w / 20) + 1;
-    ypos = Array(cols).fill(0);
-
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, w, h);
-}
-
-window.addEventListener('orientationchange', handleViewportChange);
-window.addEventListener('resize', handleViewportChange);
-
-setInterval(matrix, 75);</script>
+#exitSign:hover {
+    box-shadow: 0px 0px 7.5px 7.5px #00FF00;
+    border-color: #00FF00;
+}</style></head><body><noscript>This website requires Javascript for the full experience. As you don&apos;t have Javascript enabled, you are seeing
+the 1999 experience.</noscript><a id="exitSign"><img src="./assets/exit.svg" title="Return to the office" width="300" height="85"></a><iframe id="pageOverlay"></iframe><div id="webgl"></div><script type="module" src="./virtual_office/app.js"></script><script id="vertexshader" type="x-shader/x-vertex">varying vec2 vUv;
+void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+}</script><script id="fragmentshader" type="x-shader/x-fragment">// Kudos to https://github.com/mrdoob/three.js/issues/14104#issuecomment-1536582334
+uniform sampler2D baseTexture;
+uniform sampler2D bloomTexture;
+varying vec2 vUv;
+void main() {
+    vec4 base_color = texture2D(baseTexture, vUv);
+    vec4 bloom_color = texture2D(bloomTexture, vUv);
+    float lum = 0.21 * bloom_color.r + 0.71 * bloom_color.g + 0.07 * bloom_color.b;
+    gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
+}</script></body></html>
