@@ -22,8 +22,8 @@ const ctx2 = canvas2.getContext('2d', {
     willReadFrequently: true
 });
 
-let w = canvas.width = canvas2.width = document.body.offsetWidth;
-let h = canvas.height = canvas2.height = document.body.offsetHeight;
+let w = canvas.width = canvas2.width = window.innerWidth;
+let h = canvas.height = canvas2.height = window.innerHeight;
 let cols = Math.floor(w / 20) + 1;
 let ypos = Array(cols).fill(0);
 

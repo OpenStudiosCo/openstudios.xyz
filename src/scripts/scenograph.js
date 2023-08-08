@@ -61,7 +61,7 @@ function _execute(functionName, arguments, context ) {
 	return context[func].apply(this, arguments);
 }
 
-// Loads a module and its attachments
+// Loads a list of modulesm
 function _load_modules (modules, modules_class) {
 	console.log('[ ' + modules.length + ' modules to load ]');
 	var modules_loaded = 0;	
@@ -157,6 +157,7 @@ function _load_modules (modules, modules_class) {
 
 }
 
+// Loads a module and then fires the relevant callback.
 function _load(name, path, callback, modules_class) {
 	document.write.to = {filename: path};
 	var head = document.getElementsByTagName('head')[0];
