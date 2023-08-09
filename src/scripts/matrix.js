@@ -8,11 +8,13 @@
 
 /**
  * Stages:
- *  - 0 Intro
- *  - 1 Fill viewport with numbers
- *  - 2 Enter the matrix
+ *  - 0 Intro - load virtual office
+ *  - 1 Fill viewport with numbers - load virtual office assets
+ *  - 2 Buy time to fill the matrix (if it loaded from cache / too fast)
+ *  - 3 Enter the matrix - start
  */
 window.matrix_scene = {
+    complete: false,
     currentTime: 0,
     lastTime: 0,
     // used by stage 0
@@ -26,27 +28,27 @@ window.matrix_scene = {
     stage: 0,
     animate: function (currentTime) {
         const elapsedSinceLast = currentTime - window.matrix_scene.lastTime;
+        window.matrix_scene.elapsed += elapsedSinceLast;
         window.matrix_scene.lastTime = currentTime;
         drawBackground();
-        ctx.fillStyle = "rgba(0,0,0,0.001)";
-        ctx.fillRect(0, 0, w, h);
+        
 
         ctx.font = '15pt monospace';
 
         if ( window.matrix_scene.stage == 0 ) {
-
+            ctx.fillStyle = '#0001';
+            ctx.fillRect(0, 0, w, h);
             // @todo: implement the intro sequence here - column reduce?
 
             ypos.forEach((y, ind) => {
+
                 const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
                 const x = ind * 20;
 
                 ctx.fillStyle = getAverageColor(ctx2, x, y);
                 ctx.fillText(text, x, y);
-
-                window.matrix_scene.elapsed += Math.abs(Math.sin(elapsedSinceLast));
                 
-                if ((y+1) % 2 === 0 || (y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
+                if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
 
             });
@@ -63,13 +65,14 @@ window.matrix_scene = {
         }
 
         if ( window.matrix_scene.stage == 1 ) {
+            ctx.fillStyle = "rgba(0,0,0,0.001)";
+            ctx.fillRect(0, 0, w, h);
             ypos.forEach((y, ind) => {
                 const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
                 const x = ind * 20;
 
                 ctx.fillStyle = getAverageColor(ctx2, x, y);
                 ctx.fillText(text, x, y);
-                window.matrix_scene.elapsed++;
 
                 if (y > 1 + randomInt(1, 2000 * window.matrix_scene.loaded_done)) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
@@ -92,18 +95,62 @@ window.matrix_scene = {
             
         }
         if ( window.matrix_scene.stage == 2 ) {
+            ctx.fillStyle = "rgba(0,0,0,0.001)";
+            ctx.fillRect(0, 0, w, h);
 
-            window.matrix_scene.transition_elapsed += elapsedSinceLast / 2;
+            ypos.forEach((y, ind) => {
+                const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
+                const x = ind * 20;
 
-            let zoomFactor = 1 + (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
+                ctx.fillStyle = getAverageColor(ctx2, x, y);
+                ctx.fillText(text, x, y);
+                window.matrix_scene.elapsed += Math.PI;
+                
+                if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
+                else ypos[ind] = y + fontSize;
+
+            });
+
+            if (
+                window.matrix_scene.elapsed < 10000
+            ) {
+                requestAnimationFrame( window.matrix_scene.animate );
+            }
+            else {
+                window.matrix_scene.stage = 3;
+            }
+        }
+
+        if ( window.matrix_scene.stage == 3 ) {
+            ypos.forEach((y, ind) => {
+                const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
+                const x = ind * 20;
+
+                ctx.fillStyle = getAverageColor(ctx2, x, y);
+                ctx.fillText(text, x, y);
+                window.matrix_scene.elapsed += Math.PI;
+                
+                if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
+                else ypos[ind] = y + fontSize;
+
+            });
+
+            window.matrix_scene.transition_elapsed += elapsedSinceLast / 4;
+
+            let zoomFactor = 1 + 4 * (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
             canvas.style.transform = "scale(" + zoomFactor + ")";
-            canvas.style.opacity = 1 - (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
+            canvas.style.filter = "blur(" + (4*zoomFactor) + "px)";
+            
             webgl.style.opacity = (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
 
             if (
-                window.matrix_scene.transition_elapsed < window.matrix_scene.transition_total
+                (window.matrix_scene.transition_elapsed < window.matrix_scene.transition_total) ||
+                window.matrix_scene.elapsed < 25000
             ) {
                 requestAnimationFrame( window.matrix_scene.animate );
+            }
+            else {
+                canvas.style.display = 'none';
             }
         }
     }
@@ -117,6 +164,7 @@ backgroundImage.src = document.getElementById('door_image').src;
 const webgl = document.getElementById('webgl');
 
 const canvas = document.getElementById('loader_symbols');
+canvas.style.mixBlendMode = "exclusion";
 const ctx = canvas.getContext('2d');
 
 const fontSize = 20;

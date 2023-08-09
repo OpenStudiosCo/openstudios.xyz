@@ -21,6 +21,19 @@ export function handleViewportChange() {
   window.virtual_office.effects.main.setSize(width, height);
   window.virtual_office.effects.bloom.setSize(width, height);
 
+  window.virtual_office.camera.aspect = width / height;
+
+  window.virtual_office.camera.fov = setCameraFOV(window.virtual_office.camera.aspect);
+  if (!window.virtual_office.selected &&  ! window.virtual_office.moving) {
+    let posZ = -20;
+    window.virtual_office.camera.position.z = posZ + (window.virtual_office.room_depth / 2);
+    window.virtual_office.camera.rotation.x = - (Math.PI / 30) * window.virtual_office.camera.aspect;
+  }
+  window.virtual_office.camera.updateProjectionMatrix();
+  
+  const newRoom = createOfficeRoom();
+  window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
+
   if ( ! window.virtual_office.started ) {
     if (window.virtual_office.camera.aspect < 0.88) {
       window.virtual_office.scene_dimensions.startPosZ = -5;
@@ -30,18 +43,7 @@ export function handleViewportChange() {
     }
   }
   else {
-    window.virtual_office.camera.aspect = width / height;
-
-    window.virtual_office.camera.fov = setCameraFOV(window.virtual_office.camera.aspect);
-    if (!window.virtual_office.selected &&  ! window.virtual_office.moving) {
-      let posZ = -20;
-      window.virtual_office.camera.position.z = posZ + (window.virtual_office.room_depth / 2);
-      window.virtual_office.camera.rotation.x = - (Math.PI / 30) * window.virtual_office.camera.aspect;
-    }
-    window.virtual_office.camera.updateProjectionMatrix();
     
-    const newRoom = createOfficeRoom();
-    window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
     // Adjust desk positions based on the aspect ratio
     window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
       if ( mesh.name == 'desk') {
