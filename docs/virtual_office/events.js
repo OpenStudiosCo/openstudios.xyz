@@ -18,8 +18,10 @@ export function handleViewportChange() {
   var height = window.innerHeight;
 
   window.virtual_office.renderers.webgl.setSize(width, height);
-  window.virtual_office.effects.main.setSize(width, height);
-  window.virtual_office.effects.bloom.setSize(width, height);
+  if ( ! window.virtual_office.fast ) {
+    window.virtual_office.effects.main.setSize(width, height);
+    window.virtual_office.effects.bloom.setSize(width, height);
+  }
 
   window.virtual_office.camera.aspect = width / height;
 
