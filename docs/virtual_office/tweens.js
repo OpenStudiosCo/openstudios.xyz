@@ -73,6 +73,7 @@ function flickerEffect() {
 
   // Chain the tweens to create the flickering effect
   window.virtual_office.tweens.doorSignFlickerA = new TWEEN.Tween( dummy )
+    .delay(500)
     .easing(TWEEN.Easing.Quadratic.Out)
     .to({ emissiveIntensity: 0.8 }, duration * 1000) // Start at 0 intensity
     .onUpdate((obj) => { updateFlickering(obj) });

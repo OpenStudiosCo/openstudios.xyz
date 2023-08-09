@@ -231,7 +231,7 @@ export function animate(currentTime) {
         window.virtual_office.scene_objects.door_sign &&
         // Check the effects scaler has run, which also delays start.
         window.virtual_office.effects.scaleDone && 
-        window.matrix_scene.stage == 2
+        window.matrix_scene.stage == 3
       ) {
         ready = true;
       }
