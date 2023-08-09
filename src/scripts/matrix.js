@@ -153,6 +153,8 @@ window.matrix_scene = {
             let zoomFactor = 1 + 4 * (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
             canvas.style.transform = "scale(" + zoomFactor + ")";
             canvas.style.filter = "blur(" + (zoomFactor) + "px)";
+
+            webgl.style.filter = "saturate(" + (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total) + ")";
             
             webgl.style.opacity = (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
 
@@ -175,6 +177,7 @@ const backgroundImage = new Image();
 backgroundImage.src = document.getElementById('door_image').src;
 
 const webgl = document.getElementById('webgl');
+webgl.style.filter = 'saturate(0)';
 
 const canvas = document.getElementById('loader_symbols');
 canvas.style.mixBlendMode = "exclusion";
