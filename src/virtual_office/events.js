@@ -85,11 +85,13 @@ export function handleInteractions( scene ) {
 
   if (intersects.length > 0) {  
     for (let i = 0; i < intersects.length; i++) {
-      // Clear the hovered object.
-      window.virtual_office.hovered = intersects[i].object;
 
       // If nothing is selected, allow hover effects.
       if (!window.virtual_office.selected) {
+
+        // Clear the hovered object.
+        window.virtual_office.hovered = intersects[i].object;
+      
         document.documentElement.style.cursor = "default";
 
         if (intersects[i].object.name == "screen" || intersects[i].object.name == "desk_part" || intersects[i].object.name == "desk_label") {
@@ -112,6 +114,9 @@ export function handleInteractions( scene ) {
       // Otherwise we're only tracking interaction with the exit sign.
       else {
         document.documentElement.style.cursor = "inherit";
+        if ( ! window.virtual_office.hovered ) {
+          window.virtual_office.hovered = window.virtual_office.selected;
+        }
       }
     }
   }
