@@ -61,6 +61,13 @@ window.matrix_scene = {
                 for ( var measure in window.virtual_office.loaders.stats ) {
                     window.matrix_scene.loaded_target += window.virtual_office.loaders.stats[measure].target;
                 }
+
+                const pageWrapper = document.getElementById('page-wrapper');
+                if(pageWrapper) {
+                    pageWrapper.style.opacity = 1;
+                    pageWrapper.style.trasition = 'opacity 1s';
+                    pageWrapper.style.opacity = 0;
+                }
             }
         }
 
@@ -104,7 +111,13 @@ window.matrix_scene = {
 
                 ctx.fillStyle = getAverageColor(ctx2, x, y);
                 ctx.fillText(text, x, y);
-                window.matrix_scene.elapsed += Math.PI;
+                if ( canvas.width * canvas.height < 2000000 ) {
+                    window.matrix_scene.elapsed += Math.PI * 10;
+                }
+                else {
+                    window.matrix_scene.elapsed += Math.PI;
+                }
+                
                 
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
@@ -112,7 +125,7 @@ window.matrix_scene = {
             });
 
             if (
-                window.matrix_scene.elapsed < 10000
+                window.matrix_scene.elapsed < 80000
             ) {
                 requestAnimationFrame( window.matrix_scene.animate );
             }
@@ -139,7 +152,7 @@ window.matrix_scene = {
 
             let zoomFactor = 1 + 4 * (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
             canvas.style.transform = "scale(" + zoomFactor + ")";
-            canvas.style.filter = "blur(" + (4*zoomFactor) + "px)";
+            canvas.style.filter = "blur(" + (zoomFactor) + "px)";
             
             webgl.style.opacity = (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
 
@@ -180,14 +193,15 @@ let h = canvas.height = canvas2.height = window.innerHeight;
 let cols = Math.floor(w / 20) + 1;
 let ypos = Array(cols).fill(0);
 
-ctx.fillStyle = '#000';
+ctx.fillStyle = '#0001';
 ctx.fillRect(0, 0, w, h);
-
 
 
 window.addEventListener('orientationchange', handleViewportChange);
 window.addEventListener('resize', handleViewportChange);
 
+// Hide body element scrollbars as the 3D viewport takes over.
+document.querySelector("body").style.overflow = 'hidden';
 requestAnimationFrame( window.matrix_scene.animate );
 
 // Function to draw the background image
