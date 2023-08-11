@@ -23,6 +23,9 @@ let materials, darkMaterial;
 
 export function init() {
 
+  // And finally, let's begin!
+  requestAnimationFrame(animate);
+
   let pane;
 
   let url = new URL(window.location.href);
@@ -158,9 +161,6 @@ export function init() {
   window.addEventListener("pointerdown", onMouseDown, false);
   window.addEventListener("pointerup", onMouseUp, false);
 
-  // And finally, let's begin!
-  requestAnimationFrame(animate);
-
 }
 
 export function setCameraFOV(aspect) {
@@ -193,42 +193,6 @@ export function setCameraFOV(aspect) {
   }
 
   return fov;
-}
-
-function debug_ui() {
-  const PARAMS = {
-    factor: 123,
-    title: 'hello',
-    color: '#ff0055',
-  };
-  
-  const pane = new Tweakpane.Pane();
-  
-  pane.addInput(PARAMS, 'factor');
-  pane.addInput(PARAMS, 'title');
-  pane.addInput(PARAMS, 'color');
-
-  return pane;
-}
-
-// Function to map a value from one range to another
-function mapRange(value, inMin, inMax, outMin, outMax) {
-  return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-}
-
-let frameCount = 0;
-let lastTime = performance.now();
-
-function updateFPS() {
-  // Calculate FPS
-  const currentTime = performance.now();
-  const timeDiff = currentTime - lastTime;
-  frameCount++;
-  if (timeDiff >= 1000) {
-    window.virtual_office.fps = Math.round((frameCount * 1000) / timeDiff);
-    frameCount = 0;
-    lastTime = currentTime;
-  }
 }
 
 export function animate(currentTime) {
@@ -266,8 +230,7 @@ export function animate(currentTime) {
         // Check door sign is loaded up.
         window.virtual_office.scene_objects.door_sign &&
         // Check the effects scaler has run, which also delays start.
-        window.virtual_office.effects.scaleDone && 
-        window.matrix_scene.stage == 3
+        window.virtual_office.effects.scaleDone
       ) {
         ready = true;
       }
@@ -280,13 +243,12 @@ export function animate(currentTime) {
     }
   }
 
-  scaleEffects(currentTime, window.virtual_office.renderers.webgl);
-
   if (window.virtual_office.debug) {
     stats.update();
   }
 
-  if (window.matrix_scene.stage == 3) {
+  if (window.matrix_scene.stage > 1) {
+
     // Render the composer
     if (!window.virtual_office.fast) {
       scene.traverse(darkenNonBloomed);
@@ -296,6 +258,46 @@ export function animate(currentTime) {
     } else {
       window.virtual_office.renderers.webgl.render(scene, window.virtual_office.camera); // Render the scene without the effects
     }
+  }
+
+  if (window.matrix_scene.complete == true) {
+    scaleEffects(currentTime, window.virtual_office.renderers.webgl);
+  }
+}
+
+function debug_ui() {
+  const PARAMS = {
+    factor: 123,
+    title: 'hello',
+    color: '#ff0055',
+  };
+  
+  const pane = new Tweakpane.Pane();
+  
+  pane.addInput(PARAMS, 'factor');
+  pane.addInput(PARAMS, 'title');
+  pane.addInput(PARAMS, 'color');
+
+  return pane;
+}
+
+// Function to map a value from one range to another
+function mapRange(value, inMin, inMax, outMin, outMax) {
+  return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}
+
+let frameCount = 0;
+let lastTime = performance.now();
+
+function updateFPS() {
+  // Calculate FPS
+  const currentTime = performance.now();
+  const timeDiff = currentTime - lastTime;
+  frameCount++;
+  if (timeDiff >= 1000) {
+    window.virtual_office.fps = Math.round((frameCount * 1000) / timeDiff);
+    frameCount = 0;
+    lastTime = currentTime;
   }
 }
 

@@ -54,7 +54,7 @@ window.matrix_scene = {
     loaded_target: 0,
     // Stage 2
     transition_elapsed: 0,
-    transition_total: 1000, // in milliseconds
+    transition_total: 5000, // in milliseconds
     
     // Animates the scene
     animate: function (currentTime) {
@@ -106,13 +106,11 @@ window.matrix_scene = {
                     window.matrix_scene.elapsed += Math.PI;
                 }
                 
-                
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
 
             });
 
-            
         }
         if ( window.matrix_scene.stage == 3 ) {
             ypos.forEach((y, ind) => {
@@ -123,14 +121,6 @@ window.matrix_scene = {
                 else ypos[ind] = y + fontSize;
 
             });
-            window.matrix_scene.transition_elapsed += elapsedSinceLast / 4;
-            let zoomFactor = 1 + 4 * (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
-            canvas.style.transform = "scale(" + zoomFactor + ")";
-            canvas.style.filter = "blur(" + (zoomFactor) + "px)";
-
-            webgl.style.filter = "saturate(" + (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total) + ")";
-            
-            webgl.style.opacity = (window.matrix_scene.transition_elapsed / window.matrix_scene.transition_total);
         }
 
         if ( ! window.matrix_scene.complete ) {
@@ -159,7 +149,7 @@ window.matrix_scene = {
                 const pageWrapper = document.getElementById('page-wrapper');
                 if(pageWrapper) {
                     pageWrapper.style.opacity = 1;
-                    pageWrapper.style.trasition = 'opacity 1s';
+                    pageWrapper.style.transition = 'opacity 1s';
                     pageWrapper.style.opacity = 0;
                 }
             }
@@ -187,18 +177,23 @@ window.matrix_scene = {
             }
             else {
                 window.matrix_scene.stage = 3;
+                canvas.style.transition = 'filter 5s, transform 5s';
+                canvas.style.transform = "scale(5)";
+                canvas.style.filter = "blur(5px)";
+
+                webgl.style.transition = 'filter 3s 2s, opacity 5s';
+                webgl.style.filter = "saturate(1)";
+                webgl.style.opacity = 1;
             }
         }
         if ( window.matrix_scene.stage == 3 ) {
             if (
-                (window.matrix_scene.transition_elapsed < window.matrix_scene.transition_total) ||
-                window.matrix_scene.elapsed < 25000
+                (window.matrix_scene.transition_elapsed < window.matrix_scene.transition_total)
             ) {
-                
+                window.matrix_scene.transition_elapsed += 100;
             }
             else {
                 canvas.style.display = 'none';
-                
                 clearInterval(window.matrix_scene.interval);
                 window.matrix_scene.complete = true;
             }
@@ -214,7 +209,7 @@ window.matrix_scene = {
         
         // Hide body element scrollbars as the 3D viewport takes over.
         document.querySelector("body").style.overflow = 'hidden';
-        window.matrix_scene.interval = setInterval( window.matrix_scene.updateStage, 75);
+        window.matrix_scene.interval = setInterval( window.matrix_scene.updateStage, 100);
         requestAnimationFrame( window.matrix_scene.animate );
     }
 };

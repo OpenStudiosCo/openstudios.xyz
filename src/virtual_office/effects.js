@@ -19,7 +19,7 @@ const frameRateThreshold = 25; // Adjust as needed
 let previousFrameTime = 0;
 
 // Define the delay duration (in seconds)
-const delayDuration = 3; // Adjust as needed
+const delayDuration = 10; // Adjust as needed
 let delayTimer = 0; // Timer to track the delay duration
 
 let frameRates = [];
