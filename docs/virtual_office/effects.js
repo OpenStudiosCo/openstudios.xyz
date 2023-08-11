@@ -16,7 +16,7 @@ let composer, bloomComposer, bloomLayer;
 const frameRateThreshold = 25; // Adjust as needed
 
 // Store the previous frame time
-let previousFrameTime = 0;
+let previousFrameTime = 1;
 
 // Define the delay duration (in seconds)
 const delayDuration = 10; // Adjust as needed
