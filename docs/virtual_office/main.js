@@ -51,8 +51,8 @@ export function init() {
   csgEvaluator.useGroups = true;
 
   // Size
-  window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
-  window.virtual_office.room_depth = 8 * window.virtual_office.scene_dimensions.adjusted_gap;
+  window.virtual_office.settings.adjusted_gap = calculateAdjustedGapSize();
+  window.virtual_office.room_depth = 8 * window.virtual_office.settings.adjusted_gap;
 
   // Setup renderers.
   setupRenderers();
@@ -66,9 +66,9 @@ export function init() {
   window.virtual_office.camera.aspect = width / height;
   
   if (aspect < 0.88) {
-    window.virtual_office.scene_dimensions.startPosZ = -5;
+    window.virtual_office.settings.startPosZ = -5;
   }
-  window.virtual_office.camera.position.set(0, 10.775, window.virtual_office.scene_dimensions.startPosZ + (window.virtual_office.room_depth / 2));
+  window.virtual_office.camera.position.set(0, 10.775, window.virtual_office.settings.startPosZ + (window.virtual_office.room_depth / 2));
   
   // Reusable pointer for tracking user interaction.
   window.virtual_office.pointer = new THREE.Vector3(); 
@@ -329,7 +329,7 @@ export function calculateAdjustedGapSize() {
   var height = window.innerHeight;
 
   // Adjust gap size based on the aspect ratio
-  var adjustedGapSize = window.virtual_office.scene_dimensions.gap * window.virtual_office.scene_dimensions.scale;
+  var adjustedGapSize = window.virtual_office.settings.gap * window.virtual_office.settings.scale;
   if (width < height) {
     adjustedGapSize *= height / width;
   }
@@ -680,7 +680,7 @@ function setupScene() {
   window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
   scene.add(window.virtual_office.scene_objects.door);
 
-  window.virtual_office.scene_objects.deskGroup = setupDesks(window.virtual_office.scene_dimensions.gap, window.virtual_office.scene_dimensions.scale, scene);
+  window.virtual_office.scene_objects.deskGroup = setupDesks(window.virtual_office.settings.gap, window.virtual_office.settings.scale, scene);
   scene.add(window.virtual_office.scene_objects.deskGroup);
 
   // Adjust ambient light intensity

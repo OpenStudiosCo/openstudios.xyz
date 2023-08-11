@@ -52,7 +52,7 @@ export function setupBackwall ( scene ) {
     object.name = 'plant';
 
     object.scale.setScalar(7.5);
-    object.position.set(30, -5, window.virtual_office.scene_dimensions.adjusted_gap);
+    object.position.set(30, -5, window.virtual_office.settings.adjusted_gap);
 
     wallGroup.add(object);
 
@@ -308,9 +308,9 @@ export function setupDesks(gapSize, scale, scene) {
  */
 export function updateDeskZ(desk, i) {
     if (i < 2) {
-    desk.position.z = - 15 + (i === 0 ? -1.5 : 0.5) * window.virtual_office.scene_dimensions.adjusted_gap;
+    desk.position.z = - 15 + (i === 0 ? -1.5 : 0.5) * window.virtual_office.settings.adjusted_gap;
   } else {
-    desk.position.z = - 15 + (i === 2 ? -1.5 : 0.5) * window.virtual_office.scene_dimensions.adjusted_gap;
+    desk.position.z = - 15 + (i === 2 ? -1.5 : 0.5) * window.virtual_office.settings.adjusted_gap;
   }
 }
 

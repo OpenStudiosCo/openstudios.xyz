@@ -84,7 +84,7 @@ export function setupEffects( renderer, scene ) {
   if (! window.virtual_office.fast ) {
 
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+    //renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
     const ssaoPass = new SSAOPass( scene, window.virtual_office.camera, window.innerWidth, window.innerHeight );
     ssaoPass.kernelRadius = 20;

@@ -146,7 +146,7 @@ function enterTheOffice ( ) {
 }
 
 function slideBack ( ) {
-  let coords = { x: window.virtual_office.scene_dimensions.startPosZ + ( window.virtual_office.room_depth / 2 ) }; // Start at (0, 0)
+  let coords = { x: window.virtual_office.settings.startPosZ + ( window.virtual_office.room_depth / 2 ) }; // Start at (0, 0)
   let targetZ = 15 + (window.virtual_office.room_depth / 2);
   return new TWEEN.Tween(coords, false) // Create a new tween that modifies 'coords'.
   .to({ x: targetZ }, 1000) // Move to (300, 200) in 1 second.

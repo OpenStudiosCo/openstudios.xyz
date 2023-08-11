@@ -11,8 +11,8 @@ import { updateDeskZ } from './furniture.js';
 import { resetReusables } from './tweens.js';
 
 export function handleViewportChange() {
-  window.virtual_office.scene_dimensions.adjusted_gap = calculateAdjustedGapSize();
-  window.virtual_office.room_depth = 8 * window.virtual_office.scene_dimensions.adjusted_gap;
+  window.virtual_office.settings.adjusted_gap = calculateAdjustedGapSize();
+  window.virtual_office.room_depth = 8 * window.virtual_office.settings.adjusted_gap;
 
   var width = window.innerWidth;
   var height = window.innerHeight;
@@ -38,10 +38,10 @@ export function handleViewportChange() {
 
   if ( ! window.virtual_office.started ) {
     if (window.virtual_office.camera.aspect < 0.88) {
-      window.virtual_office.scene_dimensions.startPosZ = -5;
+      window.virtual_office.settings.startPosZ = -5;
     }
     else {
-      window.virtual_office.scene_dimensions.startPosZ = -10;
+      window.virtual_office.settings.startPosZ = -10;
     }
   }
   else {
@@ -63,7 +63,7 @@ export function handleViewportChange() {
     });
     window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
       if ( mesh.name == 'plant') {
-        mesh.position.z = window.virtual_office.scene_dimensions.adjusted_gap;
+        mesh.position.z = window.virtual_office.settings.adjusted_gap;
       }
     });
 

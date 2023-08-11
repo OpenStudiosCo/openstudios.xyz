@@ -80,11 +80,13 @@ function updateSigns ( ) {
                             if ( isHovered ) {
 
                                 // Increase light intensity.
-                                desk_item.intensity = interpolateFloatProperty( desk_item.intensity, window.virtual_office.fast ? 0.05 : 0.035 );
+                                desk_item.intensity = interpolateFloatProperty( desk_item.intensity,
+                                    window.virtual_office.fast ? window.virtual_office.settings.light_intensity.fast.desk.active : window.virtual_office.settings.light_intensity.highP.desk.active );
                             }
                             else {
                                 // Reduce light intensity.
-                                desk_item.intensity = interpolateFloatProperty( desk_item.intensity, 0.015 );
+                                desk_item.intensity = interpolateFloatProperty( desk_item.intensity,
+                                    window.virtual_office.fast ? window.virtual_office.settings.light_intensity.fast.desk.normal : window.virtual_office.settings.light_intensity.highP.desk.normal );
    
                             }
                            
