@@ -3,11 +3,10 @@
   "author": "Open Studios < team@openstudios.xyz >",
   "version": "3.0.0",
   "description": "The homepage of Open Studios and a Kettlefish inspired Eleventy boilerplate",
-  "type": "module",
   "scripts": {
     "build": "cross-env NODE_ENV=production npm-run-all clean -p build:*",
     "build:11ty": "eleventy --quiet",
-    "build:rollup": "rollup -c",
+    "build:esbuild": "node build.mjs",
     "clean": "rimraf dist",
     "dev": "npm-run-all clean build:* -p dev:*",
     "dev:11ty": "eleventy --serve --quiet",
