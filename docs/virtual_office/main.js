@@ -23,9 +23,6 @@ let materials, darkMaterial;
 
 export function init() {
 
-  // And finally, let's begin!
-  requestAnimationFrame(animate);
-
   let pane;
 
   let url = new URL(window.location.href);
@@ -160,6 +157,9 @@ export function init() {
   // Attach the mouse down and up event listeners
   window.addEventListener("pointerdown", onMouseDown, false);
   window.addEventListener("pointerup", onMouseUp, false);
+
+  // And finally, let's begin!
+  requestAnimationFrame(animate);
 
 }
 
