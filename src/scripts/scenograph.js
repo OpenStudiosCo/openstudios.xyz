@@ -12,6 +12,8 @@
 
 // Boot up the Scenograph and populate the window accessor
 function _init() {
+
+	window.matrix_scene.start();
 	
 	// Create the main engine accessor
     if ( window.s ) { alert("window.s already set! Something is wrong."); return; }
@@ -34,7 +36,7 @@ function _init() {
 		{ 
 			name: "Virtual Office",
 			// requires: [ 'three.js' ],
-			files: [ { path: "./virtual_office/app.js" } ]
+			files: [ { path: "./virtual_office/app.js", callback: "window.virtual_office.init" } ]
 		}
 	];
 

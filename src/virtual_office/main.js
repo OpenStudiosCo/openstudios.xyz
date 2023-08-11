@@ -21,7 +21,24 @@ let scene, stats;
 
 let materials, darkMaterial;
 
-export function init(pane) {
+export function init() {
+
+  let pane;
+
+  let url = new URL(window.location.href);
+
+  // Check if we're in debug mode.
+  if (url.searchParams.has('debug')) {
+    window.virtual_office.debug = true;
+
+    // Start the UI.
+    pane = debug_ui();
+  }
+
+  // Check if we're in fast mode.
+  if (url.searchParams.has('fast')) {
+    window.virtual_office.fast = true;
+  }
 
   window.virtual_office.loaders.gtlf = new GLTFLoader();
   window.virtual_office.loaders.texture =  new THREE.TextureLoader();
@@ -141,6 +158,9 @@ export function init(pane) {
   window.addEventListener("pointerdown", onMouseDown, false);
   window.addEventListener("pointerup", onMouseUp, false);
 
+  // And finally, let's begin!
+  requestAnimationFrame(animate);
+
 }
 
 export function setCameraFOV(aspect) {
@@ -173,6 +193,22 @@ export function setCameraFOV(aspect) {
   }
 
   return fov;
+}
+
+function debug_ui() {
+  const PARAMS = {
+    factor: 123,
+    title: 'hello',
+    color: '#ff0055',
+  };
+  
+  const pane = new Tweakpane.Pane();
+  
+  pane.addInput(PARAMS, 'factor');
+  pane.addInput(PARAMS, 'title');
+  pane.addInput(PARAMS, 'color');
+
+  return pane;
 }
 
 // Function to map a value from one range to another
@@ -250,16 +286,17 @@ export function animate(currentTime) {
     stats.update();
   }
 
-  // Render the composer
-  if (!window.virtual_office.fast) {
-    scene.traverse(darkenNonBloomed);
-    window.virtual_office.effects.bloom.render();
-    scene.traverse(restoreMaterial);
-    window.virtual_office.effects.main.render();
-  } else {
-    window.virtual_office.renderers.webgl.render(scene, window.virtual_office.camera); // Render the scene without the effects
+  if (window.matrix_scene.stage == 3) {
+    // Render the composer
+    if (!window.virtual_office.fast) {
+      scene.traverse(darkenNonBloomed);
+      window.virtual_office.effects.bloom.render();
+      scene.traverse(restoreMaterial);
+      window.virtual_office.effects.main.render();
+    } else {
+      window.virtual_office.renderers.webgl.render(scene, window.virtual_office.camera); // Render the scene without the effects
+    }
   }
-
 }
 
 function darkenNonBloomed(obj) {
