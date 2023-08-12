@@ -36,7 +36,7 @@ function _init() {
 		{ 
 			name: "Virtual Office",
 			// requires: [ 'three.js' ],
-			files: [ { path: "./virtual_office/app.js", callback: "window.virtual_office.init" } ]
+			files: [ { path: "./main.js", callback: "window.virtual_office.init" } ]
 		}
 	];
 

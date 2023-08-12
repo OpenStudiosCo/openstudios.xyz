@@ -81,12 +81,12 @@ function updateSigns ( ) {
 
                                 // Increase light intensity.
                                 desk_item.intensity = interpolateFloatProperty( desk_item.intensity,
-                                    window.virtual_office.fast ? window.virtual_office.settings.light_intensity.fast.desk.active : window.virtual_office.settings.light_intensity.highP.desk.active );
+                                    window.virtual_office.fast ? window.virtual_office.settings.light.fast.desk.active : window.virtual_office.settings.light.highP.desk.active );
                             }
                             else {
                                 // Reduce light intensity.
                                 desk_item.intensity = interpolateFloatProperty( desk_item.intensity,
-                                    window.virtual_office.fast ? window.virtual_office.settings.light_intensity.fast.desk.normal : window.virtual_office.settings.light_intensity.highP.desk.normal );
+                                    window.virtual_office.fast ? window.virtual_office.settings.light.fast.desk.normal : window.virtual_office.settings.light.highP.desk.normal );
    
                             }
                            
