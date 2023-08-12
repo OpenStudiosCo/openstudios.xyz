@@ -86,7 +86,11 @@ function createNeonSign(callback, scene) {
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-    const lightActual = new THREE.PointLight(0xDA68C5, window.virtual_office.fast ? 0.35 : 0.1); // Color: white
+    const lightActual = new THREE.PointLight( 0xDA68C5,
+      window.virtual_office.fast ?
+      window.virtual_office.settings.light.fast.neonSign.normal :
+      window.virtual_office.settings.light.highP.neonSign.normal
+    );
     lightActual.position.set(5.5, 0.25, 5); // Set the position of the light
     lightActual.castShadow = true;
 
@@ -439,7 +443,11 @@ function createDesk( i ) {
     window.virtual_office.loaders.stats.gtlf.loaded ++;
   }); 
 
-  const lightActual = new THREE.DirectionalLight(0x00EEff, 0.015); // Color: white
+  const lightActual = new THREE.DirectionalLight(0x00EEff,
+    window.virtual_office.fast ?
+    window.virtual_office.settings.light.fast.desk.normal :
+    window.virtual_office.settings.light.highP.desk.normal
+  ); // Color: white
   lightActual.castShadow = true;
   lightActual.name = "ceilLightActual";
 

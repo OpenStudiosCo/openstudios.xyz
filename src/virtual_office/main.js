@@ -151,15 +151,21 @@ window.virtual_office = {
   settings: {
     adjusted_gap: false, // calculated value
     gap: 1.3, // depth(z axis) gap between desks
-    light_intensity: {
+    light: {
       fast: {
         desk: {
           normal: 0.015, active: 0.05
+        },
+        neonSign: {
+          normal: 0.35, active: 0.05
         }
       },
       highP: {
         desk: {
           normal: 0.015, active: 0.035
+        },
+        neonSign: {
+          normal: 0.1, active: 0.05
         }
       }
       
