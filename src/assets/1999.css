@@ -145,6 +145,7 @@ form {
   padding: 1.5rem;
 }
 
+form button,
 form textarea,
 form input {
   width: calc(100% - 2rem);
@@ -156,13 +157,13 @@ form input {
   color: #FFFFFF;
 }
 
-form input[type='submit'] {
+form button {
   border-color:#00EEff;
   text-transform: uppercase;
   width: 100%;
 }
 
-form input[type='submit']:hover {
+form button:hover {
   background:#0099AA;
   cursor: pointer;
 }

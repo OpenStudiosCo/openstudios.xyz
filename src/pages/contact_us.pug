@@ -19,7 +19,11 @@ block append page
           a(href='mailto:team@openstudios.xyz') team@openstudios.xyz
           |  or alternatively fill out
           |             the contact form below and we will endeaver to respond to your enquiry shortly.
-        form(method='post' action='http://mailform.openstudios.xyz:3000/website')
+        script.
+          function onSubmit(token) {
+            document.getElementById("mailform").submit();
+          }
+        form#mailform(method='post' action='https://mailform.openstudios.xyz/')
           label(for='fullname' type='text') Your Name
           br
           input(type='text' name='firstName' placeholder='Full Name')
@@ -29,8 +33,11 @@ block append page
           label(for='fullname' type='text') Message
           br
           textarea(name='body' placeholder='A few words describing your enquiry.' cols='50' rows='10')
-          .cf-turnstile(data-sitekey='0x4AAAAAAAIKqeAvhbfKZgmD' data-theme='dark')
-          input(type='submit')
+          button(class="g-recaptcha" 
+            data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
+            data-callback='onSubmit' 
+            data-action='submit') Submit
+
       .column
         h3 Connect with us
         | Find us across the web at the following destinations:
