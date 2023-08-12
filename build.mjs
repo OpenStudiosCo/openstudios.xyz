@@ -3,7 +3,7 @@ import esbuild from 'esbuild'
 
 esbuild
     .build({
-        entryPoints: ['./src/virtual_office/main.js'],
+        entryPoints: ['./src/app/main.js'],
         bundle: true,
         minify: true,
         outdir: 'web',

@@ -524,15 +524,15 @@ function createScreen( i ){
       break;  
     case 1:
       url = '../assets/images/pages/services.png';
-      pageUrl = '../services.html';
+      pageUrl = '../iframes/services.html';
       break;
     case 2:
       url = '../assets/images/pages/portfolio.png';
-      pageUrl = '../portfolio.html';
+      pageUrl = '../iframes/portfolio.html';
       break;
     case 3:
       url = '../assets/images/pages/contact_us.png';
-      pageUrl = '../contact_us.html';
+      pageUrl = '../iframes/contact_us.html';
       break;
     case 720:
       url = '../assets/images/pages/about_us.png';
