@@ -1,0 +1,14 @@
+doctype html
+html
+    head
+        title
+            block title
+        base(href="../")
+        meta(name="description" content="We are Open Studios. Perth based digital production studio.")
+
+        include ./favicons.pug
+
+        link(href='./assets/1999.css' rel='stylesheet')
+    body
+        - var isIframe = true
+        include ./1999_layout.pug
