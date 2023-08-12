@@ -3,10 +3,10 @@ import esbuild from 'esbuild'
 
 const context = await esbuild
     .context({
-        entryPoints: ['./src/virtual_office/main.js'],
+        entryPoints: ['./src/app/main.js'],
         bundle: true,
         minify: true,
-        outdir: 'docs'
+        outdir: 'web'
     });
  
 // Manually do an incremental build
