@@ -10,7 +10,7 @@
     "clean": "rimraf dist",
     "dev": "npm-run-all clean build:* -p dev:*",
     "dev:11ty": "eleventy --serve --quiet",
-    "dev:rollup": "rollup -c -w"
+    "dev:esbuild": "node watch.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
