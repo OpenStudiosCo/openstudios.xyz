@@ -6,7 +6,7 @@ const context = await esbuild
         entryPoints: ['./src/virtual_office/main.js'],
         bundle: true,
         minify: true,
-        outdir: 'docs'
+        outdir: 'web'
     });
  
 // Manually do an incremental build
