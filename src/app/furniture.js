@@ -519,23 +519,23 @@ function createScreen( i ){
   let url, pageUrl;
   switch ( i ) {
     case 0:
-      url = '../assets/images/pages/case_studies.png';
+      url = '../assets/images/pages/case_studies.jpg';
       pageUrl = '../iframes/case_studies.html';
       break;  
     case 1:
-      url = '../assets/images/pages/services.png';
+      url = '../assets/images/pages/services.jpg';
       pageUrl = '../iframes/services.html';
       break;
     case 2:
-      url = '../assets/images/pages/portfolio.png';
+      url = '../assets/images/pages/portfolio.jpg';
       pageUrl = '../iframes/portfolio.html';
       break;
     case 3:
-      url = '../assets/images/pages/contact_us.png';
+      url = '../assets/images/pages/contact_us.jpg';
       pageUrl = '../iframes/contact_us.html';
       break;
     case 720:
-      url = '../assets/images/pages/about_us.png';
+      url = '../assets/images/pages/about_us.jpg';
       pageUrl = '../iframes/about_us.html';
       break;
   }

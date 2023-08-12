@@ -368,6 +368,14 @@ window.matrix_scene = {
             ypos.forEach((y, ind) => {
 
                 window.matrix_scene.drawSymbol(y, ind);
+
+                if ( canvas.width * canvas.height < 2000000 ) {
+                    window.matrix_scene.elapsed += Math.PI * 10;
+                }
+                else {
+                    window.matrix_scene.elapsed += Math.PI;
+                }
+                
                 
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
