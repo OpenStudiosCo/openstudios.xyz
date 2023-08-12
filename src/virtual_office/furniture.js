@@ -520,7 +520,7 @@ function createScreen( i ){
   switch ( i ) {
     case 0:
       url = '../assets/images/pages/case_studies.png';
-      pageUrl = '../case_studies.html';
+      pageUrl = '../iframes/case_studies.html';
       break;  
     case 1:
       url = '../assets/images/pages/services.png';
@@ -536,7 +536,7 @@ function createScreen( i ){
       break;
     case 720:
       url = '../assets/images/pages/about_us.png';
-      pageUrl = '../about_us.html';
+      pageUrl = '../iframes/about_us.html';
       break;
   }
   
