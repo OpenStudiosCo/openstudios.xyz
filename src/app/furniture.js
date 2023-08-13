@@ -11,7 +11,7 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
  * @param { THREE.Scene } scene 
  * @returns { THREE.Group } wallGroup
  */
-export function setupBackwall ( scene ) {
+export function setupBackwall ( scene, setupScene ) {
   var wallGroup = new THREE.Group();
   
   // About Us Neon sign
@@ -62,6 +62,9 @@ export function setupBackwall ( scene ) {
     wallGroup.add(plant_left);
 
     window.virtual_office.loaders.stats.gtlf.loaded ++;
+
+    window.virtual_office.status = 1;
+    setupScene();
   });
 
   return wallGroup;
@@ -299,6 +302,9 @@ export function setupDesks(gapSize, scale, scene) {
     }
 
     window.virtual_office.loaders.stats.gtlf.loaded ++;
+
+    window.virtual_office.status = 3;
+    setupScene();
 
   } );
   return deskGroup;
