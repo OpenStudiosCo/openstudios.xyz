@@ -36346,7 +36346,6 @@
     window.virtual_office.renderers.webgl.setPixelRatio(window.devicePixelRatio);
     window.virtual_office.renderers.webgl.setSize(window.innerWidth, window.innerHeight);
     document.querySelector("#webgl").appendChild(window.virtual_office.renderers.webgl.domElement);
-    document.querySelector("body").style.overflow = "hidden";
   }
 })();
 /*! Bundled license information:

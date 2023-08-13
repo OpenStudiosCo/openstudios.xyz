@@ -11,7 +11,7 @@
  */
 
 // Boot up the Scenograph and populate the window accessor
-function _init() {
+function _init( wait ) {
 
 	window.matrix_scene.start();
 	
@@ -42,7 +42,7 @@ function _init() {
 
 	setTimeout( () => {
 		_load_modules( modules, "s" );
-	} , 1000);
+	} , wait);
 	
 }
 

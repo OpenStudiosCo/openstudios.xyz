@@ -931,7 +931,4 @@ function setupRenderers() {
   window.virtual_office.renderers.webgl.setSize(window.innerWidth, window.innerHeight);
   document.querySelector("#webgl").appendChild(window.virtual_office.renderers.webgl.domElement);
 
-  // Hide body element scrollbars as the 3D viewport takes over.
-  document.querySelector("body").style.overflow = 'hidden';
-
 }

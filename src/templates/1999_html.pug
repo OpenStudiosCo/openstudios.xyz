@@ -1,13 +1,59 @@
 doctype html
 html
     head
-        title
-            block title
-        base(href="./")
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0')
         meta(name="description" content="We are Open Studios. Perth based digital production studio.")
 
+        title
+            block title
+
         include ./head_common.pug
+
         style.
+            #page-wrapper {
+                position: relative;
+                z-index: 0;
+            }
+            #webgl-wrapper {
+                overflow: hidden;
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+            #loader_symbols {
+                display: block;
+                position:absolute;
+                top:0;
+                left:0;
+                z-index: 2;
+            }
+
+            body {
+                background-color: #000;
+                margin: 0;
+                padding: 0;
+            }
+            #webgl {
+                opacity: 0;
+            }
+            #pageOverlay,
+            #webgl {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+            }
+            #pageOverlay {
+                border: 0 none;
+                display: none;
+                z-index: 10000;
+            }
             #exitSign {
                 background: black;
                 font-weight: bold;
@@ -15,12 +61,13 @@ html
                 box-shadow: 0px 0px 5px 5px #00DD00;
                 text-shadow: 2.5px 2.5px 5px #999;
                 cursor: pointer;
+                display: none;
                 border: solid 1px #00DD00;
                 border-radius: 1rem;
                 padding: 1rem;
                 position: absolute;
                 top: 2rem;
-                right: 2rem;
+                right: 3rem;
                 z-index: 10001;
             }
             #exitSign img {
@@ -31,8 +78,44 @@ html
                 box-shadow: 0px 0px 7.5px 7.5px #00FF00;
                 border-color: #00FF00;
             }
-    body
+    body(onload="_init( 3000 );")
+        noscript
+            style.
+                h1#loadingSign { display: none }
         - var isIframe = false
         include ./1999_layout.pug
-        a#exitSign
-            img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
+        #webgl-wrapper
+            canvas#loader_symbols
+            canvas#loader_image
+            include ../templates/door_image.pug
+            a#exitSign
+                img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
+            iframe#pageOverlay
+            #webgl
+            script#vertexshader(type='x-shader/x-vertex').
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+                }
+            script#fragmentshader(type='x-shader/x-fragment').
+                // Kudos to https://github.com/mrdoob/three.js/issues/14104#issuecomment-1536582334
+                uniform sampler2D baseTexture;
+                uniform sampler2D bloomTexture;
+                varying vec2 vUv;
+                void main() {
+                    vec4 base_color = texture2D(baseTexture, vUv);
+                    vec4 bloom_color = texture2D(bloomTexture, vUv);
+                    float lum = 0.21 * bloom_color.r + 0.71 * bloom_color.g + 0.07 * bloom_color.b;
+                    gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
+                }
+
+            script(src='./vendor/tweakpane-3.1.10.min.js')
+            script(src='./vendor/tween-21.0.0.umd.min.js')
+            script(async src='./vendor/es-module-shims-1.8.0.js')
+            
+            script
+                include ../scripts/scenograph.js
+            script
+                include ../scripts/pokematrix.js
+        
