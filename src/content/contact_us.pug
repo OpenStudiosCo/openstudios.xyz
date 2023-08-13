@@ -13,15 +13,15 @@ h1 Contact us
           document.getElementById("mailform").submit();
         }
       form#mailform(method='post' action='https://mailform.openstudios.xyz/')
-        label(for='fullname' type='text') Your Name
+        label(for='name' type='text') Your Name
         br
-        input(type='text' name='firstName' placeholder='Full Name')
-        label(for='fullname' type='text') Email
+        input(type='text' name='name' placeholder='Full Name')
+        label(for='from' type='text') Email
         br
         input(type='email' name='from' placeholder='Email address')
-        label(for='fullname' type='text') Message
+        label(for='message' type='text') Message
         br
-        textarea(name='body' placeholder='A few words describing your enquiry.' cols='50' rows='10')
+        textarea(name='message' placeholder='A few words describing your enquiry.' cols='50' rows='10')
         button(class="g-recaptcha" 
           data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
           data-callback='onSubmit' 
