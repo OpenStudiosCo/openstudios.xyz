@@ -40,8 +40,10 @@ function _init() {
 		}
 	];
 
-	_load_modules( modules, "s" );
-
+	setTimeout( () => {
+		_load_modules( modules, "s" );
+	} , 1000);
+	
 }
 
 // Checks URL and determines environment.
