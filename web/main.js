@@ -35253,9 +35253,11 @@
 
   // src/app/tweens.js
   function startTweening() {
-    window.virtual_office.started = true;
-    document.getElementById("loadingSign").style.display = "none";
-    flickerEffect();
+    setTimeout(() => {
+      window.virtual_office.started = true;
+      document.getElementById("loadingSign").style.display = "none";
+      flickerEffect();
+    }, 250);
   }
   function updateTweens(currentTime) {
     for (var tween in window.virtual_office.tweens) {
@@ -35287,6 +35289,8 @@
     let dummy = { emissiveIntensity: 0 };
     window.virtual_office.tweens.doorSignFlickerA = new TWEEN.Tween(dummy).easing(TWEEN.Easing.Quadratic.Out).to({ emissiveIntensity: 0.8 }, duration * 1e3).onUpdate((obj) => {
       updateFlickering(obj);
+    }).onComplete(() => {
+      document.getElementById("loader_symbols").style.display = "none";
     });
     window.virtual_office.tweens.doorSignFlickerB = new TWEEN.Tween(dummy).delay(duration * 1e3).to({ emissiveIntensity: 0 }, 0.1 * 1e3).onUpdate((obj) => {
       updateFlickering(obj);
@@ -36328,15 +36332,13 @@
       window.virtual_office.scene_objects.screens_loaded = 0;
       window.virtual_office.scene_objects.room = createOfficeRoom();
       scene.add(window.virtual_office.scene_objects.room);
+      requestAnimationFrame(animate);
     }
     if (window.virtual_office.status == 4) {
       setupTriggers(setupScene);
     }
     if (window.virtual_office.status == 5) {
       setupTweens(setupScene);
-    }
-    if (window.virtual_office.status == 6) {
-      requestAnimationFrame(animate);
     }
   }
   function setupRenderers() {

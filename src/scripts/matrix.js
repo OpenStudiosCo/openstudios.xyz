@@ -18,7 +18,8 @@ const canvas = document.getElementById('loader_symbols');
 canvas.style.mixBlendMode = "exclusion";
 const ctx = canvas.getContext('2d');
 
-const fontSize = 20;
+const largeScreen = canvas.width * canvas.height < 2000000;
+const fontSize = largeScreen ? 15 : 8;
 
 const canvas2 = document.getElementById('loader_image');
 canvas2.style.display = 'none';
@@ -64,7 +65,7 @@ window.matrix_scene = {
         window.matrix_scene.lastTime = currentTime;
         drawBackground();
 
-        ctx.font = '15pt monospace';
+        ctx.font = fontSize + 'pt monospace';
 
         if ( window.matrix_scene.stage == 0 ) {
             ctx.fillStyle = '#0001';
@@ -75,7 +76,7 @@ window.matrix_scene = {
 
                 window.matrix_scene.drawSymbol(y, ind);
 
-                if ( canvas.width * canvas.height < 2000000 ) {
+                if ( largeScreen ) {
                     window.matrix_scene.elapsed += Math.PI * 10;
                 }
                 else {
@@ -137,7 +138,7 @@ window.matrix_scene = {
     },
     drawSymbol: function( y, ind ) {
         const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
-        const x = ind * 20;
+        const x = ind * (largeScreen ? 20 : 10);
 
         ctx.fillStyle = getAverageColor(ctx2, x, y);
         ctx.fillText(text, x, y);
@@ -160,6 +161,7 @@ window.matrix_scene = {
                     pageWrapper.style.transition = 'opacity 1s';
                     pageWrapper.style.opacity = 0;
                 }
+                
             }
         }
         if ( window.matrix_scene.stage == 1 ) {
@@ -189,7 +191,7 @@ window.matrix_scene = {
                 canvas.style.transform = "scale(5)";
                 canvas.style.filter = "blur(5px)";
 
-                webgl.style.transition = 'filter 3s 2s, opacity 5s';
+                webgl.style.transition = 'filter 3s 2s, opacity 2s';
                 webgl.style.filter = "saturate(1)";
                 webgl.style.opacity = 1;
             }
@@ -201,7 +203,6 @@ window.matrix_scene = {
                 window.matrix_scene.transition_elapsed += 100;
             }
             else {
-                canvas.style.display = 'none';
                 clearInterval(window.matrix_scene.interval);
                 window.matrix_scene.complete = true;
             }

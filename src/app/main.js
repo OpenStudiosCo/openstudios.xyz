@@ -909,6 +909,8 @@ function setupScene() {
     window.virtual_office.scene_objects.screens_loaded = 0;
     window.virtual_office.scene_objects.room = createOfficeRoom( );
     scene.add(window.virtual_office.scene_objects.room);
+
+    requestAnimationFrame (animate);
   }
   if ( window.virtual_office.status == 4 ) {
     // Setup triggers
@@ -918,10 +920,6 @@ function setupScene() {
     // Setup Tweens.
     setupTweens( setupScene );
   }
-  if ( window.virtual_office.status == 6 ) {
-    // And finally, let's begin!
-    requestAnimationFrame(animate);
-  } 
 
 }
 
