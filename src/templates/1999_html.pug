@@ -7,7 +7,32 @@ html
         meta(name="description" content="We are Open Studios. Perth based digital production studio.")
 
         include ./head_common.pug
-
+        style.
+            #exitSign {
+                background: black;
+                font-weight: bold;
+                color: #fff;
+                box-shadow: 0px 0px 5px 5px #00DD00;
+                text-shadow: 2.5px 2.5px 5px #999;
+                cursor: pointer;
+                border: solid 1px #00DD00;
+                border-radius: 1rem;
+                padding: 1rem;
+                position: absolute;
+                top: 2rem;
+                right: 2rem;
+                z-index: 10001;
+            }
+            #exitSign img {
+                max-width: min(80px, 10vw);
+                height: auto;
+            }
+            #exitSign:hover {
+                box-shadow: 0px 0px 7.5px 7.5px #00FF00;
+                border-color: #00FF00;
+            }
     body
         - var isIframe = false
         include ./1999_layout.pug
+        a#exitSign
+            img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
