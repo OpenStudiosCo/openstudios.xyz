@@ -13,7 +13,7 @@ export function updateTweens(currentTime) {
   //TWEEN.update(currentTime);
 }
 
-export function setupTweens( ) {
+export function setupTweens( setupScene ) {
 
   /**
    * Slide back
@@ -47,6 +47,9 @@ export function setupTweens( ) {
   window.virtual_office.tweens.panDown = panDown( );
 
   resetReusables();
+
+  window.virtual_office.status = 6;
+  setupScene();
 
 }
 

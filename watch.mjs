@@ -5,7 +5,7 @@ const context = await esbuild
     .context({
         entryPoints: ['./src/app/main.js'],
         bundle: true,
-        minify: true,
+        minify: false,
         outdir: 'web'
     });
  

@@ -141,7 +141,7 @@ export function brightenMaterial(material, amount) {
 }
 
 // Uses createDesk and arranges them in the room.
-export function setupDesks(gapSize, scale, scene) {
+export function setupDesks(gapSize, scale, scene, setupScene) {
   // Create groups
   var deskGroup = new THREE.Group();
   window.virtual_office.scene_objects.desk_labels = [];

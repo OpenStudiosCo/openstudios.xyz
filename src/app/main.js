@@ -203,7 +203,9 @@ window.virtual_office = {
    * 1 - load door
    * 2 - load desks
    * 3 - load room
-   * 4 - ready
+   * 4 - setup tweens
+   * 5 - setup triggers
+   * 6 - begin
    * 
    */
   status: 0,
@@ -224,9 +226,6 @@ window.virtual_office = {
 };
 
 export default function init() {
-
-  // And finally, let's begin!
-  requestAnimationFrame(animate);
 
   let pane;
 
@@ -305,11 +304,6 @@ export default function init() {
     document.body.appendChild(stats.dom);
   }
 
-  // Setup triggersw
-  setupTriggers( );
-
-  // Setup Tweens.
-  setupTweens( );
 
   window.addEventListener('orientationchange', handleViewportChange);
   window.addEventListener('resize', handleViewportChange);
@@ -436,7 +430,7 @@ export function animate(currentTime) {
         // Check the effects scaler has run, which also delays start.
         window.virtual_office.effects.scaleDone && 
         window.matrix_scene.stage == 3 && 
-        window.virtual_office.status == 4
+        window.virtual_office.status == 6
       ) {
         ready = true;
       }
@@ -453,7 +447,7 @@ export function animate(currentTime) {
     stats.update();
   }
 
-  if (window.matrix_scene.stage > 1) {
+  if (window.virtual_office.status == 6) {
 
     // Render the composer
     if (!window.virtual_office.fast) {
@@ -840,6 +834,9 @@ export function createOfficeRoom() {
     sidewallMaterial.needsUpdate = true;
 
     window.virtual_office.loaders.stats.textures.loaded ++;
+    
+    window.virtual_office.status = 4;
+    setupScene();
   });
 
   const materials = [
@@ -872,20 +869,18 @@ export function createOfficeRoom() {
   result.receiveShadow = true;
   result.layers.enable(1);
 
-  window.virtual_office.status = 4;
-  setupScene();
   
 
   return result;
 }
 
 function setupScene() {
-  
-  // Scene container.
-  scene = new THREE.Scene();
-  scene.visible = false;
 
   if ( window.virtual_office.status == 0 ) {
+    // Scene container.
+    scene = new THREE.Scene();
+    scene.visible = false;
+
     window.virtual_office.scene_objects.wallGroup = setupBackwall(scene, setupScene);
     window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
     scene.add(window.virtual_office.scene_objects.wallGroup);
@@ -915,8 +910,18 @@ function setupScene() {
     window.virtual_office.scene_objects.room = createOfficeRoom( );
     scene.add(window.virtual_office.scene_objects.room);
   }
-
- 
+  if ( window.virtual_office.status == 4 ) {
+    // Setup triggers
+    setupTriggers( setupScene );
+  }
+  if ( window.virtual_office.status == 5 ) {
+    // Setup Tweens.
+    setupTweens( setupScene );
+  }
+  if ( window.virtual_office.status == 6 ) {
+    // And finally, let's begin!
+    requestAnimationFrame(animate);
+  } 
 
 }
 
