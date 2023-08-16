@@ -36193,6 +36193,12 @@
       floorMaterial.map = floorTexture;
       floorMaterial.needsUpdate = true;
       window.virtual_office.loaders.stats.textures.loaded++;
+      const geometry = new PlaneGeometry(roomWidth, roomWidth);
+      const plane = new Mesh(geometry, floorMaterial);
+      plane.position.z = window.virtual_office.room_depth / 2;
+      plane.position.y = -5.1;
+      plane.rotation.x = Math.PI / 2;
+      scene.add(plane);
     });
     const ceilMaterial = new MeshLambertMaterial({
       aoMapIntensity: 1.5,
