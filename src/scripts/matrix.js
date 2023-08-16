@@ -18,9 +18,6 @@ const canvas = document.getElementById('loader_symbols');
 canvas.style.mixBlendMode = "exclusion";
 const ctx = canvas.getContext('2d');
 
-const largeScreen = canvas.width * canvas.height < 2000000;
-const fontSize = largeScreen ? 15 : 8;
-
 const canvas2 = document.getElementById('loader_image');
 canvas2.style.display = 'none';
 const ctx2 = canvas2.getContext('2d', {
@@ -29,7 +26,12 @@ const ctx2 = canvas2.getContext('2d', {
 
 let w = canvas.width = canvas2.width = window.innerWidth;
 let h = canvas.height = canvas2.height = window.innerHeight;
-let cols = Math.floor(w / 20) + 1;
+
+const largeScreen = canvas.width * canvas.height < 2000000;
+const portraitMode = canvas.width < canvas.height;
+const fontSize = (portraitMode || largeScreen) ? 8 : 15;
+
+let cols = Math.floor(w / fontSize * 1.5) + 1;
 let ypos = Array(cols).fill(0);
 
 window.matrix_scene = {
@@ -138,7 +140,7 @@ window.matrix_scene = {
     },
     drawSymbol: function( y, ind ) {
         const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
-        const x = ind * (largeScreen ? 20 : 10);
+        const x = ind * fontSize * 1.5;
 
         ctx.fillStyle = getAverageColor(ctx2, x, y);
         ctx.fillText(text, x, y);
@@ -271,7 +273,7 @@ function randomInt(min, max) {
 function handleViewportChange() {
     w = canvas.width = canvas2.width = window.innerWidth;
     h = canvas.height = canvas2.height = window.innerHeight;
-    cols = Math.floor(w / 20) + 1;
+    cols = Math.floor(w / fontSize * 1.5) + 1;
     ypos = Array(cols).fill(0);
 
     ctx.fillStyle = '#000';

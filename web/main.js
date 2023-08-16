@@ -34665,7 +34665,7 @@
   var bloomLayer;
   var frameRateThreshold = 25;
   var previousFrameTime = 1;
-  var delayDuration = 10;
+  var delayDuration = 5;
   var delayTimer = 0;
   var frameRates = [];
   function scaleEffects(currentTime, renderer) {
