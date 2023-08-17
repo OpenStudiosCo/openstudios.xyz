@@ -187,6 +187,7 @@ function handleWallClick(desk) {
 }
 
 export function handleExitSign() {
+  
   window.virtual_office.moving = true;
   var targetRotation = - (Math.PI / 30) * window.virtual_office.camera.aspect;
 
@@ -216,6 +217,9 @@ function stretchSelectedScreen() {
 
 // Restore the CSS object to its original size.
 function shrinkScreenBack() {
+  
+  // Reset scroll position of the iFrame
+  document.getElementById('pageOverlay').contentWindow.scrollTo( 0 , 0 );
 
   document.getElementById('pageOverlay').style.display = 'none';
 

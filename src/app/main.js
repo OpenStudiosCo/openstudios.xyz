@@ -397,7 +397,10 @@ export function animate(currentTime) {
 
   requestAnimationFrame(animate);
 
-  scaleEffects(currentTime, window.virtual_office.renderers.webgl);
+  // Run scaling, if not done yet.
+  if ( ! window.virtual_office.effects.scaleDone) {
+    scaleEffects(currentTime, window.virtual_office.renderers.webgl);
+  }
 
   if (window.virtual_office.started) {
 
@@ -427,9 +430,10 @@ export function animate(currentTime) {
         window.virtual_office.loaders.stats[measure].loaded == window.virtual_office.loaders.stats[measure].target &&
         // Check door sign is loaded up.
         window.virtual_office.scene_objects.door_sign &&
-        // Check the effects scaler has run, which also delays start.
-        window.virtual_office.effects.scaleDone && 
+        // Check we're on the final matrix scene stage
+        // @todo: Check how this plays out with Pokematrix.
         window.matrix_scene.stage == 3 && 
+        // Check we're at status 6 i.e. 'Done'
         window.virtual_office.status == 6
       ) {
         ready = true;
@@ -725,6 +729,14 @@ export function createOfficeRoom() {
     floorMaterial.map = floorTexture;
     floorMaterial.needsUpdate = true;
     window.virtual_office.loaders.stats.textures.loaded ++;
+
+    const geometry = new THREE.PlaneGeometry( roomWidth, roomWidth );
+    const plane = new THREE.Mesh( geometry, floorMaterial );
+    plane.position.z = window.virtual_office.room_depth / 2;
+    plane.position.y = -5.1;
+    plane.rotation.x = Math.PI / 2;
+    scene.add( plane );
+
   });
 
   // Create two materials: one for the floor face and one for the other faces

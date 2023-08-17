@@ -80,19 +80,35 @@ html
                 display: none;
                 border: solid 1px #00DD00;
                 border-radius: 1rem;
-                padding: 1rem;
+                padding: 0.5rem;
                 position: absolute;
-                top: 2rem;
-                right: 3rem;
+                top: 0;
+                right: 0;
                 z-index: 10001;
+                padding-top: 1.75rem;
+                padding-right: 1.75rem;
+                margin-right: -1rem;
+                margin-top: -1rem;
             }
             #exitSign img {
-                max-width: min(80px, 10vw);
+                max-width: min(80px, 15vw);
                 height: auto;
             }
+            #exitSign:active,
+            #exitSign:focus,
             #exitSign:hover {
                 box-shadow: 0px 0px 7.5px 7.5px #00FF00;
                 border-color: #00FF00;
+            }
+
+            @media screen and (min-width: 640px) {
+                #exitSign {
+                    padding: 1rem;
+                    margin-top: 0rem;
+                    margin-right: 0rem;
+                    top: 2rem;
+                    right: 3rem;
+                }
             }
     body(onload="_init( 1000 );")
         noscript

@@ -34665,16 +34665,17 @@
   var bloomLayer;
   var frameRateThreshold = 25;
   var previousFrameTime = 1;
-  var delayDuration = 10;
+  var delayDuration = 5;
   var delayTimer = 0;
   var frameRates = [];
+  var firstTime = true;
+  var avgFrameRate = 0;
   function scaleEffects(currentTime, renderer) {
     const deltaTime = (currentTime - previousFrameTime) / 1e3;
     delayTimer += deltaTime;
     previousFrameTime = currentTime;
     if (!window.virtual_office.fast) {
       if (delayTimer >= delayDuration) {
-        let avgFrameRate = 0;
         var sum = frameRates.reduce(function(total, num) {
           return total + num;
         }, 0);
@@ -34686,13 +34687,20 @@
           window.virtual_office.fast = true;
           renderer.shadowMap.enabled = false;
         }
+        window.virtual_office.effects.scaleDone = true;
+        if (firstTime) {
+          setInterval(() => {
+            avgFrameRate = 0;
+            frameRates = [];
+            delayTimer = 0;
+            window.virtual_office.effects.scaleDone = false;
+            firstTime = false;
+          }, 15e3);
+        }
       } else {
         const currentFrameRate = 1 / deltaTime;
         frameRates.push(currentFrameRate);
       }
-    }
-    if (delayTimer >= delayDuration) {
-      window.virtual_office.effects.scaleDone = true;
     }
   }
   function setupEffects(renderer, scene2) {
@@ -35541,6 +35549,7 @@
     document.getElementById("exitSign").style.display = "block";
   }
   function shrinkScreenBack() {
+    document.getElementById("pageOverlay").contentWindow.scrollTo(0, 0);
     document.getElementById("pageOverlay").style.display = "none";
     document.getElementById("exitSign").style.display = "none";
   }
@@ -35976,7 +35985,9 @@
   function animate(currentTime) {
     updateFPS();
     requestAnimationFrame(animate);
-    scaleEffects(currentTime, window.virtual_office.renderers.webgl);
+    if (!window.virtual_office.effects.scaleDone) {
+      scaleEffects(currentTime, window.virtual_office.renderers.webgl);
+    }
     if (window.virtual_office.started) {
       updateTriggers(currentTime);
       updateTweens(currentTime);
@@ -35994,8 +36005,10 @@
         if (
           // Check everything has loaded.
           window.virtual_office.loaders.stats[measure].loaded == window.virtual_office.loaders.stats[measure].target && // Check door sign is loaded up.
-          window.virtual_office.scene_objects.door_sign && // Check the effects scaler has run, which also delays start.
-          window.virtual_office.effects.scaleDone && window.matrix_scene.stage == 3 && window.virtual_office.status == 6
+          window.virtual_office.scene_objects.door_sign && // Check we're on the final matrix scene stage
+          // @todo: Check how this plays out with Pokematrix.
+          window.matrix_scene.stage == 3 && // Check we're at status 6 i.e. 'Done'
+          window.virtual_office.status == 6
         ) {
           ready = true;
         } else {
@@ -36188,6 +36201,12 @@
       floorMaterial.map = floorTexture;
       floorMaterial.needsUpdate = true;
       window.virtual_office.loaders.stats.textures.loaded++;
+      const geometry = new PlaneGeometry(roomWidth, roomWidth);
+      const plane = new Mesh(geometry, floorMaterial);
+      plane.position.z = window.virtual_office.room_depth / 2;
+      plane.position.y = -5.1;
+      plane.rotation.x = Math.PI / 2;
+      scene.add(plane);
     });
     const ceilMaterial = new MeshLambertMaterial({
       aoMapIntensity: 1.5,
