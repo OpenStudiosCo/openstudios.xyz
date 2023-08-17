@@ -34687,18 +34687,19 @@
           window.virtual_office.fast = true;
           renderer.shadowMap.enabled = false;
         }
+        window.virtual_office.effects.scaleDone = true;
+        if (firstTime) {
+          setInterval(() => {
+            avgFrameRate = 0;
+            frameRates = [];
+            delayTimer = 0;
+            window.virtual_office.effects.scaleDone = false;
+            firstTime = false;
+          }, 15e3);
+        }
       } else {
         const currentFrameRate = 1 / deltaTime;
         frameRates.push(currentFrameRate);
-      }
-    }
-    if (delayTimer >= delayDuration) {
-      window.virtual_office.effects.scaleDone = true;
-      if (firstTime) {
-        setInterval(() => {
-          window.virtual_office.effects.scaleDone = false;
-          firstTime = false;
-        }, 15e3);
       }
     }
   }

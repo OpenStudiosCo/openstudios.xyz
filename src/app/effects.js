@@ -43,7 +43,6 @@ export function scaleEffects( currentTime, renderer ) {
     // Check if the delay duration has passed
     if  ( delayTimer >= delayDuration ) {
       
-
       var sum = frameRates.reduce(function (total, num) {
         return total + num;
       }, 0);
@@ -60,25 +59,28 @@ export function scaleEffects( currentTime, renderer ) {
         window.virtual_office.fast = true;
         renderer.shadowMap.enabled = false;
       }
+
+      window.virtual_office.effects.scaleDone = true;
+
+    // Enqueue a secondary scaler just in case the first one failed.
+    if ( firstTime ) {
+      setInterval(()=>{
+        avgFrameRate = 0;
+        frameRates = [];
+        delayTimer = 0;
+        window.virtual_office.effects.scaleDone = false;
+        firstTime = false;
+      }, 15000)
+    }
       
     }
+    // Otherwise keep counting frames.
     else {
       // Calculate the current frame rate
       const currentFrameRate = 1 / deltaTime;
       frameRates.push( currentFrameRate );
     }
 
-  }
-
-  if  ( delayTimer >= delayDuration ) {
-    window.virtual_office.effects.scaleDone = true;
-
-    if ( firstTime ) {
-      setInterval(()=>{
-        window.virtual_office.effects.scaleDone = false;
-        firstTime = false;
-      }, 15000)
-    }
   }
 
 }
