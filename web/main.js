@@ -34675,7 +34675,7 @@
     delayTimer += deltaTime;
     previousFrameTime = currentTime;
     if (!window.virtual_office.fast) {
-      if (delayTimer >= delayDuration) {
+      if (delayTimer >= delayDuration && frameRates.length > 10) {
         var sum = frameRates.reduce(function(total, num) {
           return total + num;
         }, 0);

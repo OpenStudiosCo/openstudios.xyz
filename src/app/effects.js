@@ -41,7 +41,7 @@ export function scaleEffects( currentTime, renderer ) {
   if (! window.virtual_office.fast ){
 
     // Check if the delay duration has passed
-    if  ( delayTimer >= delayDuration ) {
+    if  ( delayTimer >= delayDuration && frameRates.length > 10 ) {
       
       var sum = frameRates.reduce(function (total, num) {
         return total + num;
