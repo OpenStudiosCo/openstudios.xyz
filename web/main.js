@@ -34668,13 +34668,14 @@
   var delayDuration = 5;
   var delayTimer = 0;
   var frameRates = [];
+  var firstTime = true;
+  var avgFrameRate = 0;
   function scaleEffects(currentTime, renderer) {
     const deltaTime = (currentTime - previousFrameTime) / 1e3;
     delayTimer += deltaTime;
     previousFrameTime = currentTime;
     if (!window.virtual_office.fast) {
       if (delayTimer >= delayDuration) {
-        let avgFrameRate = 0;
         var sum = frameRates.reduce(function(total, num) {
           return total + num;
         }, 0);
@@ -34693,6 +34694,12 @@
     }
     if (delayTimer >= delayDuration) {
       window.virtual_office.effects.scaleDone = true;
+      if (firstTime) {
+        setInterval(() => {
+          window.virtual_office.effects.scaleDone = false;
+          firstTime = false;
+        }, 15e3);
+      }
     }
   }
   function setupEffects(renderer, scene2) {

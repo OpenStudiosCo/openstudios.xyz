@@ -24,6 +24,10 @@ let delayTimer = 0; // Timer to track the delay duration
 
 let frameRates = [];
 
+let firstTime = true;
+
+let avgFrameRate = 0;
+
 // Dynamically scale the effects to maintain minimum FPS
 export function scaleEffects( currentTime, renderer ) {
 
@@ -38,7 +42,7 @@ export function scaleEffects( currentTime, renderer ) {
 
     // Check if the delay duration has passed
     if  ( delayTimer >= delayDuration ) {
-      let avgFrameRate = 0;
+      
 
       var sum = frameRates.reduce(function (total, num) {
         return total + num;
@@ -68,6 +72,13 @@ export function scaleEffects( currentTime, renderer ) {
 
   if  ( delayTimer >= delayDuration ) {
     window.virtual_office.effects.scaleDone = true;
+
+    if ( firstTime ) {
+      setInterval(()=>{
+        window.virtual_office.effects.scaleDone = false;
+        firstTime = false;
+      }, 15000)
+    }
   }
 
 }
