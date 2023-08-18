@@ -18,10 +18,10 @@ export function handleViewportChange() {
   var height = window.innerHeight;
 
   window.virtual_office.renderers.webgl.setSize(width, height);
-  if ( ! window.virtual_office.fast ) {
-    window.virtual_office.effects.main.setSize(width, height);
-    window.virtual_office.effects.bloom.setSize(width, height);
-  }
+
+  window.virtual_office.effects.main.setSize(width, height);
+  window.virtual_office.effects.bloom.setSize(width, height);
+
 
   window.virtual_office.camera.aspect = width / height;
 
@@ -76,12 +76,12 @@ export function handleViewportChange() {
   }
 }
 
-export function handleInteractions( scene ) {
+export function handleInteractions( ) {
   // update the picking ray with the camera and pointer position
   window.virtual_office.raycaster.setFromCamera(new THREE.Vector2(window.virtual_office.pointer.x, window.virtual_office.pointer.y), window.virtual_office.camera);
 
   // calculate objects intersecting the picking ray
-  const intersects = window.virtual_office.raycaster.intersectObjects(scene.children);
+  const intersects = window.virtual_office.raycaster.intersectObjects(window.virtual_office.scene.children);
 
   if (intersects.length > 0) {  
     for (let i = 0; i < intersects.length; i++) {

@@ -11,7 +11,7 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
  * @param { THREE.Scene } scene 
  * @returns { THREE.Group } wallGroup
  */
-export function setupBackwall ( scene, setupScene ) {
+export function setupBackwall ( setupScene ) {
   var wallGroup = new THREE.Group();
   
   // About Us Neon sign
@@ -21,7 +21,7 @@ export function setupBackwall ( scene, setupScene ) {
     signMesh.name = "neon_sign";
     window.virtual_office.scene_objects.neon_sign = signMesh;
     wallGroup.add(signMesh);
-  }, scene);
+  });
 
   window.virtual_office.scene_objects.tvWebGL = createScreen( 720 );
   window.virtual_office.scene_objects.tvWebGL.position.y = 8;
@@ -71,7 +71,7 @@ export function setupBackwall ( scene, setupScene ) {
 }
 
 // Create the About Us neon sign.
-function createNeonSign(callback, scene) {
+function createNeonSign(callback) {
   const loader = new FontLoader();
 
   loader.load('./assets/fonts/Stigmature.json', (font) => {
@@ -89,7 +89,7 @@ function createNeonSign(callback, scene) {
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-    const lightActual = new THREE.PointLight( 0xDA68C5,
+    const lightActual = new THREE.PointLight( 0xDA68C5, 
       window.virtual_office.fast ?
       window.virtual_office.settings.light.fast.neonSign.normal :
       window.virtual_office.settings.light.highP.neonSign.normal
@@ -103,10 +103,10 @@ function createNeonSign(callback, scene) {
 
     if (window.virtual_office.debug) {
       const helper = new THREE.CameraHelper( lightActual.shadow.camera );
-      scene.add( helper );
+      window.virtual_office.scene.add( helper );
       // Create a directional light helper
       const lightHelper = new THREE.PointLightHelper(lightActual, 5); // The second parameter is the size of the helper
-      scene.add(lightHelper);
+      window.virtual_office.scene.add(lightHelper);
     }
 
     signMesh.layers.enable(1);
@@ -141,7 +141,7 @@ export function brightenMaterial(material, amount) {
 }
 
 // Uses createDesk and arranges them in the room.
-export function setupDesks(gapSize, scale, scene, setupScene) {
+export function setupDesks(gapSize, scale, setupScene) {
   // Create groups
   var deskGroup = new THREE.Group();
   window.virtual_office.scene_objects.desk_labels = [];
@@ -221,10 +221,10 @@ export function setupDesks(gapSize, scale, scene, setupScene) {
         // //Create a helper for the shadow camera (optional)
         if (window.virtual_office.debug) {
           const helper = new THREE.CameraHelper( desk_iter.shadow.camera );
-          scene.add( helper );
+          window.virtual_office.scene.add( helper );
           // Create a directional light helper
           const lightHelper = new THREE.DirectionalLightHelper(desk_iter, 0.25); // The second parameter is the size of the helper
-          scene.add(lightHelper);
+          window.virtual_office.scene.add(lightHelper);
         }
 
       }

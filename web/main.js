@@ -7475,7 +7475,7 @@
         camera.updateMatrixWorld();
       }
     }
-    update(renderer, scene2) {
+    update(renderer, scene) {
       if (this.parent === null)
         this.updateMatrixWorld();
       const renderTarget = this.renderTarget;
@@ -7492,18 +7492,18 @@
       const generateMipmaps = renderTarget.texture.generateMipmaps;
       renderTarget.texture.generateMipmaps = false;
       renderer.setRenderTarget(renderTarget, 0);
-      renderer.render(scene2, cameraPX);
+      renderer.render(scene, cameraPX);
       renderer.setRenderTarget(renderTarget, 1);
-      renderer.render(scene2, cameraNX);
+      renderer.render(scene, cameraNX);
       renderer.setRenderTarget(renderTarget, 2);
-      renderer.render(scene2, cameraPY);
+      renderer.render(scene, cameraPY);
       renderer.setRenderTarget(renderTarget, 3);
-      renderer.render(scene2, cameraNY);
+      renderer.render(scene, cameraNY);
       renderer.setRenderTarget(renderTarget, 4);
-      renderer.render(scene2, cameraPZ);
+      renderer.render(scene, cameraPZ);
       renderTarget.texture.generateMipmaps = generateMipmaps;
       renderer.setRenderTarget(renderTarget, 5);
-      renderer.render(scene2, cameraNZ);
+      renderer.render(scene, cameraNZ);
       renderer.setRenderTarget(currentRenderTarget);
       renderer.toneMapping = currentToneMapping;
       renderer.xr.enabled = currentXrEnabled;
@@ -8745,11 +8745,11 @@
     let currentBackground = null;
     let currentBackgroundVersion = 0;
     let currentTonemapping = null;
-    function render(renderList, scene2) {
+    function render(renderList, scene) {
       let forceClear = false;
-      let background = scene2.isScene === true ? scene2.background : null;
+      let background = scene.isScene === true ? scene.background : null;
       if (background && background.isTexture) {
-        const usePMREM = scene2.backgroundBlurriness > 0;
+        const usePMREM = scene.backgroundBlurriness > 0;
         background = (usePMREM ? cubeuvmaps : cubemaps).get(background);
       }
       if (background === null) {
@@ -8793,7 +8793,7 @@
           );
           boxMesh.geometry.deleteAttribute("normal");
           boxMesh.geometry.deleteAttribute("uv");
-          boxMesh.onBeforeRender = function(renderer2, scene3, camera) {
+          boxMesh.onBeforeRender = function(renderer2, scene2, camera) {
             this.matrixWorld.copyPosition(camera.matrixWorld);
           };
           Object.defineProperty(boxMesh.material, "envMap", {
@@ -8805,8 +8805,8 @@
         }
         boxMesh.material.uniforms.envMap.value = background;
         boxMesh.material.uniforms.flipEnvMap.value = background.isCubeTexture && background.isRenderTargetTexture === false ? -1 : 1;
-        boxMesh.material.uniforms.backgroundBlurriness.value = scene2.backgroundBlurriness;
-        boxMesh.material.uniforms.backgroundIntensity.value = scene2.backgroundIntensity;
+        boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
+        boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
         boxMesh.material.toneMapped = background.colorSpace === SRGBColorSpace ? false : true;
         if (currentBackground !== background || currentBackgroundVersion !== background.version || currentTonemapping !== renderer.toneMapping) {
           boxMesh.material.needsUpdate = true;
@@ -8840,7 +8840,7 @@
           objects.update(planeMesh);
         }
         planeMesh.material.uniforms.t2D.value = background;
-        planeMesh.material.uniforms.backgroundIntensity.value = scene2.backgroundIntensity;
+        planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
         planeMesh.material.toneMapped = background.colorSpace === SRGBColorSpace ? false : true;
         if (background.matrixAutoUpdate === true) {
           background.updateMatrix();
@@ -9606,12 +9606,12 @@
      * and far planes ensure the scene is rendered in its entirety (the cubeCamera
      * is placed at the origin).
      */
-    fromScene(scene2, sigma = 0, near = 0.1, far = 100) {
+    fromScene(scene, sigma = 0, near = 0.1, far = 100) {
       _oldTarget = this._renderer.getRenderTarget();
       this._setSize(256);
       const cubeUVRenderTarget = this._allocateTargets();
       cubeUVRenderTarget.depthBuffer = true;
-      this._sceneToCubeUV(scene2, near, far, cubeUVRenderTarget);
+      this._sceneToCubeUV(scene, near, far, cubeUVRenderTarget);
       if (sigma > 0) {
         this._blur(cubeUVRenderTarget, 0, 0, sigma);
       }
@@ -9727,7 +9727,7 @@
       const tmpMesh = new Mesh(this._lodPlanes[0], material);
       this._renderer.compile(tmpMesh, _flatCamera);
     }
-    _sceneToCubeUV(scene2, near, far, cubeUVRenderTarget) {
+    _sceneToCubeUV(scene, near, far, cubeUVRenderTarget) {
       const fov2 = 90;
       const aspect2 = 1;
       const cubeCamera = new PerspectiveCamera(fov2, aspect2, near, far);
@@ -9747,11 +9747,11 @@
       });
       const backgroundBox = new Mesh(new BoxGeometry(), backgroundMaterial);
       let useSolidColor = false;
-      const background = scene2.background;
+      const background = scene.background;
       if (background) {
         if (background.isColor) {
           backgroundMaterial.color.copy(background);
-          scene2.background = null;
+          scene.background = null;
           useSolidColor = true;
         }
       } else {
@@ -9776,13 +9776,13 @@
         if (useSolidColor) {
           renderer.render(backgroundBox, cubeCamera);
         }
-        renderer.render(scene2, cubeCamera);
+        renderer.render(scene, cubeCamera);
       }
       backgroundBox.geometry.dispose();
       backgroundBox.material.dispose();
       renderer.toneMapping = toneMapping;
       renderer.autoClear = originalAutoClear;
-      scene2.background = background;
+      scene.background = background;
     }
     _textureToCubeUV(texture, cubeUVRenderTarget) {
       const renderer = this._renderer;
@@ -12006,10 +12006,10 @@
         return "uv";
       return `uv${value}`;
     }
-    function getParameters(material, lights, shadows, scene2, object) {
-      const fog = scene2.fog;
+    function getParameters(material, lights, shadows, scene, object) {
+      const fog = scene.fog;
       const geometry = object.geometry;
-      const environment = material.isMeshStandardMaterial ? scene2.environment : null;
+      const environment = material.isMeshStandardMaterial ? scene.environment : null;
       const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(material.envMap || environment);
       const envMapCubeUVHeight = !!envMap && envMap.mapping === CubeUVReflectionMapping ? envMap.image.height : null;
       const shaderID = shaderIDs[material.type];
@@ -12558,12 +12558,12 @@
   }
   function WebGLRenderLists() {
     let lists = /* @__PURE__ */ new WeakMap();
-    function get(scene2, renderCallDepth) {
-      const listArray = lists.get(scene2);
+    function get(scene, renderCallDepth) {
+      const listArray = lists.get(scene);
       let list;
       if (listArray === void 0) {
         list = new WebGLRenderList();
-        lists.set(scene2, [list]);
+        lists.set(scene, [list]);
       } else {
         if (renderCallDepth >= listArray.length) {
           list = new WebGLRenderList();
@@ -12978,12 +12978,12 @@
   }
   function WebGLRenderStates(extensions, capabilities) {
     let renderStates = /* @__PURE__ */ new WeakMap();
-    function get(scene2, renderCallDepth = 0) {
-      const renderStateArray = renderStates.get(scene2);
+    function get(scene, renderCallDepth = 0) {
+      const renderStateArray = renderStates.get(scene);
       let renderState;
       if (renderStateArray === void 0) {
         renderState = new WebGLRenderState(extensions, capabilities);
-        renderStates.set(scene2, [renderState]);
+        renderStates.set(scene, [renderState]);
       } else {
         if (renderCallDepth >= renderStateArray.length) {
           renderState = new WebGLRenderState(extensions, capabilities);
@@ -13087,7 +13087,7 @@
     this.needsUpdate = false;
     this.type = PCFShadowMap;
     let _previousType = this.type;
-    this.render = function(lights, scene2, camera) {
+    this.render = function(lights, scene, camera) {
       if (scope.enabled === false)
         return;
       if (scope.autoUpdate === false && scope.needsUpdate === false)
@@ -13152,7 +13152,7 @@
           _state.viewport(_viewport);
           shadow.updateMatrices(light, vp);
           _frustum = shadow.getFrustum();
-          renderObject(scene2, camera, shadow.camera, light, this.type);
+          renderObject(scene, camera, shadow.camera, light, this.type);
         }
         if (shadow.isPointLightShadow !== true && this.type === VSMShadowMap) {
           VSMPass(shadow, camera);
@@ -16844,11 +16844,11 @@
           }
         }
       }
-      this.renderBufferDirect = function(camera, scene2, geometry, material, object, group) {
-        if (scene2 === null)
-          scene2 = _emptyScene;
+      this.renderBufferDirect = function(camera, scene, geometry, material, object, group) {
+        if (scene === null)
+          scene = _emptyScene;
         const frontFaceCW = object.isMesh && object.matrixWorld.determinant() < 0;
-        const program = setProgram(camera, scene2, geometry, material, object);
+        const program = setProgram(camera, scene, geometry, material, object);
         state.setMaterial(material, frontFaceCW);
         let index = geometry.index;
         let rangeFactor = 1;
@@ -16916,24 +16916,24 @@
           renderer.render(drawStart, drawCount);
         }
       };
-      this.compile = function(scene2, camera) {
-        function prepare(material, scene3, object) {
+      this.compile = function(scene, camera) {
+        function prepare(material, scene2, object) {
           if (material.transparent === true && material.side === DoubleSide && material.forceSinglePass === false) {
             material.side = BackSide;
             material.needsUpdate = true;
-            getProgram(material, scene3, object);
+            getProgram(material, scene2, object);
             material.side = FrontSide;
             material.needsUpdate = true;
-            getProgram(material, scene3, object);
+            getProgram(material, scene2, object);
             material.side = DoubleSide;
           } else {
-            getProgram(material, scene3, object);
+            getProgram(material, scene2, object);
           }
         }
-        currentRenderState = renderStates.get(scene2);
+        currentRenderState = renderStates.get(scene);
         currentRenderState.init();
         renderStateStack.push(currentRenderState);
-        scene2.traverseVisible(function(object) {
+        scene.traverseVisible(function(object) {
           if (object.isLight && object.layers.test(camera.layers)) {
             currentRenderState.pushLight(object);
             if (object.castShadow) {
@@ -16942,16 +16942,16 @@
           }
         });
         currentRenderState.setupLights(_this.useLegacyLights);
-        scene2.traverse(function(object) {
+        scene.traverse(function(object) {
           const material = object.material;
           if (material) {
             if (Array.isArray(material)) {
               for (let i = 0; i < material.length; i++) {
                 const material2 = material[i];
-                prepare(material2, scene2, object);
+                prepare(material2, scene, object);
               }
             } else {
-              prepare(material, scene2, object);
+              prepare(material, scene, object);
             }
           }
         });
@@ -16980,33 +16980,33 @@
       };
       xr.addEventListener("sessionstart", onXRSessionStart);
       xr.addEventListener("sessionend", onXRSessionEnd);
-      this.render = function(scene2, camera) {
+      this.render = function(scene, camera) {
         if (camera !== void 0 && camera.isCamera !== true) {
           console.error("THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.");
           return;
         }
         if (_isContextLost === true)
           return;
-        if (scene2.matrixWorldAutoUpdate === true)
-          scene2.updateMatrixWorld();
+        if (scene.matrixWorldAutoUpdate === true)
+          scene.updateMatrixWorld();
         if (camera.parent === null && camera.matrixWorldAutoUpdate === true)
           camera.updateMatrixWorld();
         if (xr.enabled === true && xr.isPresenting === true) {
           camera = xr.updateCameraXR(camera);
         }
-        if (scene2.isScene === true)
-          scene2.onBeforeRender(_this, scene2, camera, _currentRenderTarget);
-        currentRenderState = renderStates.get(scene2, renderStateStack.length);
+        if (scene.isScene === true)
+          scene.onBeforeRender(_this, scene, camera, _currentRenderTarget);
+        currentRenderState = renderStates.get(scene, renderStateStack.length);
         currentRenderState.init();
         renderStateStack.push(currentRenderState);
         _projScreenMatrix2.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
         _frustum.setFromProjectionMatrix(_projScreenMatrix2);
         _localClippingEnabled = this.localClippingEnabled;
         _clippingEnabled = clipping.init(this.clippingPlanes, _localClippingEnabled);
-        currentRenderList = renderLists.get(scene2, renderListStack.length);
+        currentRenderList = renderLists.get(scene, renderListStack.length);
         currentRenderList.init();
         renderListStack.push(currentRenderList);
-        projectObject(scene2, camera, 0, _this.sortObjects);
+        projectObject(scene, camera, 0, _this.sortObjects);
         currentRenderList.finish();
         if (_this.sortObjects === true) {
           currentRenderList.sort(_opaqueSort, _transparentSort);
@@ -17014,29 +17014,29 @@
         if (_clippingEnabled === true)
           clipping.beginShadows();
         const shadowsArray = currentRenderState.state.shadowsArray;
-        shadowMap.render(shadowsArray, scene2, camera);
+        shadowMap.render(shadowsArray, scene, camera);
         if (_clippingEnabled === true)
           clipping.endShadows();
         if (this.info.autoReset === true)
           this.info.reset();
         this.info.render.frame++;
-        background.render(currentRenderList, scene2);
+        background.render(currentRenderList, scene);
         currentRenderState.setupLights(_this.useLegacyLights);
         if (camera.isArrayCamera) {
           const cameras = camera.cameras;
           for (let i = 0, l = cameras.length; i < l; i++) {
             const camera2 = cameras[i];
-            renderScene(currentRenderList, scene2, camera2, camera2.viewport);
+            renderScene(currentRenderList, scene, camera2, camera2.viewport);
           }
         } else {
-          renderScene(currentRenderList, scene2, camera);
+          renderScene(currentRenderList, scene, camera);
         }
         if (_currentRenderTarget !== null) {
           textures.updateMultisampleRenderTarget(_currentRenderTarget);
           textures.updateRenderTargetMipmap(_currentRenderTarget);
         }
-        if (scene2.isScene === true)
-          scene2.onAfterRender(_this, scene2, camera);
+        if (scene.isScene === true)
+          scene.onAfterRender(_this, scene, camera);
         bindingStates.resetDefaultState();
         _currentMaterialId = -1;
         _currentCamera = null;
@@ -17121,7 +17121,7 @@
           projectObject(children[i], camera, groupOrder, sortObjects);
         }
       }
-      function renderScene(currentRenderList2, scene2, camera, viewport) {
+      function renderScene(currentRenderList2, scene, camera, viewport) {
         const opaqueObjects = currentRenderList2.opaque;
         const transmissiveObjects = currentRenderList2.transmissive;
         const transparentObjects = currentRenderList2.transparent;
@@ -17129,21 +17129,21 @@
         if (_clippingEnabled === true)
           clipping.setGlobalState(_this.clippingPlanes, camera);
         if (transmissiveObjects.length > 0)
-          renderTransmissionPass(opaqueObjects, transmissiveObjects, scene2, camera);
+          renderTransmissionPass(opaqueObjects, transmissiveObjects, scene, camera);
         if (viewport)
           state.viewport(_currentViewport.copy(viewport));
         if (opaqueObjects.length > 0)
-          renderObjects(opaqueObjects, scene2, camera);
+          renderObjects(opaqueObjects, scene, camera);
         if (transmissiveObjects.length > 0)
-          renderObjects(transmissiveObjects, scene2, camera);
+          renderObjects(transmissiveObjects, scene, camera);
         if (transparentObjects.length > 0)
-          renderObjects(transparentObjects, scene2, camera);
+          renderObjects(transparentObjects, scene, camera);
         state.buffers.depth.setTest(true);
         state.buffers.depth.setMask(true);
         state.buffers.color.setMask(true);
         state.setPolygonOffset(false);
       }
-      function renderTransmissionPass(opaqueObjects, transmissiveObjects, scene2, camera) {
+      function renderTransmissionPass(opaqueObjects, transmissiveObjects, scene, camera) {
         const isWebGL2 = capabilities.isWebGL2;
         if (_transmissionRenderTarget === null) {
           _transmissionRenderTarget = new WebGLRenderTarget(1, 1, {
@@ -17168,7 +17168,7 @@
         _this.clear();
         const currentToneMapping = _this.toneMapping;
         _this.toneMapping = NoToneMapping;
-        renderObjects(opaqueObjects, scene2, camera);
+        renderObjects(opaqueObjects, scene, camera);
         textures.updateMultisampleRenderTarget(_transmissionRenderTarget);
         textures.updateRenderTargetMipmap(_transmissionRenderTarget);
         let renderTargetNeedsUpdate = false;
@@ -17182,7 +17182,7 @@
             const currentSide = material.side;
             material.side = BackSide;
             material.needsUpdate = true;
-            renderObject(object, scene2, camera, geometry, material, group);
+            renderObject(object, scene, camera, geometry, material, group);
             material.side = currentSide;
             material.needsUpdate = true;
             renderTargetNeedsUpdate = true;
@@ -17196,8 +17196,8 @@
         _this.setClearColor(_currentClearColor, _currentClearAlpha);
         _this.toneMapping = currentToneMapping;
       }
-      function renderObjects(renderList, scene2, camera) {
-        const overrideMaterial = scene2.isScene === true ? scene2.overrideMaterial : null;
+      function renderObjects(renderList, scene, camera) {
+        const overrideMaterial = scene.isScene === true ? scene.overrideMaterial : null;
         for (let i = 0, l = renderList.length; i < l; i++) {
           const renderItem = renderList[i];
           const object = renderItem.object;
@@ -17205,40 +17205,40 @@
           const material = overrideMaterial === null ? renderItem.material : overrideMaterial;
           const group = renderItem.group;
           if (object.layers.test(camera.layers)) {
-            renderObject(object, scene2, camera, geometry, material, group);
+            renderObject(object, scene, camera, geometry, material, group);
           }
         }
       }
-      function renderObject(object, scene2, camera, geometry, material, group) {
-        object.onBeforeRender(_this, scene2, camera, geometry, material, group);
+      function renderObject(object, scene, camera, geometry, material, group) {
+        object.onBeforeRender(_this, scene, camera, geometry, material, group);
         object.modelViewMatrix.multiplyMatrices(camera.matrixWorldInverse, object.matrixWorld);
         object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
-        material.onBeforeRender(_this, scene2, camera, geometry, object, group);
+        material.onBeforeRender(_this, scene, camera, geometry, object, group);
         if (material.transparent === true && material.side === DoubleSide && material.forceSinglePass === false) {
           material.side = BackSide;
           material.needsUpdate = true;
-          _this.renderBufferDirect(camera, scene2, geometry, material, object, group);
+          _this.renderBufferDirect(camera, scene, geometry, material, object, group);
           material.side = FrontSide;
           material.needsUpdate = true;
-          _this.renderBufferDirect(camera, scene2, geometry, material, object, group);
+          _this.renderBufferDirect(camera, scene, geometry, material, object, group);
           material.side = DoubleSide;
         } else {
-          _this.renderBufferDirect(camera, scene2, geometry, material, object, group);
+          _this.renderBufferDirect(camera, scene, geometry, material, object, group);
         }
-        object.onAfterRender(_this, scene2, camera, geometry, material, group);
+        object.onAfterRender(_this, scene, camera, geometry, material, group);
       }
-      function getProgram(material, scene2, object) {
-        if (scene2.isScene !== true)
-          scene2 = _emptyScene;
+      function getProgram(material, scene, object) {
+        if (scene.isScene !== true)
+          scene = _emptyScene;
         const materialProperties = properties.get(material);
         const lights = currentRenderState.state.lights;
         const shadowsArray = currentRenderState.state.shadowsArray;
         const lightsStateVersion = lights.state.version;
-        const parameters2 = programCache.getParameters(material, lights.state, shadowsArray, scene2, object);
+        const parameters2 = programCache.getParameters(material, lights.state, shadowsArray, scene, object);
         const programCacheKey = programCache.getProgramCacheKey(parameters2);
         let programs = materialProperties.programs;
-        materialProperties.environment = material.isMeshStandardMaterial ? scene2.environment : null;
-        materialProperties.fog = scene2.fog;
+        materialProperties.environment = material.isMeshStandardMaterial ? scene.environment : null;
+        materialProperties.fog = scene.fog;
         materialProperties.envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(material.envMap || materialProperties.environment);
         if (programs === void 0) {
           material.addEventListener("dispose", onMaterialDispose);
@@ -17308,12 +17308,12 @@
         materialProperties.vertexTangents = parameters2.vertexTangents;
         materialProperties.toneMapping = parameters2.toneMapping;
       }
-      function setProgram(camera, scene2, geometry, material, object) {
-        if (scene2.isScene !== true)
-          scene2 = _emptyScene;
+      function setProgram(camera, scene, geometry, material, object) {
+        if (scene.isScene !== true)
+          scene = _emptyScene;
         textures.resetTextureUnits();
-        const fog = scene2.fog;
-        const environment = material.isMeshStandardMaterial ? scene2.environment : null;
+        const fog = scene.fog;
+        const environment = material.isMeshStandardMaterial ? scene.environment : null;
         const colorSpace = _currentRenderTarget === null ? _this.outputColorSpace : _currentRenderTarget.isXRRenderTarget === true ? _currentRenderTarget.texture.colorSpace : LinearSRGBColorSpace;
         const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(material.envMap || environment);
         const vertexAlphas = material.vertexColors === true && !!geometry.attributes.color && geometry.attributes.color.itemSize === 4;
@@ -17373,7 +17373,7 @@
         }
         let program = materialProperties.currentProgram;
         if (needsProgramChange === true) {
-          program = getProgram(material, scene2, object);
+          program = getProgram(material, scene, object);
         }
         let refreshProgram = false;
         let refreshMaterial = false;
@@ -30771,12 +30771,12 @@
       const extensions = this.extensions;
       const sceneDef = this.json.scenes[sceneIndex];
       const parser = this;
-      const scene2 = new Group();
+      const scene = new Group();
       if (sceneDef.name)
-        scene2.name = parser.createUniqueName(sceneDef.name);
-      assignExtrasToUserData(scene2, sceneDef);
+        scene.name = parser.createUniqueName(sceneDef.name);
+      assignExtrasToUserData(scene, sceneDef);
       if (sceneDef.extensions)
-        addUnknownExtensionsToUserData(extensions, scene2, sceneDef);
+        addUnknownExtensionsToUserData(extensions, scene, sceneDef);
       const nodeIds = sceneDef.nodes || [];
       const pending = [];
       for (let i = 0, il = nodeIds.length; i < il; i++) {
@@ -30784,7 +30784,7 @@
       }
       return Promise.all(pending).then(function(nodes) {
         for (let i = 0, il = nodes.length; i < il; i++) {
-          scene2.add(nodes[i]);
+          scene.add(nodes[i]);
         }
         const reduceAssociations = (node) => {
           const reducedAssociations = /* @__PURE__ */ new Map();
@@ -30801,8 +30801,8 @@
           });
           return reducedAssociations;
         };
-        parser.associations = reduceAssociations(scene2);
-        return scene2;
+        parser.associations = reduceAssociations(scene);
+        return scene;
       });
     }
   };
@@ -32909,9 +32909,9 @@
 
   // node_modules/three/examples/jsm/postprocessing/MaskPass.js
   var MaskPass = class extends Pass {
-    constructor(scene2, camera) {
+    constructor(scene, camera) {
       super();
-      this.scene = scene2;
+      this.scene = scene;
       this.camera = camera;
       this.clear = true;
       this.needsSwap = false;
@@ -33088,9 +33088,9 @@
 
   // node_modules/three/examples/jsm/postprocessing/RenderPass.js
   var RenderPass = class extends Pass {
-    constructor(scene2, camera, overrideMaterial, clearColor, clearAlpha) {
+    constructor(scene, camera, overrideMaterial, clearColor, clearAlpha) {
       super();
-      this.scene = scene2;
+      this.scene = scene;
       this.camera = camera;
       this.overrideMaterial = overrideMaterial;
       this.clearColor = clearColor;
@@ -34217,13 +34217,13 @@
 
   // node_modules/three/examples/jsm/postprocessing/SSAOPass.js
   var SSAOPass = class _SSAOPass extends Pass {
-    constructor(scene2, camera, width, height) {
+    constructor(scene, camera, width, height) {
       super();
       this.width = width !== void 0 ? width : 512;
       this.height = height !== void 0 ? height : 512;
       this.clear = true;
       this.camera = camera;
-      this.scene = scene2;
+      this.scene = scene;
       this.kernelRadius = 8;
       this.kernelSize = 32;
       this.kernel = [];
@@ -34442,18 +34442,18 @@
       this.noiseTexture.needsUpdate = true;
     }
     overrideVisibility() {
-      const scene2 = this.scene;
+      const scene = this.scene;
       const cache = this._visibilityCache;
-      scene2.traverse(function(object) {
+      scene.traverse(function(object) {
         cache.set(object, object.visible);
         if (object.isPoints || object.isLine)
           object.visible = false;
       });
     }
     restoreVisibility() {
-      const scene2 = this.scene;
+      const scene = this.scene;
       const cache = this._visibilityCache;
-      scene2.traverse(function(object) {
+      scene.traverse(function(object) {
         const visible = cache.get(object);
         object.visible = visible;
       });
@@ -34471,9 +34471,9 @@
 
   // node_modules/three/examples/jsm/postprocessing/SSAARenderPass.js
   var SSAARenderPass = class extends Pass {
-    constructor(scene2, camera, clearColor, clearAlpha) {
+    constructor(scene, camera, clearColor, clearAlpha) {
       super();
-      this.scene = scene2;
+      this.scene = scene;
       this.camera = camera;
       this.sampleLevel = 4;
       this.unbiased = true;
@@ -34660,93 +34660,110 @@
   ];
 
   // src/app/effects.js
-  var composer;
-  var bloomComposer;
-  var bloomLayer;
-  var frameRateThreshold = 25;
-  var previousFrameTime = 1;
+  var frameRateThreshold = 60;
   var delayDuration = 5;
   var delayTimer = 0;
   var frameRates = [];
   var firstTime = true;
   var avgFrameRate = 0;
-  function scaleEffects(currentTime, renderer) {
-    const deltaTime = (currentTime - previousFrameTime) / 1e3;
-    delayTimer += deltaTime;
-    previousFrameTime = currentTime;
-    if (!window.virtual_office.fast) {
-      if (delayTimer >= delayDuration && frameRates.length > 10) {
-        var sum = frameRates.reduce(function(total, num) {
-          return total + num;
-        }, 0);
-        avgFrameRate = sum / frameRates.length;
-        const isBelowThreshold = avgFrameRate < frameRateThreshold;
-        if (isBelowThreshold) {
-          console.log(avgFrameRate + " FPS too low, switching effects off");
-          composer.passes.splice(0, composer.passes.length);
-          window.virtual_office.fast = true;
-          renderer.shadowMap.enabled = false;
-        }
-        window.virtual_office.effects.scaleDone = true;
-        if (firstTime) {
-          setInterval(() => {
-            avgFrameRate = 0;
-            frameRates = [];
-            delayTimer = 0;
-            window.virtual_office.effects.scaleDone = false;
-            firstTime = false;
-          }, 15e3);
+  var scalingRun;
+  function scaleEffects() {
+    scalingRun = setInterval(() => {
+      if (window.virtual_office.effects.scaleDone) {
+        if (!firstTime) {
+          clearInterval(scalingRun);
         }
       } else {
-        const currentFrameRate = 1 / deltaTime;
-        frameRates.push(currentFrameRate);
+        scaleEffectsRunner();
       }
+    }, 10);
+  }
+  function scaleEffectsRunner() {
+    delayTimer += 100;
+    if (delayTimer >= delayDuration && frameRates.length > frameRateThreshold * delayDuration) {
+      var sum = frameRates.reduce(function(total, num) {
+        return total + num;
+      }, 0);
+      avgFrameRate = sum / frameRates.length;
+      const isBelowThreshold = avgFrameRate < (window.virtual_office.fast ? frameRateThreshold : frameRateThreshold * 0.5);
+      if (isBelowThreshold) {
+        console.log(avgFrameRate + " FPS too low, effects off");
+        window.virtual_office.fast = true;
+        window.virtual_office.renderers.webgl.shadowMap.enabled = false;
+        if (window.virtual_office.effects.main && window.virtual_office.effects.main.passes && window.virtual_office.effects.main.passes.length > 0) {
+          window.virtual_office.effects.main.passes.splice(0, window.virtual_office.effects.main.passes.length);
+        }
+      } else {
+        console.log(avgFrameRate + " FPS good, effects on");
+        if (!window.virtual_office.effects.main || !window.virtual_office.effects.main.passes || window.virtual_office.effects.main.passes.length == 0) {
+          setupEffects();
+        }
+        window.virtual_office.fast = false;
+        window.virtual_office.renderers.webgl.shadowMap.enabled = true;
+      }
+      window.virtual_office.scene_objects.ambientLight.color = new Color(window.virtual_office.fast ? 5592405 : 4473924);
+      window.virtual_office.scene_objects.neon_sign.children[0].intensity = window.virtual_office.fast ? window.virtual_office.settings.light.fast.neonSign.normal : window.virtual_office.settings.light.highP.neonSign.normal;
+      window.virtual_office.scene.traverse((scene_object) => {
+        if (scene_object.name == "ceilLightActual") {
+          scene_object.intensity = window.virtual_office.fast ? window.virtual_office.settings.light.fast.desk.normal : window.virtual_office.settings.light.highP.desk.normal;
+        }
+      });
+      window.virtual_office.effects.scaleDone = true;
+      if (firstTime) {
+        setTimeout(() => {
+          avgFrameRate = 0;
+          frameRates = [];
+          delayTimer = 0;
+          window.virtual_office.effects.scaleDone = false;
+          firstTime = false;
+        }, 5e3);
+      }
+    } else {
+      frameRates.push(window.virtual_office.fps);
     }
   }
-  function setupEffects(renderer, scene2) {
-    var renderScene = new RenderPass(scene2, window.virtual_office.camera);
-    composer = new EffectComposer(renderer);
-    composer.setSize(window.innerWidth, window.innerHeight);
-    composer.addPass(renderScene);
-    if (!window.virtual_office.fast) {
-      renderer.shadowMap.enabled = true;
-      const ssaoPass = new SSAOPass(scene2, window.virtual_office.camera, window.innerWidth, window.innerHeight);
-      ssaoPass.kernelRadius = 20;
-      ssaoPass.output = SSAOPass.OUTPUT.Beauty;
-      composer.addPass(ssaoPass);
-      const ssaaPass = new SSAARenderPass(scene2, window.virtual_office.camera);
-      ssaaPass.sampleLevel = 1;
-      composer.addPass(ssaaPass);
-      bloomLayer = new Layers();
-      bloomLayer.set(1);
-      const bloomPass = new UnrealBloomPass(new Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-      bloomPass.threshold = 0.15;
-      bloomPass.strength = 0.85;
-      bloomPass.radius = 0.85;
-      bloomComposer = new EffectComposer(renderer);
-      bloomComposer.setSize(window.innerWidth, window.innerHeight);
-      bloomComposer.renderToScreen = false;
-      bloomComposer.addPass(renderScene);
-      bloomComposer.addPass(bloomPass);
-      const mixPass = new ShaderPass(
-        new ShaderMaterial({
-          uniforms: {
-            baseTexture: { value: null },
-            bloomTexture: { value: bloomComposer.renderTarget2.texture }
-          },
-          vertexShader: document.getElementById("vertexshader").textContent,
-          fragmentShader: document.getElementById("fragmentshader").textContent,
-          defines: {}
-        }),
-        "baseTexture"
-      );
-      mixPass.needsSwap = true;
-      composer.addPass(mixPass);
-      const tonePass = new OutputPass(ACESFilmicToneMapping);
-      tonePass.toneMappingExposure = Math.pow(Math.PI / 3, 4);
-      composer.addPass(tonePass);
-    }
-    return [composer, bloomComposer, bloomLayer];
+  function setupEffects() {
+    var renderScene = new RenderPass(window.virtual_office.scene, window.virtual_office.camera);
+    window.virtual_office.effects.main = new EffectComposer(window.virtual_office.renderers.webgl);
+    window.virtual_office.effects.main.setSize(window.innerWidth, window.innerHeight);
+    window.virtual_office.effects.main.addPass(renderScene);
+    window.virtual_office.renderers.webgl.shadowMap.enabled = true;
+    window.virtual_office.renderers.webgl.shadowMap.type = PCFSoftShadowMap;
+    const ssaoPass = new SSAOPass(window.virtual_office.scene, window.virtual_office.camera, window.innerWidth, window.innerHeight);
+    ssaoPass.kernelRadius = 20;
+    ssaoPass.output = SSAOPass.OUTPUT.Beauty;
+    window.virtual_office.effects.main.addPass(ssaoPass);
+    const ssaaPass = new SSAARenderPass(window.virtual_office.scene, window.virtual_office.camera);
+    ssaaPass.sampleLevel = 1;
+    window.virtual_office.effects.main.addPass(ssaaPass);
+    window.virtual_office.effects.bloomLayer = new Layers();
+    window.virtual_office.effects.bloomLayer.set(1);
+    const bloomPass = new UnrealBloomPass(new Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+    bloomPass.threshold = 0.15;
+    bloomPass.strength = 0.85;
+    bloomPass.radius = 0.85;
+    window.virtual_office.effects.bloom = new EffectComposer(window.virtual_office.renderers.webgl);
+    window.virtual_office.effects.bloom.setSize(window.innerWidth, window.innerHeight);
+    window.virtual_office.effects.bloom.renderToScreen = false;
+    window.virtual_office.effects.bloom.addPass(renderScene);
+    window.virtual_office.effects.bloom.addPass(bloomPass);
+    const mixPass = new ShaderPass(
+      new ShaderMaterial({
+        uniforms: {
+          baseTexture: { value: null },
+          bloomTexture: { value: window.virtual_office.effects.bloom.renderTarget2.texture }
+        },
+        vertexShader: document.getElementById("vertexshader").textContent,
+        fragmentShader: document.getElementById("fragmentshader").textContent,
+        defines: {}
+      }),
+      "baseTexture"
+    );
+    mixPass.needsSwap = true;
+    window.virtual_office.effects.main.addPass(mixPass);
+    const tonePass = new OutputPass(ACESFilmicToneMapping);
+    tonePass.toneMappingExposure = Math.pow(Math.PI / 3, 4);
+    window.virtual_office.effects.main.addPass(tonePass);
   }
 
   // node_modules/three/examples/jsm/loaders/FontLoader.js
@@ -34871,14 +34888,14 @@
   };
 
   // src/app/furniture.js
-  function setupBackwall(scene2, setupScene2) {
+  function setupBackwall(setupScene2) {
     var wallGroup = new Group();
     createNeonSign((signMesh) => {
       signMesh.position.set(-6.4, 15, 1);
       signMesh.name = "neon_sign";
       window.virtual_office.scene_objects.neon_sign = signMesh;
       wallGroup.add(signMesh);
-    }, scene2);
+    });
     window.virtual_office.scene_objects.tvWebGL = createScreen(720);
     window.virtual_office.scene_objects.tvWebGL.position.y = 8;
     window.virtual_office.scene_objects.tvWebGL.position.z = -14 - window.virtual_office.room_depth / 2;
@@ -34912,7 +34929,7 @@
     });
     return wallGroup;
   }
-  function createNeonSign(callback, scene2) {
+  function createNeonSign(callback) {
     const loader = new FontLoader();
     loader.load("./assets/fonts/Stigmature.json", (font) => {
       const textGeometry = new TextGeometry("about us", {
@@ -34931,9 +34948,9 @@
       lightActual.castShadow = true;
       if (window.virtual_office.debug) {
         const helper = new CameraHelper(lightActual.shadow.camera);
-        scene2.add(helper);
+        window.virtual_office.scene.add(helper);
         const lightHelper = new PointLightHelper(lightActual, 5);
-        scene2.add(lightHelper);
+        window.virtual_office.scene.add(lightHelper);
       }
       signMesh.layers.enable(1);
       signMesh.add(lightActual);
@@ -34955,7 +34972,7 @@
     );
     return material;
   }
-  function setupDesks(gapSize, scale, scene2, setupScene2) {
+  function setupDesks(gapSize, scale, setupScene2) {
     var deskGroup = new Group();
     window.virtual_office.scene_objects.desk_labels = [];
     for (var i = 0; i < 4; i++) {
@@ -35018,9 +35035,9 @@
           desk_iter.updateMatrixWorld();
           if (window.virtual_office.debug) {
             const helper = new CameraHelper(desk_iter.shadow.camera);
-            scene2.add(helper);
+            window.virtual_office.scene.add(helper);
             const lightHelper = new DirectionalLightHelper(desk_iter, 0.25);
-            scene2.add(lightHelper);
+            window.virtual_office.scene.add(lightHelper);
           }
         }
       });
@@ -35420,10 +35437,8 @@
     var width = window.innerWidth;
     var height = window.innerHeight;
     window.virtual_office.renderers.webgl.setSize(width, height);
-    if (!window.virtual_office.fast) {
-      window.virtual_office.effects.main.setSize(width, height);
-      window.virtual_office.effects.bloom.setSize(width, height);
-    }
+    window.virtual_office.effects.main.setSize(width, height);
+    window.virtual_office.effects.bloom.setSize(width, height);
     window.virtual_office.camera.aspect = width / height;
     window.virtual_office.camera.fov = setCameraFOV(window.virtual_office.camera.aspect);
     if (!window.virtual_office.selected && !window.virtual_office.moving) {
@@ -35463,9 +35478,9 @@
       window.virtual_office.scene_objects.door_frame.position.z = -15 + window.virtual_office.room_depth / 2;
     }
   }
-  function handleInteractions(scene2) {
+  function handleInteractions() {
     window.virtual_office.raycaster.setFromCamera(new Vector2(window.virtual_office.pointer.x, window.virtual_office.pointer.y), window.virtual_office.camera);
-    const intersects2 = window.virtual_office.raycaster.intersectObjects(scene2.children);
+    const intersects2 = window.virtual_office.raycaster.intersectObjects(window.virtual_office.scene.children);
     if (intersects2.length > 0) {
       for (let i = 0; i < intersects2.length; i++) {
         if (!window.virtual_office.selected) {
@@ -35681,7 +35696,6 @@
 
   // src/app/main.js
   var csgEvaluator;
-  var scene;
   var stats;
   var materials;
   var darkMaterial;
@@ -35728,7 +35742,7 @@
      * 
      * @memberof Boolean
      */
-    fast: false,
+    fast: true,
     /**
      * Frames Per Second (FPS)
      * 
@@ -35836,6 +35850,12 @@
       // updated responsive eugene levy
     },
     /**
+     * The main scene container.
+     * 
+     * @memberof THREE.Scene
+     */
+    scene: false,
+    /**
      * Tracked meshes and mesh groups that compose the scene.
      * 
      * @memberof Object
@@ -35911,9 +35931,8 @@
     setupScene();
     if (window.virtual_office.debug) {
       const helper = new CameraHelper(window.virtual_office.camera);
-      scene.add(helper);
+      window.virtual_office.scene.add(helper);
     }
-    [window.virtual_office.effects.main, window.virtual_office.effects.bloom, window.virtual_office.effects.bloomLayer] = new setupEffects(window.virtual_office.renderers.webgl, scene);
     darkMaterial = new MeshBasicMaterial({ color: "black" });
     materials = {};
     window.virtual_office.controls = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.webgl.domElement);
@@ -35985,14 +36004,11 @@
   function animate(currentTime) {
     updateFPS();
     requestAnimationFrame(animate);
-    if (!window.virtual_office.effects.scaleDone) {
-      scaleEffects(currentTime, window.virtual_office.renderers.webgl);
-    }
     if (window.virtual_office.started) {
       updateTriggers(currentTime);
       updateTweens(currentTime);
       if (!window.virtual_office.debug) {
-        handleInteractions(scene);
+        handleInteractions();
       }
       window.virtual_office.scene_objects.desk_labels.forEach((desk_label, index) => {
         const phaseShift = index * (Math.PI / 2);
@@ -36024,12 +36040,12 @@
     }
     if (window.virtual_office.status == 6) {
       if (!window.virtual_office.fast) {
-        scene.traverse(darkenNonBloomed);
+        window.virtual_office.scene.traverse(darkenNonBloomed);
         window.virtual_office.effects.bloom.render();
-        scene.traverse(restoreMaterial);
+        window.virtual_office.scene.traverse(restoreMaterial);
         window.virtual_office.effects.main.render();
       } else {
-        window.virtual_office.renderers.webgl.render(scene, window.virtual_office.camera);
+        window.virtual_office.renderers.webgl.render(window.virtual_office.scene, window.virtual_office.camera);
       }
     }
   }
@@ -36114,9 +36130,9 @@
       rightSideFrame.position.set(doorWidth / 2 + frameWidth / 2, -5 + doorHeight / 2 - frameWidth / 2, 0);
       frameGroup.add(rightSideFrame);
       window.virtual_office.scene_objects.door_frame = frameGroup;
-      scene.add(window.virtual_office.scene_objects.door_frame);
+      window.virtual_office.scene.add(window.virtual_office.scene_objects.door_frame);
       window.virtual_office.loaders.stats.textures.loaded++;
-      scene.visible = true;
+      window.virtual_office.scene.visible = true;
       window.virtual_office.status = 2;
       setupScene();
     });
@@ -36206,7 +36222,7 @@
       plane.position.z = window.virtual_office.room_depth / 2;
       plane.position.y = -5.1;
       plane.rotation.x = Math.PI / 2;
-      scene.add(plane);
+      window.virtual_office.scene.add(plane);
     });
     const ceilMaterial = new MeshLambertMaterial({
       aoMapIntensity: 1.5,
@@ -36329,28 +36345,29 @@
   }
   function setupScene() {
     if (window.virtual_office.status == 0) {
-      scene = new Scene();
-      scene.visible = false;
-      window.virtual_office.scene_objects.wallGroup = setupBackwall(scene, setupScene);
+      window.virtual_office.scene = new Scene();
+      window.virtual_office.scene.visible = false;
+      window.virtual_office.scene_objects.wallGroup = setupBackwall(setupScene);
       window.virtual_office.scene_objects.wallGroup.position.z = -15 - window.virtual_office.room_depth / 2;
-      scene.add(window.virtual_office.scene_objects.wallGroup);
-      scene.add(window.virtual_office.scene_objects.tvWebGL);
+      window.virtual_office.scene.add(window.virtual_office.scene_objects.wallGroup);
+      window.virtual_office.scene.add(window.virtual_office.scene_objects.tvWebGL);
+      scaleEffects(1, window.virtual_office.renderers.webgl);
     }
     if (window.virtual_office.status == 1) {
       window.virtual_office.scene_objects.door = createDoor();
       window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, -5 + doorHeight / 2, -15 + window.virtual_office.room_depth / 2);
-      scene.add(window.virtual_office.scene_objects.door);
+      window.virtual_office.scene.add(window.virtual_office.scene_objects.door);
     }
     if (window.virtual_office.status == 2) {
-      window.virtual_office.scene_objects.deskGroup = setupDesks(window.virtual_office.settings.gap, window.virtual_office.settings.scale, scene, setupScene);
-      scene.add(window.virtual_office.scene_objects.deskGroup);
+      window.virtual_office.scene_objects.deskGroup = setupDesks(window.virtual_office.settings.gap, window.virtual_office.settings.scale, setupScene);
+      window.virtual_office.scene.add(window.virtual_office.scene_objects.deskGroup);
     }
     if (window.virtual_office.status == 3) {
-      var ambientLight = new AmbientLight(window.virtual_office.fast ? 5592405 : 4473924);
-      scene.add(ambientLight);
+      window.virtual_office.scene_objects.ambientLight = new AmbientLight(window.virtual_office.fast ? 5592405 : 4473924);
+      window.virtual_office.scene.add(window.virtual_office.scene_objects.ambientLight);
       window.virtual_office.scene_objects.screens_loaded = 0;
       window.virtual_office.scene_objects.room = createOfficeRoom();
-      scene.add(window.virtual_office.scene_objects.room);
+      window.virtual_office.scene.add(window.virtual_office.scene_objects.room);
       requestAnimationFrame(animate);
     }
     if (window.virtual_office.status == 4) {

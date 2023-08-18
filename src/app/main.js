@@ -16,7 +16,7 @@ import { setupTriggers, updateTriggers } from './triggers.js';
 import { setupTweens, updateTweens, startTweening } from './tweens.js';
 
 let csgEvaluator;
-let scene, stats;
+let stats;
 
 let materials, darkMaterial;
 
@@ -69,7 +69,7 @@ window.virtual_office = {
    * 
    * @memberof Boolean
    */
-  fast: false,
+  fast: true,
 
   /**
    * Frames Per Second (FPS)
@@ -174,6 +174,13 @@ window.virtual_office = {
     scale: 11, // do not change, braeks css screen sizes
     startPosZ: - 10 // updated responsive eugene levy
   },
+
+  /**
+   * The main scene container.
+   * 
+   * @memberof THREE.Scene
+   */
+  scene: false,
 
   /**
    * Tracked meshes and mesh groups that compose the scene.
@@ -284,11 +291,8 @@ export default function init() {
   if (window.virtual_office.debug) {
     const helper = new THREE.CameraHelper(window.virtual_office.camera);
 
-    scene.add(helper);
+    window.virtual_office.scene.add(helper);
   }
-
-  // Setup effects.
-  [ window.virtual_office.effects.main, window.virtual_office.effects.bloom, window.virtual_office.effects.bloomLayer ] = new setupEffects(window.virtual_office.renderers.webgl, scene);
 
   // Bloom effect materials.
   darkMaterial = new THREE.MeshBasicMaterial({ color: 'black' });
@@ -397,11 +401,6 @@ export function animate(currentTime) {
 
   requestAnimationFrame(animate);
 
-  // Run scaling, if not done yet.
-  if ( ! window.virtual_office.effects.scaleDone) {
-    scaleEffects(currentTime, window.virtual_office.renderers.webgl);
-  }
-
   if (window.virtual_office.started) {
 
     updateTriggers(currentTime);
@@ -409,7 +408,7 @@ export function animate(currentTime) {
     updateTweens(currentTime);
 
     if (!window.virtual_office.debug) {
-      handleInteractions( scene );
+      handleInteractions( );
     }
 
     window.virtual_office.scene_objects.desk_labels.forEach( (desk_label, index) => {
@@ -455,12 +454,12 @@ export function animate(currentTime) {
 
     // Render the composer
     if (!window.virtual_office.fast) {
-      scene.traverse(darkenNonBloomed);
+      window.virtual_office.scene.traverse(darkenNonBloomed);
       window.virtual_office.effects.bloom.render();
-      scene.traverse(restoreMaterial);
+      window.virtual_office.scene.traverse(restoreMaterial);
       window.virtual_office.effects.main.render();
     } else {
-      window.virtual_office.renderers.webgl.render(scene, window.virtual_office.camera); // Render the scene without the effects
+      window.virtual_office.renderers.webgl.render(window.virtual_office.scene, window.virtual_office.camera); // Render the scene without the effects
     }
 
   }
@@ -602,10 +601,10 @@ function createDoor( ) {
 
     window.virtual_office.scene_objects.door_frame = frameGroup;
     
-    scene.add(window.virtual_office.scene_objects.door_frame);
+    window.virtual_office.scene.add(window.virtual_office.scene_objects.door_frame);
 
     window.virtual_office.loaders.stats.textures.loaded ++;
-    scene.visible = true;
+    window.virtual_office.scene.visible = true;
 
     window.virtual_office.status = 2;
     setupScene();
@@ -735,7 +734,7 @@ export function createOfficeRoom() {
     plane.position.z = window.virtual_office.room_depth / 2;
     plane.position.y = -5.1;
     plane.rotation.x = Math.PI / 2;
-    scene.add( plane );
+    window.virtual_office.scene.add( plane );
 
   });
 
@@ -890,39 +889,43 @@ function setupScene() {
 
   if ( window.virtual_office.status == 0 ) {
     // Scene container.
-    scene = new THREE.Scene();
-    scene.visible = false;
+    window.virtual_office.scene = new THREE.Scene();
+    window.virtual_office.scene.visible = false;
 
-    window.virtual_office.scene_objects.wallGroup = setupBackwall(scene, setupScene);
+    window.virtual_office.scene_objects.wallGroup = setupBackwall( setupScene );
     window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
-    scene.add(window.virtual_office.scene_objects.wallGroup);
-    scene.add(window.virtual_office.scene_objects.tvWebGL);
+    window.virtual_office.scene.add(window.virtual_office.scene_objects.wallGroup);
+    window.virtual_office.scene.add(window.virtual_office.scene_objects.tvWebGL);
+
+    // Run scaling
+    scaleEffects(1, window.virtual_office.renderers.webgl);
   }
 
   if ( window.virtual_office.status == 1 ) {
     window.virtual_office.scene_objects.door = createDoor( );
     window.virtual_office.scene_objects.door.position.set(-doorWidth / 2, - 5 + (doorHeight / 2), - 15 + (window.virtual_office.room_depth / 2));
-    scene.add(window.virtual_office.scene_objects.door);
+    window.virtual_office.scene.add(window.virtual_office.scene_objects.door);
   }
 
   if ( window.virtual_office.status == 2 ) {
 
-    window.virtual_office.scene_objects.deskGroup = setupDesks(window.virtual_office.settings.gap, window.virtual_office.settings.scale, scene, setupScene);
-    scene.add(window.virtual_office.scene_objects.deskGroup);
+    window.virtual_office.scene_objects.deskGroup = setupDesks(window.virtual_office.settings.gap, window.virtual_office.settings.scale, setupScene);
+    window.virtual_office.scene.add(window.virtual_office.scene_objects.deskGroup);
 
   }
 
   if ( window.virtual_office.status == 3 ) {
 
     // Adjust ambient light intensity
-    var ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x555555 : 0x444444); // Dim ambient light color
-    scene.add(ambientLight);
+    window.virtual_office.scene_objects.ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x555555 : 0x444444); // Dim ambient light color
+    window.virtual_office.scene.add(window.virtual_office.scene_objects.ambientLight);
 
     window.virtual_office.scene_objects.screens_loaded = 0;
     window.virtual_office.scene_objects.room = createOfficeRoom( );
-    scene.add(window.virtual_office.scene_objects.room);
+    window.virtual_office.scene.add(window.virtual_office.scene_objects.room);
 
-    requestAnimationFrame (animate);
+    requestAnimationFrame (animate);    
+
   }
   if ( window.virtual_office.status == 4 ) {
     // Setup triggers
