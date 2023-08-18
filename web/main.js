@@ -35437,8 +35437,10 @@
     var width = window.innerWidth;
     var height = window.innerHeight;
     window.virtual_office.renderers.webgl.setSize(width, height);
-    window.virtual_office.effects.main.setSize(width, height);
-    window.virtual_office.effects.bloom.setSize(width, height);
+    if (window.virtual_office.effects.main)
+      window.virtual_office.effects.main.setSize(width, height);
+    if (window.virtual_office.effects.bloom)
+      window.virtual_office.effects.bloom.setSize(width, height);
     window.virtual_office.camera.aspect = width / height;
     window.virtual_office.camera.fov = setCameraFOV(window.virtual_office.camera.aspect);
     if (!window.virtual_office.selected && !window.virtual_office.moving) {
