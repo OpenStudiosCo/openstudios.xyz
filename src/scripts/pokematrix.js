@@ -14,9 +14,7 @@ const webgl = document.getElementById('webgl');
 webgl.style.filter = 'saturate(0)';
 
 const canvas = document.getElementById('pokematrixCanvas');
-canvas.style.mixBlendMode = "hard-light";
 const ctx = canvas.getContext('2d');
-
 const canvas2 = document.getElementById('pokematrixImage');
 canvas2.style.display = 'none';
 const ctx2 = canvas2.getContext('2d', {
@@ -74,7 +72,7 @@ window.matrix_scene = {
         ctx.font = fontSize + 'pt monospace';
 
         if (window.matrix_scene.stage == 0) {
-            ctx.fillStyle = '#0001';
+            ctx.fillStyle = "rgba(0,0,0,0.0025)";
             ctx.fillRect(0, 0, w, h);
             // @todo: implement the intro sequence here - column reduce?
 
@@ -95,7 +93,7 @@ window.matrix_scene = {
             });
         }
         if (window.matrix_scene.stage == 1) {
-            ctx.fillStyle = "rgba(0,0,0,0.001)";
+            ctx.fillStyle = "rgba(0,0,0,0.005)";
             ctx.fillRect(0, 0, w, h);
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
@@ -107,7 +105,7 @@ window.matrix_scene = {
 
         }
         if (window.matrix_scene.stage == 2) {
-            ctx.fillStyle = "rgba(0,0,0,0.001)";
+            ctx.fillStyle = "rgba(0,0,0,0.01)";
             ctx.fillRect(0, 0, w, h);
 
             ypos.forEach((y, ind) => {
@@ -204,7 +202,7 @@ window.matrix_scene = {
     },
     // Start
     start: function () {
-        ctx.fillStyle = '#0001';
+        ctx.fillStyle = "rgba(0,0,0,0.25)";
         ctx.fillRect(0, 0, w, h);
 
         window.addEventListener('orientationchange', handleViewportChange);
@@ -245,7 +243,13 @@ function getAverageColor(context, x, y) {
         b += imageData[i + 2] + randomDelta;
     }
     const count = imageData.length / 4;
-    return `rgb(${Math.floor(r / count)}, ${Math.floor(g / count)}, ${Math.floor(b / count)})`;
+    if (Math.floor(g / count) <=0 ) {
+        return `rgba(0,0,0,1)`;
+        
+    }
+    else {
+        return `rgb(${Math.floor(r / count)}, ${Math.floor(g / count)}, ${Math.floor(b / count)})`;
+    }
 }
 
 
@@ -260,6 +264,6 @@ function handleViewportChange() {
     cols = Math.floor(w / fontSize) + 1;
     ypos = Array(cols).fill(0);
 
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = '#0000';
     ctx.fillRect(0, 0, w, h);
 }
