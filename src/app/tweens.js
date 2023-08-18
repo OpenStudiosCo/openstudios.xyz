@@ -3,7 +3,9 @@ import * as THREE from 'three';
 export function startTweening() {
   setTimeout(() => {
     window.virtual_office.started = true;
-  document.getElementById('loadingSign').style.display = 'none';
+  let loadingSign = document.getElementById('loadingSign');
+  if (loadingSign)
+    loadingSign.style.display = 'none';
   flickerEffect();
   }, 250);
   
@@ -83,7 +85,9 @@ function flickerEffect() {
     .to({ emissiveIntensity: 0.8 }, duration * 1000) // Start at 0 intensity
     .onUpdate((obj) => { updateFlickering(obj) })
     .onComplete( () => {
-      document.getElementById('loader_symbols').style.display = 'none';
+      let loader_symbols = document.getElementById('loader_symbols');
+      if (loader_symbols)
+        loader_symbols.style.display = 'none';
     });
   window.virtual_office.tweens.doorSignFlickerB = new TWEEN.Tween( dummy )
     .delay( duration * 1000)

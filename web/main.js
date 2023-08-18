@@ -35291,7 +35291,9 @@
   function startTweening() {
     setTimeout(() => {
       window.virtual_office.started = true;
-      document.getElementById("loadingSign").style.display = "none";
+      let loadingSign = document.getElementById("loadingSign");
+      if (loadingSign)
+        loadingSign.style.display = "none";
       flickerEffect();
     }, 250);
   }
@@ -35326,7 +35328,9 @@
     window.virtual_office.tweens.doorSignFlickerA = new TWEEN.Tween(dummy).easing(TWEEN.Easing.Quadratic.Out).to({ emissiveIntensity: 0.8 }, duration * 1e3).onUpdate((obj) => {
       updateFlickering(obj);
     }).onComplete(() => {
-      document.getElementById("loader_symbols").style.display = "none";
+      let loader_symbols = document.getElementById("loader_symbols");
+      if (loader_symbols)
+        loader_symbols.style.display = "none";
     });
     window.virtual_office.tweens.doorSignFlickerB = new TWEEN.Tween(dummy).delay(duration * 1e3).to({ emissiveIntensity: 0 }, 0.1 * 1e3).onUpdate((obj) => {
       updateFlickering(obj);
