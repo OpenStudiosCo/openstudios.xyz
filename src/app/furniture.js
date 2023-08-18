@@ -343,15 +343,17 @@ function createDesk( i ) {
       if ( child.isMesh ) {
 
         child.castShadow = true;
+
+        child.original_material = child.material.clone();
         
         brightenMaterial(child.material, amount);
-        
 
       }
 
     } );
     object.position.y = -0.4555;
     object.rotation.y = - Math.PI ;
+    object.name = "deskMesh";
     deskGroup.add(object);
     window.virtual_office.loaders.stats.gtlf.loaded ++;
   }); 

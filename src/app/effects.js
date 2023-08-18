@@ -7,6 +7,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
+import { brightenMaterial } from './furniture';
 
 
 
@@ -92,6 +93,18 @@ export function scaleEffectsRunner ( ) {
     window.virtual_office.scene.traverse((scene_object)=> {
       if (scene_object.name =='ceilLightActual') {
         scene_object.intensity = window.virtual_office.fast ? window.virtual_office.settings.light.fast.desk.normal : window.virtual_office.settings.light.highP.desk.normal;
+      }
+      if (scene_object.name =='deskMesh') {
+        scene_object.traverse( function ( child ) {
+
+          if ( child.isMesh ) {
+    
+            let amount = window.virtual_office.fast ? 3 : 1.5;
+            child.material = child.original_material.clone();
+            brightenMaterial( child.material, amount);
+          }
+        });
+        
       }
     });
 
