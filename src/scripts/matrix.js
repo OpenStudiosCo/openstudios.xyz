@@ -48,6 +48,10 @@ window.matrix_scene = {
      */
     stage: 0,
     /**
+     * Timestamp when the current stage began.
+     */
+    stageStarted: 0,
+    /**
      * Stage specific variables.
      */
     // Stage 0
@@ -56,7 +60,6 @@ window.matrix_scene = {
     loaded_done: 0, 
     loaded_target: 0,
     // Stage 2
-    transition_elapsed: 0,
     transition_total: 5000, // in milliseconds
     
     // Animates the scene
@@ -126,7 +129,13 @@ window.matrix_scene = {
         if ( window.matrix_scene.stage == 3 ) {
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
-                window.matrix_scene.elapsed += Math.PI;
+                
+                if ( canvas.width * canvas.height < 2000000 ) {
+                    window.matrix_scene.elapsed += Math.PI * 10;
+                }
+                else {
+                    window.matrix_scene.elapsed += Math.PI;
+                }
                 
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
@@ -148,11 +157,9 @@ window.matrix_scene = {
     // Updates the scene
     updateStage: function () {
         if ( window.matrix_scene.stage == 0 ) {
-            if ( ! window.virtual_office ) {
-                //requestAnimationFrame( window.matrix_scene.animate );
-            }
-            else {
+            if ( window.virtual_office && ( Date.now() - window.matrix_scene.stageStarted > 500) ) {
                 window.matrix_scene.stage = 1;
+                window.matrix_scene.stageStarted = Date.now();
                 for ( var measure in window.virtual_office.loaders.stats ) {
                     window.matrix_scene.loaded_target += window.virtual_office.loaders.stats[measure].target;
                 }
@@ -173,38 +180,31 @@ window.matrix_scene = {
             }
 
             if (
-                window.matrix_scene.loaded_done < window.matrix_scene.loaded_target
+                window.matrix_scene.loaded_done == window.matrix_scene.loaded_target && ( Date.now() - window.matrix_scene.stageStarted > 500)
             ) {
-                // requestAnimationFrame( window.matrix_scene.animate );
-            }
-            else {
                 window.matrix_scene.stage = 2;
+                window.matrix_scene.stageStarted = Date.now();
             }
         }
         if ( window.matrix_scene.stage == 2 ) {
             if (
-                window.matrix_scene.elapsed < 80000
+                ( Date.now() - window.matrix_scene.stageStarted > 500)
             ) {
-                //requestAnimationFrame( window.matrix_scene.animate );
-            }
-            else {
                 window.matrix_scene.stage = 3;
+                window.matrix_scene.stageStarted = Date.now();
                 canvas.style.transition = 'filter 5s, transform 5s';
                 canvas.style.transform = "scale(5)";
                 canvas.style.filter = "blur(5px)";
 
-                webgl.style.transition = 'filter 3s 2s, opacity 2s';
+                webgl.style.transition = 'filter 3s 2s, opacity 1s 4s';
                 webgl.style.filter = "saturate(1)";
                 webgl.style.opacity = 1;
             }
         }
         if ( window.matrix_scene.stage == 3 ) {
             if (
-                (window.matrix_scene.transition_elapsed < window.matrix_scene.transition_total)
+                (Date.now() - window.matrix_scene.stageStarted) > window.matrix_scene.transition_total
             ) {
-                window.matrix_scene.transition_elapsed += 100;
-            }
-            else {
                 clearInterval(window.matrix_scene.interval);
                 window.matrix_scene.complete = true;
             }
@@ -220,6 +220,7 @@ window.matrix_scene = {
         
         // Hide body element scrollbars as the 3D viewport takes over.
         document.querySelector("body").style.overflow = 'hidden';
+        window.matrix_scene.stageStarted = Date.now();
         window.matrix_scene.interval = setInterval( window.matrix_scene.updateStage, 100);
         requestAnimationFrame( window.matrix_scene.animate );
     }
