@@ -52,11 +52,40 @@ body {
     cursor: pointer;
     border: solid 1px #00DD00;
     border-radius: 1rem;
-    padding: 1rem;
-    position: fixed;
-    top: 2rem;
-    right: 3rem;
+    padding: 0.5rem;
+    position: absolute;
+    top: 0;
+    right: 0;
     z-index: 10001;
+    padding-top: 1.75rem;
+    padding-right: 1.75rem;
+    margin-right: -1rem;
+    margin-top: -1rem;
+}
+#pokematrixSign img,
+#exitSign img {
+    max-width: min(80px, 15vw);
+    height: auto;
+}
+#pokematrixSign:active,
+#pokematrixSign:focus,
+#pokematrixSign:hover,
+#exitSign:active,
+#exitSign:focus,
+#exitSign:hover {
+    box-shadow: 0px 0px 7.5px 7.5px #00FF00;
+    border-color: #00FF00;
+}
+
+@media screen and (min-width: 640px) {
+    #pokematrixSign,
+    #exitSign {
+        padding: 1rem;
+        margin-top: 0rem;
+        margin-right: 0rem;
+        top: 2rem;
+        right: 3rem;
+    }
 }
 #pokematrixSign {
     opacity: 0;
@@ -64,16 +93,6 @@ body {
 }
 #exitSign {
     display: none;
-}
-#pokematrixSign img,
-#exitSign img {
-    max-width: min(80px, 10vw);
-    height: auto;
-}
-#pokematrixSign:hover,
-#exitSign:hover {
-    box-shadow: 0px 0px 7.5px 7.5px #00FF00;
-    border-color: #00FF00;
 }
 #pokematrixImage,
 #pokematrixCanvas {
