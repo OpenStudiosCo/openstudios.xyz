@@ -13,7 +13,7 @@ html
         style.
             #page-wrapper {
                 position: relative;
-                z-index: 0;
+                z-index: 2;
             }
             #webgl-wrapper {
                 overflow: hidden;
@@ -55,6 +55,7 @@ html
                 display: none;
                 z-index: 10000;
             }
+            #pokematrixSign,
             #exitSign {
                 background: black;
                 font-weight: bold;
@@ -62,7 +63,6 @@ html
                 box-shadow: 0px 0px 5px 5px #00DD00;
                 text-shadow: 2.5px 2.5px 5px #999;
                 cursor: pointer;
-                display: none;
                 border: solid 1px #00DD00;
                 border-radius: 1rem;
                 padding: 1rem;
@@ -71,13 +71,33 @@ html
                 right: 3rem;
                 z-index: 10001;
             }
+            #pokematrixSign {
+                opacity: 0;
+            }
+            #exitSign {
+                display: none;
+            }
+            #pokematrixSign img,
             #exitSign img {
                 max-width: min(80px, 10vw);
                 height: auto;
             }
+            #pokematrixSign:hover,
             #exitSign:hover {
                 box-shadow: 0px 0px 7.5px 7.5px #00FF00;
                 border-color: #00FF00;
+            }
+            #pokematrixImage,
+            #pokematrixCanvas {
+                border-radius: 1rem;
+                height: auto;
+                position: absolute;
+                right: calc(3rem - 5px);
+                top: calc(2rem - 5px);
+                z-index: 10002;
+            }
+            #pokematrixImage {
+                top: 13rem;
             }
     body(onload="_init( 3000 );")
         noscript
@@ -86,9 +106,6 @@ html
         - var isIframe = false
         include ./1999_layout.pug
         #webgl-wrapper
-            canvas#loader_symbols
-            canvas#loader_image
-            include ../templates/door_image.pug
             a#exitSign
                 img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
             iframe#pageOverlay
