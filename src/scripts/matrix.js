@@ -196,7 +196,7 @@ window.matrix_scene = {
                 canvas.style.transform = "scale(5)";
                 canvas.style.filter = "blur(5px)";
 
-                webgl.style.transition = 'filter 3s 2s, opacity 1s 4s';
+                webgl.style.transition = 'filter 3s 2s, opacity 4s';
                 webgl.style.filter = "saturate(1)";
                 webgl.style.opacity = 1;
             }
