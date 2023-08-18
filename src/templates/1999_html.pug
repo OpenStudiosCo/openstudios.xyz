@@ -66,13 +66,14 @@ html
                 border: solid 1px #00DD00;
                 border-radius: 1rem;
                 padding: 1rem;
-                position: absolute;
+                position: fixed;
                 top: 2rem;
                 right: 3rem;
                 z-index: 10001;
             }
             #pokematrixSign {
                 opacity: 0;
+                cursor: pointer;
             }
             #exitSign {
                 display: none;
@@ -91,7 +92,7 @@ html
             #pokematrixCanvas {
                 border-radius: 1rem;
                 height: auto;
-                position: absolute;
+                position: fixed;
                 right: calc(3rem - 5px);
                 top: calc(2rem - 5px);
                 z-index: 10002;
@@ -106,7 +107,7 @@ html
         - var isIframe = false
         include ./1999_layout.pug
         #webgl-wrapper
-            a#exitSign
+            a#exitSign(href="#")
                 img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
             iframe#pageOverlay
             #webgl

@@ -61,7 +61,7 @@ window.matrix_scene = {
     loaded_done: 0,
     loaded_target: 0,
     // Stage 2
-    transition_total: 5000, // in milliseconds
+    transition_total: 2500, // in milliseconds
 
     // Animates the scene
     animate: function (currentTime) {
@@ -173,7 +173,7 @@ window.matrix_scene = {
             if (
                 window.matrix_scene.loaded_done == window.matrix_scene.loaded_target && (Date.now() - window.matrix_scene.stageStarted > 500)
             ) {
-                //window.matrix_scene.stage = 2;
+                window.matrix_scene.stage = 2;
                 window.matrix_scene.stageStarted = Date.now();
             }
         }
@@ -183,13 +183,13 @@ window.matrix_scene = {
             ) {
                 window.matrix_scene.stage = 3;
                 window.matrix_scene.stageStarted = Date.now();
-                // canvas.style.transition = 'filter 5s, transform 5s';
-                // canvas.style.transform = "scale(5)";
-                // canvas.style.filter = "blur(5px)";
+                canvas.style.transition = 'filter 2.5s, transform 2.5s, opacity 2.5s';
+                canvas.style.transform = "scale(5)";
+                canvas.style.filter = "blur(5px)";
+                canvas.style.opacity = 0;
 
-                // webgl.style.transition = 'filter 3s 2s, opacity 4s';
-                // webgl.style.filter = "saturate(1)";
-                // webgl.style.opacity = 1;
+                exitButton.style.transition = 'opacity 2s';
+                exitButton.style.opacity = 1;
             }
         }
         if (window.matrix_scene.stage == 3) {
@@ -198,6 +198,7 @@ window.matrix_scene = {
             ) {
                 clearInterval(window.matrix_scene.interval);
                 window.matrix_scene.complete = true;
+                canvas.style.display = 'none';
             }
         }
     },
