@@ -80,11 +80,6 @@ window.matrix_scene = {
 
                 window.matrix_scene.drawSymbol(y, ind);
 
-                if (largeScreen) {
-                    window.matrix_scene.elapsed += Math.PI * 10;
-                } else {
-                    window.matrix_scene.elapsed += Math.PI;
-                }
 
 
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
@@ -111,12 +106,6 @@ window.matrix_scene = {
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
 
-                if (canvas.width * canvas.height < 2000000) {
-                    window.matrix_scene.elapsed += Math.PI * 10;
-                } else {
-                    window.matrix_scene.elapsed += Math.PI;
-                }
-
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
 
@@ -124,14 +113,12 @@ window.matrix_scene = {
 
         }
         if (window.matrix_scene.stage == 3) {
+
+            ctx.fillStyle = "rgba(0,0,0,0.01)";
+            ctx.fillRect(0, 0, w, h);
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
 
-                if (canvas.width * canvas.height < 2000000) {
-                    window.matrix_scene.elapsed += Math.PI * 10;
-                } else {
-                    window.matrix_scene.elapsed += Math.PI;
-                }
 
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
