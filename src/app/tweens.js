@@ -150,6 +150,9 @@ function enterTheOffice ( ) {
         window.virtual_office.scene_objects.room.material.side = THREE.BackSide;
       }
     });
+    let loader_symbols = document.getElementById('loader_symbols');
+    if (loader_symbols)
+      loader_symbols.style.display = 'none';
   });
 }
 
@@ -170,7 +173,8 @@ function slideBack ( ) {
 
     let loader_symbols = document.getElementById('loader_symbols');
     if (loader_symbols)
-      loader_symbols.style.display = 'none';
+      loader_symbols.style.transition = 'filter 5s';
+      loader_symbols.style.filter = "blur(100px)";
   })
 }
 
