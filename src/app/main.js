@@ -1,3 +1,5 @@
+import { getGPUTier } from 'detect-gpu';
+
 import * as THREE from 'three';
 
 import Stats from 'three/addons/libs/stats.module.js';
@@ -232,7 +234,13 @@ window.virtual_office = {
   tweens: {}
 };
 
-export default function init() {
+export default async function init() {
+
+  const gpuTier = await getGPUTier();
+
+  if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
+    window.virtual_office.fast = false;
+  }
 
   let pane;
 
@@ -453,7 +461,14 @@ export function animate(currentTime) {
   if (window.virtual_office.status == 6) {
 
     // Render the composer
-    if (!window.virtual_office.fast) {
+    if (
+      // Effects loaded.
+      window.virtual_office.effects.bloomLayer.test &&
+      (window.virtual_office.effects.bloom && window.virtual_office.effects.bloom.passes && window.virtual_office.effects.bloom.passes.length > 0 ) &&
+      (window.virtual_office.effects.main && window.virtual_office.effects.main.passes && window.virtual_office.effects.main.passes.length > 0 ) &&
+      // Not fast mode.
+      (!window.virtual_office.fast)
+    ) {
       window.virtual_office.scene.traverse(darkenNonBloomed);
       window.virtual_office.effects.bloom.render();
       window.virtual_office.scene.traverse(restoreMaterial);
