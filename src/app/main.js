@@ -236,12 +236,6 @@ window.virtual_office = {
 
 export default async function init() {
 
-  const gpuTier = await getGPUTier();
-
-  if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
-    window.virtual_office.fast = false;
-  }
-
   let pane;
 
   let url = new URL(window.location.href);
@@ -900,7 +894,7 @@ export function createOfficeRoom() {
   return result;
 }
 
-function setupScene() {
+async function setupScene() {
 
   if ( window.virtual_office.status == 0 ) {
     // Scene container.
@@ -913,7 +907,15 @@ function setupScene() {
     window.virtual_office.scene.add(window.virtual_office.scene_objects.tvWebGL);
 
     // Run scaling
-    scaleEffects(1, window.virtual_office.renderers.webgl);
+    const gpuTier = await getGPUTier();
+
+    if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
+      // Enable effects
+      window.virtual_office.fast = false;
+      window.virtual_office.renderers.webgl.shadowMap.enabled = true;
+      setupEffects( );
+    }
+  
   }
 
   if ( window.virtual_office.status == 1 ) {
@@ -937,9 +939,7 @@ function setupScene() {
 
     window.virtual_office.scene_objects.screens_loaded = 0;
     window.virtual_office.scene_objects.room = createOfficeRoom( );
-    window.virtual_office.scene.add(window.virtual_office.scene_objects.room);
-
-    requestAnimationFrame (animate);    
+    window.virtual_office.scene.add(window.virtual_office.scene_objects.room);    
 
   }
   if ( window.virtual_office.status == 4 ) {
@@ -950,6 +950,11 @@ function setupScene() {
     // Setup Tweens.
     setupTweens( setupScene );
   }
+
+  if ( window.virtual_office.status == 6 ) {
+    requestAnimationFrame (animate);    
+  }
+
 
 }
 

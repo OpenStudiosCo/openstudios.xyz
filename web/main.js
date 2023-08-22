@@ -35347,77 +35347,6 @@
   }
 
   // src/app/effects.js
-  var frameRateThreshold = 60;
-  var delayDuration = 5;
-  var delayTimer = 0;
-  var frameRates = [];
-  var firstTime = true;
-  var avgFrameRate = 0;
-  var scalingRun;
-  function scaleEffects() {
-    scalingRun = setInterval(() => {
-      if (window.virtual_office.effects.scaleDone) {
-        if (!firstTime) {
-          clearInterval(scalingRun);
-        }
-      } else {
-        scaleEffectsRunner();
-      }
-    }, 10);
-  }
-  function scaleEffectsRunner() {
-    delayTimer += 100;
-    if (delayTimer >= delayDuration && frameRates.length > frameRateThreshold * delayDuration) {
-      var sum = frameRates.reduce(function(total, num) {
-        return total + num;
-      }, 0);
-      avgFrameRate = sum / frameRates.length;
-      const isBelowThreshold = avgFrameRate < (window.virtual_office.fast ? frameRateThreshold : frameRateThreshold * 0.5);
-      if (isBelowThreshold) {
-        console.log(avgFrameRate + " FPS too low, effects off");
-        window.virtual_office.fast = true;
-        window.virtual_office.renderers.webgl.shadowMap.enabled = false;
-        if (window.virtual_office.effects.main && window.virtual_office.effects.main.passes && window.virtual_office.effects.main.passes.length > 0) {
-          window.virtual_office.effects.main.passes.splice(0, window.virtual_office.effects.main.passes.length);
-        }
-      } else {
-        console.log(avgFrameRate + " FPS good, effects on");
-        if (!window.virtual_office.effects.main || !window.virtual_office.effects.main.passes || window.virtual_office.effects.main.passes.length == 0) {
-          setupEffects();
-        }
-        window.virtual_office.fast = false;
-        window.virtual_office.renderers.webgl.shadowMap.enabled = true;
-      }
-      window.virtual_office.scene_objects.ambientLight.color = new Color(window.virtual_office.fast ? 5592405 : 4473924);
-      window.virtual_office.scene_objects.neon_sign.children[0].intensity = window.virtual_office.fast ? window.virtual_office.settings.light.fast.neonSign.normal : window.virtual_office.settings.light.highP.neonSign.normal;
-      window.virtual_office.scene.traverse((scene_object) => {
-        if (scene_object.name == "ceilLightActual") {
-          scene_object.intensity = window.virtual_office.fast ? window.virtual_office.settings.light.fast.desk.normal : window.virtual_office.settings.light.highP.desk.normal;
-        }
-        if (scene_object.name == "deskMesh") {
-          scene_object.traverse(function(child) {
-            if (child.isMesh) {
-              let amount = window.virtual_office.fast ? 3 : 1.5;
-              child.material = child.original_material.clone();
-              brightenMaterial(child.material, amount);
-            }
-          });
-        }
-      });
-      window.virtual_office.effects.scaleDone = true;
-      if (firstTime) {
-        setTimeout(() => {
-          avgFrameRate = 0;
-          frameRates = [];
-          delayTimer = 0;
-          window.virtual_office.effects.scaleDone = false;
-          firstTime = false;
-        }, 5e3);
-      }
-    } else {
-      frameRates.push(window.virtual_office.fps);
-    }
-  }
   function setupEffects() {
     var renderScene = new RenderPass(window.virtual_office.scene, window.virtual_office.camera);
     window.virtual_office.effects.main = new EffectComposer(window.virtual_office.renderers.webgl);
@@ -35502,10 +35431,6 @@
     let dummy = { emissiveIntensity: 0 };
     window.virtual_office.tweens.doorSignFlickerA = new TWEEN.Tween(dummy).easing(TWEEN.Easing.Quadratic.Out).to({ emissiveIntensity: 0.8 }, duration * 1e3).onUpdate((obj) => {
       updateFlickering(obj);
-    }).onComplete(() => {
-      let loader_symbols = document.getElementById("loader_symbols");
-      if (loader_symbols)
-        loader_symbols.style.display = "none";
     });
     window.virtual_office.tweens.doorSignFlickerB = new TWEEN.Tween(dummy).delay(duration * 1e3).to({ emissiveIntensity: 0 }, 0.1 * 1e3).onUpdate((obj) => {
       updateFlickering(obj);
@@ -35564,6 +35489,9 @@
       window.virtual_office.camera.updateProjectionMatrix();
     }).onComplete(() => {
       window.virtual_office.tweens.openDoor.start();
+      let loader_symbols = document.getElementById("loader_symbols");
+      if (loader_symbols)
+        loader_symbols.style.display = "none";
     });
   }
   function openDoor(doorRotation) {
@@ -36092,10 +36020,6 @@
     tweens: {}
   };
   async function init() {
-    const gpuTier = await f();
-    if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
-      window.virtual_office.fast = false;
-    }
     let pane;
     let url = new URL(window.location.href);
     if (url.searchParams.has("debug")) {
@@ -36543,7 +36467,7 @@
     result.layers.enable(1);
     return result;
   }
-  function setupScene() {
+  async function setupScene() {
     if (window.virtual_office.status == 0) {
       window.virtual_office.scene = new Scene();
       window.virtual_office.scene.visible = false;
@@ -36551,7 +36475,12 @@
       window.virtual_office.scene_objects.wallGroup.position.z = -15 - window.virtual_office.room_depth / 2;
       window.virtual_office.scene.add(window.virtual_office.scene_objects.wallGroup);
       window.virtual_office.scene.add(window.virtual_office.scene_objects.tvWebGL);
-      scaleEffects(1, window.virtual_office.renderers.webgl);
+      const gpuTier = await f();
+      if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
+        window.virtual_office.fast = false;
+        window.virtual_office.renderers.webgl.shadowMap.enabled = true;
+        setupEffects();
+      }
     }
     if (window.virtual_office.status == 1) {
       window.virtual_office.scene_objects.door = createDoor();
@@ -36568,13 +36497,15 @@
       window.virtual_office.scene_objects.screens_loaded = 0;
       window.virtual_office.scene_objects.room = createOfficeRoom();
       window.virtual_office.scene.add(window.virtual_office.scene_objects.room);
-      requestAnimationFrame(animate);
     }
     if (window.virtual_office.status == 4) {
       setupTriggers(setupScene);
     }
     if (window.virtual_office.status == 5) {
       setupTweens(setupScene);
+    }
+    if (window.virtual_office.status == 6) {
+      requestAnimationFrame(animate);
     }
   }
   function setupRenderers() {
