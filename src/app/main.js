@@ -252,6 +252,15 @@ export default async function init() {
   if (url.searchParams.has('fast')) {
     window.virtual_office.fast = true;
   }
+  else {
+    // Run scaling
+    const gpuTier = await getGPUTier();
+
+    if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
+      // Enable effects
+      window.virtual_office.fast = false;
+    }
+  }
 
   window.virtual_office.loaders.gtlf = new GLTFLoader();
   window.virtual_office.loaders.texture =  new THREE.TextureLoader();
@@ -897,24 +906,22 @@ export function createOfficeRoom() {
 async function setupScene() {
 
   if ( window.virtual_office.status == 0 ) {
+    
     // Scene container.
     window.virtual_office.scene = new THREE.Scene();
     window.virtual_office.scene.visible = false;
+
+    if  (! window.virtual_office.fast) {
+      window.virtual_office.renderers.webgl.shadowMap.enabled = true;
+      setupEffects( );
+    }
 
     window.virtual_office.scene_objects.wallGroup = setupBackwall( setupScene );
     window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
     window.virtual_office.scene.add(window.virtual_office.scene_objects.wallGroup);
     window.virtual_office.scene.add(window.virtual_office.scene_objects.tvWebGL);
 
-    // Run scaling
-    const gpuTier = await getGPUTier();
-
-    if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
-      // Enable effects
-      window.virtual_office.fast = false;
-      window.virtual_office.renderers.webgl.shadowMap.enabled = true;
-      setupEffects( );
-    }
+    
   
   }
 

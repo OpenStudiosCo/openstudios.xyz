@@ -36032,6 +36032,11 @@
     }
     if (url.searchParams.has("fast")) {
       window.virtual_office.fast = true;
+    } else {
+      const gpuTier = await f();
+      if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
+        window.virtual_office.fast = false;
+      }
     }
     window.virtual_office.loaders.gtlf = new GLTFLoader();
     window.virtual_office.loaders.texture = new TextureLoader();
@@ -36475,16 +36480,14 @@
     if (window.virtual_office.status == 0) {
       window.virtual_office.scene = new Scene();
       window.virtual_office.scene.visible = false;
+      if (!window.virtual_office.fast) {
+        window.virtual_office.renderers.webgl.shadowMap.enabled = true;
+        setupEffects();
+      }
       window.virtual_office.scene_objects.wallGroup = setupBackwall(setupScene);
       window.virtual_office.scene_objects.wallGroup.position.z = -15 - window.virtual_office.room_depth / 2;
       window.virtual_office.scene.add(window.virtual_office.scene_objects.wallGroup);
       window.virtual_office.scene.add(window.virtual_office.scene_objects.tvWebGL);
-      const gpuTier = await f();
-      if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
-        window.virtual_office.fast = false;
-        window.virtual_office.renderers.webgl.shadowMap.enabled = true;
-        setupEffects();
-      }
     }
     if (window.virtual_office.status == 1) {
       window.virtual_office.scene_objects.door = createDoor();
