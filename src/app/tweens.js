@@ -172,9 +172,10 @@ function slideBack ( ) {
     window.virtual_office.tweens.openDoor.start();
 
     let loader_symbols = document.getElementById('loader_symbols');
-    if (loader_symbols)
+    if (loader_symbols) {
       loader_symbols.style.transition = 'filter 5s';
       loader_symbols.style.filter = "blur(100px)";
+    }
   })
 }
 
