@@ -4,8 +4,10 @@ export function startTweening() {
   setTimeout(() => {
     window.virtual_office.started = true;
     let loadingSign = document.getElementById('loadingSign');
-    if (loadingSign)
+    if (loadingSign) {
       loadingSign.style.display = 'none';
+    }
+
     flickerEffect();
   }, 250);
   
@@ -18,7 +20,7 @@ export function updateTweens(currentTime) {
   //TWEEN.update(currentTime);
 }
 
-export function setupTweens( setupScene ) {
+export function setupTweens( ) {
 
   /**
    * Slide back
@@ -52,9 +54,6 @@ export function setupTweens( setupScene ) {
   window.virtual_office.tweens.panDown = panDown( );
 
   resetReusables();
-
-  window.virtual_office.status = 6;
-  setupScene();
 
 }
 

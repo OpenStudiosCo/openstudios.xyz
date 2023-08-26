@@ -11,11 +11,11 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
  * @param { THREE.Scene } scene 
  * @returns { THREE.Group } wallGroup
  */
-export function setupBackwall ( setupScene ) {
+export async function setupBackwall ( ) {
   var wallGroup = new THREE.Group();
   
   // About Us Neon sign
-  createNeonSign((signMesh) => {
+  await createNeonSign(async (signMesh) => {
     // Position and rotate the sign
     signMesh.position.set(-6.4, 15, 1); // Example position for the sign
     signMesh.name = "neon_sign";
@@ -38,7 +38,7 @@ export function setupBackwall ( setupScene ) {
   wallGroup.name = "backWall";
   wallGroup.webGLScreen = window.virtual_office.scene_objects.tvWebGL;
 
-  window.virtual_office.loaders.gtlf.load( './assets/models/Small Monstera.glb', function ( glb ) {
+  await window.virtual_office.loaders.gtlf.load( './assets/models/Small Monstera.glb', async function ( glb ) {
     let object = glb.scene.children[0];
 
     object.traverse( function ( child ) {
@@ -63,8 +63,6 @@ export function setupBackwall ( setupScene ) {
 
     window.virtual_office.loaders.stats.gtlf.loaded ++;
 
-    window.virtual_office.status = 1;
-    setupScene();
   });
 
   return wallGroup;
@@ -141,7 +139,7 @@ export function brightenMaterial(material, amount) {
 }
 
 // Uses createDesk and arranges them in the room.
-export function setupDesks(gapSize, scale, setupScene) {
+export async function setupDesks(gapSize, scale) {
   // Create groups
   var deskGroup = new THREE.Group();
   window.virtual_office.scene_objects.desk_labels = [];
@@ -237,7 +235,7 @@ export function setupDesks(gapSize, scale, setupScene) {
   }
 
    
-  window.virtual_office.loaders.gtlf.load( './assets/models/Office Chair.glb', function ( glb ) {
+  await window.virtual_office.loaders.gtlf.load( './assets/models/Office Chair.glb', async function ( glb ) {
     let object = glb.scene.children[0];
 
     object.scale.setScalar(12);
@@ -302,9 +300,6 @@ export function setupDesks(gapSize, scale, setupScene) {
     }
 
     window.virtual_office.loaders.stats.gtlf.loaded ++;
-
-    window.virtual_office.status = 3;
-    setupScene();
 
   } );
   return deskGroup;

@@ -6,10 +6,8 @@
  * Each trigger has a constructing function that returns an object containing a way to update itself.
  */
 
-export function setupTriggers ( setupScene ) {
+export function setupTriggers ( ) {
     window.virtual_office.triggers.updateSigns = updateSigns();
-    window.virtual_office.status = 5;
-    setupScene();
 }
 
 export function updateTriggers ( currentTime ) {
