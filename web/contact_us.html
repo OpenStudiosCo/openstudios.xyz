@@ -518,8 +518,6 @@ window.matrix_scene = {
         window.addEventListener('orientationchange', handleViewportChange);
         window.addEventListener('resize', handleViewportChange);
 
-        // Hide body element scrollbars as the 3D viewport takes over.
-        //document.querySelector("body").style.overflow = 'hidden';
         window.matrix_scene.stageStarted = Date.now();
         window.matrix_scene.interval = setInterval(window.matrix_scene.updateStage, 100);
         requestAnimationFrame(window.matrix_scene.animate);
@@ -528,15 +526,23 @@ window.matrix_scene = {
 
 function downTheRabbitHole() {
     const pageWrapper = document.getElementById('page-wrapper');
-    if(pageWrapper) {
-        pageWrapper.style.opacity = 1;
-        pageWrapper.style.transition = 'opacity 1s';
-        pageWrapper.style.opacity = 0;
+    
+    pageWrapper.style.opacity = 1;
+    pageWrapper.style.transition = 'opacity 1s';
+    pageWrapper.style.opacity = 0;
 
-        webgl.style.transition = 'filter 3s 2s, opacity 4s';
-        webgl.style.filter = "saturate(1)";
-        webgl.style.opacity = 1;
-    }
+    // Hide the pageWrapper on completion so the iframed pages don't clash.
+    setTimeout( () => {
+        pageWrapper.style.display = 'none';
+    }, 1000);
+
+    webgl.style.transition = 'filter 3s 2s, opacity 4s';
+    webgl.style.filter = "saturate(1)";
+    webgl.style.opacity = 1;
+
+    // Hide body element scrollbars as the 3D viewport takes over.
+    document.querySelector("body").style.overflow = 'hidden';
+
 }
 
 // Function to draw the background image
