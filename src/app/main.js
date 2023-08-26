@@ -206,20 +206,6 @@ window.virtual_office = {
   started: false,
 
   /**
-   * Status code for breakout of the loading sequence.
-   * 
-   * 0 - load back wall
-   * 1 - load door
-   * 2 - load desks
-   * 3 - load room
-   * 4 - setup tweens
-   * 5 - setup triggers
-   * 6 - begin
-   * 
-   */
-  status: 0,
-
-  /**
    * All scene triggers.
    * 
    * @memberof Object
