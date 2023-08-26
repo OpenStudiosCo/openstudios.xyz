@@ -35549,7 +35549,7 @@
   }
 
   // src/app/events.js
-  function handleViewportChange() {
+  async function handleViewportChange() {
     window.virtual_office.settings.adjusted_gap = calculateAdjustedGapSize();
     window.virtual_office.room_depth = 8 * window.virtual_office.settings.adjusted_gap;
     var width = window.innerWidth;
@@ -35567,7 +35567,7 @@
       window.virtual_office.camera.rotation.x = -(Math.PI / 30) * window.virtual_office.camera.aspect;
     }
     window.virtual_office.camera.updateProjectionMatrix();
-    const newRoom = createOfficeRoom();
+    const newRoom = await createOfficeRoom();
     window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
     if (!window.virtual_office.started) {
       if (window.virtual_office.camera.aspect < 0.88) {

@@ -10,7 +10,7 @@ import { calculateAdjustedGapSize, createOfficeRoom, setCameraFOV, doorWidth, do
 import { updateDeskZ } from './furniture.js';
 import { resetReusables } from './tweens.js';
 
-export function handleViewportChange() {
+export async function handleViewportChange() {
   window.virtual_office.settings.adjusted_gap = calculateAdjustedGapSize();
   window.virtual_office.room_depth = 8 * window.virtual_office.settings.adjusted_gap;
 
@@ -36,7 +36,7 @@ export function handleViewportChange() {
   }
   window.virtual_office.camera.updateProjectionMatrix();
   
-  const newRoom = createOfficeRoom();
+  const newRoom = await createOfficeRoom();
   window.virtual_office.scene_objects.room.geometry = newRoom.geometry;
 
   if ( ! window.virtual_office.started ) {
