@@ -506,6 +506,7 @@ window.matrix_scene = {
                 clearInterval(window.matrix_scene.interval);
                 window.matrix_scene.complete = true;
                 canvas.style.display = 'none';
+                exitButton.addEventListener( 'click', downTheRabbitHole);
             }
         }
     },
@@ -524,6 +525,19 @@ window.matrix_scene = {
         requestAnimationFrame(window.matrix_scene.animate);
     }
 };
+
+function downTheRabbitHole() {
+    const pageWrapper = document.getElementById('page-wrapper');
+    if(pageWrapper) {
+        pageWrapper.style.opacity = 1;
+        pageWrapper.style.transition = 'opacity 1s';
+        pageWrapper.style.opacity = 0;
+
+        webgl.style.transition = 'filter 3s 2s, opacity 4s';
+        webgl.style.filter = "saturate(1)";
+        webgl.style.opacity = 1;
+    }
+}
 
 // Function to draw the background image
 function drawBackground() {
