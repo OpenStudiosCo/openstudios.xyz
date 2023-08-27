@@ -189,22 +189,23 @@ window.matrix_scene = {
         }
         if ( window.matrix_scene.stage == 2 ) {
             if (
+                window.virtual_office.ready == true &&
                 ( Date.now() - window.matrix_scene.stageStarted > 500)
             ) {
                 window.matrix_scene.stage = 3;
                 window.matrix_scene.stageStarted = Date.now();
                 canvas.style.transition = 'filter 5s, transform 5s';
+                webgl.style.transition = 'filter 3s 2s, opacity 1s';
+
                 canvas.style.transform = "scale(5)";
                 canvas.style.filter = "blur(5px)";
-
-                webgl.style.transition = 'filter 3s 2s, opacity 4s';
+               
                 webgl.style.filter = "saturate(1)";
                 webgl.style.opacity = 1;
             }
         }
         if ( window.matrix_scene.stage == 3 ) {
             if (
-                window.virtual_office.ready == true &&
                 (Date.now() - window.matrix_scene.stageStarted) > window.matrix_scene.transition_total
             ) {
                 clearInterval(window.matrix_scene.interval);

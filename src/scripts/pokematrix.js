@@ -165,6 +165,7 @@ window.matrix_scene = {
         }
         if (window.matrix_scene.stage == 2) {
             if (
+                window.virtual_office.ready == true &&
                 (Date.now() - window.matrix_scene.stageStarted > 500)
             ) {
                 window.matrix_scene.stage = 3;
@@ -180,7 +181,6 @@ window.matrix_scene = {
         }
         if (window.matrix_scene.stage == 3) {
             if (
-                window.virtual_office.ready == true &&
                 (Date.now() - window.matrix_scene.stageStarted) > window.matrix_scene.transition_total
             ) {
                 clearInterval(window.matrix_scene.interval);
@@ -205,6 +205,7 @@ window.matrix_scene = {
 };
 
 function downTheRabbitHole() {
+    
     const pageWrapper = document.getElementById('page-wrapper');
     
     pageWrapper.style.opacity = 1;

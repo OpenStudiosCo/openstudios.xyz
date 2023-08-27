@@ -960,9 +960,7 @@ async function setupScene() {
     if ( 
       loadersComplete &&
       // Check door sign is loaded up.
-      window.virtual_office.scene_objects.door_sign &&
-      // Check we're on the final matrix scene stage
-      window.matrix_scene.stage == 3
+      window.virtual_office.scene_objects.door_sign
     ) {
       window.virtual_office.ready = true;
       clearTimeout(bootWaiter);
