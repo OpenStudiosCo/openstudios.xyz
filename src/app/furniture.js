@@ -519,9 +519,10 @@ function createDeskLabel(i, callback, deskGroup) {
  * @returns [ HTMLObject, THREE.Mesh ];
  */
 function createScreen( i ){
-  let 
-    url     = '../assets/images/pages/' + window.virtual_office.screens[ i ].slug + '.jpg',
-    pageUrl = '../iframes/' + window.virtual_office.screens[ i ].slug + '.html';
+
+  const slug    = window.virtual_office.screens[ i ].slug;
+  const url     = '../assets/images/pages/' + slug + '.jpg',
+        pageUrl = '../iframes/' + slug + '.html';
   
   var material = new THREE.MeshPhongMaterial();
   window.virtual_office.loaders.texture.load(url, (screenTexture)=>{
@@ -531,6 +532,7 @@ function createScreen( i ){
   var geometry = new THREE.PlaneGeometry(i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8);
   var screenWebGL = new THREE.Mesh(geometry, brightenMaterial(material, ( i==720 ? 12 : 8 )));
 
+  // @todo: move into settings.
   screenWebGL.pageUrl = pageUrl; 
   
   //mesh.scale.copy( domObject.scale );
@@ -539,6 +541,35 @@ function createScreen( i ){
 
   screenWebGL.name = "screenWebGL";
   window.virtual_office.loaders.stats.screens.loaded ++;
+
+  window.virtual_office.screens[ i ].mesh = screenWebGL;
+  screenWebGL.settings = window.virtual_office.screens[ i ];
+  screenWebGL.getViewingCoords = function (  ) {
+    let tempMesh = new THREE.Object3D();
+    tempMesh.scale.copy(this.scale);
+    tempMesh.position.copy(this.position);
+    
+    var targetRotation = this.rotation.clone();
+  
+    const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
+    const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
+    const distanceHorizontal = window.innerWidth / (2 * Math.tan(fovHorizontal / 2));
+    
+    const distanceFactor = this.settings.type == 'monitor' ? 0.00625 : 0.015;
+  
+    const diffZ = distanceHorizontal * distanceFactor;
+  
+    if (this.settings.type == 'monitor') {
+      const roomSide = tempMesh.position.x > 0 ? -1 : 1;
+      tempMesh.translateX(roomSide * diffZ / 1.4);
+    }
+  
+    tempMesh.translateZ(diffZ / 1.4);
+  
+    return [ tempMesh.position, targetRotation ];
+  };
+  
   
   return screenWebGL ;
 }
+

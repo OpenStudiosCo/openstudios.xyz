@@ -35304,7 +35304,8 @@
     });
   }
   function createScreen(i2) {
-    let url = "../assets/images/pages/" + window.virtual_office.screens[i2].slug + ".jpg", pageUrl = "../iframes/" + window.virtual_office.screens[i2].slug + ".html";
+    const slug = window.virtual_office.screens[i2].slug;
+    const url = "../assets/images/pages/" + slug + ".jpg", pageUrl = "../iframes/" + slug + ".html";
     var material = new MeshPhongMaterial();
     window.virtual_office.loaders.texture.load(url, (screenTexture) => {
       material.needsUpdate = true;
@@ -35317,6 +35318,25 @@
     screenWebGL.receiveShadow = true;
     screenWebGL.name = "screenWebGL";
     window.virtual_office.loaders.stats.screens.loaded++;
+    window.virtual_office.screens[i2].mesh = screenWebGL;
+    screenWebGL.settings = window.virtual_office.screens[i2];
+    screenWebGL.getViewingCoords = function() {
+      let tempMesh = new Object3D();
+      tempMesh.scale.copy(this.scale);
+      tempMesh.position.copy(this.position);
+      var targetRotation = this.rotation.clone();
+      const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
+      const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
+      const distanceHorizontal = window.innerWidth / (2 * Math.tan(fovHorizontal / 2));
+      const distanceFactor = this.settings.type == "monitor" ? 625e-5 : 0.015;
+      const diffZ = distanceHorizontal * distanceFactor;
+      if (this.settings.type == "monitor") {
+        const roomSide = tempMesh.position.x > 0 ? -1 : 1;
+        tempMesh.translateX(roomSide * diffZ / 1.4);
+      }
+      tempMesh.translateZ(diffZ / 1.4);
+      return [tempMesh.position, targetRotation];
+    };
     return screenWebGL;
   }
 
@@ -35586,12 +35606,12 @@
           document.documentElement.style.cursor = "default";
           if (intersects2[i2].object.name == "screen" || intersects2[i2].object.name == "desk_part" || intersects2[i2].object.name == "desk_label") {
             document.documentElement.style.cursor = "pointer";
-            handleDeskClick(intersects2[i2].object.parent);
+            handleScreenClick(intersects2[i2].object.parent);
             break;
           }
           if (intersects2[i2].object.name == "neon_sign" || intersects2[i2].object.name == "tv") {
             document.documentElement.style.cursor = "pointer";
-            handleWallClick(intersects2[i2].object.parent);
+            handleScreenClick(intersects2[i2].object.parent);
             break;
           }
         } else {
@@ -35605,46 +35625,15 @@
       window.virtual_office.hovered = false;
     }
   }
-  function handleDeskClick(desk) {
+  function handleScreenClick(screen) {
     if (window.virtual_office.pointer.z && !window.virtual_office.moving) {
       if (!window.virtual_office.selected) {
         window.virtual_office.moving = true;
-        window.virtual_office.selected = desk;
-        let tempMesh = new Object3D();
-        tempMesh.scale.copy(virtual_office.selected.webGLScreen.scale);
-        tempMesh.position.copy(virtual_office.selected.webGLScreen.position);
-        var targetRotation = window.virtual_office.selected.webGLScreen.rotation.clone();
-        const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
-        const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
-        const distanceHorizontal = window.innerWidth / (2 * Math.tan(fovHorizontal / 2));
-        const roomSide = tempMesh.position.x > 0 ? -1 : 1;
-        const diffZ = distanceHorizontal * 625e-5;
-        tempMesh.translateX(roomSide * diffZ / 1.4);
-        tempMesh.translateZ(diffZ / 1.4);
+        window.virtual_office.selected = screen;
+        let [targetPosition, targetRotation] = screen.webGLScreen.getViewingCoords();
         document.getElementById("pageOverlay").src = window.virtual_office.selected.webGLScreen.pageUrl;
         window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1e3).start();
-        window.virtual_office.tweens.moveCamera.to(tempMesh.position, 1e3).onComplete(stretchSelectedScreen).start();
-      }
-    }
-  }
-  function handleWallClick(desk) {
-    if (window.virtual_office.pointer.z && !window.virtual_office.moving) {
-      if (!window.virtual_office.selected) {
-        window.virtual_office.moving = true;
-        window.virtual_office.selected = desk;
-        let newPosZ = window.virtual_office.selected.webGLScreen.position.z;
-        const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
-        const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
-        const distanceHorizontal = window.innerWidth / (2 * Math.tan(fovHorizontal / 2));
-        newPosZ += distanceHorizontal * 0.015;
-        let newPosition = new Vector3(
-          0,
-          window.virtual_office.selected.webGLScreen.position.y,
-          newPosZ
-        );
-        document.getElementById("pageOverlay").src = window.virtual_office.selected.webGLScreen.pageUrl;
-        window.virtual_office.tweens.rotateCamera.to({ x: 0, y: 0, z: 0 }, 1e3).start();
-        window.virtual_office.tweens.moveCamera.to(newPosition, 1e3).onComplete(stretchSelectedScreen).start();
+        window.virtual_office.tweens.moveCamera.to(targetPosition, 1e3).onComplete(stretchSelectedScreen).start();
       }
     }
   }
@@ -35913,31 +35902,31 @@
       720: {
         slug: "about_us",
         title: "About Us",
-        position: false,
+        mesh: false,
         type: "tv"
       },
       0: {
         slug: "case_studies",
         title: "Case Studies",
-        position: false,
+        mesh: false,
         type: "monitor"
       },
       3: {
         slug: "contact_us",
         title: "Contact Us",
-        position: false,
+        mesh: false,
         type: "monitor"
       },
       2: {
         slug: "portfolio",
         title: "Portfolio",
-        position: false,
+        mesh: false,
         type: "monitor"
       },
       1: {
         slug: "services",
         title: "Services",
-        position: false,
+        mesh: false,
         type: "monitor"
       }
     },
