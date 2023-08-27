@@ -31,6 +31,13 @@
                     a(href='/portfolio.html') Portfolio
                 li
                     a(href='/contact_us.html') Contact Us
+        #pokematrix
+            canvas#pokematrixCanvas
+            canvas#pokematrixImage
+            a#pokematrixSign
+                img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
+        include ../templates/exit_image.pug
+        include ../templates/exit_image_mobile.pug
     block page
     .footer
         .lineset.second

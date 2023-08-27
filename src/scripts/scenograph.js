@@ -11,7 +11,7 @@
  */
 
 // Boot up the Scenograph and populate the window accessor
-function _init() {
+function _init( wait ) {
 
 	window.matrix_scene.start();
 	
@@ -29,20 +29,24 @@ function _init() {
 	
 	// Default modules
 	var modules = [
-		// {
-		// 	name: "TWEEN.js",
-		// 	files: [ { path: './vendor/three-0.153.0.module.min.js' } ]
-		// },
+		{
+			name: "tweakpane",
+			files: [ { path: './vendor/tweakpane-3.1.10.min.js' } ]
+		},
+		{
+			name: "TWEEN.js",
+			files: [ { path: './vendor/tween-21.0.0.umd.min.js' } ]
+		},
 		{ 
 			name: "Virtual Office",
-			// requires: [ 'three.js' ],
+			requires: [ 'tweakpane', 'TWEEN.js' ],
 			files: [ { path: "./main.js", callback: "window.virtual_office.init" } ]
 		}
 	];
 
 	setTimeout( () => {
 		_load_modules( modules, "s" );
-	} , 1000);
+	} , wait);
 	
 }
 

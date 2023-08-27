@@ -1,41 +1,41 @@
 /**
- * Matrix rain effect based on a few sources,
- * - https://dev.to/gnsp/making-the-matrix-effect-in-javascript-din
- * - https://github.com/Rezmason/matrix
- * - https://codepen.io/riazxrazor/pen/Gjomdp
+ * Poke Matrix
+ * 
+ * Pocket sized loading effect.
  * 
  */
 
 const charArr = ['モ', 'エ', 'ヤ', 'キ', 'オ', 'カ', '7', 'ケ', 'サ', 'ス', 'z', '1', '5', '2', 'ヨ', 'タ', 'ワ', '4', 'ネ', 'ヌ', 'ナ', '9', '8', 'ヒ', '0', 'ホ', 'ア', '3', 'ウ', ' ', 'セ', '¦', ':', '"', '꞊', 'ミ', 'ラ', 'リ', '╌', 'ツ', 'テ', 'ニ', 'ハ', 'ソ', '▪', '—', '<', '>', '0', '|', '+', '*', 'コ', 'シ', 'マ', 'ム', 'メ'];
 
 const backgroundImage = new Image();
-backgroundImage.src = document.getElementById('door_image').src;
+let isDesktop = window.innerWidth > 640;
+backgroundImage.src = isDesktop ? document.getElementById('exit_image').src : document.getElementById('exit_image_mobile').src  ;
 
 const webgl = document.getElementById('webgl');
 webgl.style.filter = 'saturate(0)';
 
-const canvas = document.getElementById('loader_symbols');
-canvas.style.mixBlendMode = "exclusion";
+const canvas = document.getElementById('pokematrixCanvas');
 const ctx = canvas.getContext('2d');
-
-const canvas2 = document.getElementById('loader_image');
+const canvas2 = document.getElementById('pokematrixImage');
 canvas2.style.display = 'none';
 const ctx2 = canvas2.getContext('2d', {
     willReadFrequently: true
 });
 
-let w = canvas.width = canvas2.width = window.innerWidth;
-let h = canvas.height = canvas2.height = window.innerHeight;
+let exitButton = document.getElementById('pokematrixSign');
+
+let w = canvas.width = canvas2.width = exitButton.offsetWidth + 10;
+let h = canvas.height = canvas2.height = exitButton.offsetHeight + 10;
 
 const largeScreen = canvas.width * canvas.height < 2000000;
 const portraitMode = canvas.width < canvas.height;
-const fontSize = (portraitMode || largeScreen) ? 8 : 15;
+const fontSize = (portraitMode || largeScreen) ? 2 : 2;
 
-let cols = Math.floor(w / fontSize * 1.5) + 1;
+let cols = Math.floor(w / fontSize ) + 1;
 let ypos = Array(cols).fill(0);
 
 window.matrix_scene = {
-    type: 'fullscreen',
+    type: 'button',
     interval: false,
     complete: false,
     currentTime: 0,
@@ -56,13 +56,13 @@ window.matrix_scene = {
      * Stage specific variables.
      */
     // Stage 0
-    elapsed: 0, 
+    elapsed: 0,
     // Stage 1
-    loaded_done: 0, 
+    loaded_done: 0,
     loaded_target: 0,
     // Stage 2
-    transition_total: 5000, // in milliseconds
-    
+    transition_total: 1250, // in milliseconds
+
     // Animates the scene
     animate: function (currentTime) {
         const elapsedSinceLast = currentTime - window.matrix_scene.lastTime;
@@ -73,8 +73,8 @@ window.matrix_scene = {
 
         ctx.font = fontSize + 'pt monospace';
 
-        if ( window.matrix_scene.stage == 0 ) {
-            ctx.fillStyle = '#0001';
+        if (window.matrix_scene.stage == 0) {
+            ctx.fillStyle = "rgba(0,0,0,0.00125)";
             ctx.fillRect(0, 0, w, h);
             // @todo: implement the intro sequence here - column reduce?
 
@@ -82,21 +82,15 @@ window.matrix_scene = {
 
                 window.matrix_scene.drawSymbol(y, ind);
 
-                if ( largeScreen ) {
-                    window.matrix_scene.elapsed += Math.PI * 10;
-                }
-                else {
-                    window.matrix_scene.elapsed += Math.PI;
-                }
-                
-                
+
+
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
 
             });
         }
-        if ( window.matrix_scene.stage == 1 ) {
-            ctx.fillStyle = "rgba(0,0,0,0.001)";
+        if (window.matrix_scene.stage == 1) {
+            ctx.fillStyle = "rgba(0,0,0,0.0025)";
             ctx.fillRect(0, 0, w, h);
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
@@ -104,51 +98,40 @@ window.matrix_scene = {
                 if (y > 1 + randomInt(1, 2000 * window.matrix_scene.loaded_done)) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
 
-            });           
-            
+            });
+
         }
-        if ( window.matrix_scene.stage == 2 ) {
-            ctx.fillStyle = "rgba(0,0,0,0.001)";
+        if (window.matrix_scene.stage == 2) {
+            ctx.fillStyle = "rgba(0,0,0,0.005)";
             ctx.fillRect(0, 0, w, h);
 
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
 
-                if ( canvas.width * canvas.height < 2000000 ) {
-                    window.matrix_scene.elapsed += Math.PI * 10;
-                }
-                else {
-                    window.matrix_scene.elapsed += Math.PI;
-                }
-                
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
 
             });
 
         }
-        if ( window.matrix_scene.stage == 3 ) {
+        if (window.matrix_scene.stage == 3) {
+
+            ctx.fillStyle = "rgba(0,0,0,0.005)";
+            ctx.fillRect(0, 0, w, h);
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
-                
-                if ( canvas.width * canvas.height < 2000000 ) {
-                    window.matrix_scene.elapsed += Math.PI * 10;
-                }
-                else {
-                    window.matrix_scene.elapsed += Math.PI;
-                }
-                
+
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
 
             });
         }
 
-        if ( ! window.matrix_scene.complete ) {
-            requestAnimationFrame( window.matrix_scene.animate );
+        if (!window.matrix_scene.complete) {
+            requestAnimationFrame(window.matrix_scene.animate);
         }
     },
-    drawSymbol: function( y, ind ) {
+    drawSymbol: function (y, ind) {
         const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
         const x = ind * fontSize * 1.5;
 
@@ -157,98 +140,111 @@ window.matrix_scene = {
     },
     // Updates the scene
     updateStage: function () {
-        if ( window.matrix_scene.stage == 0 ) {
-            if ( window.virtual_office && ( Date.now() - window.matrix_scene.stageStarted > 500) ) {
+        if (window.matrix_scene.stage == 0) {
+            if (window.virtual_office && (Date.now() - window.matrix_scene.stageStarted > 500)) {
                 window.matrix_scene.stage = 1;
                 window.matrix_scene.stageStarted = Date.now();
-                for ( var measure in window.virtual_office.loaders.stats ) {
+                for (var measure in window.virtual_office.loaders.stats) {
                     window.matrix_scene.loaded_target += window.virtual_office.loaders.stats[measure].target;
                 }
 
-                const pageWrapper = document.getElementById('page-wrapper');
-                if(pageWrapper) {
-                    pageWrapper.style.opacity = 1;
-                    pageWrapper.style.transition = 'opacity 1s';
-                    pageWrapper.style.opacity = 0;
-                }
-                
             }
         }
-        if ( window.matrix_scene.stage == 1 ) {
+        if (window.matrix_scene.stage == 1) {
             window.matrix_scene.loaded_done = 0;
-            for ( var measure in window.virtual_office.loaders.stats ) {
+            for (var measure in window.virtual_office.loaders.stats) {
                 window.matrix_scene.loaded_done += window.virtual_office.loaders.stats[measure].loaded;
             }
 
             if (
-                window.matrix_scene.loaded_done == window.matrix_scene.loaded_target && ( Date.now() - window.matrix_scene.stageStarted > 500)
+                window.matrix_scene.loaded_done == window.matrix_scene.loaded_target && (Date.now() - window.matrix_scene.stageStarted > 500)
             ) {
                 window.matrix_scene.stage = 2;
                 window.matrix_scene.stageStarted = Date.now();
             }
         }
-        if ( window.matrix_scene.stage == 2 ) {
+        if (window.matrix_scene.stage == 2) {
             if (
                 window.virtual_office.ready == true &&
-                ( Date.now() - window.matrix_scene.stageStarted > 500)
+                (Date.now() - window.matrix_scene.stageStarted > 500)
             ) {
                 window.matrix_scene.stage = 3;
                 window.matrix_scene.stageStarted = Date.now();
-                canvas.style.transition = 'filter 5s, transform 5s';
-                webgl.style.transition = 'filter 3s 2s, opacity 1s';
-
+                canvas.style.transition = 'filter 2.5s, transform 2.5s, opacity 2.5s';
                 canvas.style.transform = "scale(5)";
                 canvas.style.filter = "blur(5px)";
-               
-                webgl.style.filter = "saturate(1)";
-                webgl.style.opacity = 1;
+                canvas.style.opacity = 0;
+
+                exitButton.style.transition = 'opacity 2s';
+                exitButton.style.opacity = 1;
             }
         }
-        if ( window.matrix_scene.stage == 3 ) {
+        if (window.matrix_scene.stage == 3) {
             if (
                 (Date.now() - window.matrix_scene.stageStarted) > window.matrix_scene.transition_total
             ) {
                 clearInterval(window.matrix_scene.interval);
-                window.matrix_scene.complete = true;
+                canvas.style.display = 'none';
+                exitButton.addEventListener( 'click', downTheRabbitHole);
             }
         }
     },
     // Start
     start: function () {
-        ctx.fillStyle = '#0001';
+        ctx.fillStyle = "rgba(0,0,0,0)";
         ctx.fillRect(0, 0, w, h);
-        
+
         window.addEventListener('orientationchange', handleViewportChange);
         window.addEventListener('resize', handleViewportChange);
-        
-        // Hide body element scrollbars as the 3D viewport takes over.
-        document.querySelector("body").style.overflow = 'hidden';
+
         window.matrix_scene.stageStarted = Date.now();
-        window.matrix_scene.interval = setInterval( window.matrix_scene.updateStage, 100);
-        requestAnimationFrame( window.matrix_scene.animate );
+        window.matrix_scene.interval = setInterval(window.matrix_scene.updateStage, 100);
+        requestAnimationFrame(window.matrix_scene.animate);
     }
 };
 
+function downTheRabbitHole() {
+    
+    const pageWrapper = document.getElementById('page-wrapper');
+    
+    pageWrapper.style.opacity = 1;
+    pageWrapper.style.transition = 'opacity 1s';
+    pageWrapper.style.opacity = 0;
+
+    // Hide the pageWrapper on completion so the iframed pages don't clash.
+    setTimeout( () => {
+        window.matrix_scene.complete = true;
+        pageWrapper.style.display = 'none';
+
+        // Animate the camera resetting from any other position.
+        window.virtual_office.tweens.resetCameraRotation.start();
+        window.virtual_office.tweens.resetCameraPosition.start();
+    }, 1000);
+
+    webgl.style.transition = 'filter 3s 2s, opacity 4s';
+    webgl.style.filter = "saturate(1)";
+    webgl.style.opacity = 1;
+
+    // Hide body element scrollbars as the 3D viewport takes over.
+    document.querySelector("body").style.overflow = 'hidden';
+
+}
+
 // Function to draw the background image
 function drawBackground() {
-    var imageAspectRatio = backgroundImage.width / backgroundImage.height;
-    var canvasAspectRatio = w / h;
-    var scale = 1;
+    var scale = isDesktop ? 1 : 0.8;
 
-    if (imageAspectRatio > canvasAspectRatio) {
-        // Image is wider than the canvas, scale based on width
-        scale = w / (backgroundImage.width * 0.125);
-    } else {
-        // Image is taller than the canvas, scale based on height
-        scale = h / (backgroundImage.height * 0.125);
-    }
-
-    var scaledWidth = backgroundImage.width * scale;
-    var scaledHeight = backgroundImage.height * scale;
+    var scaledWidth =  canvas.width * scale;
+    var scaledHeight =  canvas.height * scale;
 
     // Calculate the top-left coordinates of the image to center it
-    var imageX = (w - scaledWidth) / 2;
-    var imageY = (-scaledHeight / 55) + (h - scaledHeight) / 2;
+    var imageX =  (w - scaledWidth) / 2;
+    var imageY = 2.5 + (h - scaledHeight) / 2;
+
+    if (!isDesktop) {
+        imageX += ( 0.1 ) * canvas.width;
+        imageY -= ( 0.1 ) * canvas.height;
+    }
 
     // Draw the image on the canvas at the calculated position
     ctx2.drawImage(backgroundImage, imageX, imageY, scaledWidth, scaledHeight);
@@ -266,7 +262,13 @@ function getAverageColor(context, x, y) {
         b += imageData[i + 2] + randomDelta;
     }
     const count = imageData.length / 4;
-    return `rgb(${Math.floor(r / count)}, ${Math.floor(g / count)}, ${Math.floor(b / count)})`;
+    if (Math.floor(g / count) <=0 ) {
+        return `rgba(0,0,0,0.0001)`;
+        
+    }
+    else {
+        return `rgb(${Math.floor(r / count)}, ${Math.floor(g / count)}, ${Math.floor(b / count)})`;
+    }
 }
 
 
@@ -275,11 +277,15 @@ function randomInt(min, max) {
 }
 
 function handleViewportChange() {
-    w = canvas.width = canvas2.width = window.innerWidth;
-    h = canvas.height = canvas2.height = window.innerHeight;
-    cols = Math.floor(w / fontSize * 1.5) + 1;
+
+    w = canvas.width = canvas2.width = exitButton.offsetWidth;
+    h = canvas.height = canvas2.height = exitButton.offsetHeight;
+    cols = Math.floor(w / fontSize) + 1;
     ypos = Array(cols).fill(0);
 
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = '#0000';
     ctx.fillRect(0, 0, w, h);
+
+    isDesktop = window.innerWidth > 640;
+    backgroundImage.src = isDesktop ? document.getElementById('exit_image').src : document.getElementById('exit_image_mobile').src  ;
 }

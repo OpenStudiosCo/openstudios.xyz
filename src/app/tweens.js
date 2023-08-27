@@ -3,8 +3,31 @@ import * as THREE from 'three';
 export function startTweening() {
   setTimeout(() => {
     window.virtual_office.started = true;
-  document.getElementById('loadingSign').style.display = 'none';
-  flickerEffect();
+    let loadingSign = document.getElementById('loadingSign');
+    if (loadingSign) {
+      loadingSign.style.display = 'none';
+    }
+
+    // Select intro sequence based on matrix entry type.
+    if (window.matrix_scene.type == 'fullscreen') {
+      flickerEffect();
+    }
+
+    if (window.matrix_scene.type == 'button') {
+      // Check which page we came through so we can grab it's position.
+      for ( var screen_id in window.virtual_office.screens) {
+        const screen = window.virtual_office.screens[screen_id];
+        if (window.location.pathname.indexOf( screen.slug ) >= 0 ) {
+          let [ targetPosition, targetRotation ] = screen.mesh.getViewingCoords( );
+
+          window.virtual_office.camera.position.copy(targetPosition);
+          window.virtual_office.camera.rotation.copy(targetRotation);
+
+          updateFlickering( { emissiveIntensity: 1 } );
+        }
+      }
+    }
+    
   }, 250);
   
 }
@@ -16,7 +39,7 @@ export function updateTweens(currentTime) {
   //TWEEN.update(currentTime);
 }
 
-export function setupTweens( setupScene ) {
+export function setupTweens( ) {
 
   /**
    * Slide back
@@ -51,9 +74,6 @@ export function setupTweens( setupScene ) {
 
   resetReusables();
 
-  window.virtual_office.status = 6;
-  setupScene();
-
 }
 
 // Intro sequence.
@@ -81,10 +101,7 @@ function flickerEffect() {
   window.virtual_office.tweens.doorSignFlickerA = new TWEEN.Tween( dummy )
     .easing(TWEEN.Easing.Quadratic.Out)
     .to({ emissiveIntensity: 0.8 }, duration * 1000) // Start at 0 intensity
-    .onUpdate((obj) => { updateFlickering(obj) })
-    .onComplete( () => {
-      document.getElementById('loader_symbols').style.display = 'none';
-    });
+    .onUpdate((obj) => { updateFlickering(obj) });
   window.virtual_office.tweens.doorSignFlickerB = new TWEEN.Tween( dummy )
     .delay( duration * 1000)
     .to({ emissiveIntensity: 0 }, 0.1 * 1000)
@@ -151,6 +168,9 @@ function enterTheOffice ( ) {
         window.virtual_office.scene_objects.room.material.side = THREE.BackSide;
       }
     });
+    let loader_symbols = document.getElementById('loader_symbols');
+    if (loader_symbols)
+      loader_symbols.style.display = 'none';
   });
 }
 
@@ -168,6 +188,12 @@ function slideBack ( ) {
   })
   .onComplete(() => {
     window.virtual_office.tweens.openDoor.start();
+
+    let loader_symbols = document.getElementById('loader_symbols');
+    if (loader_symbols) {
+      loader_symbols.style.transition = 'filter 5s';
+      loader_symbols.style.filter = "blur(100px)";
+    }
   })
 }
 
