@@ -519,29 +519,9 @@ function createDeskLabel(i, callback, deskGroup) {
  * @returns [ HTMLObject, THREE.Mesh ];
  */
 function createScreen( i ){
-  let url, pageUrl;
-  switch ( i ) {
-    case 0:
-      url = '../assets/images/pages/case_studies.jpg';
-      pageUrl = '../iframes/case_studies.html';
-      break;  
-    case 1:
-      url = '../assets/images/pages/services.jpg';
-      pageUrl = '../iframes/services.html';
-      break;
-    case 2:
-      url = '../assets/images/pages/portfolio.jpg';
-      pageUrl = '../iframes/portfolio.html';
-      break;
-    case 3:
-      url = '../assets/images/pages/contact_us.jpg';
-      pageUrl = '../iframes/contact_us.html';
-      break;
-    case 720:
-      url = '../assets/images/pages/about_us.jpg';
-      pageUrl = '../iframes/about_us.html';
-      break;
-  }
+  let 
+    url     = '../assets/images/pages/' + window.virtual_office.screens[ i ].slug + '.jpg',
+    pageUrl = '../iframes/' + window.virtual_office.screens[ i ].slug + '.html';
   
   var material = new THREE.MeshPhongMaterial();
   window.virtual_office.loaders.texture.load(url, (screenTexture)=>{

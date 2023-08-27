@@ -146,6 +146,42 @@ window.virtual_office = {
   },
 
   /**
+   * Screens / iframe pages
+   */
+  screens: {
+    720: {
+      slug: 'about_us',
+      title: 'About Us',
+      position: false,
+      type: 'tv',
+    },
+		0: {
+      slug: 'case_studies',
+      title: 'Case Studies',
+      position: false,
+      type: 'monitor',
+    },
+		3: {
+      slug: 'contact_us',
+      title: 'Contact Us',
+      position: false,
+      type: 'monitor',
+    },
+		2: {
+      slug: 'portfolio',
+      title: 'Portfolio',
+      position: false,
+      type: 'monitor',
+    },
+		1: {
+      slug: 'services',
+      title: 'Services',
+      position: false,
+      type: 'monitor',
+    },
+  },
+
+  /**
    * Settings that controls the scene.
    * 
    * @memberof Object
@@ -218,6 +254,18 @@ window.virtual_office = {
    * @memberof Object
    */
   tweens: {}
+};
+
+
+/**
+ * Screen lookups
+ */
+window.virtual_office.screen_ids =  {
+  0: window.virtual_office.screens.services,
+  1: window.virtual_office.screens.services,
+  2: window.virtual_office.screens.services,
+  3: window.virtual_office.screens.services,
+  720: window.virtual_office.screens.about_us,
 };
 
 export default async function init() {

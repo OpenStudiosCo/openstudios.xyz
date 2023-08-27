@@ -35304,29 +35304,7 @@
     });
   }
   function createScreen(i2) {
-    let url, pageUrl;
-    switch (i2) {
-      case 0:
-        url = "../assets/images/pages/case_studies.jpg";
-        pageUrl = "../iframes/case_studies.html";
-        break;
-      case 1:
-        url = "../assets/images/pages/services.jpg";
-        pageUrl = "../iframes/services.html";
-        break;
-      case 2:
-        url = "../assets/images/pages/portfolio.jpg";
-        pageUrl = "../iframes/portfolio.html";
-        break;
-      case 3:
-        url = "../assets/images/pages/contact_us.jpg";
-        pageUrl = "../iframes/contact_us.html";
-        break;
-      case 720:
-        url = "../assets/images/pages/about_us.jpg";
-        pageUrl = "../iframes/about_us.html";
-        break;
-    }
+    let url = "../assets/images/pages/" + window.virtual_office.screens[i2].slug + ".jpg", pageUrl = "../iframes/" + window.virtual_office.screens[i2].slug + ".html";
     var material = new MeshPhongMaterial();
     window.virtual_office.loaders.texture.load(url, (screenTexture) => {
       material.needsUpdate = true;
@@ -35929,6 +35907,41 @@
       webgl: false
     },
     /**
+     * Screens / iframe pages
+     */
+    screens: {
+      720: {
+        slug: "about_us",
+        title: "About Us",
+        position: false,
+        type: "tv"
+      },
+      0: {
+        slug: "case_studies",
+        title: "Case Studies",
+        position: false,
+        type: "monitor"
+      },
+      3: {
+        slug: "contact_us",
+        title: "Contact Us",
+        position: false,
+        type: "monitor"
+      },
+      2: {
+        slug: "portfolio",
+        title: "Portfolio",
+        position: false,
+        type: "monitor"
+      },
+      1: {
+        slug: "services",
+        title: "Services",
+        position: false,
+        type: "monitor"
+      }
+    },
+    /**
      * Settings that controls the scene.
      * 
      * @memberof Object
@@ -36003,6 +36016,13 @@
      * @memberof Object
      */
     tweens: {}
+  };
+  window.virtual_office.screen_ids = {
+    0: window.virtual_office.screens.services,
+    1: window.virtual_office.screens.services,
+    2: window.virtual_office.screens.services,
+    3: window.virtual_office.screens.services,
+    720: window.virtual_office.screens.about_us
   };
   async function init() {
     let pane;
