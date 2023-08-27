@@ -351,6 +351,7 @@ let cols = Math.floor(w / fontSize * 1.5) + 1;
 let ypos = Array(cols).fill(0);
 
 window.matrix_scene = {
+    type: 'fullscreen',
     interval: false,
     complete: false,
     currentTime: 0,
@@ -519,6 +520,7 @@ window.matrix_scene = {
         }
         if ( window.matrix_scene.stage == 3 ) {
             if (
+                window.virtual_office.ready == true &&
                 (Date.now() - window.matrix_scene.stageStarted) > window.matrix_scene.transition_total
             ) {
                 clearInterval(window.matrix_scene.interval);

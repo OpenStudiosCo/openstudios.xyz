@@ -8,7 +8,26 @@ export function startTweening() {
       loadingSign.style.display = 'none';
     }
 
-    flickerEffect();
+    // Select intro sequence based on matrix entry type.
+    if (window.matrix_scene.type == 'fullscreen') {
+      flickerEffect();
+    }
+
+    if (window.matrix_scene.type == 'button') {
+      // Check which page we came through so we can grab it's position.
+      for ( var screen_id in window.virtual_office.screens) {
+        const screen = window.virtual_office.screens[screen_id];
+        if (window.location.pathname.indexOf( screen.slug ) >= 0 ) {
+          let [ targetPosition, targetRotation ] = screen.mesh.getViewingCoords( );
+
+          window.virtual_office.camera.position.copy(targetPosition);
+          window.virtual_office.camera.rotation.copy(targetRotation);
+
+          updateFlickering( { emissiveIntensity: 1 } );
+        }
+      }
+    }
+    
   }, 250);
   
 }

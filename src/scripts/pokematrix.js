@@ -34,6 +34,7 @@ let cols = Math.floor(w / fontSize ) + 1;
 let ypos = Array(cols).fill(0);
 
 window.matrix_scene = {
+    type: 'button',
     interval: false,
     complete: false,
     currentTime: 0,
@@ -179,6 +180,7 @@ window.matrix_scene = {
         }
         if (window.matrix_scene.stage == 3) {
             if (
+                window.virtual_office.ready == true &&
                 (Date.now() - window.matrix_scene.stageStarted) > window.matrix_scene.transition_total
             ) {
                 clearInterval(window.matrix_scene.interval);
@@ -212,6 +214,10 @@ function downTheRabbitHole() {
     // Hide the pageWrapper on completion so the iframed pages don't clash.
     setTimeout( () => {
         pageWrapper.style.display = 'none';
+
+        // Animate the camera resetting from any other position.
+        window.virtual_office.tweens.resetCameraRotation.start();
+        window.virtual_office.tweens.resetCameraPosition.start();
     }, 1000);
 
     webgl.style.transition = 'filter 3s 2s, opacity 4s';

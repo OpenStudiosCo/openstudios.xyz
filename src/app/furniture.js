@@ -23,7 +23,7 @@ export async function setupBackwall ( ) {
     wallGroup.add(signMesh);
   });
 
-  window.virtual_office.scene_objects.tvWebGL = createScreen( 720 );
+  window.virtual_office.scene_objects.tvWebGL = await createScreen( 720 );
   window.virtual_office.scene_objects.tvWebGL.position.y = 8;
   window.virtual_office.scene_objects.tvWebGL.position.z = - 14 - window.virtual_office.room_depth / 2;
   window.virtual_office.scene_objects.tvWebGL.name = "tvWebGL";
@@ -144,11 +144,11 @@ export async function setupDesks(gapSize, scale) {
   var deskGroup = new THREE.Group();
   window.virtual_office.scene_objects.desk_labels = [];
   for (var i = 0; i < 4; i++) {
-    var desk = createDesk( i );
+    var desk = await createDesk( i );
     desk.rotation.y = Math.PI / 2;
 
     // Add screens.
-    var screenWebGL = createScreen( i );
+    var screenWebGL = await createScreen( i );
     screenWebGL.rotation.y = - Math.PI / 2;
     screenWebGL.position.y = 7.7;
     desk.webGLScreen = screenWebGL;
@@ -324,11 +324,11 @@ export function updateDeskZ(desk, i) {
  * 
  * @returns THREE.Group containing a desk workstation
  */
-function createDesk( i ) {
+async function createDesk( i ) {
   var deskGroup = new THREE.Group();
   deskGroup.name = "desk";
  
-  window.virtual_office.loaders.gtlf.load( './assets/models/Desk.glb', function ( glb ) {
+  await window.virtual_office.loaders.gtlf.load( './assets/models/Desk.glb', async function ( glb ) {
     let object = glb.scene.children[0];
     
     let amount = window.virtual_office.fast ? 3 : 1.5;
@@ -406,9 +406,9 @@ function createDesk( i ) {
 
     deskGroup.add(signMesh);
   };
-  createDeskLabel( i, deskLabelCallback, deskGroup );
+  await createDeskLabel( i, deskLabelCallback, deskGroup );
 
-  window.virtual_office.loaders.gtlf.load( './assets/models/Ceiling Light.glb', function ( glb ) {
+  await window.virtual_office.loaders.gtlf.load( './assets/models/Ceiling Light.glb', async function ( glb ) {
     let object = glb.scene.children[0];
     object.scale.setScalar(1);
     window.desk = object;
@@ -463,7 +463,7 @@ function createDesk( i ) {
 
 
 // Create the desks sign, i.e. "Projects"
-function createDeskLabel(i, callback, deskGroup) {
+async function createDeskLabel(i, callback, deskGroup) {
 
   // Add screen labels.
   let labelText = '';
@@ -484,7 +484,7 @@ function createDeskLabel(i, callback, deskGroup) {
   
   const loader = new FontLoader();
 
-  loader.load('./assets/fonts/VeraMono.json', (font) => {
+  await loader.load('./assets/fonts/VeraMono.json', async (font) => {
 
     const textGeometry = new TextGeometry(labelText, {
       font: font,
@@ -518,14 +518,14 @@ function createDeskLabel(i, callback, deskGroup) {
  * 
  * @returns [ HTMLObject, THREE.Mesh ];
  */
-function createScreen( i ){
+async function createScreen( i ){
 
   const slug    = window.virtual_office.screens[ i ].slug;
   const url     = '../assets/images/pages/' + slug + '.jpg',
         pageUrl = '../iframes/' + slug + '.html';
   
   var material = new THREE.MeshPhongMaterial();
-  window.virtual_office.loaders.texture.load(url, (screenTexture)=>{
+  await window.virtual_office.loaders.texture.load(url, async (screenTexture)=>{
     material.needsUpdate = true;
     material.map = screenTexture;
   });

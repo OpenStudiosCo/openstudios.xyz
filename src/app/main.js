@@ -137,6 +137,12 @@ window.virtual_office = {
   raycaster: false,
 
   /**
+   * Ready to begin.
+   */
+
+  ready: false,
+
+  /**
    * Renderers that create the scene.
    * 
    * @memberof Object { THREE.Renderer , ... }
@@ -446,7 +452,7 @@ export function animate(currentTime) {
 
   requestAnimationFrame(animate);
 
-  if (window.virtual_office.started) {
+  if (window.virtual_office.ready) {
 
     updateTriggers(currentTime);
 
@@ -941,10 +947,32 @@ async function setupScene() {
   // Setup Tweens.
   setupTweens( );
 
-  // Start tweens.
-  startTweening();
+  let loadersComplete = true;
 
-  requestAnimationFrame (animate);    
+  // Check if we've finished loading.
+  let bootWaiter = setInterval( () => {
+    
+    // for ( var measure in window.virtual_office.loaders.stats ) {
+    //   if (window.virtual_office.loaders.stats[measure].loaded != window.virtual_office.loaders.stats[measure].target) {
+    //     loadersComplete = false;
+    //   }
+    // }
+    if ( 
+      loadersComplete &&
+      // Check door sign is loaded up.
+      window.virtual_office.scene_objects.door_sign &&
+      // Check we're on the final matrix scene stage
+      window.matrix_scene.stage == 3
+    ) {
+      window.virtual_office.ready = true;
+      clearTimeout(bootWaiter);
+
+      // Start tweens.
+      startTweening();
+
+      requestAnimationFrame (animate);
+    }
+  }, 100 );
 
 }
 
