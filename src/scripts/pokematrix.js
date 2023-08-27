@@ -184,7 +184,6 @@ window.matrix_scene = {
                 (Date.now() - window.matrix_scene.stageStarted) > window.matrix_scene.transition_total
             ) {
                 clearInterval(window.matrix_scene.interval);
-                window.matrix_scene.complete = true;
                 canvas.style.display = 'none';
                 exitButton.addEventListener( 'click', downTheRabbitHole);
             }
@@ -214,6 +213,7 @@ function downTheRabbitHole() {
 
     // Hide the pageWrapper on completion so the iframed pages don't clash.
     setTimeout( () => {
+        window.matrix_scene.complete = true;
         pageWrapper.style.display = 'none';
 
         // Animate the camera resetting from any other position.

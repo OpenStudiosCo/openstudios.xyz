@@ -359,7 +359,7 @@ export default async function init() {
     document.body.appendChild(stats.dom);
   }
 
-
+  
   window.addEventListener('orientationchange', handleViewportChange);
   window.addEventListener('resize', handleViewportChange);
 
@@ -376,7 +376,7 @@ export default async function init() {
 
   }
 
-  window.addEventListener('pointermove', onPointerMove);
+  window.virtual_office.renderers.webgl.domElement.addEventListener('pointermove', onPointerMove);
 
   function onTouchStart(event) {
     if (!window.virtual_office.selected) {
@@ -397,8 +397,8 @@ export default async function init() {
     }
   }
 
-  window.addEventListener('touchstart', onTouchStart, false);
-  window.addEventListener('touchend', onTouchEnd, false);
+  window.virtual_office.renderers.webgl.domElement.addEventListener('touchstart', onTouchStart, false);
+  window.virtual_office.renderers.webgl.domElement.addEventListener('touchend', onTouchEnd, false);
 
   function onMouseDown(event) {
     window.virtual_office.pointer.z = 1; // previously mouseDown = true
@@ -409,8 +409,8 @@ export default async function init() {
   }
 
   // Attach the mouse down and up event listeners
-  window.addEventListener("pointerdown", onMouseDown, false);
-  window.addEventListener("pointerup", onMouseUp, false);
+  window.virtual_office.renderers.webgl.domElement.addEventListener("pointerdown", onMouseDown, false);
+  window.virtual_office.renderers.webgl.domElement.addEventListener("pointerup", onMouseUp, false);
 
 }
 
@@ -452,13 +452,13 @@ export function animate(currentTime) {
 
   requestAnimationFrame(animate);
 
-  if (window.virtual_office.ready) {
+  if (window.virtual_office.started) {
 
     updateTriggers(currentTime);
 
     updateTweens(currentTime);
 
-    if (!window.virtual_office.debug) {
+    if (!window.virtual_office.debug ) {
       handleInteractions( );
     }
 

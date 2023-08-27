@@ -36087,7 +36087,7 @@
       window.virtual_office.pointer.x = event.clientX / window.innerWidth * 2 - 1;
       window.virtual_office.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
     }
-    window.addEventListener("pointermove", onPointerMove);
+    window.virtual_office.renderers.webgl.domElement.addEventListener("pointermove", onPointerMove);
     function onTouchStart(event) {
       if (!window.virtual_office.selected) {
         event.preventDefault();
@@ -36104,16 +36104,16 @@
         window.virtual_office.pointer.z = 0;
       }
     }
-    window.addEventListener("touchstart", onTouchStart, false);
-    window.addEventListener("touchend", onTouchEnd, false);
+    window.virtual_office.renderers.webgl.domElement.addEventListener("touchstart", onTouchStart, false);
+    window.virtual_office.renderers.webgl.domElement.addEventListener("touchend", onTouchEnd, false);
     function onMouseDown(event) {
       window.virtual_office.pointer.z = 1;
     }
     function onMouseUp(event) {
       window.virtual_office.pointer.z = 0;
     }
-    window.addEventListener("pointerdown", onMouseDown, false);
-    window.addEventListener("pointerup", onMouseUp, false);
+    window.virtual_office.renderers.webgl.domElement.addEventListener("pointerdown", onMouseDown, false);
+    window.virtual_office.renderers.webgl.domElement.addEventListener("pointerup", onMouseUp, false);
   }
   function setCameraFOV(aspect2) {
     var fov2;
@@ -36140,7 +36140,7 @@
   function animate(currentTime) {
     updateFPS();
     requestAnimationFrame(animate);
-    if (window.virtual_office.ready) {
+    if (window.virtual_office.started) {
       updateTriggers(currentTime);
       updateTweens(currentTime);
       if (!window.virtual_office.debug) {
