@@ -90,16 +90,6 @@ html
                 border-color: #00FF00;
             }
 
-            @media screen and (min-width: 640px) {
-                #pokematrixSign,
-                #exitSign {
-                    padding: 1rem;
-                    margin-top: 0rem;
-                    margin-right: 0rem;
-                    top: 2rem;
-                    right: 3rem;
-                }
-            }
             #pokematrixSign {
                 opacity: 0;
                 cursor: pointer;
@@ -113,12 +103,28 @@ html
                 border-radius: 1rem;
                 height: auto;
                 position: fixed;
-                right: calc(3rem - 5px);
-                top: calc(2rem - 5px);
+                right: 0;
+                top: 0;
                 z-index: 10002;
             }
             #pokematrixImage {
                 top: 13rem;
+            }
+
+            @media screen and (min-width: 640px) {
+                #pokematrixSign,
+                #exitSign {
+                    padding: 1rem;
+                    margin-top: 0rem;
+                    margin-right: 0rem;
+                    top: 2rem;
+                    right: 3rem;
+                }
+                 #pokematrixImage,
+                #pokematrixCanvas {
+                    right: calc(3rem - 5px);
+                    top: calc(2rem - 5px);
+                }
             }
     body(onload="_init( 3000 );")
         noscript

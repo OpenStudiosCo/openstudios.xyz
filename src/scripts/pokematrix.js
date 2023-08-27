@@ -8,7 +8,8 @@
 const charArr = ['モ', 'エ', 'ヤ', 'キ', 'オ', 'カ', '7', 'ケ', 'サ', 'ス', 'z', '1', '5', '2', 'ヨ', 'タ', 'ワ', '4', 'ネ', 'ヌ', 'ナ', '9', '8', 'ヒ', '0', 'ホ', 'ア', '3', 'ウ', ' ', 'セ', '¦', ':', '"', '꞊', 'ミ', 'ラ', 'リ', '╌', 'ツ', 'テ', 'ニ', 'ハ', 'ソ', '▪', '—', '<', '>', '0', '|', '+', '*', 'コ', 'シ', 'マ', 'ム', 'メ'];
 
 const backgroundImage = new Image();
-backgroundImage.src = document.getElementById('exit_image').src;
+let isDesktop = window.innerWidth > 640;
+backgroundImage.src = isDesktop ? document.getElementById('exit_image').src : document.getElementById('exit_image_mobile').src  ;
 
 const webgl = document.getElementById('webgl');
 webgl.style.filter = 'saturate(0)';
@@ -60,7 +61,7 @@ window.matrix_scene = {
     loaded_done: 0,
     loaded_target: 0,
     // Stage 2
-    transition_total: 2500, // in milliseconds
+    transition_total: 1250, // in milliseconds
 
     // Animates the scene
     animate: function (currentTime) {
@@ -73,7 +74,7 @@ window.matrix_scene = {
         ctx.font = fontSize + 'pt monospace';
 
         if (window.matrix_scene.stage == 0) {
-            ctx.fillStyle = "rgba(0,0,0,0.0025)";
+            ctx.fillStyle = "rgba(0,0,0,0.00125)";
             ctx.fillRect(0, 0, w, h);
             // @todo: implement the intro sequence here - column reduce?
 
@@ -89,7 +90,7 @@ window.matrix_scene = {
             });
         }
         if (window.matrix_scene.stage == 1) {
-            ctx.fillStyle = "rgba(0,0,0,0.005)";
+            ctx.fillStyle = "rgba(0,0,0,0.0025)";
             ctx.fillRect(0, 0, w, h);
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
@@ -101,7 +102,7 @@ window.matrix_scene = {
 
         }
         if (window.matrix_scene.stage == 2) {
-            ctx.fillStyle = "rgba(0,0,0,0.01)";
+            ctx.fillStyle = "rgba(0,0,0,0.005)";
             ctx.fillRect(0, 0, w, h);
 
             ypos.forEach((y, ind) => {
@@ -115,11 +116,10 @@ window.matrix_scene = {
         }
         if (window.matrix_scene.stage == 3) {
 
-            ctx.fillStyle = "rgba(0,0,0,0.01)";
+            ctx.fillStyle = "rgba(0,0,0,0.005)";
             ctx.fillRect(0, 0, w, h);
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
-
 
                 if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
@@ -191,7 +191,7 @@ window.matrix_scene = {
     },
     // Start
     start: function () {
-        ctx.fillStyle = "rgba(0,0,0,0.25)";
+        ctx.fillStyle = "rgba(0,0,0,0)";
         ctx.fillRect(0, 0, w, h);
 
         window.addEventListener('orientationchange', handleViewportChange);
@@ -232,14 +232,14 @@ function downTheRabbitHole() {
 
 // Function to draw the background image
 function drawBackground() {
-    var scale = 1;
+    var scale = 0.8;
 
-    var scaledWidth =  canvas.width;
-    var scaledHeight =  canvas.height;
+    var scaledWidth =  canvas.width * scale;
+    var scaledHeight =  canvas.height * scale;
 
     // Calculate the top-left coordinates of the image to center it
-    var imageX = (w - scaledWidth) / 2;
-    var imageY = 2.5 + (h - scaledHeight) / 2;
+    var imageX =( (w - scaledWidth) / 2) + ( 0.1 ) * canvas.width;
+    var imageY = (2.5 + (h - scaledHeight) / 2) - ( 0.1 ) * canvas.height;
 
     // Draw the image on the canvas at the calculated position
     ctx2.drawImage(backgroundImage, imageX, imageY, scaledWidth, scaledHeight);
@@ -258,7 +258,7 @@ function getAverageColor(context, x, y) {
     }
     const count = imageData.length / 4;
     if (Math.floor(g / count) <=0 ) {
-        return `rgba(0,0,0,1)`;
+        return `rgba(0,0,0,0.0001)`;
         
     }
     else {
@@ -280,4 +280,7 @@ function handleViewportChange() {
 
     ctx.fillStyle = '#0000';
     ctx.fillRect(0, 0, w, h);
+
+    isDesktop = window.innerWidth > 640;
+    backgroundImage.src = isDesktop ? document.getElementById('exit_image').src : document.getElementById('exit_image_mobile').src  ;
 }
