@@ -116,7 +116,7 @@ void main() {
     float lum = 0.21 * bloom_color.r + 0.71 * bloom_color.g + 0.07 * bloom_color.b;
     gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
 }
-</script><script src="./vendor/tweakpane-3.1.10.min.js"></script><script src="./vendor/tween-21.0.0.umd.min.js"></script><script async src="./vendor/es-module-shims-1.8.0.js"></script><script>/**
+</script><script>/**
  * Multi purpose scenograph for displaying "Scenes".
  * 
  * Components
@@ -147,13 +147,17 @@ function _init( wait ) {
 	
 	// Default modules
 	var modules = [
-		// {
-		// 	name: "TWEEN.js",
-		// 	files: [ { path: './vendor/three-0.153.0.module.min.js' } ]
-		// },
+		{
+			name: "tweakpane",
+			files: [ { path: './vendor/tweakpane-3.1.10.min.js' } ]
+		},
+		{
+			name: "TWEEN.js",
+			files: [ { path: './vendor/tween-21.0.0.umd.min.js' } ]
+		},
 		{ 
 			name: "Virtual Office",
-			// requires: [ 'three.js' ],
+			requires: [ 'tweakpane', 'TWEEN.js' ],
 			files: [ { path: "./main.js", callback: "window.virtual_office.init" } ]
 		}
 	];

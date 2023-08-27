@@ -155,10 +155,6 @@ html
                     gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
                 }
 
-            script(src='./vendor/tweakpane-3.1.10.min.js')
-            script(src='./vendor/tween-21.0.0.umd.min.js')
-            script(async src='./vendor/es-module-shims-1.8.0.js')
-            
             script
                 include ../scripts/scenograph.js
             script
