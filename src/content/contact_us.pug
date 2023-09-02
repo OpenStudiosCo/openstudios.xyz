@@ -10,8 +10,23 @@ h1 Contact us
         |             the contact form below and we will endeaver to respond to your enquiry shortly.
       script.
         function onSubmit(token) {
-          document.getElementById("mailform").submit();
+          var validationElm = document.getElementById("validation");
+          var data = document.getElementById("mailform");
+          fetch(data.getAttribute('action'), {
+            method: data.getAttribute('method'),
+            body: new FormData(data)
+          }).then(function (response) {
+            if (response.status === 200) {
+              return response.text();
+            } else {
+              validationElm.innerHTML = response.text();
+            }
+          })
+          .then(function (data) {
+            validationElm.innerHTML = data;
+          });
         }
+      h3#validation(style="color: red; font-weight: bold;")
       form#mailform(method='post' action='https://mailform.openstudios.xyz/')
         label(for='name' type='text') Your Name
         br
@@ -26,7 +41,7 @@ h1 Contact us
           data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
           data-callback='onSubmit' 
           data-action='submit') Submit
-
+      
     .column
       h3 Connect with us
       | Find us across the web at the following destinations:
