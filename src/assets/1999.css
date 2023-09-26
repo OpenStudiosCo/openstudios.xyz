@@ -103,41 +103,6 @@ p {
   line-height: 1.5rem;
 }
 
-.line {
-  border: none;
-  border-top: 4px solid #FFDFFF;
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 0;
-}
-
-.line:nth-child(1) {
-  top: 27.5%;
-}
-
-.line:nth-child(2) {
-  top: 32.5%;
-}
-
-.line:nth-child(3) {
-  top: 37.5%;
-}
-
-.line:nth-child(4) {
-  top: 42.5%;
-}
-
-.lineset.first .line {
-  right: 49.9%;
-  transform: rotate(5deg);
-}
-
-.lineset.second .line {
-  left: 49.9%;
-  transform: rotate(-5deg);
-}
-
 form {
   border: 2px dotted #FF69CB;
   border-radius: 0.75rem;
@@ -186,6 +151,34 @@ form button:hover {
   position: relative;
 }
 
+.header_bg, .content_bg {
+  pointer-events: none;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  right: 0;
+  min-height: max( 1080px, 100vh);
+  z-index: 0;
+}
+
+.header_bg {
+  background: no-repeat url(../assets/images/backgrounds/header.jpg);
+  background-position: -719px -264px;
+}
+
+@media screen and (min-width: 3000px) {
+  .header_bg {
+    background-position: center -264px;
+  }
+}
+
+.content_bg {
+  bottom: max( 540px, 50vh);
+  background: no-repeat url(../assets/images/backgrounds/highway.jpg);
+  background-size: cover;
+  mix-blend-mode: screen;
+}
+
 .header {
   text-align: center;
   min-height: 200px;
@@ -216,8 +209,6 @@ form button:hover {
 
 .menu {
   margin: 1rem;
-  border-top: solid 4px #FFDFFF;
-  border-bottom: solid 4px #FFDFFF;
   color: #fff;
   text-align: center;
 }
@@ -260,12 +251,16 @@ form button:hover {
   text-align: center;
 }
 
-.content .big-column {
+.content .wide-column {
   flex-basis: 65%;
 }
 
 .content .column {
   flex-basis: 45%;
+}
+
+.content .narrow-column {
+  flex-basis: 25%;
 }
 
 .footer {
