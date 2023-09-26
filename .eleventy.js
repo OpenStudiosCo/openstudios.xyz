@@ -6,8 +6,8 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("./src/**/*");
   eleventyConfig.setServerOptions({
     https: {
-      key: "./aux/ssl-cert-snakeoil.key",
-      cert: "./aux/ssl-cert-snakeoil.pem",
+      key: "./etc/ssl-cert-snakeoil.key",
+      cert: "./etc/ssl-cert-snakeoil.pem",
     }
   });
 
