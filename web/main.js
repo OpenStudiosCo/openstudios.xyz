@@ -36143,7 +36143,7 @@
     if (window.virtual_office.started) {
       updateTriggers(currentTime);
       updateTweens(currentTime);
-      if (!window.virtual_office.debug) {
+      if (!window.virtual_office.debug && window.matrix_scene.complete) {
         handleInteractions();
       }
       window.virtual_office.scene_objects.desk_labels.forEach((desk_label, index) => {
