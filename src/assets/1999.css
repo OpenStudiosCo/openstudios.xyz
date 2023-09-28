@@ -243,6 +243,7 @@ form button:hover {
 .content_container.newsletter {
   background: no-repeat url(../assets/images/backgrounds/newsletter.jpg);
   background-position: center;
+  background-size: 100%;
 }
 
 .content_container.newsletter .content {
@@ -252,11 +253,13 @@ form button:hover {
 
 .content_container.footer {
   background: no-repeat url(../assets/images/backgrounds/footer.jpg);
+  background-position: bottom;
+  background-size: 100%;
 }
 
 .content_container.footer .content {
-  padding-top: min(420px, 10vh);
-  padding-bottom: min(320px, 30vh);
+  padding-top: min(320px, 10vh);
+  padding-bottom: min(540px, 30vh);
 }
 .content_container.footer,
 .content_container.newsletter { 
