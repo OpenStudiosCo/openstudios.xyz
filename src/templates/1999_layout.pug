@@ -29,55 +29,66 @@
                 img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
         include ../templates/exit_image.pug
         include ../templates/exit_image_mobile.pug
-    .content_bg
-    block page
-    .content(style='padding-bottom: 200px')
-        .row.center
-            .wide-column
-                script.
-                    function onSubmit(token) {
-                    var validationElm = document.getElementById("validation");
-                    var data = document.getElementById("mailform");
-                    fetch(data.getAttribute('action'), {
-                        method: data.getAttribute('method'),
-                        body: new FormData(data)
-                    }).then(function (response) {
-                        if (response.status === 200) {
-                        return response.text();
-                        } else {
-                        validationElm.innerHTML = response.text();
+    .content_container
+        block page
+    .content_container.newsletter
+        .newsletter_bg
+        .content
+            .row.center
+                .wide-column
+                    script.
+                        function onSubmit(token) {
+                        var validationElm = document.getElementById("validation");
+                        var data = document.getElementById("mailform");
+                        fetch(data.getAttribute('action'), {
+                            method: data.getAttribute('method'),
+                            body: new FormData(data)
+                        }).then(function (response) {
+                            if (response.status === 200) {
+                            return response.text();
+                            } else {
+                            validationElm.innerHTML = response.text();
+                            }
+                        })
+                        .then(function (data) {
+                            validationElm.innerHTML = data;
+                        });
                         }
-                    })
-                    .then(function (data) {
-                        validationElm.innerHTML = data;
-                    });
-                    }
-                h3#validation(style="color: red; font-weight: bold;")
-                form(method='post' action='https://mailform.openstudios.xyz/')
-                    h3 Subscribe to our newsletter
-                    p Meet the team our values lorem ipsum dolor cover gir put the bass in your walk.
-                    table
-                        tr
-                            td(style='width: 80%')
-                                input(type='hidden' name='name' value='n/a')
-                                input(type='hidden' name='message' value='Newsletter signup request')
-                                input(type='email' name='email' placeholder='Email address')
-                            td
-                                button(class="g-recaptcha" 
-                                    data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
-                                    data-callback='onSubmit' 
-                                    data-action='submit') Subscribe
-    .content
-        .row.center
-            .narrow-column
-                h3 About us
-                a(href='/about_us.html') Meet the team
-                br
-                a(href='/about_us.html') Our values
-            .narrow-column
-                h3 Services
-            .narrow-column
-                h3 Case studies
-            .narrow-column
-                h3 Find us online
-    .footer
+                    h3#validation(style="color: red; font-weight: bold;")
+                    form(method='post' action='https://mailform.openstudios.xyz/')
+                        h3 Subscribe to our newsletter
+                        p Meet the team our values lorem ipsum dolor cover gir put the bass in your walk.
+                        table
+                            tr
+                                td(style='width: 80%')
+                                    input(type='hidden' name='name' value='n/a')
+                                    input(type='hidden' name='message' value='Newsletter signup request')
+                                    input(type='email' name='email' placeholder='Email address')
+                                td
+                                    button(class="g-recaptcha" 
+                                        data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
+                                        data-callback='onSubmit' 
+                                        data-action='submit') Subscribe
+    .content_container.footer
+        .content
+            .row.center
+                .narrow-column
+                    h3 About us
+                    a(href='/about_us.html') Meet the team
+                    br
+                    a(href='/about_us.html') Our values
+                .narrow-column
+                    h3 Services
+                .narrow-column
+                    h3 Case studies
+                .narrow-column
+                    h3 Find us online
+            .row.center
+                if ! isIframe
+                    .h1
+                        a(href='./' title='Home')
+                            img(src='/assets/images/logo-wide.png' alt='Logo')
+                else
+                    .h1
+                        a(title='Home')
+                            img(src='/assets/images/logo-wide.png' alt='Logo')

@@ -151,7 +151,7 @@ form button:hover {
   position: relative;
 }
 
-.header_bg, .content_bg {
+.header_bg {
   pointer-events: none;
   overflow: hidden;
   position: absolute;
@@ -170,13 +170,6 @@ form button:hover {
   .header_bg {
     background-position: center -264px;
   }
-}
-
-.content_bg {
-  bottom: max( 540px, 50vh);
-  background: no-repeat url(../assets/images/backgrounds/highway.jpg);
-  background-size: cover;
-  mix-blend-mode: screen;
 }
 
 .header {
@@ -232,11 +225,53 @@ form button:hover {
   color: #ffffff;
 }
 
+.content_container {
+  position: relative;
+  width: 100vw;
+  padding-bottom: min(540px, 50vh);
+  margin: 0 2rem;
+  background: no-repeat url(../assets/images/backgrounds/highway.jpg);
+  background-position: bottom;
+  background-size: 100%;
+  mix-blend-mode: screen;
+}
+
+.content_container .content {
+  padding-bottom: min(540, 50vh);
+}
+
+.content_container.newsletter {
+  background: no-repeat url(../assets/images/backgrounds/newsletter.jpg);
+  background-position: center;
+}
+
+.content_container.newsletter .content {
+  padding-top: min(100px, 10vh);
+  padding-bottom: min(100px, 10vh);
+}
+
+.content_container.footer {
+  background: no-repeat url(../assets/images/backgrounds/footer.jpg);
+}
+
+.content_container.footer .content {
+  padding-top: min(420px, 10vh);
+  padding-bottom: min(320px, 30vh);
+}
+.content_container.footer,
+.content_container.newsletter { 
+  padding: 0px;
+}
+
 .content {
   display: flex;
   flex-wrap: wrap;
   margin: 0rem 2rem;
   max-width: 960px;
+}
+
+.content_container .content{
+  margin: 0px auto;
 }
 
 .content .row {
@@ -286,6 +321,7 @@ form button:hover {
     width: 100vw;
   }
 
+  .content,
   .content .row {
     flex-direction: row;
     margin: 2rem;
