@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /iframes/
+Allow: /
+Sitemap: https://www.openstudios.xyz/sitemap.xml
