@@ -37,25 +37,27 @@
             .row.center
                 .wide-column
                     script.
-                        function onSubmit(token) {
-                        var validationElm = document.getElementById("validation");
-                        var data = document.getElementById("mailform");
-                        fetch(data.getAttribute('action'), {
-                            method: data.getAttribute('method'),
-                            body: new FormData(data)
-                        }).then(function (response) {
-                            if (response.status === 200) {
-                            return response.text();
-                            } else {
-                            validationElm.innerHTML = response.text();
-                            }
-                        })
-                        .then(function (data) {
-                            validationElm.innerHTML = data;
-                        });
+                        function newsletterSubmit(token) {
+                            var validationElm = document.getElementById("newslettervalidation");
+                            var data = document.getElementById("newsletterform");
+                            fetch(data.getAttribute('action'), {
+                                method: data.getAttribute('method'),
+                                body: new FormData(data)
+                            }).then(function (response) {
+                                if (response.status === 200) {
+                                return response.text();
+                                } else {
+                                validationElm.innerHTML = response.text();
+                                }
+                            })
+                            .then(function (data) {
+                                validationElm.innerHTML = data;
+                                if (validationElm.innerHTML.indexOf('Email sent successfully.') >= 0) {
+                                    document.getElementById("newsletterform").reset();
+                                }
+                            });
                         }
-                    h3#validation(style="color: red; font-weight: bold;")
-                    form(method='post' action='https://mailform.openstudios.xyz/')
+                    form#newsletterform(method='post' action='https://mailform.openstudios.xyz/')
                         h3 Subscribe to our newsletter
                         p Meet the team our values lorem ipsum dolor cover gir put the bass in your walk.
                         table
@@ -67,8 +69,9 @@
                                 td
                                     button(class="g-recaptcha" 
                                         data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
-                                        data-callback='onSubmit' 
+                                        data-callback='newsletterSubmit' 
                                         data-action='submit') Subscribe
+                        h3#newslettervalidation(style="color: red; font-weight: bold;")
     .content_container.footer
         .content
             .row.center

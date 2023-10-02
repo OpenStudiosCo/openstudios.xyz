@@ -24,9 +24,12 @@ h1 Contact us
           })
           .then(function (data) {
             validationElm.innerHTML = data;
+            if (validationElm.innerHTML.indexOf('Email sent successfully.') >= 0) {
+                document.getElementById("mailform").reset();
+            }
           });
         }
-      h3#validation(style="color: red; font-weight: bold;")
+      
       form#mailform(method='post' action='https://mailform.openstudios.xyz/')
         label(for='name' type='text') Your Name
         br
@@ -41,7 +44,7 @@ h1 Contact us
           data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
           data-callback='onSubmit' 
           data-action='submit') Submit
-      
+        h3#validation(style="color: red; font-weight: bold;")
     .column
       h3 Connect with us
       | Find us across the web at the following destinations:

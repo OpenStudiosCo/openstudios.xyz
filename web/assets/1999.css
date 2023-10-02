@@ -210,10 +210,10 @@ form button:hover {
   display: inline-block;
   font-family: VeraMono, Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.5rem;
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
 }
 
 .menu a {
@@ -227,23 +227,20 @@ form button:hover {
 
 .content_container {
   position: relative;
-  width: 100vw;
-  padding-bottom: min(540px, 50vh);
-  margin: 0 2rem;
+  width: calc(100vw - 3rem);
+  padding: 0 1rem min(270px, 25vh);
   background: no-repeat url(../assets/images/backgrounds/highway.jpg);
   background-position: bottom;
   background-size: 100%;
   mix-blend-mode: screen;
 }
 
-.content_container .content {
-  padding-bottom: min(540, 50vh);
-}
-
 .content_container.newsletter {
   background: no-repeat url(../assets/images/backgrounds/newsletter.jpg);
   background-position: center;
-  background-size: 100%;
+  background-size: cover;
+  padding: 0 2rem;
+  width: calc(100vw - 5rem);
 }
 
 .content_container.newsletter .content {
@@ -255,15 +252,6 @@ form button:hover {
   background: no-repeat url(../assets/images/backgrounds/footer.jpg);
   background-position: bottom;
   background-size: 100%;
-}
-
-.content_container.footer .content {
-  padding-top: min(320px, 10vh);
-  padding-bottom: min(540px, 30vh);
-}
-.content_container.footer,
-.content_container.newsletter { 
-  padding: 0px;
 }
 
 .content {
@@ -282,6 +270,10 @@ form button:hover {
   flex-direction: column;
   flex-basis: 100%;
   justify-content: space-between;
+}
+
+.content_container .content.portfolio .column {
+  margin-bottom: 2.5rem;
 }
 
 .content .row.center {
@@ -306,7 +298,7 @@ form button:hover {
 }
 
 
-@media screen and (min-width: 960px) {
+@media screen and (min-width: 1200px) {
   .header img {
     max-width: inherit;
   }
@@ -350,4 +342,23 @@ form button:hover {
   .line:nth-child(4) {
     top: 32.5%;
   }
+
+  .content_container {
+    width: calc(100vw - 5rem);
+    padding: 0 2rem min(540px, 50vh);
+  }
+
+  .content_container .content {
+    padding-bottom: min(540px, 50vh);
+  }
+
+  .content_container .content.portfolio .column {
+    margin-bottom: 0rem;
+  }
+
+  .content_container.footer .content {
+    padding-top: min(320px, 10vh);
+    padding-bottom: min(540px, 30vh);
+  }
+  
 }
