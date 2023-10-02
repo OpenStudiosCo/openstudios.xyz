@@ -163,7 +163,7 @@ form button:hover {
 
 .header_bg {
   background: no-repeat url(../assets/images/backgrounds/header.jpg);
-  background-position: -719px -264px;
+  background-position: center -95px;
 }
 
 @media screen and (min-width: 3000px) {
@@ -236,7 +236,6 @@ form button:hover {
   background: no-repeat url(../assets/images/backgrounds/highway.jpg);
   background-position: bottom;
   background-size: 100%;
-  mix-blend-mode: screen;
 }
 
 .content_container.newsletter {
@@ -352,6 +351,7 @@ form button:hover {
   .content_container {
     width: calc(100vw - 4rem);
     padding: 0 2rem 0;
+    mix-blend-mode: screen;
   }
 
   .content_container .content {
