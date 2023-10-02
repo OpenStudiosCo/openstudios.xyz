@@ -206,6 +206,10 @@ form button:hover {
   text-align: center;
 }
 
+.menu ul {
+  padding: 0 1rem;
+}
+
 .menu li {
   display: inline-block;
   font-family: VeraMono, Verdana, Geneva, Tahoma, sans-serif;
@@ -227,7 +231,7 @@ form button:hover {
 
 .content_container {
   position: relative;
-  width: calc(100vw - 3rem);
+  width: calc(100vw - 2rem);
   padding: 0 1rem 0;
   background: no-repeat url(../assets/images/backgrounds/highway.jpg);
   background-position: bottom;
@@ -240,7 +244,7 @@ form button:hover {
   background-position: center;
   background-size: cover;
   padding: 0 2rem;
-  width: calc(100vw - 5rem);
+  width: calc(100vw - 4rem);
 }
 
 .content_container.newsletter .content {
@@ -253,6 +257,7 @@ form button:hover {
   background-position: bottom;
   background-size: 100%;
   padding: 0 2rem 0;
+  width: calc(100vw - 4rem);
 }
 
 .content {
@@ -345,7 +350,7 @@ form button:hover {
   }
 
   .content_container {
-    width: calc(100vw - 5rem);
+    width: calc(100vw - 4rem);
     padding: 0 2rem 0;
   }
 
