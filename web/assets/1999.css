@@ -228,7 +228,7 @@ form button:hover {
 .content_container {
   position: relative;
   width: calc(100vw - 3rem);
-  padding: 0 1rem min(270px, 25vh);
+  padding: 0 1rem 0;
   background: no-repeat url(../assets/images/backgrounds/highway.jpg);
   background-position: bottom;
   background-size: 100%;
@@ -252,6 +252,7 @@ form button:hover {
   background: no-repeat url(../assets/images/backgrounds/footer.jpg);
   background-position: bottom;
   background-size: 100%;
+  padding: 0 2rem 0;
 }
 
 .content {
@@ -345,7 +346,7 @@ form button:hover {
 
   .content_container {
     width: calc(100vw - 5rem);
-    padding: 0 2rem min(540px, 50vh);
+    padding: 0 2rem 0;
   }
 
   .content_container .content {
@@ -361,4 +362,10 @@ form button:hover {
     padding-bottom: min(540px, 30vh);
   }
   
+}
+
+@media screen and (min-width: 2400px) {
+  .content_container .content {
+    padding-bottom: min(1080px, 75vh);
+  }
 }
