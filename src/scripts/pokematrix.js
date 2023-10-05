@@ -204,7 +204,7 @@ window.matrix_scene = {
 };
 
 function downTheRabbitHole() {
-    
+    document.title = 'Open Studios | Perth, Western Australia';
     const pageWrapper = document.getElementById('page-wrapper');
     
     pageWrapper.style.opacity = 1;
