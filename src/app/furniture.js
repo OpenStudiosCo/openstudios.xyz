@@ -519,8 +519,8 @@ async function createDeskLabel(i, callback, deskGroup) {
  * @returns [ HTMLObject, THREE.Mesh ];
  */
 async function createScreen( i ){
-
-  const slug    = window.virtual_office.screens[ i ].slug;
+  const screen = window.virtual_office.screens[ i ];
+  const slug    = screen.slug;
   const url     = '../assets/images/pages/' + slug + '.jpg',
         pageUrl = '../iframes/' + slug + '.html';
   
@@ -533,7 +533,9 @@ async function createScreen( i ){
   var screenWebGL = new THREE.Mesh(geometry, brightenMaterial(material, ( i==720 ? 12 : 8 )));
 
   // @todo: move into settings.
-  screenWebGL.pageUrl = pageUrl; 
+  screenWebGL.pageUrl = pageUrl;
+  screenWebGL.pageTitle = screen.title;
+  screenWebGL.pageRealUrl = '../' + slug + '.html';;
   
   //mesh.scale.copy( domObject.scale );
   screenWebGL.castShadow = false;
