@@ -29,7 +29,11 @@
                 img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
         include ../templates/exit_image.pug
         include ../templates/exit_image_mobile.pug
-    .content_container(role="main")
+    if page.url == '/about_us.html'
+        - extra_class = ' bg_river'
+    else 
+        - extra_class = ''
+    .content_container(role="main" class=extra_class)
         block page
     .content_container.newsletter(role="complementary")
         .newsletter_bg
@@ -60,13 +64,13 @@
                     form#newsletterform(method='post' action='https://mailform.openstudios.xyz/' role="form")
                         h3 Subscribe to our newsletter
                         p Get all our latest insights, tips and project updates, conveniently in your inbox.
-                        table
+                        table(style='width: 100%')
                             tr
                                 td(style='width: 80%')
                                     input(type='hidden' name='name' value='n/a')
                                     input(type='hidden' name='message' value='Newsletter signup request')
                                     input(type='email' name='email' placeholder='Email address')
-                                td
+                                td(style='padding-left: 1rem')
                                     button(class="g-recaptcha" 
                                         data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
                                         data-callback='newsletterSubmit' 

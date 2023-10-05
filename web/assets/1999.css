@@ -231,19 +231,48 @@ form button:hover {
 
 .content_container {
   position: relative;
-  width: calc(100vw - 2rem);
-  padding: 0 1rem 0;
+  width: 100vw;
+}
+
+.content_container .content {
+  padding: 1rem 1.5rem 250px;
+}
+
+.content_container::before {
+  content: '';
   background: no-repeat url(../assets/images/backgrounds/highway.jpg);
+  background-position: bottom;
+  background-size: 100%;
+  display: block;
+  height: 100%;
+  mix-blend-mode: screen;
+  position: absolute;
+  width: 100vw;
+  z-index: 0;
+}
+
+.content_container.bg_reverse::before {
+  background: no-repeat url(../assets/images/backgrounds/river.jpg);
   background-position: bottom;
   background-size: 100%;
 }
 
-.content_container.newsletter {
+.content_container.bg_river::before {
+  background: no-repeat url(../assets/images/backgrounds/river.jpg);
+  background-position: bottom;
+  background-size: cover;
+  background-blend-mode: hue;
+}
+
+.content_container.bg_river .content {
+  padding-bottom: 250px;
+}
+
+
+.content_container.newsletter::before {
   background: no-repeat url(../assets/images/backgrounds/newsletter.jpg);
   background-position: center;
   background-size: cover;
-  padding: 0 2rem;
-  width: calc(100vw - 4rem);
 }
 
 .content_container.newsletter .content {
@@ -251,7 +280,7 @@ form button:hover {
   padding-bottom: min(100px, 10vh);
 }
 
-.content_container.footer {
+.content_container.footer::before {
   background: no-repeat url(../assets/images/backgrounds/footer.jpg);
   background-position: bottom;
   background-size: 100%;
@@ -387,12 +416,6 @@ form button:hover {
 
   .line:nth-child(4) {
     top: 32.5%;
-  }
-
-  .content_container {
-    width: calc(100vw - 4rem);
-    padding: 0 2rem 0;
-    mix-blend-mode: screen;
   }
 
   .content_container .content {
