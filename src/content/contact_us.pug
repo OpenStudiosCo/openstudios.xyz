@@ -1,4 +1,4 @@
-h1 Contact us
+h2 Contact us
 .content.contact_page
   .row
     .column
@@ -24,10 +24,13 @@ h1 Contact us
           })
           .then(function (data) {
             validationElm.innerHTML = data;
+            if (validationElm.innerHTML.indexOf('Email sent successfully.') >= 0) {
+                document.getElementById("mailform").reset();
+            }
           });
         }
-      h3#validation(style="color: red; font-weight: bold;")
-      form#mailform(method='post' action='https://mailform.openstudios.xyz/')
+      
+      form#mailform(method='post' action='https://mailform.openstudios.xyz/' role="form")
         label(for='name' type='text') Your Name
         br
         input(type='text' name='name' placeholder='Full Name')
@@ -41,7 +44,7 @@ h1 Contact us
           data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
           data-callback='onSubmit' 
           data-action='submit') Submit
-      
+        h3#validation(style="color: red; font-weight: bold;")
     .column
       h3 Connect with us
       | Find us across the web at the following destinations:
