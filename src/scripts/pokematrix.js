@@ -214,7 +214,7 @@ function downTheRabbitHole() {
     // Hide the pageWrapper on completion so the iframed pages don't clash.
     setTimeout( () => {
         window.matrix_scene.complete = true;
-        pageWrapper.style.display = 'none';
+        pageWrapper.remove();
 
         // Animate the camera resetting from any other position.
         window.virtual_office.tweens.resetCameraRotation.start();

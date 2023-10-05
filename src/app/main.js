@@ -458,7 +458,7 @@ export function animate(currentTime) {
 
     updateTweens(currentTime);
 
-    if (!window.virtual_office.debug ) {
+    if (!window.virtual_office.debug && window.matrix_scene.complete ) {
       handleInteractions( );
     }
 
