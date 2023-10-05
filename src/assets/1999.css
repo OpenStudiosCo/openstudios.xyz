@@ -312,6 +312,11 @@ form button:hover {
   text-align: center;
 }
 
+.footer ul {
+  list-style: none outside;
+  padding: 0px;
+}
+
 .content_container.footer .content {
   padding-top: min(80px, 2.5vh);
   padding-bottom: min(135px, 7.5vh);

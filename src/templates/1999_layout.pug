@@ -1,6 +1,6 @@
 #page-wrapper
     .header_bg
-    .header
+    .header(role="banner")
         if ! isIframe
             .h1
                 a(href='./' title='Home')
@@ -10,18 +10,18 @@
                 a(title='Home')
                     img(src='/assets/images/logo-wide.png' alt='Logo')
     if ! isIframe
-        .menu
-            ul
-                li
-                    a(href='/about_us.html') About Us
-                li
-                    a(href='/services.html') Services
-                li
-                    a(href='/case_studies.html') Case Studies
-                li
-                    a(href='/portfolio.html') Portfolio
-                li
-                    a(href='/contact_us.html') Contact Us
+        .menu(role="navigation")
+            ul(role="menu")
+                li(role="presentation")
+                    a(href='/about_us.html' role="menuitem") About Us
+                li(role="presentation")
+                    a(href='/services.html' role="menuitem") Services
+                li(role="presentation")
+                    a(href='/case_studies.html' role="menuitem") Case Studies
+                li(role="presentation")
+                    a(href='/portfolio.html' role="menuitem") Portfolio
+                li(role="presentation")
+                    a(href='/contact_us.html' role="menuitem") Contact Us
         #pokematrix
             canvas#pokematrixCanvas
             canvas#pokematrixImage
@@ -29,9 +29,9 @@
                 img(src='./assets/exit.svg' title='Return to the office' width='300' height='85')
         include ../templates/exit_image.pug
         include ../templates/exit_image_mobile.pug
-    .content_container
+    .content_container(role="main")
         block page
-    .content_container.newsletter
+    .content_container.newsletter(role="complementary")
         .newsletter_bg
         .content
             .row.center
@@ -57,7 +57,7 @@
                                 }
                             });
                         }
-                    form#newsletterform(method='post' action='https://mailform.openstudios.xyz/')
+                    form#newsletterform(method='post' action='https://mailform.openstudios.xyz/' role="form")
                         h3 Subscribe to our newsletter
                         p Get all our latest insights, tips and project updates, conveniently in your inbox.
                         table
@@ -78,48 +78,53 @@
                 .row
                     .narrow-column
                         h3 About us
-                        a(href='/about_us.html') Meet the team
-                        br
-                        a(href='/about_us.html') Our values
-                        br
+                        ul(role="menu")
+                            li(role="presentation")
+                                a(href='/about_us.html' role="menuitem") Meet the team
+                            li(role="presentation")
+                                a(href='/about_us.html' role="menuitem") Our values
                     .narrow-column
                         h3 Services
-                        a(href='/services.html') 3D Modelling and Printing
-                        br
-                        a(href='/services.html') Animation
-                        br
-                        a(href='/services.html') Game Development
-                        br
-                        a(href='/services.html') Graphic Design
-                        br
-                        a(href='/services.html') Interactive Design
-                        br
-                        a(href='/services.html') Marketing Design
-                        br
-                        a(href='/services.html') Product design
-                        br
-                        a(href='/services.html') Web design
-                        br
-                        a(href='/services.html') Web development
-                        br
-                        a(href='/services.html') Video production
-                        br
+                        ul(role="menu")
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") 3D Modelling and Printing
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") Animation
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") Game Development
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") Graphic Design
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") Interactive Design
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") Marketing Design
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") Product design
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") Web design
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") Web development
+                            li(role="presentation")
+                                a(href='/services.html' role="menuitem") Video production
                     .narrow-column
                         h3 Our work
-                        a(href='/case_studies.html') Case studies
-                        br
-                        a(href='/projects.html') Projects
-                        br
-                        a(href='/contact_us.html') Contact Us
-                        br
+                        ul(role="menu")
+                            li(role="presentation")
+                                a(href='/case_studies.html' role="menuitem") Case studies
+                            li(role="presentation")
+                                a(href='/projects.html' role="menuitem") Projects
+                            li(role="presentation")
+                                a(href='/contact_us.html' role="menuitem") Contact Us
                     .narrow-column
                         h3 Terms
-                        a(href='/accessibility.html') Accessibility
-                        br
-                        a(href='/ai-copyright.html') AI and Copyright Policy
-                        br
-                        a(href='/privacy.html') Privacy Policy
-                        br
+                        ul(role="menu")
+                            li(role="presentation")
+                                a(href='/accessibility.html' role="menuitem") Accessibility
+                            li(role="presentation")
+                                a(href='/ai-copyright.html' role="menuitem") AI and Copyright Policy
+                            li(role="presentation")                
+                                a(href='/privacy.html' role="menuitem") Privacy Policy
+                        
             .row.center
                 if ! isIframe
                     .h1
