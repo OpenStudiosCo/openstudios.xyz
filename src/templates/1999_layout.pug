@@ -31,6 +31,10 @@
         include ../templates/exit_image_mobile.pug
     if page.url == '/about_us.html'
         - extra_class = ' bg_river'
+    else if page.url == '/services.html'
+        - extra_class = ' bg_reverse'
+    else if page.url == '/contact_us.html'
+        - extra_class = ' bg_reverse'
     else 
         - extra_class = ''
     .content_container(role="main" class=extra_class)
@@ -116,7 +120,7 @@
                             li(role="presentation")
                                 a(href='/case_studies.html' role="menuitem") Case studies
                             li(role="presentation")
-                                a(href='/projects.html' role="menuitem") Projects
+                                a(href='/portfolio.html' role="menuitem") Portfolio
                             li(role="presentation")
                                 a(href='/contact_us.html' role="menuitem") Contact Us
                     .narrow-column

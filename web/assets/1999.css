@@ -235,7 +235,7 @@ form button:hover {
 }
 
 .content_container .content {
-  padding: 1rem 1.5rem 250px;
+  padding: 1rem 1.5rem 350px;
 }
 
 .content_container::before {
@@ -252,7 +252,7 @@ form button:hover {
 }
 
 .content_container.bg_reverse::before {
-  background: no-repeat url(../assets/images/backgrounds/river.jpg);
+  background: no-repeat url(../assets/images/backgrounds/reverse.jpg);
   background-position: bottom;
   background-size: 100%;
 }
