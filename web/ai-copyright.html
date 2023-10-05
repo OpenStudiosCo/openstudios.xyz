@@ -637,4 +637,14 @@ function handleViewportChange() {
 
     isDesktop = window.innerWidth > 640;
     backgroundImage.src = isDesktop ? document.getElementById('exit_image').src : document.getElementById('exit_image_mobile').src  ;
-}</script></div></body></html>
+}</script><script>var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="https://analytics.openstudios.xyz/";
+_paq.push(['setTrackerUrl', u+'matomo.php']);
+_paq.push(['setSiteId', '11']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+})();</script></div></body></html>
