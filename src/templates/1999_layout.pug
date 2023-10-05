@@ -59,7 +59,7 @@
                         }
                     form#newsletterform(method='post' action='https://mailform.openstudios.xyz/')
                         h3 Subscribe to our newsletter
-                        p Meet the team our values lorem ipsum dolor cover gir put the bass in your walk.
+                        p Get all our latest insights, tips and project updates, conveniently in your inbox.
                         table
                             tr
                                 td(style='width: 80%')
@@ -74,18 +74,19 @@
                         h3#newslettervalidation(style="color: red; font-weight: bold;")
     .content_container.footer
         .content
-            .row.center
-                .narrow-column
-                    h3 About us
-                    a(href='/about_us.html') Meet the team
-                    br
-                    a(href='/about_us.html') Our values
-                .narrow-column
-                    h3 Services
-                .narrow-column
-                    h3 Case studies
-                .narrow-column
-                    h3 Find us online
+            if ! isIframe
+                .row.center
+                    .narrow-column
+                        h3 About us
+                        a(href='/about_us.html') Meet the team
+                        br
+                        a(href='/about_us.html') Our values
+                    .narrow-column
+                        h3 Services
+                    .narrow-column
+                        h3 Case studies
+                    .narrow-column
+                        h3 Find us online
             .row.center
                 if ! isIframe
                     .h1
