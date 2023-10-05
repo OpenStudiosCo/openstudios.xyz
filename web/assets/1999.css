@@ -163,7 +163,7 @@ form button:hover {
 
 .header_bg {
   background: no-repeat url(../assets/images/backgrounds/header.jpg);
-  background-position: center -95px;
+  background-position: center -230px;
 }
 
 @media screen and (min-width: 3000px) {
@@ -235,7 +235,7 @@ form button:hover {
 }
 
 .content_container .content {
-  padding: 1rem 1.5rem 350px;
+  padding: 1rem 1.5rem 420px;
 }
 
 .content_container::before {
@@ -259,13 +259,12 @@ form button:hover {
 
 .content_container.bg_river::before {
   background: no-repeat url(../assets/images/backgrounds/river.jpg);
-  background-position: bottom;
+  background-position: bottom center;
   background-size: cover;
-  background-blend-mode: hue;
 }
 
 .content_container.bg_river .content {
-  padding-bottom: 250px;
+  padding-bottom: 350px;
 }
 
 
@@ -420,6 +419,10 @@ form button:hover {
 
   .content_container .content {
     padding-bottom: min(540px, 50vh);
+  }
+
+  .content_container.bg_reverse .content {
+    padding-bottom: 860px;
   }
 
   .content_container .content.portfolio .column {

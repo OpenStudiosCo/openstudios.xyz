@@ -31,9 +31,11 @@
         include ../templates/exit_image_mobile.pug
     if page.url == '/about_us.html'
         - extra_class = ' bg_river'
+    else if page.url == '/404.html'
+        - extra_class = ' bg_river'
     else if page.url == '/services.html'
         - extra_class = ' bg_reverse'
-    else if page.url == '/contact_us.html'
+    else if page.url == '/case_studies.html'
         - extra_class = ' bg_reverse'
     else 
         - extra_class = ''
