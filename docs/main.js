@@ -35650,6 +35650,7 @@
         let [targetPosition, targetRotation] = screen.webGLScreen.getViewingCoords();
         document.getElementById("pageOverlay").src = window.virtual_office.selected.webGLScreen.pageUrl;
         document.title = window.virtual_office.selected.webGLScreen.pageTitle + " | Open Studios | Perth, Western Australia";
+        history.pushState({}, "", window.virtual_office.selected.webGLScreen.pageRealUrl);
         window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1e3).start();
         window.virtual_office.tweens.moveCamera.to(targetPosition, 1e3).onComplete(stretchSelectedScreen).start();
       }
@@ -35657,6 +35658,7 @@
   }
   function handleExitSign() {
     document.title = "Open Studios | Perth, Western Australia";
+    history.pushState({}, "", "/");
     window.virtual_office.moving = true;
     var targetRotation = -(Math.PI / 30) * window.virtual_office.camera.aspect;
     let cameraDefaultPosition = { x: 0, y: 18, z: -20 + window.virtual_office.room_depth / 2 }, cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
