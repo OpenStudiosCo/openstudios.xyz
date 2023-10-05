@@ -85,7 +85,7 @@ a.icon_button img:hover {
   color: white;
   text-shadow: 2.5px 2.5px 5px #FF69CB;
   text-align: center;
-  font-size: 4rem;
+  font-size: 6rem;
   font-weight: 100;
   margin: 2vh 0;
   text-transform: lowercase;
@@ -309,8 +309,35 @@ form button:hover {
 
 .footer {
   min-height: 266px;
+  text-align: center;
 }
 
+.content_container.footer .content {
+  padding-top: min(80px, 2.5vh);
+  padding-bottom: min(135px, 7.5vh);
+}
+
+@media screen and (min-width: 768px) {
+  .content_container.footer .content .row {
+    flex-direction: row;
+  }
+
+  .footer {
+    text-align: left;
+  }
+
+  .content_container.footer .content {
+    padding-top: min(160px, 5vh);
+    padding-bottom: min(270px, 15vh);
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1200px) {
+  .content {
+    max-width: 760px;
+  }
+  
+}
 
 @media screen and (min-width: 1200px) {
   .header img {
