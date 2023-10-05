@@ -1,16 +1,21 @@
 module.exports = function(eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy({"src/assets": "assets"});
-  eleventyConfig.addPassthroughCopy({
-    "./node_modules/alpinejs/dist/cdn.min.js": "./assets/alpine.js",
+  eleventyConfig.addPassthroughCopy({"src/vendor": "vendor"});
+
+  eleventyConfig.addWatchTarget("./src/**/*");
+  eleventyConfig.setServerOptions({
+    https: {
+      key: "./etc/ssl-cert-snakeoil.key",
+      cert: "./etc/ssl-cert-snakeoil.pem",
+    }
   });
 
   return {
     dir: {
-      input: 'src/pages',
-      layouts: 'src/templates',
-      data: '../data',
-      output: 'docs'
+      input:    'src/web',
+      layouts:  'src/templates',
+      output:   'web'
     },
   };
 };
