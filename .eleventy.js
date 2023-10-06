@@ -2,6 +2,7 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy({"src/assets": "assets"});
   eleventyConfig.addPassthroughCopy({"src/vendor": "vendor"});
+  eleventyConfig.addPassthroughCopy("CNAME");
 
   eleventyConfig.addWatchTarget("./src/**/*");
   eleventyConfig.setServerOptions({
