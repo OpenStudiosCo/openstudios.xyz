@@ -172,6 +172,13 @@ void main() {
 // Boot up the Scenograph and populate the window accessor
 function _init( wait ) {
 
+	let iosVer = iOSversion();
+
+	// Don't run if we are dealing with iOS < v14 as it won't work.
+	if (iosVer.status && parseInt(iosVer.version) < parseInt(14)) {
+		return;
+	}
+
 	window.matrix_scene.start();
 	
 	// Create the main engine accessor
@@ -207,6 +214,22 @@ function _init( wait ) {
 		_load_modules( modules, "s" );
 	} , wait);
 	
+}
+
+// @Source: https://hoohoo.top/blog/7389546/
+function iOSversion() {
+	let d, v;
+	if (/iP(hone|od|ad)/.test(navigator.platform)) {
+		v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+		d = {
+		status: true,
+		version: parseInt(v[1], 10) , 
+		info: parseInt(v[1], 10)+'.'+parseInt(v[2], 10)+'.'+parseInt(v[3] || 0, 10)
+		};
+	}else{
+		d = {status:false, version: false, info:''}
+	}
+	return d;
 }
 
 // Checks URL and determines environment.
