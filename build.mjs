@@ -7,5 +7,6 @@ esbuild
         bundle: true,
         minify: true,
         outdir: 'docs',
+        target: 'es2018'
     })
     .catch(() => process.exit(1))

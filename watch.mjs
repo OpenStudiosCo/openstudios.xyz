@@ -6,7 +6,8 @@ const context = await esbuild
         entryPoints: ['./src/app/main.js'],
         bundle: true,
         minify: false,
-        outdir: 'docs'
+        outdir: 'docs',
+        target: 'es2018'
     });
  
 // Manually do an incremental build
