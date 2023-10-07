@@ -52,24 +52,6 @@ a.icon_button img:hover {
   box-shadow: 0px 0px 4px #FFFFFF;
 }
 
-.content a.service_button {
-  display: flex;
-  border-radius: 0.75rem;
-  border: solid 1px #FF69CB;
-  margin: 0 0.75rem;
-  width: calc(20% - 1.5rem);
-  padding: 1rem;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-}
-
-.content a.service_button:hover {
-  background: #0099AA;
-  color: #FFFFFF;
-}
-
 .contact_page .icon_button {
   display: flex;
   align-items: center;
