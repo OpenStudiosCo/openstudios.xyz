@@ -38,16 +38,16 @@ function _init( wait ) {
 	var modules = [
 		{
 			name: "tweakpane",
-			files: [ { path: './vendor/tweakpane-3.1.10.min.js' } ]
+			files: [ { path: '/vendor/tweakpane-3.1.10.min.js' } ]
 		},
 		{
 			name: "TWEEN.js",
-			files: [ { path: './vendor/tween-21.0.0.umd.min.js' } ]
+			files: [ { path: '/vendor/tween-21.0.0.umd.min.js' } ]
 		},
 		{ 
 			name: "Virtual Office",
 			requires: [ 'tweakpane', 'TWEEN.js' ],
-			files: [ { path: "./main.js", callback: "window.virtual_office.init" } ]
+			files: [ { path: "/main.js", callback: "window.virtual_office.init" } ]
 		}
 	];
 
