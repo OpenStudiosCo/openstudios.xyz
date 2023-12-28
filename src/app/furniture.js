@@ -38,7 +38,7 @@ export async function setupBackwall ( ) {
   wallGroup.name = "backWall";
   wallGroup.webGLScreen = window.virtual_office.scene_objects.tvWebGL;
 
-  await window.virtual_office.loaders.gtlf.load( './assets/models/Small Monstera.glb', async function ( glb ) {
+  await window.virtual_office.loaders.gtlf.load( '/assets/models/Small Monstera.glb', async function ( glb ) {
     let object = glb.scene.children[0];
 
     object.traverse( function ( child ) {
@@ -72,7 +72,7 @@ export async function setupBackwall ( ) {
 function createNeonSign(callback) {
   const loader = new FontLoader();
 
-  loader.load('./assets/fonts/Stigmature.json', (font) => {
+  loader.load('/assets/fonts/Stigmature.json', (font) => {
 
     const textGeometry = new TextGeometry('about us', {
       font: font,
@@ -235,7 +235,7 @@ export async function setupDesks(gapSize, scale) {
   }
 
    
-  await window.virtual_office.loaders.gtlf.load( './assets/models/Office Chair.glb', async function ( glb ) {
+  await window.virtual_office.loaders.gtlf.load( '/assets/models/Office Chair.glb', async function ( glb ) {
     let object = glb.scene.children[0];
 
     object.scale.setScalar(12);
@@ -328,7 +328,7 @@ async function createDesk( i ) {
   var deskGroup = new THREE.Group();
   deskGroup.name = "desk";
  
-  await window.virtual_office.loaders.gtlf.load( './assets/models/Desk.glb', async function ( glb ) {
+  await window.virtual_office.loaders.gtlf.load( '/assets/models/Desk.glb', async function ( glb ) {
     let object = glb.scene.children[0];
     
     let amount = window.virtual_office.fast ? 3 : 1.5;
@@ -408,7 +408,7 @@ async function createDesk( i ) {
   };
   await createDeskLabel( i, deskLabelCallback, deskGroup );
 
-  await window.virtual_office.loaders.gtlf.load( './assets/models/Ceiling Light.glb', async function ( glb ) {
+  await window.virtual_office.loaders.gtlf.load( '/assets/models/Ceiling Light.glb', async function ( glb ) {
     let object = glb.scene.children[0];
     object.scale.setScalar(1);
     window.desk = object;
@@ -484,7 +484,7 @@ async function createDeskLabel(i, callback, deskGroup) {
   
   const loader = new FontLoader();
 
-  await loader.load('./assets/fonts/VeraMono.json', async (font) => {
+  await loader.load('/assets/fonts/VeraMono.json', async (font) => {
 
     const textGeometry = new TextGeometry(labelText, {
       font: font,
@@ -521,7 +521,7 @@ async function createDeskLabel(i, callback, deskGroup) {
 async function createScreen( i ){
   const screen = window.virtual_office.screens[ i ];
   const slug    = screen.slug;
-  const url     = '../assets/images/pages/' + slug + '.jpg',
+  const url     = '/assets/images/pages/' + slug + '.jpg',
         pageUrl = '../iframes/' + slug + '.html';
   
   var material = new THREE.MeshPhongMaterial();

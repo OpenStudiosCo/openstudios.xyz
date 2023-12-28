@@ -1,18 +1,18 @@
 @font-face {
   font-family: SourceSans;
-  src: url(../assets/fonts/SourceSans3-Light.woff);
-  src: url(../assets/fonts/SourceSans3-Light.woff2);
+  src: url(/assets/fonts/SourceSans3-Light.woff);
+  src: url(/assets/fonts/SourceSans3-Light.woff2);
 }
 
 @font-face {
   font-family: Stigmature;
-  src: url(../assets/fonts/Stigmature.otf);
+  src: url(/assets/fonts/Stigmature.otf);
 }
 
 @font-face {
   font-family: VeraMono;
-  src: url(../assets/fonts/VeraMono.woff);
-  src: url(../assets/fonts/VeraMono.woff2);
+  src: url(/assets/fonts/VeraMono.woff);
+  src: url(/assets/fonts/VeraMono.woff2);
 }
 
 body {
@@ -144,7 +144,7 @@ form button:hover {
 }
 
 .header_bg {
-  background: no-repeat url(../assets/images/backgrounds/header.jpg);
+  background: no-repeat url(/assets/images/backgrounds/header.jpg);
   background-position: center -230px;
 }
 
@@ -222,7 +222,7 @@ form button:hover {
 
 .content_container::before {
   content: '';
-  background: no-repeat url(../assets/images/backgrounds/highway.jpg);
+  background: no-repeat url(/assets/images/backgrounds/highway.jpg);
   background-position: bottom;
   background-size: 100%;
   display: block;
@@ -234,13 +234,13 @@ form button:hover {
 }
 
 .content_container.bg_reverse::before {
-  background: no-repeat url(../assets/images/backgrounds/reverse.jpg);
+  background: no-repeat url(/assets/images/backgrounds/reverse.jpg);
   background-position: bottom;
   background-size: 100%;
 }
 
 .content_container.bg_river::before {
-  background: no-repeat url(../assets/images/backgrounds/river.jpg);
+  background: no-repeat url(/assets/images/backgrounds/river.jpg);
   background-position: bottom center;
   background-size: cover;
 }
@@ -251,7 +251,7 @@ form button:hover {
 
 
 .content_container.newsletter::before {
-  background: no-repeat url(../assets/images/backgrounds/newsletter.jpg);
+  background: no-repeat url(/assets/images/backgrounds/newsletter.jpg);
   background-position: center;
   background-size: cover;
 }
@@ -262,7 +262,7 @@ form button:hover {
 }
 
 .content_container.footer::before {
-  background: no-repeat url(../assets/images/backgrounds/footer.jpg);
+  background: no-repeat url(/assets/images/backgrounds/footer.jpg);
   background-position: bottom;
   background-size: 100%;
   padding: 0 2rem 0;
