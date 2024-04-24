@@ -8,25 +8,48 @@ Being a system based on PHP and MySQL provides us with a lot of options to custo
 
 Valentine’s Day dominates the retail space for the month of February and it was no different for our marketing efforts at Garrett Ray Jewellery. Offering a number of gift ideas for that special someone, a unique red 3D background was made to set the mood for this Valentine’s Day campaign.
 
-18k white gold petals surrounding a blush pink spinel. Part of the Garrett Ray [Blossoms collection](https://grayjewellery.com.au/collections/blossoms).Solid precious [metal tunnels](https://grayjewellery.com.au/products/tunnels) for stretched ears! Available in sizes from 8mm to 25mm in sterling silver, 9k, and 18k gold in the [Stretched Ears](https://grayjewellery.com.au/collections/stretched-ears) category.The tunnels for stretched ears also come with a charm holder variety, featuring a small ring perfect for clipping on Garrett Ray Charms for infinite customizability. Seen here in gold sporting the [Vintage Key Charm](https://grayjewellery.com.au/products/key-charm) from the [Cottagecore collection](https://grayjewellery.com.au/collections/cottagecore).
+<center style="margin: 0px auto">
+<a href="/assets/blog/2024/02/1_dyIbSVF7tlb9HYpBb4AkMQ.webp" target="_blank" title="Click to open full size"><img alt="18k white gold blossom ring by Garrett Ray Jewellery" width="60%" height="auto" src="/assets/blog/2024/02/1_dyIbSVF7tlb9HYpBb4AkMQ.webp" /></a>
+<p><em>18k white gold petals surrounding a blush pink spinel. Part of the Garrett Ray <a target="_blank" href="https://grayjewellery.com.au/collections/blossoms">Blossoms collection</a>.</em></p>
+</center>
+
+<center style="margin: 0px auto">
+<a href="/assets/blog/2024/02/1_v_kRbNIqb6XowLpj1R1oig.webp" target="_blank" title="Click to open full size"><img alt="Solid precious metal ear tunnels" width="60%" height="auto" src="/assets/blog/2024/02/1_v_kRbNIqb6XowLpj1R1oig.webp" /></a>
+<p><em>Solid precious <a target="_blank" href="https://grayjewellery.com.au/products/tunnels">metal tunnels</a> for stretched ears! Available in sizes from 8mm to 25mm in sterling silver, 9k, and 18k gold in the <a href="https://grayjewellery.com.au/collections/stretched-ears">Stretched Ears</a> category.</em></p>
+</center>
+
+<center style="margin: 0px auto">
+<a href="/assets/blog/2024/02/1_RwWWYX1WtjlISKr5R6FieQ.webp" target="_blank" title="Click to open full size"><img alt="Solid precious metal ear tunnels with charm attachment" width="60%" height="auto" src="/assets/blog/2024/02/1_RwWWYX1WtjlISKr5R6FieQ.webp" /></a>
+<p><em>The tunnels for stretched ears also come with a charm holder variety, featuring a small ring perfect for clipping on Garrett Ray Charms for infinite customizability. Seen here in gold sporting the <a target="_blank" href ="https://grayjewellery.com.au/products/key-charm">Vintage Key Charm</a> from the <a target="_blank" href="https://grayjewellery.com.au/collections/cottagecore">Cottagecore collection</a>.</em></p>
+</center>
 
 Featuring a pair of acorns for their beautiful potential. Potential that holds power. Representing the Autumn Equinox, and the harvest to prepare for the coming longest night.
 
-Mighty oaks from little acorns grow. Celebrate the coming harvest in the Autumnal months (beginning in March in Australia) with the [Mabon Amulet pendant](https://grayjewellery.com.au/products/mabon-acorn-amulet-necklace?_pos=1&_psq=mabon+amul&_ss=e&_v=1.0). Part of the Garrett Ray [Solstice collection](https://grayjewellery.com.au/collections/solstice-collection).
+<center style="margin: 0px auto">
+<a href="/assets/blog/2024/02/1_qkWYPK1WCBZ8usEa5Z2BMg.webp" target="_blank" title="Click to open full size"><img alt="Solid gold Mabon Amulet pendant" width="60%" height="auto" src="/assets/blog/2024/02/1_qkWYPK1WCBZ8usEa5Z2BMg.webp" /></a>
+<p><em>Mighty oaks from little acorns grow. Celebrate the coming harvest in the Autumnal months (beginning in March in Australia) with the  <a target="_blank" href ="https://grayjewellery.com.au/products/mabon-acorn-amulet-necklace?_pos=1&_psq=mabon+amul&_ss=e&_v=1.0">Mabon Amulet pendant</a>. Part of the Garrett Ray <a target="_blank" href="https://grayjewellery.com.au/collections/solstice-collection">Solstice collection</a>.</em></p>
+</center>
 
 The maiden’s amphora spilling over its bounty of water. A symbol that represents the Aquarian period of the ancients, a time in the old world of floods and rain, followed by the bounty.
 
-Available in multiple formats we’re promoting the [amulet charm](https://grayjewellery.com.au/products/aquarius-bracelet) on the left and [stud earrings](https://grayjewellery.com.au/products/aquarius-stud-earrings) on the right.
+<center style="margin: 0px auto">
+<a href="/assets/blog/2024/02/1_i8ZCNAzBYbU1u6GinjrMaA.webp" target="_blank" title="Click to open full size"><img alt="Solid gold Aquarius amulet charm" width="40%" height="auto" src="/assets/blog/2024/02/1_i8ZCNAzBYbU1u6GinjrMaA.webp" /></a>
+<a href="/assets/blog/2024/02/1_AH7onF6e8XeiVemKBRqRtQ.webp" target="_blank" title="Click to open full size"><img alt="Solid gold Aquarius stud earrings" width="40%" height="auto" src="/assets/blog/2024/02/1_AH7onF6e8XeiVemKBRqRtQ.webp" /></a>
+<p><em>Available in multiple formats we’re promoting the <a target="_blank" href="https://grayjewellery.com.au/products/aquarius-bracelet">amulet charm</a> on the left and <a target="_blank" href="https://grayjewellery.com.au/products/aquarius-stud-earrings">stud earrings</a> on the right.</em></p>
+</center>
 
 The Pixie Cap is endemic to the Southern Hemisphere. Proof Australia also has fairies.
 
-Add a touch of whimsy to your outfit with the [Pixie Cap charm](https://grayjewellery.com.au/products/pixie-cap-charm) from the Garrett Ray [Cottagecore collection](https://grayjewellery.com.au/collections/cottagecore). Available in sterling silver, 9k gold, and 18k gold.
+<center style="margin: 0px auto">
+<a href="/assets/blog/2024/02/1_IGmqCEwcLD1WDrtHDFObUg.webp" target="_blank" title="Click to open full size"><img alt="Solid gold Mabon Amulet pendant" width="60%" height="auto" src="/assets/blog/2024/02/1_IGmqCEwcLD1WDrtHDFObUg.webp" /></a>
+<p><em>Add a touch of whimsy to your outfit with the <a target="_blank" href="https://grayjewellery.com.au/products/pixie-cap-charm">Pixie Cap charm</a> from the Garrett Ray <a target="_blank" href="https://grayjewellery.com.au/collections/cottagecore">Cottagecore collection</a>. Available in sterling silver, 9k gold, and 18k gold.</em></p>
+</center>
 
-*   Facebook: [GarrettRayJewellery](https://www.facebook.com/GarrettRayJewellery)
-*   Instagram: [@garrettrayjewellery](https://www.instagram.com/garrettrayjewellery/)
-*   LinkedIn: [garrett-ray-jewellery](https://www.linkedin.com/company/garrett-ray-jewellery/)
-*   TikTok: [@garrettrayjewellery](https://www.tiktok.com/@garrettrayjewellery)
-*   Website: [grayjewellery.com.au](https://grayjewellery.com.au/)
+- Facebook: [GarrettRayJewellery](https://www.facebook.com/GarrettRayJewellery)
+- Instagram: [@garrettrayjewellery](https://www.instagram.com/garrettrayjewellery/)
+- LinkedIn: [garrett-ray-jewellery](https://www.linkedin.com/company/garrett-ray-jewellery/)
+- TikTok: [@garrettrayjewellery](https://www.tiktok.com/@garrettrayjewellery)
+- Website: [grayjewellery.com.au](https://grayjewellery.com.au/)
 
 ### Tech feature
 
@@ -40,8 +63,8 @@ At Open Studios we are passionate about providing an alternative path to the clo
 
 ### Find us online!
 
-*   Artstation: [openstudios](https://www.artstation.com/openstudios)
-*   Facebook: [openstudiosco](https://www.facebook.com/openstudiosco)
-*   LinkedIn: [open-studios-australia](https://www.linkedin.com/company/open-studios-australia/)
-*   Website: [openstudios.xyz](https://openstudios.xyz/)
-*   YouTube: [@open-studios](https://www.youtube.com/@open-studios)
+- Artstation: [openstudios](https://www.artstation.com/openstudios)
+- Facebook: [openstudiosco](https://www.facebook.com/openstudiosco)
+- LinkedIn: [open-studios-australia](https://www.linkedin.com/company/open-studios-australia/)
+- Website: [openstudios.xyz](https://openstudios.xyz/)
+- YouTube: [@open-studios](https://www.youtube.com/@open-studios)
