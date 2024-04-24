@@ -2,11 +2,24 @@ import * as THREE from 'three';
 
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+// import { EffectComposer } from 'postprocessing';
+// import { RenderPass } from 'postprocessing';
+
+// @todo: Replace LAST 
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+// @todo: Replace with https://pmndrs.github.io/postprocessing/public/demo/#tone-mapping
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+// @todo: Replace with https://pmndrs.github.io/postprocessing/public/demo/#ssao
 import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
+
+// @todo: Remove when unreal bloom is replaced, this just manages the swap
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+
+// @todo: Replace Super Sample Anti Aliasing with https://pmndrs.github.io/postprocessing/public/demo/#antialiasing
 import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
+
 import { brightenMaterial } from './furniture';
 
 

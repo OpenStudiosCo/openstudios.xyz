@@ -977,7 +977,12 @@ async function setupScene() {
 function setupRenderers() {
 
   // Main 3D webGL Renderer.
-  window.virtual_office.renderers.webgl = new THREE.WebGLRenderer({ antialias: window.virtual_office.fast });
+  window.virtual_office.renderers.webgl = new THREE.WebGLRenderer({
+    powerPreference: "high-performance",
+    antialias: false,
+    stencil: false,
+    depth: false
+  });
   window.virtual_office.renderers.webgl.setPixelRatio(window.devicePixelRatio);
   window.virtual_office.renderers.webgl.setSize(window.innerWidth, window.innerHeight);
   document.querySelector("#webgl").appendChild(window.virtual_office.renderers.webgl.domElement);
