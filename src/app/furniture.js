@@ -20,6 +20,7 @@ export async function setupBackwall ( ) {
     signMesh.position.set(-6.4, 15, 1); // Example position for the sign
     signMesh.name = "neon_sign";
     window.virtual_office.scene_objects.neon_sign = signMesh;
+    //signMesh.layers.set(11);
     wallGroup.add(signMesh);
   });
 
@@ -77,7 +78,7 @@ function createNeonSign(callback) {
     const textGeometry = new TextGeometry('about us', {
       font: font,
       size: 2.7,
-      height: 0.5,
+      depth: 0.5,
       curveSegments: 4
     });
 
@@ -107,9 +108,9 @@ function createNeonSign(callback) {
       window.virtual_office.scene.add(lightHelper);
     }
 
-    signMesh.layers.enable(1);
-
     signMesh.add(lightActual);
+
+    signMesh.layers.set(11);
 
     // Add the sign to the scene
     callback(signMesh);
@@ -426,7 +427,7 @@ async function createDesk( i ) {
 
           // Create the overhead office light material
           var lightMaterial = new THREE.MeshPhongMaterial({
-            color: 0x00EEff,
+            color: 0xffffff,
             emissive: 0x00EEff,
             emissiveIntensity: 100,
             shininess: 200
@@ -434,7 +435,7 @@ async function createDesk( i ) {
   
           child.material = lightMaterial;
 
-          child.layers.enable(1);
+          child.layers.set(11);
         }
         
       }
@@ -489,7 +490,7 @@ async function createDeskLabel(i, callback, deskGroup) {
     const textGeometry = new TextGeometry(labelText, {
       font: font,
       size: 1.1,
-      height: 0.2
+      depth: 0.2
     });
 
     // Create the emissive material for the text
@@ -498,7 +499,7 @@ async function createDeskLabel(i, callback, deskGroup) {
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-    signMesh.layers.enable(1);
+    signMesh.layers.set(11);
 
     signMesh.name = "desk_label";
 
@@ -530,7 +531,7 @@ async function createScreen( i ){
     material.map = screenTexture;
   });
   var geometry = new THREE.PlaneGeometry(i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8);
-  var screenWebGL = new THREE.Mesh(geometry, brightenMaterial(material, ( i==720 ? 12 : 8 )));
+  var screenWebGL = new THREE.Mesh(geometry, brightenMaterial(material, ( 9 )));
 
   // @todo: move into settings.
   screenWebGL.pageUrl = pageUrl;
