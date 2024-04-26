@@ -1,35 +1,115 @@
 import * as THREE from 'three';
 
-import { EffectComposer, EffectPass, RenderPass, SelectiveBloomEffect } from "postprocessing";
+import { HalfFloatType } from "three";
+
+
+import {
+  // Core stuff
+  BlendFunction,
+  EffectComposer,
+  EffectPass,
+  RenderPass,
+
+  // Bloom effect
+  SelectiveBloomEffect,
+
+  // Anti aliasing
+  SMAAEffect,
+	SMAAPreset,
+	EdgeDetectionMode,
+  
+  // SSAO
+  SSAOEffect,
+  DepthDownsamplingPass,
+  NormalPass,
+  TextureEffect
+} from "postprocessing";
 
 
 // @todo: Replace with https://pmndrs.github.io/postprocessing/public/demo/#tone-mapping
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-// @todo: Replace with https://pmndrs.github.io/postprocessing/public/demo/#ssao
-import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
-
-// @todo: Remove when unreal bloom is replaced, this just manages the swap
-import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
-
-// @todo: Replace Super Sample Anti Aliasing with https://pmndrs.github.io/postprocessing/public/demo/#antialiasing
-import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
-
 // Sets up the effects
 export function setupEffects( ) {
-  const composer = new EffectComposer(window.virtual_office.renderers.webgl);
+  const composer = new EffectComposer(window.virtual_office.renderers.webgl, {
+    frameBufferType: HalfFloatType
+  });
   composer.addPass(new RenderPass(window.virtual_office.scene, window.virtual_office.camera));
-  composer.addPass(new EffectPass(window.virtual_office.camera, new SelectiveBloomEffect(
+
+  // ssao
+  const normalPass = new NormalPass(window.virtual_office.scene, window.virtual_office.camera);
+  const depthDownsamplingPass = new DepthDownsamplingPass({
+    normalBuffer: normalPass.texture,
+    resolutionScale: 0.5
+  });
+
+  const capabilities = composer.getRenderer().capabilities;
+
+  const normalDepthBuffer = capabilities.isWebGL2 ?
+    depthDownsamplingPass.texture : null;
+
+  const ssao = new SSAOEffect(window.virtual_office.camera, normalPass.texture, {
+    blendFunction: BlendFunction.MULTIPLY,
+			distanceScaling: true,
+			depthAwareUpsampling: true,
+			normalDepthBuffer,
+			samples: 9,
+			rings: 7,
+			distanceThreshold: 0.2,	// Render up to a distance of ~20 world units
+			distanceFalloff: 0.0025,	// with an additional ~2.5 units of falloff.
+			rangeThreshold: 0.0003,		// Occlusion proximity of ~0.3 world units
+			rangeFalloff: 0.0001,			// with ~0.1 units of falloff.
+			luminanceInfluence: 0.7,
+			minRadiusScale: 0.33,
+			radius: 0.1,
+			intensity: 1.33,
+			bias: 0.025,
+			fade: 0.01,
+			color: null,
+			resolutionScale: 0.5
+  });
+
+  // smaa
+  const smaa = new SMAAEffect({
+    blendFunction: EdgeDetectionMode.DEPTH,
+    preset: SMAAPreset.HIGH
+  } );
+
+  // bloom
+  const bloom = new SelectiveBloomEffect(
     window.virtual_office.scene, window.virtual_office.camera,
     {
+      blendFunction: BlendFunction.ADD,
       intensity: 8.5,
       mipmapBlur: true,
       luminancePass: true,
-      luminanceThreshold: 0.3,
+      luminanceThreshold: 0.1,
       luminanceSmoothing: 0.2,
-      radius : 0.75,
+      radius : 0.85,
       resolutionScale: 1
-  })));
+  });
+
+  //bloom.inverted = true;
+
+  const textureEffect = new TextureEffect({
+    blendFunction: BlendFunction.SKIP,
+    texture: depthDownsamplingPass.texture
+  });
+
+  composer.addPass(normalPass);
+
+  if(capabilities.isWebGL2) {
+
+    composer.addPass(depthDownsamplingPass);
+
+  } else {
+
+    console.log("WebGL 2 not supported, falling back to naive depth downsampling");
+
+  }
+  //composer.addPass(new EffectPass(window.virtual_office.camera, smaa, ssao, textureEffect, bloom));
+  composer.addPass(new EffectPass(window.virtual_office.camera, smaa, bloom, ssao, textureEffect));
+  
 
   window.virtual_office.effects = composer;
 }

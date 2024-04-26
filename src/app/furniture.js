@@ -20,7 +20,7 @@ export async function setupBackwall ( ) {
     signMesh.position.set(-6.4, 15, 1); // Example position for the sign
     signMesh.name = "neon_sign";
     window.virtual_office.scene_objects.neon_sign = signMesh;
-    signMesh.layers.set(11);
+    //signMesh.layers.set(11);
     wallGroup.add(signMesh);
   });
 
@@ -427,7 +427,7 @@ async function createDesk( i ) {
 
           // Create the overhead office light material
           var lightMaterial = new THREE.MeshPhongMaterial({
-            color: 0x00EEff,
+            color: 0xffffff,
             emissive: 0x00EEff,
             emissiveIntensity: 100,
             shininess: 200
@@ -531,7 +531,7 @@ async function createScreen( i ){
     material.map = screenTexture;
   });
   var geometry = new THREE.PlaneGeometry(i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8);
-  var screenWebGL = new THREE.Mesh(geometry, brightenMaterial(material, ( i==720 ? 12 : 8 )));
+  var screenWebGL = new THREE.Mesh(geometry, brightenMaterial(material, ( 9 )));
 
   // @todo: move into settings.
   screenWebGL.pageUrl = pageUrl;
