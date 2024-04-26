@@ -22,7 +22,11 @@ import {
   SSAOEffect,
   DepthDownsamplingPass,
   NormalPass,
-  TextureEffect
+  TextureEffect,
+
+  // Tone Mapping
+  ToneMappingEffect,
+	ToneMappingMode
 } from "postprocessing";
 
 
@@ -82,18 +86,27 @@ export function setupEffects( ) {
       blendFunction: BlendFunction.ADD,
       intensity: 8.5,
       mipmapBlur: true,
-      luminancePass: true,
-      luminanceThreshold: 0.1,
+      luminanceThreshold: 0.15,
       luminanceSmoothing: 0.2,
       radius : 0.85,
       resolutionScale: 1
   });
 
-  //bloom.inverted = true;
+  bloom.inverted = true;
 
   const textureEffect = new TextureEffect({
     blendFunction: BlendFunction.SKIP,
     texture: depthDownsamplingPass.texture
+  });
+
+  const toneMappingEffect = new ToneMappingEffect({
+    mode: ToneMappingMode.ACES_FILMIC,
+    resolution: 256,
+    whitePoint: 16.0,
+    middleGrey: 0.6,
+    minLuminance: 0.01,
+    averageLuminance: 0.01,
+    adaptationRate: 1.0
   });
 
   composer.addPass(normalPass);
@@ -107,10 +120,8 @@ export function setupEffects( ) {
     console.log("WebGL 2 not supported, falling back to naive depth downsampling");
 
   }
-  //composer.addPass(new EffectPass(window.virtual_office.camera, smaa, ssao, textureEffect, bloom));
-  composer.addPass(new EffectPass(window.virtual_office.camera, smaa, bloom, ssao, textureEffect));
+  composer.addPass(new EffectPass(window.virtual_office.camera, smaa, ssao, textureEffect, bloom, toneMappingEffect));
   
-
   window.virtual_office.effects = composer;
 }
 
