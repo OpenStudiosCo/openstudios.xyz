@@ -1,12 +1,7 @@
 import * as THREE from 'three';
 
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-// import { EffectComposer } from 'postprocessing';
-// import { RenderPass } from 'postprocessing';
+import { EffectComposer, EffectPass, RenderPass, SelectiveBloomEffect } from "postprocessing";
 
-// @todo: Replace LAST 
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 // @todo: Replace with https://pmndrs.github.io/postprocessing/public/demo/#tone-mapping
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
@@ -20,130 +15,26 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 // @todo: Replace Super Sample Anti Aliasing with https://pmndrs.github.io/postprocessing/public/demo/#antialiasing
 import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
 
-import { brightenMaterial } from './furniture';
-
-
-
-// Define a threshold frame rate below which effects will be disabled
-const frameRateThreshold = 60; // Adjust as needed
-
-// Store the previous frame time
-let previousFrameTime = 1;
-
-// Define the delay duration (in seconds)
-const delayDuration = 5; // Adjust as needed
-let delayTimer = 0; // Timer to track the delay duration
-
-let frameRates = [];
-
-let firstTime = true;
-
-let avgFrameRate = 0;
-
-// Run scaling
-let scalingRun;
-
-// Dynamically scale the effects to maintain minimum FPS
-export function scaleEffects( ) {
-  // Run scaling
-  scalingRun = setInterval( () => {
-    if ( window.virtual_office.effects.scaleDone ) {
-      if ( !firstTime ) {
-        clearInterval(scalingRun);
-      }
-    }
-    else {
-      scaleEffectsRunner( );
-    }
-  }, 10);
-  
-}
-
-export function scaleEffectsRunner ( ) {
-
-  // Calculate the time elapsed since the previous frame
-  //const deltaTime = (currentTime - previousFrameTime) / 1000; // Convert to seconds
-  delayTimer += 100;
-
-   // Update previous frame time
-  //previousFrameTime = currentTime;
-
-  // Check if the delay duration has passed
-  if  ( delayTimer >= delayDuration && frameRates.length > frameRateThreshold * delayDuration ) {
-    
-    var sum = frameRates.reduce(function (total, num) {
-      return total + num;
-    }, 0);
-  
-    avgFrameRate = sum / frameRates.length;
-
-    // Check if the frame rate is below the threshold
-    const isBelowThreshold = avgFrameRate < (window.virtual_office.fast ? frameRateThreshold : frameRateThreshold * 0.5) ;
-
-    if (isBelowThreshold) {
-      console.log(avgFrameRate + " FPS too low, effects off");
-      // Disable effects
-      window.virtual_office.fast = true;
-      window.virtual_office.renderers.webgl.shadowMap.enabled = false;
-      if (window.virtual_office.effects.main && window.virtual_office.effects.main.passes && window.virtual_office.effects.main.passes.length > 0 ) {
-        window.virtual_office.effects.main.passes.splice(0, window.virtual_office.effects.main.passes.length); // Remove all passes from the  (*window.virtual_office.effects.main)
-      }
-    }
-    else {
-      console.log(avgFrameRate + " FPS good, effects on");
-      // Setup effects.
-      if (!window.virtual_office.effects.main || ! window.virtual_office.effects.main.passes || window.virtual_office.effects.main.passes.length == 0 ) {
-        setupEffects();
-      }
-      // Enable effects
-      window.virtual_office.fast = false;
-      window.virtual_office.renderers.webgl.shadowMap.enabled = true;
-    }
-
-    // Update lights to the correct settings.
-    window.virtual_office.scene_objects.ambientLight.color = new THREE.Color( window.virtual_office.fast ? 0x555555 : 0x444444 );
-    window.virtual_office.scene_objects.neon_sign.children[0].intensity = window.virtual_office.fast ? window.virtual_office.settings.light.fast.neonSign.normal : window.virtual_office.settings.light.highP.neonSign.normal;
-    window.virtual_office.scene.traverse((scene_object)=> {
-      if (scene_object.name =='ceilLightActual') {
-        scene_object.intensity = window.virtual_office.fast ? window.virtual_office.settings.light.fast.desk.normal : window.virtual_office.settings.light.highP.desk.normal;
-      }
-      if (scene_object.name =='deskMesh') {
-        scene_object.traverse( function ( child ) {
-
-          if ( child.isMesh ) {
-    
-            let amount = window.virtual_office.fast ? 3 : 1.5;
-            child.material = child.original_material.clone();
-            brightenMaterial( child.material, amount);
-          }
-        });
-        
-      }
-    });
-
-    window.virtual_office.effects.scaleDone = true;
-
-    // Enqueue a secondary scaler just in case the first one failed.
-    if ( firstTime ) {
-      setTimeout(()=>{
-        avgFrameRate = 0;
-        frameRates = [];
-        delayTimer = 0;
-        window.virtual_office.effects.scaleDone = false;
-        firstTime = false;
-      }, 5000)
-    }
-    
-  }
-  // Otherwise keep counting frames.
-  else {
-    frameRates.push( window.virtual_office.fps );
-  }
-
-}
-
 // Sets up the effects
 export function setupEffects( ) {
+  const composer = new EffectComposer(window.virtual_office.renderers.webgl);
+  composer.addPass(new RenderPass(window.virtual_office.scene, window.virtual_office.camera));
+  composer.addPass(new EffectPass(window.virtual_office.camera, new SelectiveBloomEffect(
+    window.virtual_office.scene, window.virtual_office.camera,
+    {
+      intensity: 8.5,
+      mipmapBlur: true,
+      luminancePass: true,
+      luminanceThreshold: 0.3,
+      luminanceSmoothing: 0.2,
+      radius : 0.75,
+      resolutionScale: 1
+  })));
+
+  window.virtual_office.effects = composer;
+}
+
+export function setupEffectsOld( ) {
   // Apply Unreal Bloom post-processing effect
   var renderScene = new RenderPass(  window.virtual_office.scene, window.virtual_office.camera);
 

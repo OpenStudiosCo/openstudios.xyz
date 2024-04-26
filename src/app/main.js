@@ -11,7 +11,7 @@ import { SUBTRACTION, Brush, Evaluator } from 'three-bvh-csg';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
-import { scaleEffects, setupEffects } from './effects.js';
+import { setupEffects } from './effects.js';
 import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
 import { setupBackwall, setupDesks } from './furniture.js';
 import { setupTriggers, updateTriggers } from './triggers.js';
@@ -48,14 +48,9 @@ window.virtual_office = {
   /**
    * Effects composers and their layers.
    * 
-   * @memberof Object { THREE.EffectsComposer , THREE.Layer }
+   * @memberof Object pmndrs.EffectComposer
    */
-  effects: {
-    main: false,
-    bloom: false,
-    bloomLayer: false,
-    scaleDone: false
-  },
+  effects: false,
 
   /**
    * Exit sign.
@@ -479,16 +474,11 @@ export function animate(currentTime) {
   // Render the composer
   if (
     // Effects loaded.
-    window.virtual_office.effects.bloomLayer.test &&
-    (window.virtual_office.effects.bloom && window.virtual_office.effects.bloom.passes && window.virtual_office.effects.bloom.passes.length > 0 ) &&
-    (window.virtual_office.effects.main && window.virtual_office.effects.main.passes && window.virtual_office.effects.main.passes.length > 0 ) &&
+    (window.virtual_office.effects.passes && window.virtual_office.effects.passes.length > 0 ) &&
     // Not fast mode.
     (!window.virtual_office.fast)
   ) {
-    window.virtual_office.scene.traverse(darkenNonBloomed);
-    window.virtual_office.effects.bloom.render();
-    window.virtual_office.scene.traverse(restoreMaterial);
-    window.virtual_office.effects.main.render();
+    window.virtual_office.effects.render();
   } else {
     window.virtual_office.renderers.webgl.render(window.virtual_office.scene, window.virtual_office.camera); // Render the scene without the effects
   }
@@ -529,28 +519,6 @@ function updateFPS() {
     frameCount = 0;
     lastTime = currentTime;
   }
-}
-
-function darkenNonBloomed(obj) {
-
-  if (obj.isMesh && window.virtual_office.effects.bloomLayer.test(obj.layers) === false) {
-
-    materials[obj.uuid] = obj.material;
-    obj.material = darkMaterial;
-
-  }
-
-}
-
-function restoreMaterial(obj) {
-
-  if (materials[obj.uuid]) {
-
-    obj.material = materials[obj.uuid];
-    delete materials[obj.uuid];
-
-  }
-
 }
 
 export function calculateAdjustedGapSize() {
@@ -670,7 +638,7 @@ async function createDoor( ) {
           const geometry = new THREE.ShapeGeometry(shape);
           const mesh = new THREE.Mesh(geometry, material);
           mesh.renderOrder = renderOrder++;
-          mesh.layers.enable(1);
+          mesh.layers.set(11);
 
           group.add(mesh);
         }
@@ -693,7 +661,7 @@ async function createDoor( ) {
 
             const mesh = new THREE.Mesh(geometry, material);
             mesh.renderOrder = renderOrder++;
-            mesh.layers.enable(1);
+            mesh.layers.set(11);
 
             group.add(mesh);
 
@@ -903,7 +871,7 @@ export async function createOfficeRoom() {
 
   csgEvaluator.evaluate(roomBrush, doorBrush, SUBTRACTION, result);
   result.receiveShadow = true;
-  result.layers.enable(1);
+  result.layers.set(11);
 
   return result;
 }
@@ -918,6 +886,9 @@ async function setupScene() {
     window.virtual_office.renderers.webgl.shadowMap.enabled = true;
     setupEffects( );
   }
+
+  // Enable the effects layer, default of 11 for postprocessing bloom
+  window.virtual_office.camera.layers.enable(11);
 
   window.virtual_office.scene_objects.wallGroup = await setupBackwall( );
   window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;
@@ -934,7 +905,7 @@ async function setupScene() {
   window.virtual_office.scene.add(window.virtual_office.scene_objects.deskGroup);
 
   // Adjust ambient light intensity
-  window.virtual_office.scene_objects.ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x555555 : 0x444444); // Dim ambient light color
+  window.virtual_office.scene_objects.ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x777777 : 0x777777); // Dim ambient light color
   window.virtual_office.scene.add(window.virtual_office.scene_objects.ambientLight);
 
   window.virtual_office.scene_objects.screens_loaded = 0;
@@ -981,7 +952,9 @@ function setupRenderers() {
     powerPreference: "high-performance",
     antialias: false,
     stencil: false,
-    depth: false
+
+    // disabled to prevent transparency issues on fast mode
+    // depth: false
   });
   window.virtual_office.renderers.webgl.setPixelRatio(window.devicePixelRatio);
   window.virtual_office.renderers.webgl.setSize(window.innerWidth, window.innerHeight);
