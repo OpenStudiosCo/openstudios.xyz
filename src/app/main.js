@@ -354,8 +354,13 @@ export default async function init() {
     document.body.appendChild(stats.dom);
   }
 
-  
-  window.addEventListener('orientationchange', handleViewportChange);
+  if ( screen && screen.orientation ) {
+    screen.orientation.addEventListener('change', handleViewportChange);
+  }
+  else {
+    window.addEventListener('orientationchange', handleViewportChange);
+  }
+
   window.addEventListener('resize', handleViewportChange);
 
   document.getElementById('exitSign').addEventListener('click', handleExitSign);

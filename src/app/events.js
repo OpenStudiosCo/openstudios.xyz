@@ -20,7 +20,7 @@ export async function handleViewportChange() {
   window.virtual_office.renderers.webgl.setSize(width, height);
 
   
-  if (window.virtual_office.effects.passes.length > 0)
+  if (window.virtual_office.effects && window.virtual_office.effects.passes.length > 0)
     window.virtual_office.effects.setSize(width, height);
 
   window.virtual_office.camera.aspect = width / height;
