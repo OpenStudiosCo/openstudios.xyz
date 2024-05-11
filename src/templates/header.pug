@@ -27,3 +27,12 @@ meta(name='twitter:title' content=title)
 meta(name='twitter:card' content='summary_large_image')
 meta(name='twitter:description' content=description || title)
 meta(name='twitter:image' content=cover || 'https://openstudios.xyz/assets/images/virtual_office.jpg')
+
+//- Google Ads tag (gtag.js)
+script(async src="https://www.googletagmanager.com/gtag/js?id=AW-983760722")
+script.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-983760722');
