@@ -88,11 +88,12 @@ function createNeonSign(callback) {
     // Create the "About Us" sign mesh
     var signMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-    const lightActual = new THREE.PointLight( 0xDA68C5, 
+    const lightActual = new THREE.SpotLight( 0xDA68C5, 
       window.virtual_office.fast ?
       window.virtual_office.settings.light.fast.neonSign.normal :
       window.virtual_office.settings.light.highP.neonSign.normal
     );
+    lightActual.intensity = Math.PI;
     lightActual.position.set(5.5, 0.25, 5); // Set the position of the light
     lightActual.castShadow = true;
 
@@ -104,7 +105,7 @@ function createNeonSign(callback) {
       const helper = new THREE.CameraHelper( lightActual.shadow.camera );
       window.virtual_office.scene.add( helper );
       // Create a directional light helper
-      const lightHelper = new THREE.PointLightHelper(lightActual, 5); // The second parameter is the size of the helper
+      const lightHelper = new THREE.SpotLightHelper(lightActual, 5); // The second parameter is the size of the helper
       window.virtual_office.scene.add(lightHelper);
     }
 
