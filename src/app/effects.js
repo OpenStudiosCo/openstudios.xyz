@@ -93,7 +93,7 @@ export function setupEffects( ) {
   });
 
   const toneMappingEffect = new ToneMappingEffect({
-    mode: ToneMappingMode.ACES_FILMIC,
+    mode: ToneMappingMode.REINHARD2_ADAPTIVE,
     resolution: 256,
     whitePoint: 16.0,
     middleGrey: 0.6,

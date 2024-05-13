@@ -910,7 +910,8 @@ async function setupScene() {
   window.virtual_office.scene.add(window.virtual_office.scene_objects.deskGroup);
 
   // Adjust ambient light intensity
-  window.virtual_office.scene_objects.ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x777777 : 0x777777); // Dim ambient light color
+  window.virtual_office.scene_objects.ambientLight = new THREE.AmbientLight(window.virtual_office.fast ? 0x666666 : 0x555555); // Dim ambient light color
+  window.virtual_office.scene_objects.ambientLight.intensity = Math.PI;
   window.virtual_office.scene.add(window.virtual_office.scene_objects.ambientLight);
 
   window.virtual_office.scene_objects.screens_loaded = 0;
