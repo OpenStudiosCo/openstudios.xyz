@@ -401,13 +401,14 @@ form button:hover {
 
   .content .feature .feature_media,
   .content .feature .feature_content {
-    flex-basis: calc(60% - 2rem);
+    flex-basis: calc(55% - 2rem);
     flex-direction: row;
   }
 
   .content .feature .feature_content {
-    flex-basis: calc(40% - 2rem);
-    padding: 1.5rem 2rem;
+    flex-basis: calc(45% - 2rem);
+    padding: 1.25rem 2rem;
+    text-align: left;
   }
 
   .content .feature .feature_media img {
