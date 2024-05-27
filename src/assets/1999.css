@@ -317,6 +317,64 @@ form button:hover {
   flex-basis: 25%;
 }
 
+.content .cards,
+.content .profiles {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.content .cards .card,
+.content .profiles .profile {
+  border-radius: 1rem;
+  border: solid 1px #FF69CB;
+  flex-basis: calc(90% - 1rem);
+  margin: 1rem 0.5rem;
+  flex-direction: row;
+}
+
+.content .profiles .profile h3 {
+  margin: 1rem;
+}
+
+.content .cards .card p,
+.content .profiles .profile p {
+  margin: 1rem 1rem 2rem 1rem;
+}
+
+.content .cards .card .card_image,
+.content .profiles .profile .profile_image {
+  border-radius: 1rem 1rem 0 0;
+  max-width: 100%;
+  height: auto;
+}
+
+.content .feature {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 1rem;
+  border: solid 1px #FF69CB;
+  flex-basis: calc(90% - 1rem);
+  margin: 1rem 0;
+  padding: 1rem 0;
+}
+
+.content .feature .feature_media,
+.content .feature .feature_content {
+  flex-basis: calc(90% - 1rem);
+  flex-direction: row;
+}
+
+.content .feature .feature_media img {
+  display: block;
+  margin: 1rem auto;
+  width: 50%;
+  height: auto;
+}
+
 .footer {
   min-height: 266px;
   text-align: center;
@@ -337,6 +395,40 @@ form button:hover {
     flex-direction: row;
   }
 
+  .content .feature {
+    padding: 0;
+  }
+
+  .content .feature .feature_media,
+  .content .feature .feature_content {
+    flex-basis: calc(55% - 2rem);
+    flex-direction: row;
+  }
+
+  .content .feature .feature_content {
+    flex-basis: calc(45% - 2rem);
+    padding: 1.25rem 2rem;
+    text-align: left;
+  }
+
+  .content .feature .feature_media img {
+    border-radius: 1rem;
+    display: block;
+    margin: inherit;
+    width: 100%;
+    height: auto;
+  }
+
+  .content .profiles .profile {
+    flex-basis: calc(49% - 1rem);
+  }
+
+  .content .cards .card {
+    flex-basis: calc(30% - 1rem);
+    margin: 1rem 0.5rem;
+    flex-direction: column;
+  }  
+
   .footer {
     text-align: left;
   }
@@ -351,7 +443,7 @@ form button:hover {
   .content {
     max-width: 760px;
   }
-  
+ 
 }
 
 @media screen and (min-width: 1200px) {
@@ -410,6 +502,26 @@ form button:hover {
   .content_container .content.portfolio .column {
     margin-bottom: 0rem;
   }
+
+  .content .cards,
+  .content .profiles {
+    margin-left: -20%;
+    margin-right: -20%;
+    flex-wrap: inherit;
+  }
+
+  .content .profiles .profile {
+    flex-basis: calc(30% - 1rem);
+  }
+
+  .content .cards .card {
+    border-radius: 1rem;
+    border: solid 1px #FF69CB;
+    flex-basis: calc(20% - 1rem);
+    margin: 0 0.5rem;
+    flex-direction: column;
+  }
+
 
   .content_container.footer .content {
     padding-top: min(320px, 10vh);
