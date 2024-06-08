@@ -10,6 +10,7 @@
   font-weight: 500;
   height: 250px;
   max-height: 100vh;
+  border-radius: 0.5rem;
 }
 
 .number-slide1 {
@@ -71,15 +72,24 @@
   );
 }
 
+.keen-slider.thumbnail {
+  margin-top: 10px;
+  padding: 1.5px;
+}
+
 .thumbnail .keen-slider__slide {
   border-radius: 0.5rem;
   font-size: 30px;
-  margin-top: 10px;
   height: 100px;
 }
 .thumbnail .keen-slider__slide {
   cursor: pointer;
 }
+
+.thumbnail .keen-slider__slide:hover {
+  box-shadow: #ff69cb 0px 0px 5px;
+}
 .thumbnail .keen-slider__slide.active {
-  border: 2px dashed #ff69cb;
+  outline: 2px dotted #ff69cb;
+  outline-offset: -2px;
 }

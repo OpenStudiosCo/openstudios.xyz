@@ -10,25 +10,42 @@ h2 Services
         h3 Video commercials
         p.
           Elevate and promote your brand with video ads. We specialize in crafting a moment within its own world, a memorable experience that will resonate with your target audience. From concept development and video production and editing, we ensure your message is delivered effectively and memorably.
-      .feature_media
-        #my-keen-slider.keen-slider
-          .keen-slider__slide.number-slide1 1
-          .keen-slider__slide.number-slide2 2
-          .keen-slider__slide.number-slide3 3
-          .keen-slider__slide.number-slide4 4
-          .keen-slider__slide.number-slide5 5
-          .keen-slider__slide.number-slide6 6
-        #thumbnails.keen-slider.thumbnail
-          .keen-slider__slide.number-slide1 1
-          .keen-slider__slide.number-slide2 2
-          .keen-slider__slide.number-slide3 3
-          .keen-slider__slide.number-slide4 4
-          .keen-slider__slide.number-slide5 5
-          .keen-slider__slide.number-slide6 6
+      .feature_media#video_commercials
+        .keen-slider.main
+          .keen-slider__slide
+            <iframe width="370" height="250" src="https://www.youtube.com/embed/gYr3hbP24sQ?si=JAtRHgABN_YFkCrv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          .keen-slider__slide
+            <iframe width="370" height="250" src="https://www.youtube.com/embed/7Nf_XwEiF-A?si=D8FoNHvgafQRWvxj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          .keen-slider__slide
+            <iframe width="370" height="250" src="https://www.youtube.com/embed/e3pw21RVHHM?si=-ivo81AVl1u5yKvY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          .keen-slider__slide
+            <iframe width="370" height="250" src="https://www.youtube.com/embed/MQnctnguZqk?si=ZFoEca8vz9wVq5nj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        .keen-slider.thumbnail
+          .keen-slider__slide
+            img(src="https://i3.ytimg.com/vi/gYr3hbP24sQ/maxresdefault.jpg")
+          .keen-slider__slide
+            img(src='/assets/images/services/vc2.webp')
+          .keen-slider__slide
+            img(src='/assets/images/services/vc3.jpg')
+          .keen-slider__slide
+            img(src='/assets/images/services/vc4.webp')
   .row.center
     .feature.wide
-      .feature_media
-        img(src='/assets/images/portfolio/open-studios-kamigen.jpg' style=' width: 100%; height: 350px; object-fit: cover;' alt='Screenshot of the animated intro sequence from Kamigen')
+      .feature_media#animation
+        .keen-slider.main
+          .keen-slider__slide.number-slide1 1
+          .keen-slider__slide.number-slide2 2
+          .keen-slider__slide.number-slide3 3
+          .keen-slider__slide.number-slide4 4
+          .keen-slider__slide.number-slide5 5
+          .keen-slider__slide.number-slide6 6
+        .keen-slider.thumbnail
+          .keen-slider__slide.number-slide1 1
+          .keen-slider__slide.number-slide2 2
+          .keen-slider__slide.number-slide3 3
+          .keen-slider__slide.number-slide4 4
+          .keen-slider__slide.number-slide5 5
+          .keen-slider__slide.number-slide6 6
       .feature_content
         h3 Animation
         p
@@ -65,7 +82,6 @@ h2 Services
         h3 Game development
         p
           | Immerse your audience in interactive worlds on the web, mobile and PC. From concept design to coding and testing, we specialize in creating unique eye catching graphics that aren't seen elsewhere. We are experienced in performance optimisation, fine tuning shaders and game engine effects to ensure the best possible look for your video game project and target platform.
-
   .row.center
     .wide-column
       h3 Our technical solutions
@@ -281,16 +297,25 @@ script.
         })
       }
     }
-    var slider = new KeenSlider("#my-keen-slider");
-    var thumbnails = new KeenSlider(
-      "#thumbnails",
-      {
-        initial: 0,
-        slides: {
-          perView: 4,
-          spacing: 10,
-        },
-      },
-      [ThumbnailPlugin(slider)]
-    );
+
+    document.querySelectorAll('.feature.wide .feature_media').forEach(function( parentElement ) {
+      var selector = "#" + parentElement.id + " .keen-slider.main";
+      var slider_exists = parentElement.id
+      if (slider_exists) {
+        var slider = new KeenSlider(selector);
+        var thumbnails = new KeenSlider(
+          "#" + parentElement.id + " .keen-slider.thumbnail",
+          {
+            initial: 0,
+            slides: {
+              perView: 4,
+              spacing: 10,
+            },
+          },
+          [ThumbnailPlugin(slider)]
+        );
+      }
+    });
+
+    
   })

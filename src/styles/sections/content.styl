@@ -212,6 +212,7 @@
 .content .feature.wide {
     padding: 1rem;
     min-width: 0;
+    justify-content: space-between;
 }
 
 .content .feature.wide .feature_content {
@@ -219,9 +220,14 @@
     max-width: calc(45% - 2rem);
 }
 
-.content .feature.wide .feature_media {
-    max-width: calc(55% - 2rem);
-}
+.content .feature.wide .feature_media
+    max-width: calc(55% - 4rem);
+
+    img
+        width 100%
+        height 100%
+        object-fit cover
+
 
 @media screen and (min-width: 768px) {
     .content .tiles {
@@ -254,6 +260,10 @@
         margin: inherit;
         width: 100%;
         height: auto;
+    }
+
+    .content .feature.wide .feature_media img {
+        border-radius: 0rem;
     }
 
     .content .tiles .tile {
