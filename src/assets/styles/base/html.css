@@ -1,0 +1,51 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: SourceSans, Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+}
+
+a {
+    color: #00eeff;
+}
+
+h3 {
+    font-family: VeraMono, Verdana, Geneva, Tahoma, sans-serif;
+    color: #ff69cb;
+    margin: 1.5rem 0;
+}
+
+p {
+    line-height: 1.5rem;
+}
+
+form {
+    border: 2px dotted #ff69cb;
+    border-radius: 0.75rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+}
+
+form button,
+form textarea,
+form input {
+    width: calc(100% - 2rem);
+    margin: 0.75rem 0rem 1rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: solid 1px #ff69cb;
+    background: none transparent;
+    color: #ffffff;
+}
+
+form button {
+    border-color: #00eeff;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+form button:hover {
+    background: #0099aa;
+    cursor: pointer;
+}
