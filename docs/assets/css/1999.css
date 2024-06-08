@@ -112,6 +112,55 @@ a.icon_button img:hover {
 .contact_page .icon_button img {
   width: 1.5rem;
 }
+[class^="number-slide"],
+[class*=" number-slide"] {
+  background: #808080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  color: #fff;
+  font-weight: 500;
+  height: 250px;
+  max-height: 100vh;
+}
+.number-slide1 {
+  background: #40afff;
+  background: linear-gradient(128deg, #40afff 0%, #3f61ff 100%);
+}
+.number-slide2 {
+  background: #ff4b40;
+  background: linear-gradient(128deg, #ff9a3f 0%, #ff4b40 100%);
+}
+.number-slide3 {
+  background: #b6ff40;
+  background: linear-gradient(128deg, #b6ff40 0%, #3fff47 100%);
+  background: linear-gradient(128deg, #bdff53 0%, #2bfa52 100%);
+}
+.number-slide4 {
+  background: #40fff2;
+  background: linear-gradient(128deg, #40fff2 0%, #3fbcff 100%);
+}
+.number-slide5 {
+  background: #ff409c;
+  background: linear-gradient(128deg, #ff409c 0%, #ff3f3f 100%);
+}
+.number-slide6 {
+  background: #404cff;
+  background: linear-gradient(128deg, #404cff 0%, #ae3fff 100%);
+}
+.thumbnail .keen-slider__slide {
+  border-radius: 0.5rem;
+  font-size: 30px;
+  margin-top: 10px;
+  height: 100px;
+}
+.thumbnail .keen-slider__slide {
+  cursor: pointer;
+}
+.thumbnail .keen-slider__slide.active {
+  border: 2px dashed #ff69cb;
+}
 /* Sections */
 #page-wrapper {
   display: flex;
@@ -258,6 +307,7 @@ a.icon_button img:hover {
   flex-direction: column;
   flex-basis: 100%;
   justify-content: space-between;
+  overflow: hidden;
 }
 .content_row .content.portfolio .column {
   margin-bottom: 2.5rem;
@@ -390,16 +440,21 @@ a.icon_button img:hover {
 }
 .content .feature.wide {
   padding: 1rem;
+  min-width: 0;
 }
 .content .feature.wide .feature_content {
-  padding: 2rem;
+  padding: 1rem;
+  max-width: calc(45% - 2rem);
+}
+.content .feature.wide .feature_media {
+  max-width: calc(55% - 2rem);
 }
 @media screen and (min-width: 768px) {
   .content .tiles {
     margin: 1rem -2rem;
   }
   .content .feature.wide {
-    margin: 1rem -2rem;
+    margin: 1rem 0;
   }
   .content .feature {
     padding: 0;

@@ -70,6 +70,7 @@
     flex-direction: column;
     flex-basis: 100%;
     justify-content: space-between;
+    overflow: hidden;
 }
 
 .content_row .content.portfolio .column {
@@ -210,10 +211,16 @@
 
 .content .feature.wide {
     padding: 1rem;
+    min-width: 0;
 }
 
 .content .feature.wide .feature_content {
-    padding: 2rem;
+    padding: 1rem;
+    max-width: calc(45% - 2rem);
+}
+
+.content .feature.wide .feature_media {
+    max-width: calc(55% - 2rem);
 }
 
 @media screen and (min-width: 768px) {
@@ -222,7 +229,7 @@
     }
 
     .content .feature.wide {
-        margin: 1rem -2rem;
+        margin: 1rem 0;
     }
 
     .content .feature {

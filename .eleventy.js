@@ -2,6 +2,13 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy({"src/assets": "assets"});
   eleventyConfig.addPassthroughCopy({"src/vendor": "vendor"});
+  eleventyConfig.addPassthroughCopy({
+    "./node_modules/keen-slider/keen-slider.js": "./assets/js/keen-slider.js",
+  });
+  eleventyConfig.addPassthroughCopy({
+    "./node_modules/keen-slider/keen-slider.min.css": "./assets/css/keen-slider.min.css",
+  });
+
   eleventyConfig.addPassthroughCopy("CNAME");
 
   eleventyConfig.addWatchTarget("./src/**/*");
