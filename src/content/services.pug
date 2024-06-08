@@ -4,7 +4,7 @@ h2 Services
     .wide-column
       p
         | Open Studios has a wealth of tools, skills and unique knowledge that becomes available to you when you hire us. We founded this studio to make our dreams into reality. When you hire us, we apply the same passion to your ideas and make your dreams a reality too.
-  .row.center
+  .row.center.hide-overflow
     .feature.wide
       .feature_content
         h3 Video commercials
@@ -13,13 +13,17 @@ h2 Services
       .feature_media#video_commercials
         .keen-slider.main
           .keen-slider__slide
-            <iframe width="370" height="250" src="https://www.youtube.com/embed/gYr3hbP24sQ?si=JAtRHgABN_YFkCrv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            .video-container
+              <iframe width="370" height="250" src="https://www.youtube.com/embed/gYr3hbP24sQ?si=JAtRHgABN_YFkCrv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           .keen-slider__slide
-            <iframe width="370" height="250" src="https://www.youtube.com/embed/7Nf_XwEiF-A?si=D8FoNHvgafQRWvxj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            .video-container
+              <iframe width="370" height="250" src="https://www.youtube.com/embed/7Nf_XwEiF-A?si=D8FoNHvgafQRWvxj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           .keen-slider__slide
-            <iframe width="370" height="250" src="https://www.youtube.com/embed/e3pw21RVHHM?si=-ivo81AVl1u5yKvY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            .video-container
+              <iframe width="370" height="250" src="https://www.youtube.com/embed/e3pw21RVHHM?si=-ivo81AVl1u5yKvY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           .keen-slider__slide
-            <iframe width="370" height="250" src="https://www.youtube.com/embed/MQnctnguZqk?si=ZFoEca8vz9wVq5nj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            .video-container
+              <iframe width="370" height="250" src="https://www.youtube.com/embed/MQnctnguZqk?si=ZFoEca8vz9wVq5nj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         .keen-slider.thumbnail
           .keen-slider__slide
             img(src="https://i3.ytimg.com/vi/gYr3hbP24sQ/maxresdefault.jpg")
@@ -29,7 +33,7 @@ h2 Services
             img(src='/assets/images/services/vc3.jpg')
           .keen-slider__slide
             img(src='/assets/images/services/vc4.webp')
-  .row.center
+  .row.center.hide-overflow
     .feature.wide
       .feature_media#animation
         .keen-slider.main
@@ -265,7 +269,7 @@ h2 Services
         p
           | We have a robust documentation system that ensures nothing is lost. Using Office and Dropbox our organized and structured files keep our production team equipped and informed for maximum efficiency to meet your goals.
 script.
-  window.addEventListener("load", function() {
+  window.addEventListener("DOMContentLoaded", function() {
     function ThumbnailPlugin(main) {
       return (slider) => {
         function removeActive() {
@@ -311,6 +315,7 @@ script.
               perView: 4,
               spacing: 10,
             },
+            renderMode: 'performance'
           },
           [ThumbnailPlugin(slider)]
         );
