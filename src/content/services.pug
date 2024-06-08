@@ -52,7 +52,7 @@ h2 Services
         h3 Game development
         p
           | Immerse your audience in interactive worlds on the web, mobile and PC. From concept design to coding and testing, we specialize in creating unique eye catching graphics that aren't seen elsewhere. We are experienced in performance optimisation, fine tuning shaders and game engine effects to ensure the best possible look for your video game project and target platform.
-      
+
   .row.center
     .wide-column
       h3 Our technical solutions
@@ -63,9 +63,11 @@ h2 Services
   .row
     .tiles
       .tile
-        img(alt='The Linux mascot Tux the Penguin' src='/assets/images/platforms/linux.png' style=' width: 100%; height: 350px; object-fit: contain; object-position: top;')
-        h3 Linux OS
-        p Our team will expertly design a solution to make the best use of Linux based server infrastructure, targetting lower costs and risks. Most of our systems are based on Ubuntu LTS, Nginx and if there are backend requirements PHP/MySQL and/or Node.JS.
+        .tile_content.vertical
+          img.tile_img(alt='The Linux mascot Tux the Penguin' src='/assets/images/platforms/linux.png')
+          .tile_innercontent
+            h3 Linux OS
+            p Our team will expertly design a solution to make the best use of Linux based server infrastructure, targetting lower costs and risks. Most of our systems are based on Ubuntu LTS, Nginx and if there are backend requirements PHP/MySQL and/or Node.JS.
         .tokens
           .token
             h4 Distribution
@@ -77,9 +79,11 @@ h2 Services
             h4 Editor
             h5 Vim
       .tile
-        img(alt='Matomo Analytics logo' src='/assets/images/platforms/matomo.png' style=' width: 100%; height: 350px; object-fit: contain; object-position: top;')
-        h3 Matomo Analytics
-        p The leading open source alternative to Google Analytics. Our Matomo solutions are deeply customisable allowing you full control of your reporting. Compatible with Google ads, GDPR compliant and you get to own your own data for further use.
+        .tile_content.horizontal
+          .tile_innercontent
+            h3 Matomo Analytics
+            p The leading open source alternative to Google Analytics. Our Matomo solutions are deeply customisable allowing you full control of your reporting. Compatible with Google ads, GDPR compliant and you get to own your own data for further use.
+          img.tile_img(alt='Matomo Analytics logo' src='/assets/images/platforms/matomo.png')
         .tokens
           .token
             h4 GDPR Compliant
@@ -91,9 +95,11 @@ h2 Services
             h4 Mobile App
             img(width="32" height="32" src='/assets/check.svg' alt='Check icon')
       .tile
-        img(alt='Media Wiki logo' src='/assets/images/platforms/mediawiki.png' style=' width: 100%; height: 350px; object-fit: contain; object-position: top;')
-        h3 Media Wiki
-        p The system powering Wikipedia. Our MediaWiki solutions are customised to your specifications and branding. Facilitating a hub to collaborate in a structured way, empowering users with advanced editing features unlocking new efficiencies within your organisation.
+        .tile_content.vertical
+            img.tile_img(alt='Media Wiki logo' src='/assets/images/platforms/mediawiki.png' style='filter: invert()')
+            .tile_innercontent
+              h3 Media Wiki
+              p The system powering Wikipedia. Our MediaWiki solutions are customised to your specifications and branding. Facilitating a hub to collaborate in a structured way, empowering users with advanced editing features unlocking new efficiencies within your organisation.
         .tokens
           .token
             h4 Customisation
@@ -105,9 +111,11 @@ h2 Services
             h4 Single Sign On
             img(width="32" height="32" src='/assets/check.svg' alt='Check icon')
       .tile
-        img(alt='Moodle logo' src='/assets/images/platforms/moodle.png' style=' width: 100%; height: 350px; object-fit: contain; object-position: top;')
-        h3 Moodle LMS
-        p Need a learning management system (LMS)? Our team can design a Moodle system that meets your business goals and legislative obligations. Used by higher education, major corporations and governments around the world as their main learning management system.
+        .tile_content.horizontal
+            .tile_innercontent
+              h3 Moodle LMS
+              p Need a learning management system (LMS)? Our team can design a Moodle system that meets your business goals and legislative obligations. Used by higher education, major corporations and governments around the world as their main learning management system.
+            img.tile_img(alt='Moodle logo' src='/assets/images/platforms/moodle.png')
         .tokens
           .token
             h4 Countries
@@ -117,11 +125,13 @@ h2 Services
             h5 2,248
           .token
             h4 Users
-            h5 328 million
+            h5(style='font-size: 1.5rem;margin: 0.6rem 0;') 328 million
       .tile
-        img(alt='Eleventy logo' src='/assets/images/platforms/eleventy.png' style='filter: invert(); width: 100%; height: 350px; object-fit: contain; object-position: top;')
-        h3 11ty Static Websites
-        p Eleventy sites built by Open Studios are SEO ready and compatible with web frameworks like D3.js, THREE.JS and more. Ideal for websites that only need to be setup once with infrequent updates like brochure sites with a couple of pages. Content is stored as code, so we recommend a CMS for larger sites.
+        .tile_content.vertical
+          img.tile_img(alt='Eleventy logo' src='/assets/images/platforms/eleventy.png' style='filter: invert()')
+          .tile_innercontent
+            h3 11ty Static Websites
+            p Eleventy sites built by Open Studios are SEO ready and compatible with web frameworks like D3.js, THREE.JS and more. Ideal for websites that only need to be setup once with infrequent updates like brochure sites with a couple of pages. Content is stored as code, so we recommend a CMS for larger sites.
         .tokens
           .token
             h4 Fast loading
@@ -133,9 +143,11 @@ h2 Services
             h4 Lower costs
             img(width="32" height="32" src='/assets/check.svg' alt='Check icon')
       .tile
-        img(alt='Node.js logo' src='/assets/images/platforms/nodejs.png' style=' width: 100%; height: 350px; object-fit: contain; object-position: top;')
-        h3 Node.JS Applications
-        p Our team uses the widely popular Node.JS framework to build advanced web applications and custom integration middleware. Automate data exchange between your systems, stream data to the browser to connect users in immersive online game worlds and much more.
+        .tile_content.horizontal
+            .tile_innercontent
+              h3 Node.JS Applications
+              p Our team uses the widely popular Node.JS framework to build advanced web applications and custom integration middleware. Automate data exchange between your systems, stream data to the browser to connect users in immersive online game worlds and much more.
+            img.tile_img(alt='Node.js logo' src='/assets/images/platforms/nodejs.png')
         .tokens
           .token
             h4 Developers
@@ -147,9 +159,11 @@ h2 Services
             h4 Websites
             h5 30 million
       .tile
-        img(alt='THREE.JS logo' src='/assets/images/platforms/threejs.png' style=' width: 100%; height: 350px; object-fit: contain; object-position: top;')
-        h3 THREE.JS Experiences
-        p Give your website visitors an engaging 3D visualisation or interactive video game experience featuring your brand and products. Our team can create custom scenes and models unique to you and then use THREE.JS to ensure they look great on the web and on multiple devices.
+        .tile_content.vertical
+          img.tile_img(alt='THREE.JS logo' src='/assets/images/platforms/threejs.png')
+          .tile_innercontent
+            h3 THREE.JS Experiences
+            p Give your website visitors an engaging 3D visualisation or interactive video game experience featuring your brand and products. Our team can create custom scenes and models unique to you and then use THREE.JS to ensure they look great on the web and on multiple devices.
         .tokens
           .token
             h4 Contributors
@@ -161,9 +175,11 @@ h2 Services
             h4 Example uses
             h5 Over 150
       .tile
-        img(alt='Wordpress logo' src='/assets/images/platforms/wordpress.png' style=' width: 100%; height: 350px; object-fit: contain; object-position: top;')
-        h3 Wordpress CMS
-        p We follow best practices for working with Wordpress, creating robust and scalable plugins that add new frontend and backend features. Tailor make the content management system you need. Ideal for eCommerce, listing websites, larger websites and custom business applications.
+        .tile_content.vertical
+          img.tile_img(alt='Wordpress logo' src='/assets/images/platforms/wordpress.png')
+          .tile_innercontent
+            h3 Wordpress CMS
+            p We follow best practices for working with Wordpress, creating robust and scalable plugins that add new frontend and backend features. Tailor make the content management system you need. Ideal for eCommerce, listing websites, larger websites and custom business applications.
         .tokens
           .token
             h4 Best practices

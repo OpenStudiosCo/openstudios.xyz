@@ -293,7 +293,65 @@ a.icon_button img:hover {
   flex-direction: row;
 }
 .content .tiles .tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 0 1rem;
+}
+.content .tiles .tile .tile_content {
+  display: flex;
+  justify-content: space-evenly;
+}
+.content .tiles .tile .tile_content.horizontal {
+  flex-direction: column;
+  text-align: center;
+}
+.content .tiles .tile .tile_content.horizontal .tile_innercontent {
+  max-width: calc(100% - 2rem);
+  margin: 1rem auto 0;
+}
+.content .tiles .tile .tile_content.horizontal .tile_img {
+  max-height: 80px;
+  max-width: calc(100% - 2rem);
+  padding: 1rem;
+  object-fit: contain;
+  object-position: center;
+}
+.content .tiles .tile .tile_content.vertical {
+  flex-direction: row;
+}
+.content .tiles .tile .tile_content.vertical .tile_innercontent {
+  max-width: calc(60%);
+  margin: 1rem;
+}
+.content .tiles .tile .tile_content.vertical .tile_img {
+  max-width: calc(40% - 4rem);
+  padding: 2rem;
+  object-fit: contain;
+  object-position: center;
+}
+.content .tiles .tile .tokens {
+  display: flex;
+}
+.content .tiles .tile .tokens .token {
+  border-radius: 1rem;
+  flex-basis: calc(33% - 1rem);
+  background: #0e040a;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  text-align: center;
+}
+.content .tiles .tile .tokens .token h4 {
+  margin: 0.5rem;
+  font-size: 0.8rem;
+}
+.content .tiles .tile .tokens .token h5 {
+  font-size: 1.6rem;
+  margin: 0 0 0.6rem 0;
+}
+.content .tiles .tile .tokens .token img {
+  height: 1.6rem;
+  margin: 0.4rem;
 }
 .content .profiles .profile h3 {
   margin: 1rem;
@@ -337,6 +395,9 @@ a.icon_button img:hover {
   padding: 2rem;
 }
 @media screen and (min-width: 768px) {
+  .content .tiles {
+    margin: 1rem -2rem;
+  }
   .content .feature.wide {
     margin: 1rem -2rem;
   }
@@ -361,7 +422,7 @@ a.icon_button img:hover {
     height: auto;
   }
   .content .tiles .tile {
-    flex-basis: calc(49% - 4rem);
+    flex-basis: calc(49% - 3rem);
   }
   .content .profiles .profile {
     flex-basis: calc(49% - 1rem);

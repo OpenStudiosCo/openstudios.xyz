@@ -112,9 +112,60 @@
     flex-direction: row;
 }
 
-.content .tiles .tile {
-    padding: 0 1rem;
-}
+.content .tiles .tile 
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    padding 0 1rem
+
+    .tile_content
+        display flex
+        justify-content: space-evenly
+
+        &.horizontal
+            flex-direction column
+            text-align: center
+            .tile_innercontent
+                max-width calc(100% - 2rem)
+                margin 1rem auto 0
+            .tile_img
+                max-height: 80px
+                max-width calc(100% - 2rem)
+                padding 1rem
+                object-fit contain
+                object-position center
+        &.vertical
+            flex-direction row
+            .tile_innercontent
+                max-width calc(60%)
+                margin 1rem
+            .tile_img
+                max-width calc(40% - 4rem)
+                padding 2rem
+                object-fit contain
+                object-position center
+
+    .tokens
+        display: flex
+
+        .token
+            border-radius 1rem
+            flex-basis calc( 33% - 1rem )
+            background #0E040A
+            margin 0.5rem
+            padding 0.5rem
+            text-align center
+
+            h4
+                margin 0.5rem
+                font-size 0.8rem
+            h5
+                font-size 1.6rem
+                margin 0 0 0.6rem 0
+            img
+                height: 1.6rem
+                margin 0.4rem
+
 
 .content .profiles .profile h3 {
     margin: 1rem;
@@ -166,6 +217,10 @@
 }
 
 @media screen and (min-width: 768px) {
+    .content .tiles {
+        margin: 1rem -2rem;
+    }
+
     .content .feature.wide {
         margin: 1rem -2rem;
     }
@@ -195,7 +250,7 @@
     }
 
     .content .tiles .tile {
-        flex-basis: calc(49% - 4rem);
+        flex-basis: calc(49% - 3rem);
     }
 
     .content .profiles .profile {
