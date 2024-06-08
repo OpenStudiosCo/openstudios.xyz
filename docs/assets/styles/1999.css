@@ -322,6 +322,7 @@ form button:hover {
 }
 
 .content .cards,
+.content .tiles,
 .content .profiles {
   display: flex;
   flex-direction: row;
@@ -330,12 +331,17 @@ form button:hover {
 }
 
 .content .cards .card,
+.content .tiles .tile,
 .content .profiles .profile {
   border-radius: 1rem;
   border: solid 1px #FF69CB;
   flex-basis: calc(90% - 1rem);
   margin: 1rem 0.5rem;
   flex-direction: row;
+}
+
+.content .tiles .tile {
+  padding: 0 1rem;
 }
 
 .content .profiles .profile h3 {
@@ -434,6 +440,10 @@ form button:hover {
     margin: inherit;
     width: 100%;
     height: auto;
+  }
+
+  .content .tiles .tile {
+    flex-basis: calc(49% - 4rem);
   }
 
   .content .profiles .profile {
