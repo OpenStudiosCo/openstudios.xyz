@@ -27,18 +27,29 @@ With touch controls implemented, we wanted there to be a stronger sense of trave
 - Github: [https://github.com/OpenStudiosCo/Langenium](https://github.com/OpenStudiosCo/Langenium)
 - Website: [https://langenium.com/](https://langenium.com/)
 
-### Listed on DesignRush
-- Looking to increase our visibility and stuff
+### Marketing update
 
-### Studio Website updates
-- About us page refresh
-- New services page content and design
-- Future change to incorporate the blog and wiki in the 3d scene
+#### Online marketing
+With social media companies pushing for increased revenue from advertising, it can be challenging for small businesses to stand out and find new clients without spending money on ads. We have a couple of social media profiles around the web but have found very little traffic from any of them.
 
-### Video ads commercial
-- Showcasing our past ads using 3D and video footage.
-- Using an AI TTS for the voice over
-- Final video editing and touches using DaVinci
+After recently being <a href="https://www.designrush.com/agency/profile/open-studios" target="_blank" title="Visit Open Studios on Design Rush">listed on Design Rush</a>, we've seen an uptick in site visitors from around the world. We're hoping the increased visibility will allow us to reach a wider audience for new business and collaboration.
+
+This month we also decided to start using Google Ads in order to drive more traffic to the studio website, this is going quite well with more traffic from all around Australia starting to trickle in. We don't use Google Analytics so we were concerned about how it'd work with Matomo Analytics, but happily can report Matomo has great Google Ads support.
+
+#### Website updates
+Since launching the 3D website last year, we haven't updated the main pages with any new content. As money is now being spent on ads, we're revamping and deepening the content areas of the site in order to better present our offering to new clients.
+
+Starting with this month's About us page refresh, we've put up some additional information about how we run projects and what clients can expect when they hire us. Over the coming months we'll be revamping the Services page as well and adding some new CMS driven 3D elements. 
+
+#### Video ads commercial
+Every couple of weeks, we'll be creating a new video to showcase our services and past work in that category.
+
+To kick things off, we made this month's video promoting our video ad production services. 
+
+<center style="margin: 0px auto">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-MU85bfDelU?si=oxW6qz7f7Mv9ruWa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><em>Showcasing our past ads that were made with 3D and video footage, using an AI generated Australian voice for the voice over. Video editing and final touches using DaVinci Resolve.</em></p>
+</center>
 
 ### Find us online!
 
