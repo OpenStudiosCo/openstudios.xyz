@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 export function startTweening() {
   setTimeout(() => {
-    window.virtual_office.started = true;
     let loadingSign = document.getElementById('loadingSign');
     if (loadingSign) {
       loadingSign.style.display = 'none';
@@ -10,6 +9,7 @@ export function startTweening() {
 
     // Select intro sequence based on matrix entry type.
     if (window.matrix_scene.type == 'fullscreen') {
+      window.virtual_office.started = true;
       flickerEffect();
     }
 

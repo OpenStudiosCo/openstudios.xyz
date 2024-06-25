@@ -7,14 +7,22 @@ link(rel='mask-icon' href='/assets/favicon/safari-pinned-tab.svg' color='#5bbad5
 meta(name='msapplication-TileColor' content='#da532c')
 meta(name='theme-color' content='#000000')
 
+//- Keen Slider
+link(rel='stylesheet' href='/assets/css/keen-slider.min.css')
+script(async src='/assets/js/keen-slider.js')
+
+//- Parvus
+link(rel='stylesheet' href='/assets/css/parvus.min.css')
+script(src='/assets/js/parvus.min.js')
+
 //- CSS
-link(href='/assets/1999.css' rel='stylesheet')
+link(rel='stylesheet' href='/assets/css/1999.css')
 
 //- Captcha
-script(src="https://www.google.com/recaptcha/api.js")
+script(src='https://www.google.com/recaptcha/api.js')
 
 //- SEO
-link(rel="canonical" href='https://openstudios.xyz' + page.url.replace('/iframes',''))
+link(rel='canonical' href='https://openstudios.xyz' + page.url.replace('/iframes',''))
 meta(property='og:title' content=title)
 meta(property='og:description' content=description || title )
 meta(property='og:type' content='article')
@@ -29,7 +37,7 @@ meta(name='twitter:description' content=description || title)
 meta(name='twitter:image' content=cover || 'https://openstudios.xyz/assets/images/virtual_office.jpg')
 
 //- Google Ads tag (gtag.js)
-script(async src="https://www.googletagmanager.com/gtag/js?id=AW-983760722")
+script(async src='https://www.googletagmanager.com/gtag/js?id=AW-983760722')
 script.
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}

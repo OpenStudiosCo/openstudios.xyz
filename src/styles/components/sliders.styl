@@ -1,0 +1,56 @@
+.keen-slider.thumbnail {
+  margin-top: 10px;
+  padding: 1.5px;
+}
+
+.thumbnail .keen-slider__slide {
+  border-radius: 0.5rem;
+  font-size: 30px;
+  height: 67px;
+}
+.thumbnail .keen-slider__slide {
+  cursor: pointer;
+}
+
+.thumbnail .keen-slider__slide:hover {
+  box-shadow: #ff69cb 0px 0px 5px;
+}
+.thumbnail .keen-slider__slide.active {
+  outline: 2px dotted #ff69cb;
+  outline-offset: -3px;
+}
+
+.video-container {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	height: 0;
+}
+.video-container iframe {
+  border-radius: 0.5rem;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.parvus,
+.lightbox {
+  --parvus-background-color: #000000;
+  --parvus-btn-background-color: #ff69cb;
+}
+
+.content .feature .feature_media .keen-slider__slide img {
+  border-radius: 0.5rem;
+}
+
+.keen-slider.main .keen-slider__slide .lightbox img {
+  min-height: 209px;
+  max-height: 209px;
+}
+
+.parvus__toolbar {
+  inset-block-start: 0.5rem;
+  inset-inline: 0.5rem;
+  justify-content: center;
+}

@@ -150,6 +150,8 @@ function handleScreenClick( screen ) {
 
 export function handleExitSign() {
 
+  window.virtual_office.started = true;
+
   document.title =  'Open Studios | Perth, Western Australia';
   history.pushState({}, "", '/');
   
@@ -166,7 +168,6 @@ export function handleExitSign() {
 
   window.virtual_office.selected = false;
   
-  
 }
 
 /**
@@ -179,6 +180,8 @@ function stretchSelectedScreen() {
   document.getElementById('pageOverlay').style.display = 'block';
   
   document.getElementById('exitSign').style.display = 'block';
+
+  window.virtual_office.started = false;
 }
 
 // Restore the CSS object to its original size.
