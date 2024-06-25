@@ -43821,12 +43821,12 @@ bool _bvhIntersectFirstHit(
   // src/app/tweens.js
   function startTweening() {
     setTimeout(() => {
-      window.virtual_office.started = true;
       let loadingSign = document.getElementById("loadingSign");
       if (loadingSign) {
         loadingSign.style.display = "none";
       }
       if (window.matrix_scene.type == "fullscreen") {
+        window.virtual_office.started = true;
         flickerEffect();
       }
       if (window.matrix_scene.type == "button") {
@@ -44084,6 +44084,7 @@ bool _bvhIntersectFirstHit(
     }
   }
   function handleExitSign() {
+    window.virtual_office.started = true;
     document.title = "Open Studios | Perth, Western Australia";
     history.pushState({}, "", "/");
     window.virtual_office.moving = true;
@@ -44097,6 +44098,7 @@ bool _bvhIntersectFirstHit(
   function stretchSelectedScreen() {
     document.getElementById("pageOverlay").style.display = "block";
     document.getElementById("exitSign").style.display = "block";
+    window.virtual_office.started = false;
   }
   function shrinkScreenBack() {
     document.getElementById("pageOverlay").contentWindow.scrollTo(0, 0);
