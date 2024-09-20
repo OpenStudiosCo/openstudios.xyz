@@ -8,6 +8,9 @@ const axios = require("axios");
 const jsdom = require("jsdom");
 const loadLanguages = require("prismjs/components/");
 const Prism = require("prismjs");
+const fs = require('fs');
+const path = require('path');
+const { exit } = require( "process" );
 
 const { JSDOM } = jsdom;
 loadLanguages(["php"]);
@@ -108,16 +111,20 @@ async function processPosts(blogposts) {
       let metaDescription = post.excerpt.rendered.replace(/(<([^>]+)>)/gi, "");
       metaDescription = metaDescription.replace("\n", "");
 
+      let published = new Date( post.date );
+      let month = ("0" + (published.getMonth() + 1)).slice(-2);
+      let year = published.getFullYear();
+
       // Code highlighting with Eleventy Syntax Highlighting
       // https://www.11ty.dev/docs/plugins/syntaxhighlight/
       let content = highlightCode(post.content.rendered);
 
-      let published = new Date( post.date );
+      content = await saveAndReplaceImages( content, year, month );
 
       // Return only the data that is needed for the actual output
       return {
-        year: published.getFullYear(),
-        month: ("0" + (published.getMonth() + 1)).slice(-2),
+        year: year,
+        month: month,
         content: content,
         date: post.date,
         modifiedDate: post.modified,
@@ -145,6 +152,63 @@ async function processPosts(blogposts) {
     })
   );
 }
+
+
+
+function getFilenameFromUrl(url) {
+  let filename = url.split('/').pop();
+  
+  // If no extension is found in the filename, default to .jpg
+  if (!path.extname(filename)) {
+    filename += '.jpg';
+  }
+
+  return filename;
+}
+
+/**
+ * Download CMS images to static file store and replace inline sources.
+ */
+async function saveAndReplaceImages(content, year, month) {
+  const dom = new JSDOM(content);
+  const images = dom.window.document.querySelectorAll("img");
+
+  for (let img of images) {
+    const src = img.getAttribute("src");
+
+    if (src) {
+      try {
+        const response = await axios.get(src, { responseType: "arraybuffer" });
+        const filename = getFilenameFromUrl(src);
+        const filePath = path.join(__dirname, "../../", "assets", "blog", year.toString(), month.toString(), filename);
+        console.log(filePath);
+
+        // Ensure the directory exists
+        fs.mkdirSync(path.dirname(filePath), { recursive: true });
+
+        // Save the image to the file system
+        fs.writeFileSync(filePath, response.data);
+
+        // Replace the src with the local file path
+        img.setAttribute("src", `/assets/blog/${year.toString()}/${month.toString()}/${filename}`);
+
+        // Add a delay between requests (e.g., 1 second)
+        await sleep(1000);
+      } catch (error) {
+        console.error(`Failed to download image: ${src}`, error);
+      }
+    }
+  }
+
+  // Return the modified HTML content
+  return dom.window.document.body.innerHTML;
+}
+
+// Helper function to add a delay (in milliseconds)
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 /**
  * Use Prism.js to highlight embedded code
