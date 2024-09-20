@@ -2,6 +2,7 @@ extends ../templates/1999_html.pug
 
 block append page
   .content.blog_post
+    h1 !{ blogpost.formattedDate }
     h2= blogpost.title
     . 
         !{ blogpost.content }

@@ -112,8 +112,12 @@ async function processPosts(blogposts) {
       // https://www.11ty.dev/docs/plugins/syntaxhighlight/
       let content = highlightCode(post.content.rendered);
 
+      let published = new Date( post.date );
+
       // Return only the data that is needed for the actual output
       return {
+        year: published.getFullYear(),
+        month: ("0" + (published.getMonth() + 1)).slice(-2),
         content: content,
         date: post.date,
         modifiedDate: post.modified,
