@@ -121,6 +121,8 @@ async function processPosts(blogposts) {
 
       content = await saveAndReplaceImages( content, year, month );
 
+      const coverPath = 'https://openstudios.xyz/' + getFirstImagePath( content, year, month );
+
       // Return only the data that is needed for the actual output
       return {
         year: year,
@@ -134,17 +136,7 @@ async function processPosts(blogposts) {
           month: "long",
           day: "numeric",
         }),
-        heroImageFull:
-          post._embedded && post._embedded["wp:featuredmedia"].length > 0
-            ? post._embedded["wp:featuredmedia"][0].media_details.sizes.full
-                .source_url
-            : null,
-        heroImageThumb:
-          post._embedded && post._embedded["wp:featuredmedia"].length > 0
-            ? post._embedded["wp:featuredmedia"][0].media_details.sizes
-                .medium_large.source_url
-            : null,
-
+        cover: coverPath,
         metaDescription: metaDescription,
         slug: post.slug,
         title: post.title.rendered,
@@ -164,6 +156,16 @@ function getFilenameFromUrl(url) {
   }
 
   return filename;
+}
+
+function getFirstImagePath( content, year, month ) {
+  const dom = new JSDOM(content);
+  const images = dom.window.document.querySelectorAll("img");
+
+  const src = images[0].getAttribute("src");
+  const filename = getFilenameFromUrl(src);
+  
+  return `/assets/blog/${year.toString()}/${month.toString()}/${filename}`;
 }
 
 /**
