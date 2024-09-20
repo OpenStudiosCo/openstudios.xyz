@@ -23,6 +23,13 @@ block append page
     });
 
   .content.blog_post
+    .breadcrumb
+      a.item(href='/blog.html') Blogs
+      span.item &nbsp;&nbsp;>&nbsp;&nbsp;
+      span.item= blogpost.title
     h2= blogpost.title
     . 
         !{ blogpost.content }
+    br
+    br
+    a(href='/blog.html') Back to Blog Home

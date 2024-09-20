@@ -66,7 +66,7 @@ async function getAllPosts() {
   let requests = [];
   let apiData = [];
 
-  if (cache.isCacheValid("2h")) {
+  if (cache.isCacheValid("24h")) {
     console.log("Using cached blogposts");
     return cache.getCachedValue();
   }
@@ -178,22 +178,29 @@ async function saveAndReplaceImages(content, year, month) {
 
     if (src) {
       try {
-        const response = await axios.get(src, { responseType: "arraybuffer" });
         const filename = getFilenameFromUrl(src);
         const filePath = path.join(__dirname, "../../", "assets", "blog", year.toString(), month.toString(), filename);
-        console.log(filePath);
-
-        // Ensure the directory exists
-        fs.mkdirSync(path.dirname(filePath), { recursive: true });
-
-        // Save the image to the file system
-        fs.writeFileSync(filePath, response.data);
-
         // Replace the src with the local file path
         img.setAttribute("src", `/assets/blog/${year.toString()}/${month.toString()}/${filename}`);
 
-        // Add a delay between requests (e.g., 1 second)
-        await sleep(1000);
+        // Check if the file already exists
+        if (!fs.existsSync(filePath)) {
+          console.log('Downloading ' + filePath);
+
+          const response = await axios.get(src, { responseType: "arraybuffer" });
+
+          // Ensure the directory exists
+          fs.mkdirSync(path.dirname(filePath), { recursive: true });
+
+          // Save the image to the file system
+          fs.writeFileSync(filePath, response.data);
+
+          // Add a delay between requests (e.g., 1 second)
+          await sleep(1000);
+        }
+        else {
+          console.log('Skipping ' + filePath);
+        }
       } catch (error) {
         console.error(`Failed to download image: ${src}`, error);
       }

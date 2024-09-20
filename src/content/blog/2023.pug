@@ -1,11 +1,11 @@
 h2 Blog
-.menu(role="navigation")
+.content
+  .menu(role="navigation")
     ul(role="menu")
         li(role="presentation")
             a(href='/blog.html' role="menuitem") Current
         li(role="presentation") 2023
 
-.content
   .row
     .column(style="flex-basis: 55%")
       a(href='/blog/2023/12/studio-roundup-december-2023.html')
@@ -46,6 +46,19 @@ h2 Blog
     .column(style="flex-basis: 35%; padding: 1.5rem 0;")
       a(href='/blog/2023/10/studio-roundup-october-2023.html' target='_blank' title='Studio Roundup for October 2023')
         img(src='/assets/blog/2023/10/1_SLu3jtltivXMa4iTfvox4Q.webp' style=' width: 100%; height: auto;' alt='The Cottagecore Collection celebrates nature and the simpler things in life.')
+  .row
+    .column(style="flex-basis: 55%")
+      a(href='/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html')
+        h3 Building A Cool 3D website: Tips, Tricks and Lessons Learned
+      p.
+        We recently launched a new website built with Eleventy, Three.js and the Langenium engine.
+      p
+        | Delve into our 
+        a(href='/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html') retrospective for the new Open Studios Website
+        | !
+    .column(style="flex-basis: 35%; padding: 1.5rem 0;")
+      a(href='/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html' target='_blank' title='How to implement Blender Principled BSDF Materials in Three.js (WebGL)')
+        img(src='/assets/blog/2023/10/1*o6xfwPdjAcGUyBE5s69iOQ.png' style='width: 100%; height: auto; min-height: 107px; object-fit: cover;' alt='A screenshot from the Langenium blog article')
   .row
     .column(style="flex-basis: 55%")
       a(href='/blog/2023/09/studio-roundup-september-2023.html')
@@ -174,8 +187,8 @@ h2 Blog
       a(href='/blog/2023/01/studio-roundup-january-2023.html' target='_blank' title='Studio Roundup for January 2023')
         img(src='/assets/blog/2023/01/1_0twpdr9rjoC3lNUQ1o1Wow.webp' style=' width: 100%; height: auto;' alt='Screenshot of our entry in British Vogue')
 
-.menu(role="navigation")
-    ul(role="menu")
-        li(role="presentation")
-            a(href='/blog.html' role="menuitem") Current
-        li(role="presentation") 2023
+  .menu(role="navigation")
+      ul(role="menu")
+          li(role="presentation")
+              a(href='/blog.html' role="menuitem") Current
+          li(role="presentation") 2023
