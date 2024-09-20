@@ -8,13 +8,21 @@ eleventyExcludeFromCollections: true
 
 urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
     each page in collections.all
+        if page.url.indexOf('/blog/') < 0 || page.url.indexOf('studio-roundup') >= 0
+            url
+                - urlstring = 'https://openstudios.xyz' + page.url
+                loc= urlstring
+                lastmod= page.date.toISOString()
+                if page.data.changefreq || page.url == '/'
+                    changefreq= page.data.changefreq
+                else
+                    changefreq weekly
+                if page.data.priority
+                    priority= page.data.priority
+
+    each post in blogposts
         url
-            - urlstring = 'https://openstudios.xyz' + page.url
+            - urlstring = 'https://openstudios.xyz/blog/' + post.year + '/' + post.month + '/' + post.slug + '.html'
             loc= urlstring
-            lastmod= page.date.toISOString()
-            if page.data.changefreq || page.url == '/'
-                changefreq= page.data.changefreq
-            else
-                changefreq weekly
-            if page.data.priority
-                priority= page.data.priority
+            lastmod= post.modifiedDate
+            changefreq daily
