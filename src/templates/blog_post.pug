@@ -2,6 +2,6 @@ extends ../templates/1999_html.pug
 
 block append page
   .content.blog_post
-    h2(style="font-family: SourceSans; font-size: 4rem; text-transform: none;")= blogpost.title
+    h2= blogpost.title
     . 
         !{ blogpost.content }

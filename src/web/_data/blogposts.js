@@ -11,6 +11,7 @@ const Prism = require("prismjs");
 
 const { JSDOM } = jsdom;
 loadLanguages(["php"]);
+loadLanguages(['glsl']);
 
 // Config
 const ITEMS_PER_REQUEST = 10;
@@ -158,36 +159,42 @@ function highlightCode(content) {
       let code = pre.querySelector("code");
 
       if (code) {
+        
         // get specified language from css-classname
         let codeLanguage = "html";
-        const preClass = pre.className;
+        const preClass = pre.className.toString();
+        
+        // set grammar that prism should use for highlighting
+        let prismGrammar = Prism.languages.html;
 
-        var matches = preClass.match(/language-(.*)/);
-        if (matches != null) {
-          codeLanguage = matches[1];
+        if ( preClass.indexOf('language-glsl') >= 0 ) {
+          codeLanguage = 'glsl';
+          prismGrammar = Prism.languages.glsl;
+        }
+
+        if ( preClass.indexOf('language-html') >= 0 ) {
+          codeLanguage = 'html';
+          prismGrammar = Prism.languages.html;
+        }
+
+        if ( preClass.indexOf('language-css') >= 0 ) {
+          codeLanguage = 'css';
+          prismGrammar = Prism.languages.css;
+        }
+
+        if ( preClass.indexOf('language-php') >= 0 ) {
+          codeLanguage = 'php';
+          prismGrammar = Prism.languages.php;
+        }
+
+        if ( preClass.indexOf('language-js') >= 0 ) {
+          codeLanguage = 'js';
+          prismGrammar = Prism.languages.javascript;
         }
 
         // save the language for later use in CSS
         pre.dataset.language = codeLanguage;
 
-        // set grammar that prism should use for highlighting
-        let prismGrammar = Prism.languages.html;
-
-        if (
-          codeLanguage === "javascript" ||
-          codeLanguage === "js" ||
-          codeLanguage === "json"
-        ) {
-          prismGrammar = Prism.languages.javascript;
-        }
-
-        if (codeLanguage === "css") {
-          prismGrammar = Prism.languages.css;
-        }
-
-        if (codeLanguage === "php") {
-          prismGrammar = Prism.languages.php;
-        }
         // highlight code
         code.innerHTML = Prism.highlight(
           code.textContent,
