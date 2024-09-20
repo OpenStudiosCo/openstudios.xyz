@@ -1,6 +1,5 @@
 ---
 layout: blog_post.pug
-cover: https://openstudios.xyz/assets/images/pages/case_studies.jpg
 priority: "0.9"
 changefreq: daily
 pagination:
@@ -8,5 +7,7 @@ pagination:
   size: 1
   alias: blogpost
 permalink: blog/{{blogpost.year}}/{{blogpost.month}}/{{blogpost.slug}}.html
+eleventyComputed:
+  cover: "{{blogpost.cover}}"
 description: Explore our digital studio retrospectives, project updates and technical guides. Gain insights into our process, expertise and abilities.
 ---
