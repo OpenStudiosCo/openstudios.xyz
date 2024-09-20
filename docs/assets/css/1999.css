@@ -299,6 +299,9 @@ a.icon_button img:hover {
   margin: 0rem 2rem;
   max-width: 960px;
 }
+.content p {
+  margin-bottom: 1rem;
+}
 .content.wide {
   max-width: 1280px;
 }
