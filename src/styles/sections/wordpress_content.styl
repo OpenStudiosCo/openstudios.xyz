@@ -1,0 +1,343 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Headings */
+.wp-block-heading {
+    font-size: 1.8em;
+    margin-bottom: 1em;
+}
+
+/* Images */
+.wp-block-image {
+    margin: 1em 0;
+    display: block;
+}
+
+.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.is-resized {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Captions */
+.wp-element-caption {
+    font-size: 0.875em;
+    text-align: center;
+    color: #666;
+}
+
+/* Image Sizes */
+.size-large {
+    width: 100%;
+}
+
+.size-full {
+    width: auto;
+}
+
+/* Code Blocks */
+.wp-block-code {
+    background: #0F0E22;
+    padding: 1em;
+    border-left: 3px solid #007cba;
+    overflow-x: auto;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+/* Text Colors */
+.has-white-color {
+    color: #fff;
+}
+
+.has-black-background-color {
+    background-color: #000;
+    color: #fff;
+}
+
+.has-text-color {
+    color: var(--custom-text-color, #000);
+}
+
+.has-background {
+    background-color: var(--custom-background-color, #0F0E22);
+}
+
+.has-link-color {
+    color: var(--link-color, #007cba);
+}
+
+/* Code Syntax Highlighting */
+.language-html {
+    color: #e44d26; /* HTML color */
+}
+
+.language-javascript {
+    color: #f7df1e; /* JavaScript color */
+}
+
+.token {
+    color: #f7df1e;
+}
+
+.tag {
+    color: #e44d26;
+}
+
+.punctuation {
+    color: #000;
+}
+
+.attr-name {
+    color: #007cba;
+}
+
+.attr-value {
+    color: #d14;
+}
+
+.attr-equals {
+    color: #000;
+}
+
+.script {
+    color: #000;
+}
+
+.keyword {
+    color: #007bff; /* Keyword color */
+}
+
+.function {
+    color: #3c8dbc; /* Function color */
+}
+
+.operator {
+    color: #000;
+}
+
+.number {
+    color: #007cba; /* Number color */
+}
+
+/* Columns and Gallery */
+.wp-block-columns {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.is-layout-flex {
+    display: flex;
+}
+
+.wp-block-column {
+    flex: 1;
+    padding: 0.5em;
+}
+
+.wp-block-list {
+    list-style: disc;
+    margin-left: 2em;
+}
+
+.wp-block-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+/* Specific Images */
+.wp-image-43,
+.wp-image-54,
+.wp-image-62,
+.wp-image-66,
+.wp-image-80,
+.wp-image-82,
+.wp-image-83,
+.wp-image-85,
+.wp-image-86,
+.wp-image-88,
+.wp-image-93,
+.wp-image-94,
+.wp-image-97,
+.wp-image-98,
+.wp-image-100,
+.wp-image-102,
+.wp-image-103,
+.wp-image-124,
+.wp-image-135,
+.wp-image-136,
+.wp-image-99 {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Gallery Nested Images */
+.has-nested-images {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.is-cropped {
+    object-fit: cover;
+}
+
+/* Custom Classes (optional) */
+.wp-elements-b6768e2bd1be7f90eb020ad9cbc2050f,
+.wp-elements-6a6513f87c03edd0ee5cec7dacbfa38d,
+.wp-elements-fab7ad6dba310e71dd1eb6c22ef23200,
+.wp-elements-2d0d1e24573f14fc793dbea6e41d6da8,
+.wp-elements-cbdbfa27c451ad4bd2d1ba48e0e9cf62 {
+    /* Apply any specific styles for these classes */
+}
+
+
+/*
+ * Synthwave '84 Theme originally by Robb Owen [@Robb0wen] for Visual Studio Code
+ * Demo: https://marc.dev/demo/prism-synthwave84
+ *
+ * Ported for PrismJS by Marc Backes [@themarcba]
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #f92aad;
+	text-shadow: 0 0 2px #100c0f, 0 0 5px #dc078e33, 0 0 10px #fff3;
+	background: none;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-size: 1em;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background-color: transparent !important;
+	background-image: linear-gradient(to bottom, #2a2139 75%, #34294f);
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #8e8e8e;
+}
+
+.token.punctuation {
+	color: #ccc;
+}
+
+.token.tag,
+.token.attr-name,
+.token.namespace,
+.token.number,
+.token.unit,
+.token.hexcode,
+.token.deleted {
+	color: #e2777a;
+}
+
+.token.property,
+.token.selector {
+	color: #72f1b8;
+	text-shadow: 0 0 2px #100c0f, 0 0 10px #257c5575, 0 0 35px #21272475;
+}
+
+.token.function-name {
+	color: #6196cc;
+}
+
+.token.boolean,
+.token.selector .token.id,
+.token.function {
+	color: #fdfdfd;
+	text-shadow: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975, 0 0 8px #03edf975;
+}
+
+.token.class-name {
+	color: #fff5f6;
+	text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75, 0 0 25px #fc1f2c75;
+}
+
+.token.constant,
+.token.symbol {
+	color: #f92aad;
+	text-shadow: 0 0 2px #100c0f, 0 0 5px #dc078e33, 0 0 10px #fff3;
+}
+
+.token.important,
+.token.atrule,
+.token.keyword,
+.token.selector .token.class,
+.token.builtin {
+	color: #f4eee4;
+	text-shadow: 0 0 2px #393a33, 0 0 8px #f39f0575, 0 0 2px #f39f0575;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex,
+.token.variable {
+	color: #f87c32;
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+	color: #67cdcc;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+
+.token.inserted {
+	color: green;
+}

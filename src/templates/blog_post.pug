@@ -1,0 +1,35 @@
+extends ../templates/1999_html.pug
+
+block append page
+  script.
+    window.addEventListener("DOMContentLoaded", function() {
+      let images = document.querySelectorAll( '.blog_post img' );
+
+      images.forEach( imageElm => {
+        // Create a new anchor element
+        const linkElm = document.createElement('a');
+        // Set the href attribute to the image's src
+        linkElm.href = imageElm.src;
+        linkElm.classList.add('lightbox');
+        
+        // Insert the image as a child of the anchor element
+        linkElm.appendChild(imageElm.cloneNode(true));
+        
+        // Replace the original image with the new anchor element
+        imageElm.parentNode.replaceChild(linkElm, imageElm);
+      } );
+      const prvs = new Parvus();
+
+    });
+
+  .content.blog_post
+    .breadcrumb
+      a.item(href='/blog.html') Blogs
+      span.item &nbsp;&nbsp;>&nbsp;&nbsp;
+      span.item= blogpost.title
+    h2= blogpost.title
+    . 
+        !{ blogpost.content }
+    br
+    br
+    a(href='/blog.html') Back to Blog Home
