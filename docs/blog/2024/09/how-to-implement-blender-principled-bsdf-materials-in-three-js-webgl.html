@@ -139,19 +139,27 @@ body {
 
 
 
+<p></p>
+
+
+
 <h3 class="wp-block-heading">Introduction to Physically Based Rendering and Shaders</h3>
 
 
 
-<p>Achieving realism in computer graphics requires a phenomenal amount of computing power. In order to reduce that workload, 3D graphics uses techniques like Physically Based Rendering (PBR), which simulates how light interacts with surfaces in a more realistic way by using algorithms that approximate real-world physical properties. PBR relies on image based data which can enhance a surface with additional detail using image based representations of different properties. For example, the metallic map defines which areas of a texture are more reactive to light reflection.</p>
+<p>Achieving realism in computer graphics requires a phenomenal amount of computing power. In order to reduce that workload, 3D graphics uses techniques like Physically Based Rendering (PBR), which simulates the realistic way that light interacts with surfaces. PBR relies on image-based data which can enhance a surface with additional detail using precalculated image-based representations of different properties. For example, the metallic map defines which areas of a texture are more reactive to light reflection.</p>
 
 
 
-<p>Implementing PBR in real-time environments like web browsers presents additional challenges. Web technologies, especially those using WebGL, have more constraints compared to desktop software like Blender, where more advanced rendering techniques can be applied with more direct access to hardware resources and without concern for performance overhead. Shaders, the small programs that run on the GPU, play a critical role in bridging this gap, allowing developers to create custom effects, lighting models, and procedural textures that can approximate the same level of detail without sacrificing performance.</p>
+<p>Implementing PBR in real-time environments like web browsers presents additional challenges. Web technologies, such as WebGL, have more constraints compared to desktop software APIs like OpenGL. Compared to Three.js, Blender has more flexibility and more advanced rendering options that can be applied without concern for performance overhead. Shaders, the small programs that run on the GPU, can play a critical role in bridging this gap, allowing developers to create custom effects, lighting models, and procedural textures that can approximate a great level of detail without sacrificing performance.</p>
 
 
 
 <p>In this article, I’ll walk through the process of creating physically based materials for a web game using Three.js and custom shaders, showcasing both the obstacles and breakthroughs involved in adapting complex materials originally designed in Blender to run efficiently in a browser environment.</p>
+
+
+
+<p></p>
 
 
 
@@ -163,21 +171,21 @@ body {
 
 
 
-<p>Originally I thought I’d add some common materials to the game using free materials from online resources like <a href="https://freepbr.com/">FreePBR</a>, however for ease of use I opted to enhance the game’s objects with free materials from <a href="https://www.blenderkit.com/">BlenderKit</a>. Unfortunately the models exported for use in the game engine had no textures despite the materials being ticked for export. After some Googling I learned that I had to “bake” the shader materials in order for them to be exported and loaded in other environments like Three.js.</p>
+<p>Originally I thought I’d add some common materials to the game using free materials from online resources like <a href="https://freepbr.com/">FreePBR</a>, however for ease of use I opted to use free materials provided by the <a href="https://www.blenderkit.com/">BlenderKit</a> add-on. Unfortunately the models exported for use in the game engine had no textures despite the materials being ticked for export. After some Googling I learned that I had to “bake” the shader materials in order for them to be exported and loaded in other environments like Three.js.</p>
 
 
 <div class="wp-block-image">
 <figure class="aligncenter size-full is-resized"><img loading="lazy" decoding="async" width="2128" height="948" src="/assets/blog/2024/09/Screenshot-2024-06-19-220725.png" alt="" class="wp-image-43" style="width:840px;height:auto" srcset="https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-19-220725.png 2128w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-19-220725-300x134.png 300w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-19-220725-1024x456.png 1024w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-19-220725-768x342.png 768w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-19-220725-1536x684.png 1536w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-19-220725-2048x912.png 2048w" sizes="(max-width: 2128px) 100vw, 2128px"><figcaption class="wp-element-caption"><em>The Union Platform Model enhanced with a couple of free materials from the BlenderKit materials library. </em></figcaption></figure></div>
 
 
-<p>Baking the materials fixed the issue and I was solution worked, but the file sizes had grown from 170KB to 30MB, which wasn’t acceptable for a web based game. Worse yet – the textures, even with good compression, were blurry and no longer dynamically reacting to directional light, or showing animations. That file size is pretty standard in video games but it just wasn’t acceptable given how much better everything looked in Blender where the materials were at a higher resolution and, most importantly, were animated and reacting to directional light.</p>
+<p>Baking the materials fixed the issue and allowed shader material textures to export from Blender, but the file sizes had grown from 170KB to 30MB, which isn’t acceptable for a web based game. Even if I could get away with one model, the cumulative effect of several models that size would mean people on mobile can’t play. Worse yet – the textures, even with good compression, were blurry and no longer dynamically reacting to directional light, or showing animations. That file size is pretty standard in video games but it just wasn’t acceptable given how much better everything looked in Blender where the materials were at a higher resolution and, most importantly, were animated and reacting to directional light.</p>
 
 
 <div class="wp-block-image">
 <figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="2560" height="1392" src="/assets/blog/2024/09/image-2.png" alt="" class="wp-image-54" srcset="https://portal.openstudios.xyz/app/uploads/2024/08/image-2.png 2560w, https://portal.openstudios.xyz/app/uploads/2024/08/image-2-300x163.png 300w, https://portal.openstudios.xyz/app/uploads/2024/08/image-2-1024x557.png 1024w, https://portal.openstudios.xyz/app/uploads/2024/08/image-2-768x418.png 768w, https://portal.openstudios.xyz/app/uploads/2024/08/image-2-1536x835.png 1536w, https://portal.openstudios.xyz/app/uploads/2024/08/image-2-2048x1114.png 2048w" sizes="(max-width: 2560px) 100vw, 2560px"><figcaption class="wp-element-caption"><em>Editing the <a href="https://www.blenderkit.com/asset-gallery-detail/484c0cf9-6ae7-4bb1-801d-8bf40e70e554/">Procedural Abstract Sci-Fi Panels</a> material in Blender, used on the aircraft model.</em></figcaption></figure></div>
 
 
-<p>Having a bit of practise implementing my own shader based materials in Blender and Three.js, I realised it was probably possible to recreate the BlenderKit materials within a <a href="https://threejs.org/docs/#api/en/materials/ShaderMaterial">THREE.ShaderMaterial</a>. My first attempt implemented <a href="https://nodetoy.co/">NodeToy</a>. I got something resembling the material pretty quickly however when I went to use it I got a lot of errors in the Langenium engine. NodeToy uses it’s own format for shaders so I couldn’t easily adapt what I’d created without the NodeToy add-on.</p>
+<p>Having a bit of practise implementing my own shader based materials in Blender and Three.js, I realised it was probably possible to recreate the BlenderKit materials within a <a href="https://threejs.org/docs/#api/en/materials/ShaderMaterial">THREE.ShaderMaterial</a>. My first attempt implemented <a href="https://nodetoy.co/">NodeToy</a>. I got something resembling the material pretty quickly however when I went to use it I got a lot of errors in my game. NodeToy uses it’s own format for shaders so I couldn’t easily adapt what I’d created without the NodeToy add-on.</p>
 
 
 
@@ -185,7 +193,11 @@ body {
 
 
 
-<p>Opting for a programmatic approach instead of relying on a niche vendor format, I cloned one of the existing game shaders as a boilerplate, gutted it down to a simple colour draw and got to work populating it with code that corresponded to each node, and link, in the Blender material.</p>
+<p>It was time to try a programmatic approach instead of relying on a 3rd party’s custom format.</p>
+
+
+
+<p></p>
 
 
 
@@ -197,7 +209,7 @@ body {
 
 
 
-<p>To implement my own custom shader, I created a new ShaderMaterial and added some script tags to my document that would contain the shader code.</p>
+<p>To implement my own custom shader, I created a new ShaderMaterial (js code below) and added some script tags to my document that would contain the shader code. I cloned one of the existing game shaders as a boilerplate, gutted it down to a simple colour draw  (html/glsl code below) and got to work populating it with logic that corresponded to each node, and link, in the Blender shader material.</p>
 
 
 
@@ -230,31 +242,46 @@ body {
 
 
 
+<p></p>
+
+
+
+<h4 class="wp-block-heading">Replacing the Color Ramp node</h4>
+
+
+
+<p>Recreating the <a href="https://docs.blender.org/manual/en/latest/editors/texture_node/types/converter/color_ramp.html">Colour Ramp node</a> was a matter of finding a GLSL gradient function I could adapt. Turning to Github I was fortunate to find an open source <a href="https://gist.github.com/tgfrerer/1640dd717e3ab1eada9f">Gist</a> containing a variety of gradient functions I could use. After the gradient functions were in place to mimic the Color Ramp node, the material began to match what I was seeing in Blender.</p>
+
+
+
+<p>Searching Github can be very handy when you need to know how specific API’s or functions are implemented by other coders. Especially when you’re working on something a bit niche and can’t documentation in other places like forums, tutorial videos and dev blogs.</p>
+
+
+
 <h4 class="wp-block-heading">Replacing the Voronoi texture node</h4>
 
 
 
-<p>Voronoi textures are a popular tool for procedural graphics, their cellular shapes can be made to resemble a number of artificial and natural structures. Within the material shaders I’m using, the cells from Voronoi textures are used to define metal panels covering the surface of an object. </p>
+<p>Voronoi textures are a popular tool for computer graphics, their cellular shapes can be made to resemble a number of artificial and natural structures. Within the material shaders I’m using, the cells from Voronoi textures are used to define structure and metal panels covering the surface of the aircraft.</p>
 
 
 
-<p>Mercifully <a href="https://github.com/kinakomoti-321/Voronoi_textures">someone had migrated the Voronoi function to native GLSL</a> which gave me a good starting point. Once I got my own voronoi function up, it wasn’t too hard to complete the remainder of the shader materials to achieve an initial result on the player’s aircraft.</p>
+<p>I’ve never been good at maths and certainly it’s a bit beyond my ability to just write my own Voronoi functions from scratch. Learning how to do all this is certainly possible, but there had to be some kind of useful resource out there that could give me a leg up rather than losing months of my life to that.</p>
+
+
+
+<p>Mercifully <a href="https://github.com/kinakomoti-321/Voronoi_textures">someone had migrated the Voronoi function to native GLSL</a> which gave me a good starting point. Once I got my own Voronoi function setup, it wasn’t too hard to complete the remainder of the shader materials to achieve an initial result on the player’s aircraft. Only one layer of the material is present in the screenshot below, the white lines, but with just that you can already see details emerge.</p>
+
+
+
+<p>The shape of the Voronoi cells in my output didn’t quite match the original material – the BlenderKit material had metal panels made up of smaller shapes, while the most complex shapes I was initially creating were mostly whitespace with a few squares and triangles.</p>
 
 
 <div class="wp-block-image">
-<figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="1686" height="685" src="/assets/blog/2024/09/Screenshot-2024-06-17-153223.png" alt="" class="wp-image-80" srcset="https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223.png 1686w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223-300x122.png 300w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223-1024x416.png 1024w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223-768x312.png 768w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223-1536x624.png 1536w" sizes="(max-width: 1686px) 100vw, 1686px"><figcaption class="wp-element-caption"><em>The first test of the new custom shader which would become the Procedural Metal shader.</em></figcaption></figure></div>
+<figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="1686" height="685" src="/assets/blog/2024/09/Screenshot-2024-06-17-153223.png" alt="" class="wp-image-80" srcset="https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223.png 1686w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223-300x122.png 300w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223-1024x416.png 1024w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223-768x312.png 768w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-17-153223-1536x624.png 1536w" sizes="(max-width: 1686px) 100vw, 1686px"><figcaption class="wp-element-caption"><em>The first test of the new custom shader which combined the Voronoi texture with a black/white gradient</em>.</figcaption></figure></div>
 
 
-<p>I got stuck trying to match the Voronoi Texture output variables in GLSL code to the same outputs in Blender’s Voronoi Texture node. This was important for recreating the same metal panelling shapes seen in the BlenderKit material. The issue was that Blender was automatically normalising the RGB output to a grey colour, which I had to recreate with a simple one line call provided by ChatGPT. </p>
-
-
-
-<pre class="wp-block-code language-glsl has-white-color has-black-background-color has-text-color has-background has-link-color wp-elements-f06dd06019129b65fe12b9041b864d2b" data-language="glsl"><code class="language-glsl"><span class="token keyword">float</span> gray <span class="token operator">=</span> <span class="token function">dot</span><span class="token punctuation">(</span>voronoiValue<span class="token punctuation">.</span>rgb<span class="token punctuation">,</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.2126</span><span class="token punctuation">,</span> <span class="token number">0.7152</span><span class="token punctuation">,</span> <span class="token number">0.0722</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-gray <span class="token operator">=</span> <span class="token punctuation">(</span> gray <span class="token operator">-</span> <span class="token number">0.5</span> <span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.2</span><span class="token punctuation">;</span></code></pre>
-
-
-
-<p>Debugging what’s going on within shaders in Blender would be a matter of reconnecting nodes so you can inspect their respective outputs. Doing so with code was pretty similar, I changed the gl_FragColor to be the voronoi.rgb value until I got the mapping correct so that the shapes matched. The exact forms are a little bit different, I’m getting slightly more angular shapes instead of the cleaner cut straight angles of the Blender Voronoi Texture but it was good enough for my purposes here.</p>
+<p>Debugging what’s going on within shaders in Blender is a matter of reconnecting nodes to inspect their respective outputs. Doing so with code is pretty similar, I changed the <em>gl_FragColor </em>to be the <em>voronoi.rgb</em> value until I got the mapping correct so that the shapes matched. The exact forms are a little bit different; I’m getting slightly more angular shapes instead of the cleaner cut straight angles of <a href="https://docs.blender.org/manual/en/latest/render/shader_nodes/textures/voronoi.html">Blender’s Voronoi Texture node</a> but it was good enough for my purposes here.</p>
 
 
 
@@ -272,22 +299,35 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p>I tried for a while to match the Voronoi Texture output variables in GLSL code to the same outputs in Blender’s Voronoi Texture. This was important for recreating the same metal panelling shapes seen in the BlenderKit material. Blender was automatically normalising the RGB output to a grey colour, which I was able to recreate with a simple one liner provided by ChatGPT.</p>
+
+
+
+<pre class="wp-block-code language-glsl has-white-color has-black-background-color has-text-color has-background has-link-color wp-elements-f06dd06019129b65fe12b9041b864d2b" data-language="glsl"><code class="language-glsl"><span class="token keyword">float</span> gray <span class="token operator">=</span> <span class="token function">dot</span><span class="token punctuation">(</span>voronoiValue<span class="token punctuation">.</span>rgb<span class="token punctuation">,</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.2126</span><span class="token punctuation">,</span> <span class="token number">0.7152</span><span class="token punctuation">,</span> <span class="token number">0.0722</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+gray <span class="token operator">=</span> <span class="token punctuation">(</span> gray <span class="token operator">-</span> <span class="token number">0.5</span> <span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.2</span><span class="token punctuation">;</span></code></pre>
+
+
+
+<p></p>
+
+
+
 <h4 class="wp-block-heading">Debugging Custom Shaders</h4>
 
 
 
-<p>Writing custom shaders can be a challenging process, especially when things don’t work as expected. Debugging shaders is notoriously difficult since there’s no straightforward way to log variables or print errors like you would in traditional programming languages. Instead, you rely heavily on visual feedback and careful analysis of your code. Here are some things to keep in mind when debugging shaders in Three.js using <em>ShaderMaterial</em>.</p>
+<p>Writing custom shaders can be a challenging process, especially when things don’t work as expected. Shaders run within the GPU hardware making them notoriously difficult to debug since there’s no straightforward way to log variables or print errors like you would in traditional programming languages. Instead, you rely heavily on visual feedback and careful analysis of your code. Here are some things to keep in mind when debugging your own custom shaders.</p>
 
 
 
 <ol class="wp-block-list">
 <li><strong>Visualizing Outputs</strong>
 <ul class="wp-block-list">
-<li>One of the simplest yet most effective ways to debug shaders is by visualizing intermediate outputs directly in your scene. For instance, if you’re trying to understand what’s happening with a particular texture, uniform, or math operation, you can assign the value you’re working on directly to gl_FragColor in the fragment shader.</li>
+<li>One of the simplest yet most effective ways to debug shaders is visualizing calculated outputs directly in your scene. For instance, if you’re trying to understand what’s happening with a particular texture, uniform, or math operation, you can assign the value you’re working on directly to <em>gl_FragColor </em>in the fragment shader.</li>
 
 
 
-<li>By assigning different colors to various intermediate steps, you can immediately see what part of the shader isn’t behaving as expected. This works for variables, uniforms, and even lighting calculations.</li>
+<li>Many shader effects rely on the mathematical operations between variables that are themselves calculated elsewhere, so visualising what these individual components are doing can help move things along better than just trying endless variations of your original code.</li>
 </ul>
 </li>
 
@@ -295,7 +335,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 <li><strong>Simplifying the Shader</strong>
 <ul class="wp-block-list">
-<li>When complex shaders fail, it helps to break the problem down by simplifying your shader code. Start by reducing it to a basic state (e.g., simple color rendering) and then gradually reintroduce features like textures, lighting, and procedural effects. This incremental approach lets you isolate the issue and ensures that you always have a working base to return to.</li>
+<li>When complex shaders crash your application or fail to compile, it helps to break the problem down by simplifying your shader code. Start by reducing it to a basic state (e.g., simple colour rendering) and then gradually reintroduce features like textures, lighting, and animation effects. This incremental approach lets you isolate the issue and ensures that you always have a working base to return to.</li>
 
 
 
@@ -303,7 +343,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<li>This kind of step-by-step approach also keeps the shader manageable, allowing you to optimize as you go.</li>
+<li>This kind of step-by-step approach also keeps the shader manageable, allowing you to optimize as you go. Comprehending how a shader works can be confusing due to their per pixel nature, i.e. the entire Fragment shader runs for each pixel for each frame.</li>
 </ul>
 </li>
 
@@ -311,15 +351,15 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 <li><strong>Setup for visual inspection</strong>
 <ul class="wp-block-list">
-<li>As part of this ticket, I extended the game engine with a debugging mode. When activated a scene overlay appears along with performance stats and editor tools like orbit controls.</li>
+<li>As part of this ticket, I extended the game engine with a debugging mode. When activated a scene outline appears along with performance stats and editor tools like <a href="https://threejs.org/docs/#examples/en/controls/OrbitControls">orbit controls</a>.</li>
 
 
 
-<li>When previewing and testing materials on background objects like the city, I switched the game from using the player’s controls to the orbit controls and targeted the object in question which allowed me to easily inspect it from multiple angles and distances.</li>
+<li>I used the debugging mode to switch the game from player controls to the orbit controls and targeted the object in question which allowed me to easily inspect it from multiple angles and distances.</li>
 
 
 
-<li>For geometry based displacement, it was handy to switch into wireframe mode to see the exact effect that changes were having on objects.</li>
+<li>For testing out geometry / vertex displacement, it was handy to switch into wireframe mode to see the exact effect that changes were having on objects.</li>
 </ul>
 </li>
 
@@ -327,18 +367,14 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 <li><strong>WebGL Limits</strong>
 <ul class="wp-block-list">
-<li>Finally, remember that WebGL has certain limitations compared to desktop-based graphics applications like Blender. You may encounter limitations with precision, texture formats, and how geometry is handled. For example, WebGL shaders might not support some complex procedural textures or displacement effects that work in Blender. Instead, you can use alternatives such as pre-calculated textures or vertex shaders to handle some of the geometry calculations.</li>
+<li>Finally, remember that 3D on the web has certain limitations compared to desktop-based graphics applications like Blender. You may encounter limitations with precision, texture formats, and how geometry is handled. For example, WebGL shaders might not support some complex procedural textures or displacement effects that work in Blender. Instead, you can use alternatives such as pre-calculated textures or vertex shaders to handle some of the geometry calculations.</li>
 </ul>
 </li>
 </ol>
 
 
 
-<h4 class="wp-block-heading">Replacing the Color Ramp node</h4>
-
-
-
-<p>Recreating the Colour Ramp node was a matter of finding a GLSL gradient function I could adapt using Github search. Github’s search can be a very handy tool when you need to know how specific API’s or functions are implemented by other coders. In this case I was fortunate to find an open source <a href="https://gist.github.com/tgfrerer/1640dd717e3ab1eada9f">Gist</a> containing a variety of gradient functions I could use. After the gradient functions were in place to mimic the Color Ramp node, the material began to match what I was seeing in Blender.</p>
+<p></p>
 
 
 
@@ -351,27 +387,27 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 <ul class="wp-block-list">
-<li>Red: Voronoi Texture generation, creates the metal panelling shapes</li>
+<li><strong>Red</strong>: Voronoi Texture generation, creates the metal panelling shapes</li>
 
 
 
-<li>Blue: Creates the first gradient filter which draws white lines on the aircraft surface</li>
+<li><strong>Blue</strong>: Creates the first gradient filter which draws white lines on the aircraft surface</li>
 
 
 
-<li>Green: Creates the second gradient filter which draws red lines on the aircraft surface</li>
+<li><strong>Green</strong>: Creates the second gradient filter which draws red lines on the aircraft surface</li>
 
 
 
-<li>Yellow: Merges all the outputs into a single colour using PBR techniques</li>
+<li><strong>Yellow</strong>: Merges all the outputs into a single colour using PBR techniques</li>
 
 
 
-<li>Magenta: Creates a displacement map that simulates ridges between metal panels</li>
+<li><strong>Magenta</strong>: Creates a displacement map that simulates ridges between metal panels</li>
 
 
 
-<li>Cyan: Sends the output to the shader for display</li>
+<li><strong>Cyan</strong>: Sends the output to the shader for display</li>
 </ul>
 
 
@@ -379,7 +415,15 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 <figure class="aligncenter size-full is-resized"><img loading="lazy" decoding="async" width="3840" height="2160" src="/assets/blog/2024/09/2024-09-18-Shader-Translation.png" alt="" class="wp-image-83" style="width:840px;height:auto" srcset="https://portal.openstudios.xyz/app/uploads/2024/09/2024-09-18-Shader-Translation.png 3840w, https://portal.openstudios.xyz/app/uploads/2024/09/2024-09-18-Shader-Translation-300x169.png 300w, https://portal.openstudios.xyz/app/uploads/2024/09/2024-09-18-Shader-Translation-1024x576.png 1024w, https://portal.openstudios.xyz/app/uploads/2024/09/2024-09-18-Shader-Translation-768x432.png 768w, https://portal.openstudios.xyz/app/uploads/2024/09/2024-09-18-Shader-Translation-1536x864.png 1536w, https://portal.openstudios.xyz/app/uploads/2024/09/2024-09-18-Shader-Translation-2048x1152.png 2048w" sizes="(max-width: 3840px) 100vw, 3840px"></figure></div>
 
 
+<p></p>
+
+
+
 <h4 class="wp-block-heading">Side by side comparison</h4>
+
+
+
+<p>The Procedural Metal material isn’t an exact match to the original one from BlenderKit, however it’s more than enough for this stage of the project. </p>
 
 
 
@@ -397,7 +441,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<p>The full source code for the procedural aircraft material, known in Langenium’s codebase as the Procedural Metal shader, is open source and available on Github via the links below.</p>
+<p>The full source code for the new aircraft material, known in Langenium’s codebase as the Procedural Metal shader, is open source and available on Github via the links below.</p>
 
 
 
@@ -411,6 +455,10 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p></p>
+
+
+
 <h3 class="wp-block-heading">Writing a customer shader material for a futuristic sci-fi city</h3>
 
 
@@ -419,7 +467,15 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p>All the materials used by the city called for the Colour Ramp node, the buildings and chassis also required the Voronoi Texture node and a Brick Texture node. It was time to write my own Brick Texture function.</p>
+
+
+
 <figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="1719" height="1312" src="/assets/blog/2024/09/Screenshot-2024-06-22-193702.png" alt="" class="wp-image-46" style="width:840px;height:auto" srcset="https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-22-193702.png 1719w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-22-193702-300x229.png 300w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-22-193702-1024x782.png 1024w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-22-193702-768x586.png 768w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-22-193702-1536x1172.png 1536w" sizes="(max-width: 1719px) 100vw, 1719px"></figure>
+
+
+
+<p></p>
 
 
 
@@ -427,7 +483,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<p>A key component of the square metal panelling in this material is the Brick Texture node. This node draws a grid with optionally offset rows and other settings for things like gutter widths. As it was pretty easy to conceptualize, I got ChatGPT to help me recreate the Brick Texture in GLSL. The current result isn’t an exact recreation of what was in Blender but once again it’s close enough.</p>
+<p>The <a href="https://docs.blender.org/manual/en/latest/render/shader_nodes/textures/brick.html">Brick Texture</a> node provides the square shape for metal panelling in the Procedural Scifi Greeble material used by the city’s megastructure/cradle/chassis. This texture node draws a brick like grid with optionally offset rows and other settings for things like gutter widths. As it was pretty easy to conceptualize, I got ChatGPT to help me recreate the Brick Texture in GLSL. The current result isn’t an exact recreation of what was in Blender but once again it’s close enough.</p>
 
 
 
@@ -435,11 +491,15 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p></p>
+
+
+
 <h4 class="wp-block-heading">Side by side comparison and final result</h4>
 
 
 
-<p>There were two major differences between the Blender version and the final result I got. I wasn’t able to get the same shapes on the city’s buildings, potentially because I am using WebGL compatible Voronoi and Brick texture code that differs too much from Blender. The other difference is the displacement map doesn’t affect vertices as nicely in the game as it does in Blender. This is something I might be able to work on but I currently don’t really want to delve too deep into getting that right now due to the functions I needed to draw the textures not being available in the vertex shader. I found this out when I tried to migrate the Voronoi and Brick texture code into the vertex shader but just couldn’t get it to work.</p>
+<p>There were two major differences between the Blender version and the final result I got. I wasn’t able to get the same shapes on the city’s buildings, potentially because I am using WebGL compatible Voronoi and Brick texture code that differ too much from Blender. The other difference is the displacement map doesn’t affect vertices as nicely in the game as it does in Blender. This is something I might be able to work on but I currently don’t really want to delve too deep into getting that right now due to the functions I needed to draw the textures not being available in the vertex shader. I found this out when I tried to migrate the Voronoi and Brick texture code into the vertex shader but just couldn’t get it to work.</p>
 
 
 
@@ -499,6 +559,10 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p></p>
+
+
+
 <h3 class="wp-block-heading">Programmatically setting transparent areas in a shader surface</h3>
 
 
@@ -525,13 +589,15 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<p>Here are what those additions looks like in <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/client/src/app/scenograph/materials/water.js" data-type="link" data-id="https://github.com/OpenStudiosCo/Langenium/blob/master/client/src/app/scenograph/materials/water.js">my copy of THREE.Water</a>:</p>
+<p>Here are what those additions are in <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/client/src/app/scenograph/materials/water.js" data-type="link" data-id="https://github.com/OpenStudiosCo/Langenium/blob/master/client/src/app/scenograph/materials/water.js">my copy of THREE.Water</a>:</p>
 
 
 
-<pre class="wp-block-code language-glsl has-white-color has-black-background-color has-text-color has-background has-link-color wp-elements-ff9c39d0464a49be0755eb3e940227da" data-language="glsl"><code class="language-glsl"><span class="token keyword">uniform</span> <span class="token keyword">float</span> submerged_objects<span class="token punctuation">[</span>$<span class="token punctuation">{</span>submergedObjectsFlattened<span class="token punctuation">.</span>length<span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<pre class="wp-block-code language-glsl has-white-color has-black-background-color has-text-color has-background has-link-color wp-elements-852fd2a80e5a3156320504b7155c5a7d" data-language="glsl"><code class="language-glsl"><span class="token comment">// added to the uniforms section at the start of the shader</span>
+<span class="token keyword">uniform</span> <span class="token keyword">float</span> submerged_objects<span class="token punctuation">[</span>$<span class="token punctuation">{</span>submergedObjectsFlattened<span class="token punctuation">.</span>length<span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token keyword">uniform</span> <span class="token keyword">int</span> submerged_objects_length<span class="token punctuation">;</span>
 
+<span class="token comment">// added before the final gl_Fragcolor assignment in the main function</span>
 <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> submerged_objects_length<span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">float</span> x <span class="token operator">=</span> submerged_objects<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
     <span class="token keyword">float</span> y <span class="token operator">=</span> submerged_objects<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
@@ -564,6 +630,10 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 <figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1394" height="897" src="/assets/blog/2024/09/Screenshot-2024-06-24-031522.png" alt="" class="wp-image-62" srcset="https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-24-031522.png 1394w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-24-031522-300x193.png 300w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-24-031522-1024x659.png 1024w, https://portal.openstudios.xyz/app/uploads/2024/08/Screenshot-2024-06-24-031522-768x494.png 768w" sizes="(max-width: 1394px) 100vw, 1394px"></figure>
+
+
+
+<p></p>
 
 
 
@@ -601,6 +671,10 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p></p>
+
+
+
 <h4 class="wp-block-heading">The new structure</h4>
 
 
@@ -617,11 +691,15 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p></p>
+
+
+
 <h3 class="wp-block-heading">Creating new sci-fi structures with constructive solid geometry</h3>
 
 
 
-<p>Encouraged by the leaps and bounds the game environment had been enhanced by this work, I decided to add another structure. Given the last one was an industrial “Extractor” I decide to name this next structure the Refinery. Using a tetrahedron as a base, I stretched, rotated it so one corner would face up and submerged it partly – to look like a futuristic pyramid floating on the water.</p>
+<p>Encouraged by the leaps and bounds the game environment had been enhanced by this work, I decided to add another object to the environment. Given the last one was an industrial “Extractor” I decide to name this next structure the Refinery. Using a tetrahedron as a base, I stretched, rotated it so one corner would face up and submerged it partly – to look like a futuristic pyramid floating on the water.</p>
 
 
 
@@ -641,6 +719,10 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p></p>
+
+
+
 <h3 class="wp-block-heading">Creating new sci-fi vehicles with constructive solid geometry</h3>
 
 
@@ -649,7 +731,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<p>In the future, it would be good to add some additional geometry to these such as small structures for crew you usually see on ships. For now, the result is good enough.</p>
+<p>In the future, it would be good to add some additional geometry to these such as crew compartments and communication equipment you usually see on ships. For now, the result is good enough.</p>
 
 
 
@@ -664,6 +746,10 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 <figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1366" height="708" data-id="102" src="/assets/blog/2024/09/Screenshot-2024-09-19-000946-Large-Medium.png" alt="" class="wp-image-102" srcset="https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-09-19-000946-Large-Medium.png 1366w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-09-19-000946-Large-Medium-300x155.png 300w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-09-19-000946-Large-Medium-1024x531.png 1024w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-09-19-000946-Large-Medium-768x398.png 768w" sizes="(max-width: 1366px) 100vw, 1366px"></figure>
 </figure>
+
+
+
+<p></p>
 
 
 
@@ -746,11 +832,15 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p></p>
+
+
+
 <h3 class="wp-block-heading">Caching shader materials in the browser</h3>
 
 
 
-<p>Looking to optimize the new materials, I had the idea to cache key data such as the noise maps, normal maps and Voronoi textures. Even if I couldn’t fit them into memory, modern technologies like the Web Storage API which could come in handy for caching procedurally generated files automatically optimised and stored on a user’s device.</p>
+<p>Looking to optimize the new materials, I had the idea to cache key data such as the noise maps, normal maps and Voronoi textures. Even if I couldn’t fit them into memory, modern technologies like the Web Storage API which could come in handy for caching procedurally generated files automatically optimised for and stored on a user’s device.</p>
 
 
 
@@ -770,6 +860,10 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
+<p></p>
+
+
+
 <h3 class="wp-block-heading">Summary</h3>
 
 
@@ -778,15 +872,19 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<p>All the new assets produced in this piece of work have setup the game environment for actual gameplay features to now be added. Previous versions of Langenium had a Bullet Hell style approach, but in practise it was actually not very fun trying to line up shots in a straight line. That kind of play style might have been acceptable twenty or thirty years ago but not today. Especially on a mobile where you don’t have a very large screen.</p>
+<p>All the new assets produced in this piece of work have setup the game environment for actual gameplay features to now be added. Previous versions of Langenium had a Bullet Hell style approach, but in practise it was actually not very fun trying to line up shots in a straight line. That kind of play style might have been acceptable twenty or thirty years ago but not today. Especially on a mobile where you don’t have very good controls for fast reaction times to dodge attacks.</p>
 
 
 
-<p>Langenium is my love letter to my favourite video games and the game development scene at large, it includes gameplay ideas that mix real time strategy, role playing games and aircraft simulators. With the new visuals, I believe the project has become elevated to a new height and thanks to materials being shader based the game is visually comparable to modern console and PC games on the market.</p>
+<p>Langenium is my love letter to my favourite video games and the game development scene at large, it includes gameplay ideas that mix real time strategy, role playing games (RPG) and aircraft simulators. With the new visuals, I believe the project has become elevated to a new height – the game is visually comparable to modern console and PC games that occupy tens to hundreds of gigabytes of storage.</p>
 
 
 
 <p>The next ticket is called Basic Gameplay and will introduce more UI development, pathfinding AI, enemy aircraft models, targeting overlays, missiles and damage systems. The final goal of this ticket is to have players control a protector aircraft for the cargo ships which will be under attack by hostile aircraft. Within the game’s story, cargo ships are transporting the titular Langenium element between extractors, refineries and the main city.</p>
+
+
+
+<p></p>
 
 
 
