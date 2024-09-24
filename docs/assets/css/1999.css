@@ -723,6 +723,7 @@ a.icon_button img:hover {
   font-size: 0.875em;
   text-align: center;
   color: #666;
+  margin-top: -1rem;
 }
 .size-large {
   width: 100%;
