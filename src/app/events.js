@@ -101,6 +101,14 @@ export function handleInteractions( ) {
     
           break;
         }
+
+        if (intersects[i].object.name == "blog_sign" || intersects[i].object.name == "corkBoard") {
+          document.documentElement.style.cursor = "pointer";
+
+          handleBlogClick();
+    
+          break;
+        }
     
         if (intersects[i].object.name == "neon_sign" || intersects[i].object.name == "tv") {
           document.documentElement.style.cursor = "pointer";
@@ -123,6 +131,10 @@ export function handleInteractions( ) {
   else {
     window.virtual_office.hovered = false;
   }
+}
+
+function handleBlogClick() {
+  console.log('hai');''
 }
 
 function handleScreenClick( screen ) {

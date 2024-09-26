@@ -25,10 +25,34 @@ function updateSigns ( ) {
             
             if (    
                 window.virtual_office.hovered &&
+                window.virtual_office.scene_objects.blog_sign &&
                 window.virtual_office.scene_objects.neon_sign &&
                 window.virtual_office.scene_objects.desk_labels && window.virtual_office.scene_objects.desk_labels.length == 4 &&
                 window.virtual_office.scene_objects.deskGroup && window.virtual_office.scene_objects.deskGroup.children.length == 12
             ) {
+
+                // Run blog sign update if the sign or cork board are hovered.
+                if (
+                    ( window.virtual_office.hovered.name == 'blog_sign' || window.virtual_office.hovered.name == 'corkBoard' )
+                ) {
+
+                    // Update emissive color to white.
+                    interpolateRgbProperty( window.virtual_office.scene_objects.blog_sign.material.emissive, 0xFFFFFF, { r: 255, g: 255, b: 255 } );
+
+                    // Drop emissive intensity to half for the super bright white.
+                    window.virtual_office.scene_objects.blog_sign.material.emissiveIntensity = interpolateFloatProperty( window.virtual_office.scene_objects.blog_sign.material.emissiveIntensity, 0.5 );
+                }
+                else {
+                    // Return to original color.
+                    interpolateRgbProperty( window.virtual_office.scene_objects.blog_sign.material.emissive, 0xDA68C5, { r: 218, g: 104, b: 197 } );
+
+                    let targetEmissiveIntensity = Math.min(Math.max(1 + Math.sin( currentTime / 400 ), 0), 1);
+
+                    // Restore emissive intensity to 1.
+                    window.virtual_office.scene_objects.blog_sign.material.emissiveIntensity = targetEmissiveIntensity;
+
+                }
+
                 // Run neon sign update if the TV or neon sign are being hovered.
                 if (
                     ( window.virtual_office.hovered.name == 'neon_sign' || window.virtual_office.hovered.name == 'tv' )
