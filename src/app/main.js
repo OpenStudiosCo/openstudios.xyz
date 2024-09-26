@@ -13,7 +13,7 @@ import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 import { setupEffects } from './effects.js';
 import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
-import { setupBackwall, setupDesks } from './furniture.js';
+import { setupCorkBoard, setupBackwall, setupDesks } from './furniture.js';
 import { setupTriggers, updateTriggers } from './triggers.js';
 import { setupTweens, updateTweens, startTweening } from './tweens.js';
 
@@ -894,6 +894,9 @@ async function setupScene() {
 
   // Enable the effects layer, default of 11 for postprocessing bloom
   window.virtual_office.camera.layers.enable(11);
+
+  window.virtual_office.scene_objects.blogWall = await setupCorkBoard( );
+  window.virtual_office.scene.add(window.virtual_office.scene_objects.blogWall);
 
   window.virtual_office.scene_objects.wallGroup = await setupBackwall( );
   window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;

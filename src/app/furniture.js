@@ -11,36 +11,36 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
  * @param { THREE.Scene } scene 
  * @returns { THREE.Group } wallGroup
  */
-export async function setupBackwall ( ) {
+export async function setupBackwall() {
   var wallGroup = new THREE.Group();
-  
+
   // About Us Neon sign
-  await createNeonSign(async (signMesh) => {
+  await createNeonSign( 'about us', async ( signMesh ) => {
     // Position and rotate the sign
-    signMesh.position.set(-6.4, 15, 1); // Example position for the sign
+    signMesh.position.set( -6.4, 15, 1 ); // Example position for the sign
     signMesh.name = "neon_sign";
     window.virtual_office.scene_objects.neon_sign = signMesh;
     //signMesh.layers.set(11);
-    wallGroup.add(signMesh);
-  });
+    wallGroup.add( signMesh );
+  } );
 
   window.virtual_office.scene_objects.tvWebGL = await createScreen( 720 );
   window.virtual_office.scene_objects.tvWebGL.position.y = 8;
   window.virtual_office.scene_objects.tvWebGL.position.z = - 14 - window.virtual_office.room_depth / 2;
   window.virtual_office.scene_objects.tvWebGL.name = "tvWebGL";
 
-  var screenGeometry = new THREE.BoxGeometry(20.8, 11.7, 0.02);
-  var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
-  var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0 , 8, 0.5);
+  var screenGeometry = new THREE.BoxGeometry( 20.8, 11.7, 0.02 );
+  var screenMaterial = new THREE.MeshPhongMaterial( { color: 0x333333 } );
+  var screen = new THREE.Mesh( screenGeometry, screenMaterial );
+  screen.position.set( 0, 8, 0.5 );
   screen.name = "tv";
-  wallGroup.add(screen);
+  wallGroup.add( screen );
 
   wallGroup.name = "backWall";
   wallGroup.webGLScreen = window.virtual_office.scene_objects.tvWebGL;
 
   await window.virtual_office.loaders.gtlf.load( '/assets/models/Small Monstera.glb', async function ( glb ) {
-    let object = glb.scene.children[0];
+    let object = glb.scene.children[ 0 ];
 
     object.traverse( function ( child ) {
 
@@ -52,81 +52,81 @@ export async function setupBackwall ( ) {
 
     object.name = 'plant';
 
-    object.scale.setScalar(7.5);
-    object.position.set(30, -5, window.virtual_office.settings.adjusted_gap);
+    object.scale.setScalar( 7.5 );
+    object.position.set( 30, -5, window.virtual_office.settings.adjusted_gap );
 
-    wallGroup.add(object);
+    wallGroup.add( object );
 
     let plant_left = object.clone();
     plant_left.position.x = -plant_left.position.x;
-    plant_left.rotation.y = - Math.PI /2 ;
-    wallGroup.add(plant_left);
+    plant_left.rotation.y = - Math.PI / 2;
+    wallGroup.add( plant_left );
 
-    window.virtual_office.loaders.stats.gtlf.loaded ++;
+    window.virtual_office.loaders.stats.gtlf.loaded++;
 
-  });
+  } );
 
   return wallGroup;
 }
 
 // Create the About Us neon sign.
-function createNeonSign(callback) {
+function createNeonSign( text, callback ) {
   const loader = new FontLoader();
 
-  loader.load('/assets/fonts/Stigmature.json', (font) => {
+  loader.load( '/assets/fonts/Stigmature.json', ( font ) => {
 
-    const textGeometry = new TextGeometry('about us', {
+    const textGeometry = new TextGeometry( text, {
       font: font,
       size: 2.7,
-      depth: 0.5,
+      depth: 0.15,
       curveSegments: 4
-    });
+    } );
 
     // Create the emissive material for the text
-    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 1 });
+    var textMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0xDA68C5, emissiveIntensity: 1 } );
 
     // Create the "About Us" sign mesh
-    var signMesh = new THREE.Mesh(textGeometry, textMaterial);
+    var signMesh = new THREE.Mesh( textGeometry, textMaterial );
 
-    const lightActual = new THREE.SpotLight( 0xDA68C5, 
+    const lightActual = new THREE.SpotLight( 0xDA68C5,
       window.virtual_office.fast ?
-      window.virtual_office.settings.light.fast.neonSign.normal :
-      window.virtual_office.settings.light.highP.neonSign.normal
+        window.virtual_office.settings.light.fast.neonSign.normal :
+        window.virtual_office.settings.light.highP.neonSign.normal
     );
     lightActual.intensity = Math.PI;
-    lightActual.position.set(5.5, 0.25, 5); // Set the position of the light
+    lightActual.position.set( 5.5, 0.25, 5 ); // Set the position of the light
     lightActual.castShadow = true;
 
     //Set up shadow properties for the light
     // lightActual.shadow.mapSize.width = 32; // default
     // lightActual.shadow.mapSize.height = 32; // default
 
-    if (window.virtual_office.debug) {
+    if ( window.virtual_office.debug ) {
       const helper = new THREE.CameraHelper( lightActual.shadow.camera );
       window.virtual_office.scene.add( helper );
       // Create a directional light helper
-      const lightHelper = new THREE.SpotLightHelper(lightActual, 5); // The second parameter is the size of the helper
-      window.virtual_office.scene.add(lightHelper);
+      const lightHelper = new THREE.SpotLightHelper( lightActual, 5 ); // The second parameter is the size of the helper
+      window.virtual_office.scene.add( lightHelper );
     }
 
-    signMesh.add(lightActual);
+    signMesh.add( lightActual );
 
-    signMesh.layers.set(11);
+    signMesh.layers.set( 11 );
 
     // Add the sign to the scene
-    callback(signMesh);
-    window.virtual_office.loaders.stats.fonts.loaded ++;
-  });
+    callback( signMesh );
+    window.virtual_office.loaders.stats.fonts.loaded++;
+  } );
 }
 
-export function brightenMaterial(material, amount) {
+export function brightenMaterial( material, amount ) {
 
-  if (material.map) {
+  if ( material.map ) {
     // Increase the brightness of the texture
     material.map.magFilter = THREE.LinearFilter; // Ensures smooth interpolation
     material.map.needsUpdate = true; // Update the material
   }
-  
+
   amount = window.virtual_office.fast ? amount / 4 : amount;
 
   // Increase the brightness by adjusting the material color
@@ -141,11 +141,11 @@ export function brightenMaterial(material, amount) {
 }
 
 // Uses createDesk and arranges them in the room.
-export async function setupDesks(gapSize, scale) {
+export async function setupDesks( gapSize, scale ) {
   // Create groups
   var deskGroup = new THREE.Group();
   window.virtual_office.scene_objects.desk_labels = [];
-  for (var i = 0; i < 4; i++) {
+  for ( var i = 0; i < 4; i++ ) {
     var desk = await createDesk( i );
     desk.rotation.y = Math.PI / 2;
 
@@ -156,28 +156,28 @@ export async function setupDesks(gapSize, scale) {
     desk.webGLScreen = screenWebGL;
 
     // Main position coordinates.
-    if (i < 2) {
-      desk.position.x = -(gapSize * scale) * 1.25;
+    if ( i < 2 ) {
+      desk.position.x = -( gapSize * scale ) * 1.25;
       desk.rotation.y += Math.PI; // Rotate the desk on the left side
-      updateDeskZ(desk, i);
+      updateDeskZ( desk, i );
 
-      screenWebGL.position.x = -(gapSize * scale) - 3.25 ;
+      screenWebGL.position.x = -( gapSize * scale ) - 3.25;
       screenWebGL.rotation.y = Math.PI / 4;
-      updateDeskZ(screenWebGL, i);
+      updateDeskZ( screenWebGL, i );
       screenWebGL.position.z += .175;
 
     } else {
-      desk.position.x = (gapSize * scale) * 1.25;
-      updateDeskZ(desk, i);
+      desk.position.x = ( gapSize * scale ) * 1.25;
+      updateDeskZ( desk, i );
 
-      screenWebGL.position.x = (gapSize * scale) + 3.25;
+      screenWebGL.position.x = ( gapSize * scale ) + 3.25;
       screenWebGL.rotation.y = - Math.PI / 4;
-      updateDeskZ(screenWebGL, i);      
+      updateDeskZ( screenWebGL, i );
       screenWebGL.position.z += .175;
     }
 
     // Space the desks a bit out a wittle.
-    if ( i == 0 || i == 3) {
+    if ( i == 0 || i == 3 ) {
       desk.position.x += 1.25;
     }
     if ( i == 1 || i == 2 ) {
@@ -197,11 +197,11 @@ export async function setupDesks(gapSize, scale) {
     if ( i == 3 ) {
       screenWebGL.position.x += 2;
     }
-  
-    desk.scale.set(scale, scale, scale); // Scale up the desk
 
-    desk.children.forEach((desk_iter) => {
-      if (desk_iter.name == 'cpu' || desk_iter.name == 'screen' || desk_iter.name == 'base' ) {
+    desk.scale.set( scale, scale, scale ); // Scale up the desk
+
+    desk.children.forEach( ( desk_iter ) => {
+      if ( desk_iter.name == 'cpu' || desk_iter.name == 'screen' || desk_iter.name == 'base' ) {
         if ( i < 2 ) {
           desk_iter.rotation.y = - Math.PI / 4;
         }
@@ -210,7 +210,7 @@ export async function setupDesks(gapSize, scale) {
         }
         desk_iter.updateMatrixWorld();
       }
-      if (desk_iter.type == 'DirectionalLight') {
+      if ( desk_iter.type == 'DirectionalLight' ) {
         desk_iter.position.set(
           0,
           1.6,
@@ -219,57 +219,57 @@ export async function setupDesks(gapSize, scale) {
         desk_iter.updateMatrixWorld();
 
         // //Create a helper for the shadow camera (optional)
-        if (window.virtual_office.debug) {
+        if ( window.virtual_office.debug ) {
           const helper = new THREE.CameraHelper( desk_iter.shadow.camera );
           window.virtual_office.scene.add( helper );
           // Create a directional light helper
-          const lightHelper = new THREE.DirectionalLightHelper(desk_iter, 0.25); // The second parameter is the size of the helper
-          window.virtual_office.scene.add(lightHelper);
+          const lightHelper = new THREE.DirectionalLightHelper( desk_iter, 0.25 ); // The second parameter is the size of the helper
+          window.virtual_office.scene.add( lightHelper );
         }
 
       }
-    });
+    } );
 
     desk.deskIndex = i; // hack for storing the webgl screens in the same group.
-    deskGroup.add(desk);
-    deskGroup.add(screenWebGL);
+    deskGroup.add( desk );
+    deskGroup.add( screenWebGL );
 
   }
 
-   
-  await window.virtual_office.loaders.gtlf.load( '/assets/models/Office Chair.glb', async function ( glb ) {
-    let object = glb.scene.children[0];
 
-    object.scale.setScalar(12);
+  await window.virtual_office.loaders.gtlf.load( '/assets/models/Office Chair.glb', async function ( glb ) {
+    let object = glb.scene.children[ 0 ];
+
+    object.scale.setScalar( 12 );
 
     object.traverse( function ( child ) {
 
       if ( child.isMesh ) {
 
         child.castShadow = true;
- 
+
       }
 
     } );
 
     object.name = "chair";
     object.position.y = -5;
-    object.rotation.y = - Math.PI /2;
+    object.rotation.y = - Math.PI / 2;
 
-    for (var i = 0; i < 4; i++) {
+    for ( var i = 0; i < 4; i++ ) {
       let chair = object.clone();
       chair.deskIndex = i;
-      updateDeskZ(chair, i);
-      if (i < 2) {
+      updateDeskZ( chair, i );
+      if ( i < 2 ) {
         chair.rotation.y -= Math.PI; // Rotate the desk on the left side
-        chair.position.x = -(gapSize * scale) * 0.7;
+        chair.position.x = -( gapSize * scale ) * 0.7;
       }
       else {
-        chair.position.x = (gapSize * scale) * 0.7;
+        chair.position.x = ( gapSize * scale ) * 0.7;
       }
 
-       // Space the desks a bit out a wittle.
-      if ( i == 0 || i == 3) {
+      // Space the desks a bit out a wittle.
+      if ( i == 0 || i == 3 ) {
         chair.position.x += 1.25;
       }
       if ( i == 1 || i == 2 ) {
@@ -277,7 +277,7 @@ export async function setupDesks(gapSize, scale) {
       }
 
       // Final rotation tweaks to match design reference.
-      switch (i) {
+      switch ( i ) {
         case 0:
           chair.position.x -= gapSize * 4;
           chair.position.z += gapSize * 2;
@@ -301,7 +301,7 @@ export async function setupDesks(gapSize, scale) {
       deskGroup.add( chair );
     }
 
-    window.virtual_office.loaders.stats.gtlf.loaded ++;
+    window.virtual_office.loaders.stats.gtlf.loaded++;
 
   } );
   return deskGroup;
@@ -313,11 +313,11 @@ export async function setupDesks(gapSize, scale) {
  * @param { THREE.Object3D } desk 
  * @param { Number } i 
  */
-export function updateDeskZ(desk, i) {
-    if (i < 2) {
-    desk.position.z = - 15 + (i === 0 ? -1.5 : 0.5) * window.virtual_office.settings.adjusted_gap;
+export function updateDeskZ( desk, i ) {
+  if ( i < 2 ) {
+    desk.position.z = - 15 + ( i === 0 ? -1.5 : 0.5 ) * window.virtual_office.settings.adjusted_gap;
   } else {
-    desk.position.z = - 15 + (i === 2 ? -1.5 : 0.5) * window.virtual_office.settings.adjusted_gap;
+    desk.position.z = - 15 + ( i === 2 ? -1.5 : 0.5 ) * window.virtual_office.settings.adjusted_gap;
   }
 }
 
@@ -329,10 +329,10 @@ export function updateDeskZ(desk, i) {
 async function createDesk( i ) {
   var deskGroup = new THREE.Group();
   deskGroup.name = "desk";
- 
+
   await window.virtual_office.loaders.gtlf.load( '/assets/models/Desk.glb', async function ( glb ) {
-    let object = glb.scene.children[0];
-    
+    let object = glb.scene.children[ 0 ];
+
     let amount = window.virtual_office.fast ? 3 : 1.5;
 
     object.traverse( function ( child ) {
@@ -342,49 +342,49 @@ async function createDesk( i ) {
         child.castShadow = true;
 
         child.original_material = child.material.clone();
-        
-        brightenMaterial(child.material, amount);
+
+        brightenMaterial( child.material, amount );
 
       }
 
     } );
     object.position.y = -0.4555;
-    object.rotation.y = - Math.PI ;
+    object.rotation.y = - Math.PI;
     object.name = "deskMesh";
-    deskGroup.add(object);
-    window.virtual_office.loaders.stats.gtlf.loaded ++;
-  }); 
+    deskGroup.add( object );
+    window.virtual_office.loaders.stats.gtlf.loaded++;
+  } );
 
   // Add computer screen
-  var screenGeometry = new THREE.BoxGeometry(0.64, 0.48, 0.02);
-  var screenMaterial = new THREE.MeshPhongMaterial({ color: 0x222222 });
-  var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-  screen.position.set(0, 0.7, 0.05);
+  var screenGeometry = new THREE.BoxGeometry( 0.64, 0.48, 0.02 );
+  var screenMaterial = new THREE.MeshPhongMaterial( { color: 0x222222 } );
+  var screen = new THREE.Mesh( screenGeometry, screenMaterial );
+  screen.position.set( 0, 0.7, 0.05 );
   screen.castShadow = true; //default is false
   screen.receiveShadow = false; //default
   screen.name = "screen";
-  deskGroup.add(screen);
+  deskGroup.add( screen );
 
   // Add screen stand (formerly CPU)
-  var cpuGeometry = new THREE.BoxGeometry(0.1, 0.15, 0.025);
-  var cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
-  var cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
-  cpu.position.set(0, 0.4, 0.0625);
+  var cpuGeometry = new THREE.BoxGeometry( 0.1, 0.15, 0.025 );
+  var cpuMaterial = new THREE.MeshPhongMaterial( { color: 0x666666 } );
+  var cpu = new THREE.Mesh( cpuGeometry, cpuMaterial );
+  cpu.position.set( 0, 0.4, 0.0625 );
   cpu.castShadow = true; //default is false
   cpu.receiveShadow = false; //default
   cpu.name = "cpu";
-  deskGroup.add(cpu);
+  deskGroup.add( cpu );
 
   // Add screen stand base.
-  var baseGeo = new THREE.BoxGeometry(0.25, 0.01, 0.125);
-  var base = new THREE.Mesh(baseGeo, cpuMaterial);
-  base.position.set(0, 0.32, 0.0625);
+  var baseGeo = new THREE.BoxGeometry( 0.25, 0.01, 0.125 );
+  var base = new THREE.Mesh( baseGeo, cpuMaterial );
+  base.position.set( 0, 0.32, 0.0625 );
   base.castShadow = true; //default is false
   base.receiveShadow = false; //default
   base.name = "base";
-  deskGroup.add(base);
+  deskGroup.add( base );
 
-  var deskLabelCallback = (signMesh, i, deskGroup) => {
+  var deskLabelCallback = ( signMesh, i, deskGroup ) => {
     signMesh.scale.setScalar( 0.1 );
     signMesh.geometry.computeBoundingBox();
     const boundingBox = signMesh.geometry.boundingBox;
@@ -404,15 +404,15 @@ async function createDesk( i ) {
 
     signMesh.position.y = 1.1;
 
-    signMesh.updateMatrixWorld();    
+    signMesh.updateMatrixWorld();
 
-    deskGroup.add(signMesh);
+    deskGroup.add( signMesh );
   };
   await createDeskLabel( i, deskLabelCallback, deskGroup );
 
   await window.virtual_office.loaders.gtlf.load( '/assets/models/Ceiling Light.glb', async function ( glb ) {
-    let object = glb.scene.children[0];
-    object.scale.setScalar(1);
+    let object = glb.scene.children[ 0 ];
+    object.scale.setScalar( 1 );
     window.desk = object;
     let amount = window.virtual_office.fast ? 120 : 60;
 
@@ -421,60 +421,60 @@ async function createDesk( i ) {
       if ( child.isMesh ) {
 
         child.castShadow = true;
-        
-        brightenMaterial(child.material, amount);
 
-        if (child.name == "CUBezierCurve006_3") {
+        brightenMaterial( child.material, amount );
+
+        if ( child.name == "CUBezierCurve006_3" ) {
 
           // Create the overhead office light material
-          var lightMaterial = new THREE.MeshPhongMaterial({
+          var lightMaterial = new THREE.MeshPhongMaterial( {
             color: 0xffffff,
             emissive: 0x00EEff,
             emissiveIntensity: 100,
             shininess: 200
-          });
-  
+          } );
+
           child.material = lightMaterial;
 
-          child.layers.set(11);
+          child.layers.set( 11 );
         }
-        
+
       }
 
     } );
-    object.position.set(0, 1.95, 0);
+    object.position.set( 0, 2.5, 0 );
     object.name = "ceilLightMesh2";
-    deskGroup.add(object);
-    window.virtual_office.loaders.stats.gtlf.loaded ++;
-  }); 
+    deskGroup.add( object );
+    window.virtual_office.loaders.stats.gtlf.loaded++;
+  } );
 
-  const lightActual = new THREE.DirectionalLight(0x00EEff,
+  const lightActual = new THREE.DirectionalLight( 0x00EEff,
     window.virtual_office.fast ?
-    window.virtual_office.settings.light.fast.desk.normal :
-    window.virtual_office.settings.light.highP.desk.normal
+      window.virtual_office.settings.light.fast.desk.normal :
+      window.virtual_office.settings.light.highP.desk.normal
   ); // Color: white
   lightActual.castShadow = true;
   lightActual.name = "ceilLightActual";
 
   lightActual.target = screen;
 
-  deskGroup.add(lightActual);
+  deskGroup.add( lightActual );
 
   return deskGroup;
 }
 
 
 // Create the desks sign, i.e. "Projects"
-async function createDeskLabel(i, callback, deskGroup) {
+async function createDeskLabel( i, callback, deskGroup ) {
 
   // Add screen labels.
   let labelText = '';
   switch ( i ) {
     case 0:
-      labelText = 'Case studies';  
+      labelText = 'Case studies';
       break;
     case 1:
-      labelText = 'Services';      
+      labelText = 'Services';
       break;
     case 2:
       labelText = 'Portfolio';
@@ -483,36 +483,36 @@ async function createDeskLabel(i, callback, deskGroup) {
       labelText = 'Contact us';
       break;
   }
-  
+
   const loader = new FontLoader();
 
-  await loader.load('/assets/fonts/VeraMono.json', async (font) => {
+  await loader.load( '/assets/fonts/VeraMono.json', async ( font ) => {
 
-    const textGeometry = new TextGeometry(labelText, {
+    const textGeometry = new TextGeometry( labelText, {
       font: font,
       size: 1.1,
       depth: 0.2
-    });
+    } );
 
     // Create the emissive material for the text
-    var textMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0x00EEff, emissiveIntensity: 0.5 });
+    var textMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0x00EEff, emissiveIntensity: 0.5 } );
 
     // Create the "About Us" sign mesh
-    var signMesh = new THREE.Mesh(textGeometry, textMaterial);
+    var signMesh = new THREE.Mesh( textGeometry, textMaterial );
 
-    signMesh.layers.set(11);
+    signMesh.layers.set( 11 );
 
     signMesh.name = "desk_label";
 
     // Add the sign to the scene
-    callback(signMesh, i, deskGroup);
+    callback( signMesh, i, deskGroup );
 
-    window.virtual_office.loaders.stats.fonts.loaded ++;
-    window.virtual_office.scene_objects.desk_labels.push({
+    window.virtual_office.loaders.stats.fonts.loaded++;
+    window.virtual_office.scene_objects.desk_labels.push( {
       mesh: signMesh,
       originalPosition: signMesh.position.clone()
-    });
-  });
+    } );
+  } );
 }
 
 /**
@@ -520,60 +520,143 @@ async function createDeskLabel(i, callback, deskGroup) {
  * 
  * @returns [ HTMLObject, THREE.Mesh ];
  */
-async function createScreen( i ){
+async function createScreen( i ) {
   const screen = window.virtual_office.screens[ i ];
-  const slug    = screen.slug;
-  const url     = '/assets/images/pages/' + slug + '.jpg',
-        pageUrl = '../iframes/' + slug + '.html';
-  
+  const slug = screen.slug;
+  const url = '/assets/images/pages/' + slug + '.jpg',
+    pageUrl = '../iframes/' + slug + '.html';
+
   var material = new THREE.MeshPhongMaterial();
-  await window.virtual_office.loaders.texture.load(url, async (screenTexture)=>{
+  await window.virtual_office.loaders.texture.load( url, async ( screenTexture ) => {
     material.needsUpdate = true;
     material.map = screenTexture;
-  });
-  var geometry = new THREE.PlaneGeometry(i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8);
-  var screenWebGL = new THREE.Mesh(geometry, brightenMaterial(material, ( 9 )));
+  } );
+  var geometry = new THREE.PlaneGeometry( i == 720 ? 19.2 : 6.4, i == 720 ? 10.8 : 4.8 );
+  var screenWebGL = new THREE.Mesh( geometry, brightenMaterial( material, ( 9 ) ) );
 
   // @todo: move into settings.
   screenWebGL.pageUrl = pageUrl;
   screenWebGL.pageTitle = screen.title;
   screenWebGL.pageRealUrl = '../' + slug + '.html';;
-  
+
   //mesh.scale.copy( domObject.scale );
   screenWebGL.castShadow = false;
   screenWebGL.receiveShadow = true;
 
   screenWebGL.name = "screenWebGL";
-  window.virtual_office.loaders.stats.screens.loaded ++;
+  window.virtual_office.loaders.stats.screens.loaded++;
 
   window.virtual_office.screens[ i ].mesh = screenWebGL;
   screenWebGL.settings = window.virtual_office.screens[ i ];
-  screenWebGL.getViewingCoords = function (  ) {
+  screenWebGL.getViewingCoords = function () {
     let tempMesh = new THREE.Object3D();
-    tempMesh.scale.copy(this.scale);
-    tempMesh.position.copy(this.position);
-    
+    tempMesh.scale.copy( this.scale );
+    tempMesh.position.copy( this.position );
+
     var targetRotation = this.rotation.clone();
-  
-    const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
-    const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
-    const distanceHorizontal = window.innerWidth / (2 * Math.tan(fovHorizontal / 2));
-    
+
+    const fovVertical = window.virtual_office.camera.fov * ( Math.PI / 180 );
+    const fovHorizontal = 2 * Math.atan( Math.tan( fovVertical / 2 ) * window.virtual_office.camera.aspect );
+    const distanceHorizontal = window.innerWidth / ( 2 * Math.tan( fovHorizontal / 2 ) );
+
     const distanceFactor = this.settings.type == 'monitor' ? 0.00625 : 0.015;
-  
+
     const diffZ = distanceHorizontal * distanceFactor;
-  
-    if (this.settings.type == 'monitor') {
+
+    if ( this.settings.type == 'monitor' ) {
       const roomSide = tempMesh.position.x > 0 ? -1 : 1;
-      tempMesh.translateX(roomSide * diffZ / 1.4);
+      tempMesh.translateX( roomSide * diffZ / 1.4 );
     }
-  
-    tempMesh.translateZ(diffZ / 1.4);
-  
+
+    tempMesh.translateZ( diffZ / 1.4 );
+
     return [ tempMesh.position, targetRotation ];
   };
-  
-  
-  return screenWebGL ;
+
+
+  return screenWebGL;
 }
 
+/**
+ * Create a bulletin board with polaroids.
+ */
+export async function setupCorkBoard() {
+
+  let textureUrl = '/assets/textures/cork-1024x1024.jpg';
+
+  var material = new THREE.MeshPhongMaterial();
+  await window.virtual_office.loaders.texture.load(textureUrl, async (texture) => {
+      material.needsUpdate = true;
+      material.map = texture;
+  });
+  
+  var geometry = new THREE.PlaneGeometry(16, 9);
+  var corkBoard = new THREE.Mesh(geometry, brightenMaterial(material, 1));
+
+
+  let woodUrl = '/assets/textures/wood.jpg';
+
+  var borderMaterial = new THREE.MeshPhongMaterial();
+  await window.virtual_office.loaders.texture.load(woodUrl, async (texture) => {
+    borderMaterial.needsUpdate = true;
+    borderMaterial.map = texture;
+  });
+    
+  // Thickness of the border
+  var borderThickness = 0.2;
+  
+  // Border geometries (left, right, top, bottom)
+  var leftBorderGeometry = new THREE.PlaneGeometry(borderThickness, 9);
+  var rightBorderGeometry = new THREE.PlaneGeometry(borderThickness, 9);
+  var topBorderGeometry = new THREE.PlaneGeometry(16 + 2 * borderThickness, borderThickness);
+  var bottomBorderGeometry = new THREE.PlaneGeometry(16 + 2 * borderThickness, borderThickness);
+  
+  // Create border meshes
+  window.leftBorder = new THREE.Mesh(leftBorderGeometry, borderMaterial);
+  window.rightBorder = new THREE.Mesh(rightBorderGeometry, borderMaterial);
+  window.topBorder = new THREE.Mesh(topBorderGeometry, borderMaterial);
+  window.bottomBorder = new THREE.Mesh(bottomBorderGeometry, borderMaterial);
+  
+  // Position borders
+  leftBorder.position.set(-8 - borderThickness / 2, 0, 0.01);  // Left of the corkboard
+  rightBorder.position.set(8 + borderThickness / 2, 0, 0.01);  // Right of the corkboard
+  topBorder.position.set(0, 4.5 + borderThickness / 2, 0.01);  // Above the corkboard
+  bottomBorder.position.set(0, -4.5 - borderThickness / 2, 0.01);  // Below the corkboard
+
+  corkBoard.add(leftBorder);
+  corkBoard.add(rightBorder);
+  corkBoard.add(topBorder);
+  corkBoard.add(bottomBorder);
+
+  //mesh.scale.copy( domObject.scale );
+  corkBoard.castShadow = false;
+  corkBoard.receiveShadow = true;
+
+  corkBoard.name = "corkBoard";
+  // window.virtual_office.loaders.stats.screens.loaded++;
+
+  // window.virtual_office.screens[ i ].mesh = corkBoard;
+  // corkBoard.settings = window.virtual_office.screens[ i ];
+
+  //corkBoard.rotateY( Math.PI * 90 );
+  corkBoard.position.z = - 15 - window.virtual_office.room_depth / 4;
+  corkBoard.position.x = -39.5;
+  corkBoard.position.y = 12;
+  corkBoard.rotation.y = Math.PI / 2;
+
+  // Blog Neon sign
+  await createNeonSign( 'blog', async ( signMesh ) => {
+    // Position and rotate the sign
+    signMesh.position.set( -3, 6.5, 0.1 ); // Example position for the sign
+    signMesh.name = "blog_sign";
+    window.virtual_office.scene_objects.blog_sign = signMesh;
+    //signMesh.layers.set(11);
+    corkBoard.add( signMesh );
+  } );
+
+  return corkBoard;
+}
+
+/**
+ * Create a polaroid to attach to the bulletin board
+ */
