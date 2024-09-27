@@ -201,7 +201,7 @@ async function saveAndReplaceImages(content, year, month) {
           await sleep(1000);
         }
         else {
-          console.log('Skipping ' + filePath);
+          //console.log('Skipping ' + filePath);
         }
       } catch (error) {
         console.error(`Failed to download image: ${src}`);

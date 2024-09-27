@@ -13,7 +13,8 @@ import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 import { setupEffects } from './effects.js';
 import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
-import { setupCorkBoard, setupBackwall, setupDesks } from './furniture.js';
+import { setupBackwall, setupDesks } from './furniture.js';
+import { setupCorkBoard } from './furniture/corkboard.js';
 import { setupTriggers, updateTriggers } from './triggers.js';
 import { setupTweens, updateTweens, startTweening } from './tweens.js';
 

@@ -4,7 +4,6 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-
 /**
  * Setup Back Wall
  * 
@@ -70,7 +69,7 @@ export async function setupBackwall() {
 }
 
 // Create the About Us neon sign.
-function createNeonSign( text, callback ) {
+export function createNeonSign( text, callback ) {
   const loader = new FontLoader();
 
   loader.load( '/assets/fonts/Stigmature.json', ( font ) => {
@@ -579,121 +578,3 @@ async function createScreen( i ) {
   return screenWebGL;
 }
 
-/**
- * Create a bulletin board with polaroids.
- */
-export async function setupCorkBoard() {
-
-  let textureUrl = '/assets/textures/cork-1024x1024.jpg';
-
-  var material = new THREE.MeshPhongMaterial();
-  await window.virtual_office.loaders.texture.load( textureUrl, async ( texture ) => {
-
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-    texture.repeat.set( 4, 2.25 );
-
-    material.needsUpdate = true;
-    material.map = texture;
-    material = brightenMaterial(material, 0.85);
-  } );
-
-  var geometry = new THREE.PlaneGeometry( 16, 9 );
-  var corkBoard = new THREE.Mesh( geometry, brightenMaterial( material, 1 ) );
-
-
-  let woodUrl = '/assets/textures/wood.jpg';
-
-  var borderMaterial = new THREE.MeshPhongMaterial();
-  await window.virtual_office.loaders.texture.load( woodUrl, async ( texture ) => {
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-    texture.repeat.set( 4, 2.25 );
-    borderMaterial.needsUpdate = true;
-    borderMaterial.map = texture;
-    borderMaterial = brightenMaterial(borderMaterial, 0.65);
-  } );
-
-  // Thickness of the border
-  var borderThickness = 0.2;
-
-  // Border geometries (left, right, top, bottom)
-  var leftBorderGeometry = new THREE.BoxGeometry( borderThickness, 9, borderThickness );
-  var rightBorderGeometry = new THREE.BoxGeometry( borderThickness, 9, borderThickness );
-  var topBorderGeometry = new THREE.BoxGeometry( 16 + 2 * borderThickness, borderThickness, borderThickness );
-  var bottomBorderGeometry = new THREE.BoxGeometry( 16 + 2 * borderThickness, borderThickness, borderThickness );
-
-  // Create border meshes
-  var leftBorder = new THREE.Mesh( leftBorderGeometry, borderMaterial );
-  var rightBorder = new THREE.Mesh( rightBorderGeometry, borderMaterial );
-  var topBorder = new THREE.Mesh( topBorderGeometry, borderMaterial );
-  var bottomBorder = new THREE.Mesh( bottomBorderGeometry, borderMaterial );
-
-  // Position borders
-  leftBorder.position.set( -8 - borderThickness / 2, 0, 0.01 );  // Left of the corkboard
-  rightBorder.position.set( 8 + borderThickness / 2, 0, 0.01 );  // Right of the corkboard
-  topBorder.position.set( 0, 4.5 + borderThickness / 2, 0.01 );  // Above the corkboard
-  bottomBorder.position.set( 0, -4.5 - borderThickness / 2, 0.01 );  // Below the corkboard
-
-  corkBoard.add( leftBorder );
-  corkBoard.add( rightBorder );
-  corkBoard.add( topBorder );
-  corkBoard.add( bottomBorder );
-
-  //mesh.scale.copy( domObject.scale );
-  corkBoard.castShadow = false;
-  corkBoard.receiveShadow = true;
-
-  corkBoard.name = "corkBoard";
-  // window.virtual_office.loaders.stats.screens.loaded++;
-
-  // window.virtual_office.screens[ i ].mesh = corkBoard;
-  // corkBoard.settings = window.virtual_office.screens[ i ];
-
-  //corkBoard.rotateY( Math.PI * 90 );
-  corkBoard.position.z = - 15 - ( ( window.virtual_office.room_depth / 8 ) * 1.5 );
-  corkBoard.position.x = -39.5;
-  corkBoard.position.y = 12;
-  corkBoard.rotation.y = Math.PI / 2;
-
-  // Blog Neon sign
-  await createNeonSign( 'blog', async ( signMesh ) => {
-    // Position and rotate the sign
-    signMesh.position.set( -3, 6.5, 0.1 ); // Example position for the sign
-    signMesh.name = "blog_sign";
-    window.virtual_office.scene_objects.blog_sign = signMesh;
-    //signMesh.layers.set(11);
-    corkBoard.add( signMesh );
-  } );
-
-  corkBoard.getViewingCoords = function () {
-    let tempMesh = new THREE.Object3D();
-    tempMesh.scale.copy( this.scale );
-    tempMesh.position.copy( this.position );
-
-    var targetRotation = this.rotation.clone();
-
-    const fovVertical = window.virtual_office.camera.fov * ( Math.PI / 180 );
-    const fovHorizontal = 2 * Math.atan( Math.tan( fovVertical / 2 ) * window.virtual_office.camera.aspect );
-    const distanceHorizontal = window.innerWidth / ( 2 * Math.tan( fovHorizontal / 2 ) );
-
-    const distanceFactor = 0.015;
-
-    const diffZ = distanceHorizontal * distanceFactor;
-
-
-    const roomSide = tempMesh.position.x > 0 ? -1 : 1;
-    tempMesh.translateX( roomSide * diffZ / 1.4 );
-
-    //  tempMesh.translateZ( diffZ / 1.4 );
-
-    return [ tempMesh.position, targetRotation ];
-  };
-
-
-  return corkBoard;
-}
-
-/**
- * Create a polaroid to attach to the bulletin board
- */
