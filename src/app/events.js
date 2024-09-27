@@ -73,6 +73,8 @@ export async function handleViewportChange() {
 
     window.virtual_office.scene_objects.door.position.z = - 15 + (window.virtual_office.room_depth / 2);
     window.virtual_office.scene_objects.door_frame.position.z = - 15 + (window.virtual_office.room_depth / 2);
+
+    window.virtual_office.scene_objects.blogWall.position.z = - 15 - ((window.virtual_office.room_depth / 8) * 2);
   }
 }
 

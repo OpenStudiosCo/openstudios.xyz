@@ -430,9 +430,11 @@ async function createDesk( i ) {
           var lightMaterial = new THREE.MeshPhongMaterial( {
             color: 0xffffff,
             emissive: 0x00EEff,
-            emissiveIntensity: 100,
+            emissiveIntensity: 1,
             shininess: 200
           } );
+
+          child.position.y = 0.05;
 
           child.material = lightMaterial;
 
@@ -448,7 +450,7 @@ async function createDesk( i ) {
     window.virtual_office.loaders.stats.gtlf.loaded++;
   } );
 
-  const lightActual = new THREE.DirectionalLight( 0x00EEff,
+  const lightActual = new THREE.SpotLight( 0x00EEff,
     window.virtual_office.fast ?
       window.virtual_office.settings.light.fast.desk.normal :
       window.virtual_office.settings.light.highP.desk.normal
@@ -612,10 +614,10 @@ export async function setupCorkBoard() {
   var bottomBorderGeometry = new THREE.PlaneGeometry(16 + 2 * borderThickness, borderThickness);
   
   // Create border meshes
-  window.leftBorder = new THREE.Mesh(leftBorderGeometry, borderMaterial);
-  window.rightBorder = new THREE.Mesh(rightBorderGeometry, borderMaterial);
-  window.topBorder = new THREE.Mesh(topBorderGeometry, borderMaterial);
-  window.bottomBorder = new THREE.Mesh(bottomBorderGeometry, borderMaterial);
+  var leftBorder = new THREE.Mesh(leftBorderGeometry, borderMaterial);
+  var rightBorder = new THREE.Mesh(rightBorderGeometry, borderMaterial);
+  var topBorder = new THREE.Mesh(topBorderGeometry, borderMaterial);
+  var bottomBorder = new THREE.Mesh(bottomBorderGeometry, borderMaterial);
   
   // Position borders
   leftBorder.position.set(-8 - borderThickness / 2, 0, 0.01);  // Left of the corkboard
@@ -639,7 +641,7 @@ export async function setupCorkBoard() {
   // corkBoard.settings = window.virtual_office.screens[ i ];
 
   //corkBoard.rotateY( Math.PI * 90 );
-  corkBoard.position.z = - 15 - window.virtual_office.room_depth / 4;
+  corkBoard.position.z = - 15 - ((window.virtual_office.room_depth / 8) * 1.5);
   corkBoard.position.x = -39.5;
   corkBoard.position.y = 12;
   corkBoard.rotation.y = Math.PI / 2;

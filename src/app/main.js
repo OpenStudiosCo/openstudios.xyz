@@ -88,7 +88,7 @@ window.virtual_office = {
     texture: false,
     stats: {
       fonts: {
-        target: 5, // @todo: Check if this affects double loads, shouldn't with caching.
+        target: 6, // @todo: Check if this affects double loads, shouldn't with caching.
         loaded: 0
       },
       gtlf: {
