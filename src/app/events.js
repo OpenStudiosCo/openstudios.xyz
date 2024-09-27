@@ -136,7 +136,22 @@ export function handleInteractions( ) {
 }
 
 function handleBlogClick() {
-  console.log('hai');''
+  if (window.virtual_office.pointer.z && !window.virtual_office.moving) {
+    if (!window.virtual_office.selected) {
+      window.virtual_office.moving = true;
+      window.virtual_office.selected = window.virtual_office.scene_objects.blogWall;
+
+      let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.blogWall.getViewingCoords( );
+
+      window.virtual_office.tweens.rotateCamera.to({ x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000).start();
+      window.virtual_office.tweens.moveCamera.to(targetPosition, 1000).onComplete(()=>{
+        // Show the exit sign.
+        document.getElementById('exitSign').style.display = 'block';
+      }).start();
+
+    }
+
+  }
 }
 
 function handleScreenClick( screen ) {

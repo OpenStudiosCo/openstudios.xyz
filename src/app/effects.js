@@ -77,7 +77,7 @@ export function setupEffects( ) {
     window.virtual_office.scene, window.virtual_office.camera,
     {
       blendFunction: BlendFunction.ADD,
-      intensity: 8.5,
+      intensity: 10,
       mipmapBlur: true,
       luminanceThreshold: 0.15,
       luminanceSmoothing: 0.2,
@@ -114,6 +114,7 @@ export function setupEffects( ) {
 
   }
   composer.addPass(new EffectPass(window.virtual_office.camera, smaa, ssao, textureEffect, bloom, toneMappingEffect));
-  
+
   window.virtual_office.effects = composer;
+
 }
