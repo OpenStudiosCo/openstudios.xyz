@@ -173,7 +173,7 @@ function polaroidHover( polaroid ) {
   
   // Set position, x based on half width.
   let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
-  window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, 3.6 , .1 );
+  window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, 0 , .1 );
 
   // Add selected title to blog wall.
   window.virtual_office.scene_objects.blogWall.add( window.virtual_office.scene_objects.blog_selected_title );

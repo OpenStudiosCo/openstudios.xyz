@@ -130,11 +130,11 @@ export async function setupCorkBoard() {
 
         // First row
         if ( i < 7 ) {
-            polaroid.position.y = 1.5;
+            polaroid.position.y = 2.25;
         }
         // Second row
         else {
-            polaroid.position.y = -1.5;
+            polaroid.position.y = -2.25;
         }
 
         if ( i == 0 || i == 7 ) {
