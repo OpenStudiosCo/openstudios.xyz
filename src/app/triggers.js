@@ -34,6 +34,9 @@ function updateSigns() {
 
                 // Rotate a polaroid and show it's title if hovered.
                 if ( window.virtual_office.hovered.name == 'polaroid' ) {
+                    if ( window.virtual_office.hovered.material.emissiveIntensity < 0.125 ) {
+                        window.virtual_office.hovered.material.emissiveIntensity += 0.125 / 15;
+                    }
                     // Rotate back to 0 if it's not close enough to 0.
                     if ( window.virtual_office.hovered.rotation.x != 0 ) {
                         if ( window.virtual_office.hovered.rotation.x > 0.01 ) {
@@ -58,10 +61,17 @@ function updateSigns() {
                     if (
                         ( window.virtual_office.hovered.uuid != polaroid.uuid ) &&
                         (
+                            ( polaroid.material.emissiveIntensity != 0 ) ||
                             ( polaroid.rotation.x != polaroid.userData.original_rotation.x ) ||
                             ( polaroid.rotation.z != polaroid.userData.original_rotation.z )
                         )
                     ) {
+                        if ( Math.abs( polaroid.material.emissiveIntensity ) <= 0.01 ) {
+                            polaroid.material.emissiveIntensity = 0;
+                        } else {
+                            polaroid.material.emissiveIntensity -= 0.125 / 30;
+                        }
+
                         // Update rotation.x
                         if ( Math.abs( polaroid.rotation.x - polaroid.userData.original_rotation.x ) <= 0.01 ) {
                             polaroid.rotation.x = polaroid.userData.original_rotation.x;
