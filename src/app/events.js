@@ -23,7 +23,6 @@ export async function handleViewportChange() {
 
   window.virtual_office.renderers.webgl.setSize(width, height);
 
-  
   if (window.virtual_office.effects && window.virtual_office.effects.passes.length > 0)
     window.virtual_office.effects.setSize(width, height);
 
@@ -78,7 +77,7 @@ export async function handleViewportChange() {
     window.virtual_office.scene_objects.door.position.z = - 15 + (window.virtual_office.room_depth / 2);
     window.virtual_office.scene_objects.door_frame.position.z = - 15 + (window.virtual_office.room_depth / 2);
 
-    window.virtual_office.scene_objects.blogWall.position.z = - 15 - ((window.virtual_office.room_depth / 8) * 2);
+    window.virtual_office.scene_objects.blogWall.position.z = - 15 - ((window.virtual_office.room_depth / 8) * 1.5);
   }
 }
 
