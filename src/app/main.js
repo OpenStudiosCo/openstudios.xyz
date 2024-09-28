@@ -14,6 +14,7 @@ import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 import { setupEffects } from './effects.js';
 import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
 import { setupBackwall, setupDesks } from './furniture.js';
+import { setupCorkBoard } from './furniture/corkboard.js';
 import { setupTriggers, updateTriggers } from './triggers.js';
 import { setupTweens, updateTweens, startTweening } from './tweens.js';
 
@@ -88,7 +89,7 @@ window.virtual_office = {
     texture: false,
     stats: {
       fonts: {
-        target: 5, // @todo: Check if this affects double loads, shouldn't with caching.
+        target: 6, // @todo: Check if this affects double loads, shouldn't with caching.
         loaded: 0
       },
       gtlf: {
@@ -243,6 +244,15 @@ window.virtual_office = {
   started: false,
 
   /**
+   * Track whether the mouse is being clicked.
+   */
+  state: {
+    mouseDown: false,
+    pointerDown: false,
+    touching: false,
+  },
+
+  /**
    * All scene triggers.
    * 
    * @memberof Object
@@ -325,7 +335,7 @@ export default async function init() {
   window.virtual_office.camera.position.set(0, 10.775, window.virtual_office.settings.startPosZ + (window.virtual_office.room_depth / 2));
   
   // Reusable pointer for tracking user interaction.
-  window.virtual_office.pointer = new THREE.Vector3(); 
+  window.virtual_office.pointer = new THREE.Vector2(); 
 
   // Reusable raycaster for tracking what the user tried to hit.
   window.virtual_office.raycaster = new THREE.Raycaster();
@@ -363,8 +373,7 @@ export default async function init() {
 
   window.addEventListener('resize', handleViewportChange);
 
-  document.getElementById('exitSign').addEventListener('click', handleExitSign);
-  document.getElementById('exitSign').addEventListener('touchend', handleExitSign);
+  document.getElementById('exitSign').addEventListener('pointerdown', handleExitSign);
 
   function onPointerMove(event) {
 
@@ -379,38 +388,42 @@ export default async function init() {
   window.virtual_office.renderers.webgl.domElement.addEventListener('pointermove', onPointerMove);
 
   function onTouchStart(event) {
-    if (!window.virtual_office.selected) {
+    
       event.preventDefault();
 
       window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
       window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-      window.virtual_office.pointer.z = 1; // previously mouseDown = true
-    }
+      window.virtual_office.state.touching = true;
+      window.virtual_office.state.pointerDown = true;
+    
   }
   function onTouchEnd(event) {
-    if (!window.virtual_office.selected) {
+    
       event.preventDefault();
 
       window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
       window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-      window.virtual_office.pointer.z = 0; // previously mouseDown = false
-    }
+      window.virtual_office.state.touching = false;
+      window.virtual_office.state.pointerDown = false;
+    
   }
 
   window.virtual_office.renderers.webgl.domElement.addEventListener('touchstart', onTouchStart, false);
   window.virtual_office.renderers.webgl.domElement.addEventListener('touchend', onTouchEnd, false);
 
   function onMouseDown(event) {
-    window.virtual_office.pointer.z = 1; // previously mouseDown = true
+    window.virtual_office.state.mouseDown = true;
+    window.virtual_office.state.pointerDown = true;
   }
 
   function onMouseUp(event) {
-    window.virtual_office.pointer.z = 0; // previously mouseDown = false
+    window.virtual_office.state.mouseDown = false;
+    window.virtual_office.state.pointerDown = false;
   }
 
   // Attach the mouse down and up event listeners
-  window.virtual_office.renderers.webgl.domElement.addEventListener("pointerdown", onMouseDown, false);
-  window.virtual_office.renderers.webgl.domElement.addEventListener("pointerup", onMouseUp, false);
+  window.virtual_office.renderers.webgl.domElement.addEventListener("mousedown", onMouseDown, false);
+  window.virtual_office.renderers.webgl.domElement.addEventListener("mouseup", onMouseUp, false);
 
 }
 
@@ -894,6 +907,9 @@ async function setupScene() {
 
   // Enable the effects layer, default of 11 for postprocessing bloom
   window.virtual_office.camera.layers.enable(11);
+
+  window.virtual_office.scene_objects.blogWall = await setupCorkBoard( );
+  window.virtual_office.scene.add(window.virtual_office.scene_objects.blogWall);
 
   window.virtual_office.scene_objects.wallGroup = await setupBackwall( );
   window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;

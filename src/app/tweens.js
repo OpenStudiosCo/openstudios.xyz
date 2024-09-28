@@ -171,6 +171,9 @@ function enterTheOffice ( ) {
     let loader_symbols = document.getElementById('loader_symbols');
     if (loader_symbols)
       loader_symbols.style.display = 'none';
+
+    let pageWrapper = document.getElementById('page-wrapper');
+    pageWrapper.remove();
   });
 }
 
