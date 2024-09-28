@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><title>Studio Roundup for April 2024 | Open Studios | Perth, Western Australia</title><base href="../"><meta name="description" content="We are Open Studios. Perth based digital production studio."><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><script src="https://www.google.com/recaptcha/api.js"></script><link rel="canonical" href="https://openstudios.xyz/blog/2024/04/studio-roundup-april-2024.html"><meta property="og:title" content="Studio Roundup for April 2024 | Open Studios | Perth, Western Australia"><meta property="og:description" content="Explore our digital studio case studies, where we feature some of our best work. Gain insights into our process, expertise and abilities."><meta property="og:type" content="article"><meta property="og:image" content="https://openstudios.xyz/assets/images/pages/case_studies.jpg"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="768"><meta name="twitter:title" content="Studio Roundup for April 2024 | Open Studios | Perth, Western Australia"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description" content="Explore our digital studio case studies, where we feature some of our best work. Gain insights into our process, expertise and abilities."><meta name="twitter:image" content="https://openstudios.xyz/assets/images/pages/case_studies.jpg"><script async src="https://www.googletagmanager.com/gtag/js?id=AW-983760722"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div class="header_bg"></div><div class="header" role="banner"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div><div class="content_row" role="main"><h2>April 2024</h2><div class="content" style="display: inherit;"><h3>Garrett Ray Jewellery</h3>
+<p>This month we promoted this stunning one of a kind <a href="https://grayjewellery.com.au/products/zambian-emerald-and-18k-gold-pendant">emerald pendant</a>. Elegance in simplicity. Letting unique gems take centre stage with a single band of gold holding it in place, with nothing to distract from the natural beauty of this gorgeous emerald.</p>
+<center style="margin: 0px auto">
+<a href="/assets/blog/2024/04/emerald-pendant.jpg" target="_blank" title="Click to open full size"><img alt="A photo of necklace featuring an emerald pendant, set in 18k gold" width="80%" height="auto" src="/assets/blog/2024/04/emerald-pendant.jpg" /></a>
+<p><em>This one of a kind pendant features a natural Zambian Emerald in a handmade 18k gold setting.</em></p>
+</center>
+<ul>
+<li>Facebook: <a href="https://www.facebook.com/GarrettRayJewellery">GarrettRayJewellery</a></li>
+<li>Instagram: <a href="https://www.instagram.com/garrettrayjewellery/">@garrettrayjewellery</a></li>
+<li>LinkedIn: <a href="https://www.linkedin.com/company/garrett-ray-jewellery/">garrett-ray-jewellery</a></li>
+<li>TikTok: <a href="https://www.tiktok.com/@garrettrayjewellery">@garrettrayjewellery</a></li>
+<li>Website: <a href="https://grayjewellery.com.au/">grayjewellery.com.au</a></li>
+</ul>
+<h3>Marketing Database Research</h3>
+<p>In the world wide web of 2024, there's so much content and an unprecedented number of users online however it's tough for anyone to stand out. Big tech companies like Google, Meta, Reddit and Twitter/X closed off their APIs and public access to their pages in recent years, after fostering a churn to their services from formerly popular websites, in effect conquering much of the web.</p>
+<p>In order to find new potential customers, we wanted to build a database of current software in use on the websites of various Australian businesses. Attempting to approach this issue from a technical point of view, we looked at a couple of sources that could help however it ended up being a lot harder than expected.</p>
+<p>The first source of data we tried was the public DNS database (the list of .com's and other domains registered). It turns out DNS is actually an enormous list and secured by the organisation that maintains it, ICANN. There are also many copies that different organisations providing DNS services mirror. Even honing in on the Australian domains list didn't help much.</p>
+<p>The next set we looked at was sources like the <a href="https://data.gov.au/dataset/ds-dga-bc515135-4bb6-4d50-957a-3713709a76d3/details?q=business%20dataset">ASIC - Business Names Dataset</a> and ABN Bulk Extract, however as useful as it was to have every business name in the land at our disposal there was no domain name attached to the data which meant we'd need to figure out a way to match them. Manual look up was out of the question and Google would likely throttle any widescale attempts to scrape the information, so we looked elsewhere.</p>
+<p>The state government of Victoria had some <a href="https://discover.data.vic.gov.au/dataset/business-establishments-location-and-industry-classification">really good macroeconomic data</a>, but nothing too useful for our desire to poll some websites and see what software they use in order to determine if they're a good fit for our Full Stack Web Development services.</p>
+<p>There's definitely analytical insight that could be gleamed from the data we were able to collect from public sources, but nothing actionable due to lacking key information like business website domain name. Perhaps more could be done by governments to ensure businesses can connect and clients can vendors can find one another. Certain local council websites featured detailed business directories which seems like a good way to get traffic digital and in the real world to businesses in their area.</p>
+<h3>Website Performance Optimisation</h3>
+<p>The 3D engine code of the studio website has had an overhaul of its effects system using <a href="https://github.com/pmndrs/postprocessing">postprocessing</a>. It took a little bit of doing as the effects are a little bit different and we also updated THREE.JS to the latest version which had an overhaul of lighting and colours values. In the end it was worth it as the FPS (Frames Per Second) on our development laptop went from 20 to a smooth 60.</p>
+<p>One of our clients has a Wordpress based eCommerce site that was responding slowly on the frontend and was particularly slow in the backend - sometimes unusable. We investigated what the cause was and found a complex set of issues - lack of fine tuning of the hosting, too many plugins, no caching and a theme that used a page builder system which meant constant dynamic code execution for every page. After a few days of work, we were able to get their Google Lighthouse scores into the green. The website frontend went from taking a couple of seconds to less than one second and the backend went from 30-90 seconds to 4-5 seconds.</p>
+<p>We completed two very different website performance optimisations, one relating to 3D graphics and the other of a complicated online store with multiple external considerations. In the end they had the same goal - to improve the user experience of website visitors by reducing the time it was taking for pages to load. Both ventures were a resounding success, the Wordpress optimisation in particular is something we think a lot of Australian businesses using Wordpress could benefit from.</p>
+<h3>Find us online!</h3>
+<ul>
+<li>Artstation: <a href="https://www.artstation.com/openstudios">openstudios</a></li>
+<li>Facebook: <a href="https://www.facebook.com/openstudiosco">openstudiosco</a></li>
+<li>LinkedIn: <a href="https://www.linkedin.com/company/open-studios-australia/">open-studios-australia</a></li>
+<li>YouTube: <a href="https://www.youtube.com/@open-studios">@open-studios</a></li>
+</ul>
+</div></div><div class="content_row newsletter" role="complementary"><div class="newsletter_bg"></div><div class="content"><div class="row center"><div class="wide-column"><script>function newsletterSubmit(token) {
+    var validationElm = document.getElementById("newslettervalidation");
+    var data = document.getElementById("newsletterform");
+    fetch(data.getAttribute('action'), {
+        method: data.getAttribute('method'),
+        body: new FormData(data)
+    }).then(function (response) {
+        if (response.status === 200) {
+        return response.text();
+        } else {
+        validationElm.innerHTML = response.text();
+        }
+    })
+    .then(function (data) {
+        validationElm.innerHTML = data;
+        if (validationElm.innerHTML.indexOf('Email sent successfully.') >= 0) {
+            document.getElementById("newsletterform").reset();
+        }
+    });
+}</script><form id="newsletterform" method="post" action="https://mailform.openstudios.xyz/" role="form"><h3>Subscribe to our newsletter</h3><p>Get all our latest insights, tips and project updates, conveniently in your inbox.</p><table style="width: 100%"><tr><td style="width: 80%"><input type="hidden" name="name" value="n/a"><input type="hidden" name="message" value="Newsletter signup request"><input type="email" name="email" placeholder="Email address"></td><td style="padding-left: 1rem"><button class="g-recaptcha" data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" data-callback="newsletterSubmit" data-action="submit">Subscribe</button></td></tr></table><h3 id="newslettervalidation" style="color: red; font-weight: bold;"></h3></form></div></div></div></div><div class="content_row footer"><div class="content"><div class="row center"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div></div></div></div><script>var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="https://analytics.openstudios.xyz/";
+_paq.push(['setTrackerUrl', u+'matomo.php']);
+_paq.push(['setSiteId', '11']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+})();</script></body></html>

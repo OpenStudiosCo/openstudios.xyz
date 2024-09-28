@@ -189,6 +189,8 @@ export async function setupPolaroid( singleData ) {
     polaroidMesh.scale.set( scaler, scaler, scaler );
     polaroidMesh.position.z = 0.1;
     polaroidMesh.name = 'polaroid';
+    polaroidMesh.userData.title = singleData.title;
+    polaroidMesh.userData.url = singleData.url;
 
     // Photo (inner) area
     //let photoMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } );
@@ -256,7 +258,13 @@ export async function setupPolaroid( singleData ) {
     return polaroidMesh;
 }
 
-
+export function clearBlogWallTitle() {
+    // Remove previous title.
+    if ( window.virtual_office.scene_objects.blog_selected_title ) {
+        window.virtual_office.scene_objects.blogWall.remove( window.virtual_office.scene_objects.blog_selected_title );
+        window.virtual_office.scene_objects.blog_selected_title = false;
+    }
+}
 
 // @todo: Figure out a better way to do this.
 function getBlogData( i ) {
@@ -264,73 +272,73 @@ function getBlogData( i ) {
         // Row 1.
         {
             'title': "How to implement Blender Principled\nBSDF Materials in Three.js (WebGL)",
-            'url': '/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html',
+            'url': '/iframes/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html',
             'image': '/assets/blog/2024/09/Screenshot-2024-06-28-162051-Medium.png'
         },
         {
             'title': 'Studio Roundup for May 2024',
-            'url': '/blog/2024/05/studio-roundup-may-2024.html',
+            'url': '/iframes/blog/2024/05/studio-roundup-may-2024.html',
             'image': '/assets/blog/2024/05/opal-banner.webp'
         },
         {
             'title': 'Studio Roundup for April 2024',
-            'url': '/blog/2024/04/studio-roundup-april-2024.html',
+            'url': '/iframes/blog/2024/04/studio-roundup-april-2024.html',
             'image': '/assets/blog/2024/04/emerald-pendant.jpg'
         },
         {
             'title': 'Studio Roundup for March 2024',
-            'url': '/blog/2024/03/studio-roundup-march-2024.html',
+            'url': '/iframes/blog/2024/03/studio-roundup-march-2024.html',
             'image': '/assets/blog/2024/03/1__M7aKKPzaeL1ubZgMFUeOg.webp'
         },
         {
             'title': 'Studio Roundup for February 2024',
-            'url': '/blog/2024/02/studio-roundup-february-2024.html',
+            'url': '/iframes/blog/2024/02/studio-roundup-february-2024.html',
             'image': '/assets/blog/2024/02/1_dyIbSVF7tlb9HYpBb4AkMQ.webp'
         },
         {
             'title': 'Studio Roundup for January 2024',
-            'url': '/blog/2024/01/studio-roundup-january-2024.html',
+            'url': '/iframes/blog/2024/01/studio-roundup-january-2024.html',
             'image': '/assets/blog/2024/01/1_jvdn9ENFN3e46Mf5GFmpcA.webp'
         },
         {
             'title': 'Studio Roundup for December 2023',
-            'url': '/blog/2023/12/studio-roundup-december-2023.html',
+            'url': '/iframes/blog/2023/12/studio-roundup-december-2023.html',
             'image': '/assets/blog/2023/12/1_aN2AdpmiU7S0dGFpWUoixA.webp'
         },
         // Row 2.
         {
             'title': 'Studio Roundup for November 2023',
-            'url': '/blog/2023/11/studio-roundup-november-2023.html',
+            'url': '/iframes/blog/2023/11/studio-roundup-november-2023.html',
             'image': '/assets/blog/2023/11/1_CgaG1-mK8Ys4idpaYmNavA.webp'
         },
         {
             'title': 'Studio Roundup for October 2023',
-            'url': '/blog/2023/10/studio-roundup-october-2023.html',
+            'url': '/iframes/blog/2023/10/studio-roundup-october-2023.html',
             'image': '/assets/blog/2023/10/1_SLu3jtltivXMa4iTfvox4Q.webp'
         },
         {
             'title': "Building A Cool 3D website: Tips,\nTricks and Lessons Learned",
-            'url': '/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html',
+            'url': '/iframes/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html',
             'image': '/assets/blog/2023/10/1*o6xfwPdjAcGUyBE5s69iOQ.png'
         },
         {
             'title': 'Studio Roundup for September 2023',
-            'url': '/blog/2023/09/studio-roundup-september-2023.html',
+            'url': '/iframes/blog/2023/09/studio-roundup-september-2023.html',
             'image': '/assets/blog/2023/09/1_CSEjUsaGdPWgjjutW2rc8w.webp'
         },
         {
             'title': 'Studio Roundup for August 2023',
-            'url': '/blog/2023/08/studio-roundup-august-2023.html',
+            'url': '/iframes/blog/2023/08/studio-roundup-august-2023.html',
             'image': '/assets/blog/2023/08/1_KiFpOsEZO4yE7mzAeucs0w.webp'
         },
         {
             'title': 'Studio Roundup for July 2023',
-            'url': '/blog/2023/07/studio-roundup-july-2023.html',
+            'url': '/iframes/blog/2023/07/studio-roundup-july-2023.html',
             'image': '/assets/blog/2023/07/1_vnEMqG7iAtvJXFlS-pMkIg.webp'
         },
         {
             'title': 'Studio Roundup for June 2023',
-            'url': '/blog/2023/06/studio-roundup-june-2023.html',
+            'url': '/iframes/blog/2023/06/studio-roundup-june-2023.html',
             'image': '/assets/blog/2023/06/1_DJCaxmHRqHXM4tGMBJiPXA.webp'
         },
     ];

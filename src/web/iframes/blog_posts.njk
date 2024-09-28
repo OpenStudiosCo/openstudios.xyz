@@ -1,0 +1,13 @@
+---
+layout: blog_post_iframe.pug
+priority: "0.9"
+changefreq: daily
+pagination:
+  data: blogposts
+  size: 1
+  alias: blogpost
+permalink: iframes/blog/{{blogpost.year}}/{{blogpost.month}}/{{blogpost.slug}}.html
+eleventyComputed:
+  cover: "{{blogpost.cover}}"
+description: Explore our digital studio retrospectives, project updates and technical guides. Gain insights into our process, expertise and abilities.
+---

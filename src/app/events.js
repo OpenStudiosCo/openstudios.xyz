@@ -12,6 +12,8 @@ import { resetReusables } from './tweens.js';
 
 import { getMeshWidth } from './helpers.js';
 
+import { clearBlogWallTitle } from './furniture/corkboard.js';
+
 export async function handleViewportChange() {
   window.virtual_office.settings.adjusted_gap = calculateAdjustedGapSize();
   window.virtual_office.room_depth = 8 * window.virtual_office.settings.adjusted_gap;
@@ -128,10 +130,8 @@ export function handleInteractions( ) {
         if ( window.virtual_office.selected.name == 'corkBoard' ) {
           document.documentElement.style.cursor = "default";
           // Remove previous title.
-          if ( window.virtual_office.scene_objects.blog_selected_title ) {
-            window.virtual_office.scene_objects.blogWall.remove( window.virtual_office.scene_objects.blog_selected_title );
-            window.virtual_office.scene_objects.blog_selected_title = false;
-          }
+          clearBlogWallTitle();
+
           if (intersects[i].object.name == "polaroid") {
             window.virtual_office.hovered = intersects[i].object;
 
@@ -185,6 +185,15 @@ function polaroidHover( polaroid ) {
     if (window.virtual_office.selected.name == 'corkBoard') {
       window.virtual_office.moving = true;
       window.virtual_office.selected = polaroid;
+
+      // Start loading the screen.
+      document.getElementById('pageOverlay').src = polaroid.userData.url;
+      document.title =  polaroid.userData.title;
+
+      history.pushState({}, "", polaroid.userData.url);
+      stretchSelectedScreen();
+      window.virtual_office.pointer.z = 0;
+      clearBlogWallTitle();
     }
   }
 }
