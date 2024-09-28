@@ -14,16 +14,29 @@ export function startTweening() {
     }
 
     if (window.matrix_scene.type == 'button') {
+      let matched = false;
       // Check which page we came through so we can grab it's position.
       for ( var screen_id in window.virtual_office.screens) {
         const screen = window.virtual_office.screens[screen_id];
         if (window.location.pathname.indexOf( screen.slug ) >= 0 ) {
+          matched = true;
+
           let [ targetPosition, targetRotation ] = screen.mesh.getViewingCoords( );
 
           window.virtual_office.camera.position.copy(targetPosition);
           window.virtual_office.camera.rotation.copy(targetRotation);
 
-          updateFlickering( { emissiveIntensity: 1 } );
+          updateFlickering( { emissiveIntensity: 1 } );          
+        }
+      }
+
+      if ( ! matched ) {
+        if ( window.location.href.indexOf('/blog') >= 0 ) {
+          let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.blogWall.getViewingCoords( );
+          window.virtual_office.camera.position.copy(targetPosition);
+          window.virtual_office.camera.rotation.copy(targetRotation);
+
+          updateFlickering( { emissiveIntensity: 1 } );          
         }
       }
     }
@@ -173,7 +186,7 @@ function enterTheOffice ( ) {
       loader_symbols.style.display = 'none';
 
     let pageWrapper = document.getElementById('page-wrapper');
-    pageWrapper.remove();
+    pageWrapper.style.display = 'none';
   });
 }
 
