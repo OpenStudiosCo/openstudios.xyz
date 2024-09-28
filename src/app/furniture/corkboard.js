@@ -110,7 +110,7 @@ export async function setupCorkBoard() {
         
         // Adjust distance factor based on aspect ratio
         let distanceFactor = aspectRatio > 1 ? 0.015 : 0.045;  // Increase factor slightly for very wide screens
-        distanceFactor = aspectRatio > 2 ? 0.06 : distanceFactor;
+        distanceFactor = aspectRatio > 2 ? 0.025 : distanceFactor;
         distanceFactor = aspectRatio < 0.5 ? 0.045 : distanceFactor;
     
         const diffZ = distanceHorizontal * distanceFactor;
@@ -121,6 +121,8 @@ export async function setupCorkBoard() {
     
         // Apply translation
         tempMesh.translateX(distanceX);
+
+        tempMesh.position.x = Math.min(tempMesh.position.x, -20);
     
         return [tempMesh.position, targetRotation];
     };

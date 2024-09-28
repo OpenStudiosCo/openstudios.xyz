@@ -64,11 +64,6 @@ export async function handleViewportChange() {
         updateDeskZ(mesh, mesh.deskIndex);
       }
     });
-    window.virtual_office.scene_objects.deskGroup.children.forEach(function (mesh, i) {
-      if ( mesh.name == 'plant') {
-        mesh.position.z = window.virtual_office.settings.adjusted_gap;
-      }
-    });
 
     let backWallZ = - 15 - window.virtual_office.room_depth / 2;
     window.virtual_office.scene_objects.wallGroup.position.z = backWallZ;
