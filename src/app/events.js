@@ -81,6 +81,13 @@ export async function handleViewportChange() {
       let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.blogWall.getViewingCoords();
 
       window.virtual_office.camera.position.copy( targetPosition );
+      window.virtual_office.camera.rotation.copy( targetRotation );
+
+    }
+
+    if ( window.virtual_office.scene_objects.blog_selected_title ) {
+      let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
+      window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, window.virtual_office.camera.aspect >= 0.88 ? 0 : 6.5, .1 );
     }
 
     if ( window.virtual_office.scene_objects.blog_sign ) {
@@ -294,9 +301,12 @@ export function handleExitSign() {
     history.pushState( {}, "", '/blog.html' );
   
     shrinkScreenBack();
+    window.virtual_office.hovered = window.virtual_office.selected;
     window.virtual_office.selected = window.virtual_office.scene_objects.blogWall;
+    clearBlogWallTitle();
   }
   else {
+    clearBlogWallTitle();
     window.virtual_office.started = true;
     document.title = 'Open Studios | Perth, Western Australia';
     history.pushState( {}, "", '/' );
@@ -311,6 +321,7 @@ export function handleExitSign() {
     document.getElementById( 'exitSign' ).style.display = 'none';
     window.virtual_office.selected = false;
   }
+
 }
 
 /**
@@ -336,5 +347,8 @@ function shrinkScreenBack() {
   document.getElementById( 'pageOverlay' ).contentWindow.scrollTo( 0, 0 );
 
   document.getElementById( 'pageOverlay' ).style.display = 'none';
+
+  // Run this in case viewport was changed while we were in full screen mode.
+  handleViewportChange();
 
 }
