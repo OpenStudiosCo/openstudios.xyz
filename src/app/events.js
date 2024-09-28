@@ -287,9 +287,9 @@ function screenHover( screen ) {
 }
 
 export function handleExitSign() {
-  window.virtual_office.started = true;
 
-  if ( window.virtual_office.selected.name == 'polaroid' ) {
+  if ( ! window.virtual_office.started && window.virtual_office.selected.name == 'polaroid' ) {
+    window.virtual_office.started = true;
     document.title = 'Blog | Open Studios | Perth, Western Australia';
     history.pushState( {}, "", '/blog.html' );
   
@@ -297,6 +297,7 @@ export function handleExitSign() {
     window.virtual_office.selected = window.virtual_office.scene_objects.blogWall;
   }
   else {
+    window.virtual_office.started = true;
     document.title = 'Open Studios | Perth, Western Australia';
     history.pushState( {}, "", '/' );
   
