@@ -226,6 +226,7 @@ export async function updateBlogLayout( corkBoard ) {
             }
             if ( i >= 12 && i <= 14 ) {
                 polaroid.visible = false;
+                polaroid.position.y = -9999;
             }
 
         }

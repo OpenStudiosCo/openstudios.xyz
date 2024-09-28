@@ -135,7 +135,7 @@ export function handleInteractions() {
       }
       // Otherwise we're only tracking interaction with the exit sign.
       else {
-        if ( window.virtual_office.selected.name == 'corkBoard' ) {
+        if ( window.virtual_office.selected.name == 'corkBoard' || window.virtual_office.selected.name == 'polaroid') {
           document.documentElement.style.cursor = "default";
           // Remove previous title.
           clearBlogWallTitle();
@@ -177,6 +177,7 @@ export function handleInteractions() {
 }
 
 function polaroidHover( polaroid ) {
+  console.log('polaroidHBover', window.virtual_office.state.touching , window.virtual_office.moving);
   /**
    * Set the title of the cork board.
    */
@@ -199,19 +200,43 @@ function polaroidHover( polaroid ) {
    * Handle click.
    */
   if ( window.virtual_office.state.mouseDown && !window.virtual_office.moving ) {
-    if ( window.virtual_office.selected.name == 'corkBoard' ) {
-      window.virtual_office.moving = true;
+    if ( window.virtual_office.selected.name == 'corkBoard') {
       window.virtual_office.selected = polaroid;
 
-      // // Start loading the screen.
-      // document.getElementById( 'pageOverlay' ).src = polaroid.userData.url;
-      // document.title = polaroid.userData.title;
+      // Start loading the screen.
+      document.getElementById( 'pageOverlay' ).src = polaroid.userData.url;
+      document.title = polaroid.userData.title;
 
-      // history.pushState( {}, "", polaroid.userData.url.replace( 'iframes/', '' ) );
-      // stretchSelectedScreen();
+      history.pushState( {}, "", polaroid.userData.url.replace( 'iframes/', '' ) );
+      stretchSelectedScreen();
+    
       clearBlogWallTitle();
     }
   }
+
+  /**
+   * Handle touch.
+   */
+  if ( window.virtual_office.state.touching && !window.virtual_office.moving ) {
+    window.virtual_office.state.touching = false;
+    if ( window.virtual_office.selected.name == 'polaroid' &&  window.virtual_office.selected.uuid == polaroid.uuid ) {
+
+      // Start loading the screen.
+      document.getElementById( 'pageOverlay' ).src = polaroid.userData.url;
+      document.title = polaroid.userData.title;
+
+      history.pushState( {}, "", polaroid.userData.url.replace( 'iframes/', '' ) );
+      stretchSelectedScreen();
+    }
+
+    if ( window.virtual_office.selected.name == 'corkBoard' || window.virtual_office.selected.uuid != polaroid.uuid ) {
+
+      window.virtual_office.selected = polaroid;
+    
+      clearBlogWallTitle();
+    }
+  }
+  
 }
 
 function blogHover() {

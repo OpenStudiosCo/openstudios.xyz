@@ -389,24 +389,24 @@ export default async function init() {
   window.virtual_office.renderers.webgl.domElement.addEventListener('pointermove', onPointerMove);
 
   function onTouchStart(event) {
-    if (!window.virtual_office.selected) {
+    
       event.preventDefault();
 
       window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
       window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
       window.virtual_office.state.touching = true;
       window.virtual_office.state.pointerDown = true;
-    }
+    
   }
   function onTouchEnd(event) {
-    if (!window.virtual_office.selected) {
+    
       event.preventDefault();
 
       window.virtual_office.pointer.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
       window.virtual_office.pointer.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
       window.virtual_office.state.touching = false;
       window.virtual_office.state.pointerDown = false;
-    }
+    
   }
 
   window.virtual_office.renderers.webgl.domElement.addEventListener('touchstart', onTouchStart, false);
