@@ -97,39 +97,39 @@ export async function setupCorkBoard() {
 
     corkBoard.getViewingCoords = function () {
         let tempMesh = new THREE.Object3D();
-        tempMesh.scale.copy(this.scale);
-        tempMesh.position.copy(this.position);
-    
+        tempMesh.scale.copy( this.scale );
+        tempMesh.position.copy( this.position );
+
         var targetRotation = this.rotation.clone();
-    
+
         // Field of view calculation (vertical and horizontal)
-        const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
-        const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
-    
+        const fovVertical = window.virtual_office.camera.fov * ( Math.PI / 180 );
+        const fovHorizontal = 2 * Math.atan( Math.tan( fovVertical / 2 ) * window.virtual_office.camera.aspect );
+
         // Distance calculations based on aspect ratio and screen size
         const aspectRatio = window.virtual_office.camera.aspect;
-        const distanceHorizontal = window.innerWidth / (2 * Math.tan(fovHorizontal / 2));
-        
+        const distanceHorizontal = window.innerWidth / ( 2 * Math.tan( fovHorizontal / 2 ) );
+
         // Adjust distance factor based on aspect ratio
         let distanceFactor = aspectRatio > 1 ? 0.015 : 0.045;  // Increase factor slightly for very wide screens
         distanceFactor = aspectRatio > 2 ? 0.025 : distanceFactor;
         distanceFactor = aspectRatio > 2.2 ? 0.035 : distanceFactor;
         distanceFactor = aspectRatio < 0.5 ? 0.045 : distanceFactor;
-    
+
         const diffZ = distanceHorizontal * distanceFactor;
-    
+
         // Determine direction (room side) and adjust x-axis translation
         const roomSide = tempMesh.position.x > 0 ? -1 : 1;
         const distanceX = roomSide * diffZ / 1.4;
-    
-        // Apply translation
-        tempMesh.translateX(distanceX);
 
-        tempMesh.position.x = Math.min(tempMesh.position.x, -20);
-    
-        return [tempMesh.position, targetRotation];
+        // Apply translation
+        tempMesh.translateX( distanceX );
+
+        tempMesh.position.x = Math.min( tempMesh.position.x, -20 );
+
+        return [ tempMesh.position, targetRotation ];
     };
-    
+
 
     let polaroid_width = 88 * 0.02;
 
@@ -158,11 +158,11 @@ export async function setupCorkBoard() {
 }
 
 export async function updateBlogLayout( corkBoard ) {
-    window.virtual_office.scene_objects.polaroids.forEach( (polaroid, i) => {
+    window.virtual_office.scene_objects.polaroids.forEach( ( polaroid, i ) => {
 
         // Use horizontal layout 
         if ( window.virtual_office.camera.aspect >= 0.88 ) {
-            corkBoard.getObjectByName('corkboardMesh').rotation.z = 0;
+            corkBoard.getObjectByName( 'corkboardMesh' ).rotation.z = 0;
             // First row
             if ( i < 7 ) {
                 polaroid.position.y = 2.25;
@@ -198,7 +198,7 @@ export async function updateBlogLayout( corkBoard ) {
             }
         }
         else {
-            corkBoard.getObjectByName('corkboardMesh').rotation.z = Math.PI / 2;
+            corkBoard.getObjectByName( 'corkboardMesh' ).rotation.z = Math.PI / 2;
 
             // First column
             if ( i == 0 || i == 3 || i == 6 || i == 9 || i == 12 ) {
@@ -231,7 +231,7 @@ export async function updateBlogLayout( corkBoard ) {
             }
 
         }
-    });
+    } );
 }
 
 /**
@@ -284,8 +284,8 @@ export async function setupPolaroid( singleData ) {
     texture.repeat.set( scaleX, scaleY );
 
     // Apply the texture to a material
-    photoMesh.userData.materialActive = brightenMaterial(new THREE.MeshPhongMaterial( { map: texture } ), 3);
-    photoMesh.userData.materialIdle = brightenMaterial(new THREE.MeshPhongMaterial( { map: texture } ), 1);
+    photoMesh.userData.materialActive = brightenMaterial( new THREE.MeshPhongMaterial( { map: texture } ), 3 );
+    photoMesh.userData.materialIdle = brightenMaterial( new THREE.MeshPhongMaterial( { map: texture } ), 1 );
 
     photoMesh.material = photoMesh.userData.materialIdle;
 
@@ -321,6 +321,26 @@ export async function setupPolaroid( singleData ) {
     } );
 
     return polaroidMesh;
+}
+
+export function setupBlogWallTitle( polaroid ) {
+    /**
+     * Set the title of the cork board.
+     */
+    // Setup current title and set scale to 10%.
+    window.virtual_office.scene_objects.blog_selected_title = polaroid.getObjectByName( 'polaroid_label' ).clone( { recursive: true } );
+    window.virtual_office.scene_objects.blog_selected_title.scale.setScalar( .1 );
+
+    // Set material to neon blue.
+    window.virtual_office.scene_objects.blog_selected_title.material = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0x00EEff, emissiveIntensity: 0.5 } );
+    window.virtual_office.scene_objects.blog_selected_title.visible = true;
+
+    // Set position, x based on half width.
+    let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
+    window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, window.virtual_office.camera.aspect >= 0.88 ? 0 : 6.5, .1 );
+
+    // Add selected title to blog wall.
+    window.virtual_office.scene_objects.blogWall.add( window.virtual_office.scene_objects.blog_selected_title );
 }
 
 export function clearBlogWallTitle() {

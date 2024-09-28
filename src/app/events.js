@@ -12,7 +12,7 @@ import { resetReusables } from './tweens.js';
 
 import { getMeshWidth } from './helpers.js';
 
-import { clearBlogWallTitle, updateBlogLayout } from './furniture/corkboard.js';
+import { setupBlogWallTitle, clearBlogWallTitle, updateBlogLayout } from './furniture/corkboard.js';
 
 export async function handleViewportChange() {
   window.virtual_office.settings.adjusted_gap = calculateAdjustedGapSize();
@@ -137,10 +137,16 @@ export function handleInteractions() {
       else {
         if ( window.virtual_office.selected.name == 'corkBoard' || window.virtual_office.selected.name == 'polaroid') {
           document.documentElement.style.cursor = "default";
-          // Remove previous title.
-          clearBlogWallTitle();
-          
+         
           if ( intersects[ i ].object.name == "polaroid_image" ) {
+
+            if ( window.virtual_office.hovered.uuid != intersects[ i ].object.parent.uuid ) {
+              // Remove previous title.
+              clearBlogWallTitle();
+              // Setup current hovered polaroid title.
+              setupBlogWallTitle( intersects[ i ].object.parent );
+            }
+
             window.virtual_office.hovered = intersects[ i ].object.parent;
 
             document.documentElement.style.cursor = "pointer";
@@ -150,6 +156,13 @@ export function handleInteractions() {
             break;
           }
           if ( intersects[ i ].object.name == "polaroid" ) {
+            if ( window.virtual_office.hovered.uuid != intersects[ i ].object.uuid ) {
+              // Remove previous title.
+              clearBlogWallTitle();
+              // Setup current hovered polaroid title.
+              setupBlogWallTitle( intersects[ i ].object );
+            }
+
             window.virtual_office.hovered = intersects[ i ].object;
 
             document.documentElement.style.cursor = "pointer";
@@ -177,24 +190,7 @@ export function handleInteractions() {
 }
 
 function polaroidHover( polaroid ) {
-  /**
-   * Set the title of the cork board.
-   */
-  // Setup current title and set scale to 10%.
-  window.virtual_office.scene_objects.blog_selected_title = polaroid.getObjectByName( 'polaroid_label' ).clone( { recursive: true } );
-  window.virtual_office.scene_objects.blog_selected_title.scale.setScalar( .1 );
-
-  // Set material to neon blue.
-  window.virtual_office.scene_objects.blog_selected_title.material = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0x00EEff, emissiveIntensity: 0.5 } );
-  window.virtual_office.scene_objects.blog_selected_title.visible = true;
-
-  // Set position, x based on half width.
-  let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
-  window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, window.virtual_office.camera.aspect >= 0.88 ? 0 : 6.5, .1 );
-
-  // Add selected title to blog wall.
-  window.virtual_office.scene_objects.blogWall.add( window.virtual_office.scene_objects.blog_selected_title );
-
+  
   /**
    * Handle click.
    */
@@ -233,6 +229,8 @@ function polaroidHover( polaroid ) {
       window.virtual_office.selected = polaroid;
     
       clearBlogWallTitle();
+      // Setup current hovered polaroid title.
+      setupBlogWallTitle( polaroid );
     }
   }
   

@@ -173,7 +173,7 @@ function enterTheOffice ( ) {
       loader_symbols.style.display = 'none';
 
     let pageWrapper = document.getElementById('page-wrapper');
-    pageWrapper.remove();
+    pageWrapper.style.display = 'none';
   });
 }
 
