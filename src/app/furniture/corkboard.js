@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
+import { getMeshWidth } from '../helpers.js';
 import { brightenMaterial, createNeonSign } from '../furniture.js';
 
 /**
@@ -218,7 +219,7 @@ export async function setupPolaroid( singleData ) {
 
         signMesh.layers.set( 11 );
 
-        signMesh.name = "desk_label";
+        signMesh.name = "polaroid_label";
         signMesh.position.z = 1;
         signMesh.position.y = - 40;
 
@@ -231,21 +232,6 @@ export async function setupPolaroid( singleData ) {
     return polaroidMesh;
 }
 
-/**
- * Use the bounding box to calculate the width of a mesh.
- * 
- * @param {*} mesh 
- * @returns float
- */
-function getMeshWidth( mesh ) {
-    mesh.geometry.computeBoundingBox();
-    const boundingBox = mesh.geometry.boundingBox;
-
-    // Step 4: Extract dimensions from bounding box
-    const width = boundingBox.max.x - boundingBox.min.x;
-
-    return width;
-}
 
 // @todo: Figure out a better way to do this.
 function getBlogData( i ) {

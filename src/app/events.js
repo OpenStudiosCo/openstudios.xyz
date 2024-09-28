@@ -10,6 +10,8 @@ import { calculateAdjustedGapSize, createOfficeRoom, setCameraFOV, doorWidth, do
 import { updateDeskZ } from './furniture.js';
 import { resetReusables } from './tweens.js';
 
+import { getMeshWidth } from './helpers.js';
+
 export async function handleViewportChange() {
   window.virtual_office.settings.adjusted_gap = calculateAdjustedGapSize();
   window.virtual_office.room_depth = 8 * window.virtual_office.settings.adjusted_gap;
@@ -99,7 +101,7 @@ export function handleInteractions( ) {
         if (intersects[i].object.name == "screen" || intersects[i].object.name == "desk_part" || intersects[i].object.name == "desk_label") {
           document.documentElement.style.cursor = "pointer";
     
-          handleScreenClick(intersects[i].object.parent);
+          screenHover(intersects[i].object.parent);
     
           break;
         }
@@ -107,7 +109,7 @@ export function handleInteractions( ) {
         if (intersects[i].object.name == "blog_sign" || intersects[i].object.name == "corkBoard") {
           document.documentElement.style.cursor = "pointer";
 
-          handleBlogClick();
+          blogHover();
     
           break;
         }
@@ -115,7 +117,7 @@ export function handleInteractions( ) {
         if (intersects[i].object.name == "neon_sign" || intersects[i].object.name == "tv") {
           document.documentElement.style.cursor = "pointer";
 
-          handleScreenClick(intersects[i].object.parent);
+          screenHover(intersects[i].object.parent);
     
           break;
         }
@@ -125,14 +127,22 @@ export function handleInteractions( ) {
       else {
         if ( window.virtual_office.selected.name == 'corkBoard' ) {
           document.documentElement.style.cursor = "default";
+          // Remove previous title.
+          if ( window.virtual_office.scene_objects.blog_selected_title ) {
+            window.virtual_office.scene_objects.blogWall.remove( window.virtual_office.scene_objects.blog_selected_title );
+            window.virtual_office.scene_objects.blog_selected_title = false;
+          }
           if (intersects[i].object.name == "polaroid") {
             window.virtual_office.hovered = intersects[i].object;
 
             document.documentElement.style.cursor = "pointer";
   
-            handlePolaroidClick( intersects[i].object );
+            polaroidHover( intersects[i].object );
       
             break;
+          }
+          else {
+            window.virtual_office.hovered = false;
           }
         }
         else {
@@ -149,7 +159,27 @@ export function handleInteractions( ) {
   }
 }
 
-function handlePolaroidClick( polaroid ) {
+function polaroidHover( polaroid ) {
+  /**
+   * Set the title of the cork board.
+   */
+  // Setup current title and set scale to 10%.
+  window.virtual_office.scene_objects.blog_selected_title = polaroid.getObjectByName('polaroid_label').clone({recursive: true});
+  window.virtual_office.scene_objects.blog_selected_title.scale.setScalar( .1 );
+  
+  // Set material to neon blue.
+  window.virtual_office.scene_objects.blog_selected_title.material = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0x00EEff, emissiveIntensity: 0.5 } );
+  
+  // Set position, x based on half width.
+  let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
+  window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, 3.5 , .1 );
+
+  // Add selected title to blog wall.
+  window.virtual_office.scene_objects.blogWall.add( window.virtual_office.scene_objects.blog_selected_title );
+
+  /**
+   * Handle click.
+   */
   if (window.virtual_office.pointer.z && !window.virtual_office.moving) {
     if (window.virtual_office.selected.name == 'corkBoard') {
       window.virtual_office.moving = true;
@@ -158,7 +188,10 @@ function handlePolaroidClick( polaroid ) {
   }
 }
 
-function handleBlogClick() {
+function blogHover() {
+  /**
+   * Handle click.
+   */
   if (window.virtual_office.pointer.z && !window.virtual_office.moving) {
     if (!window.virtual_office.selected) {
       window.virtual_office.moving = true;
@@ -177,7 +210,10 @@ function handleBlogClick() {
   }
 }
 
-function handleScreenClick( screen ) {
+function screenHover( screen ) {
+  /**
+   * Handle click.
+   */
   if (window.virtual_office.pointer.z && !window.virtual_office.moving) {
     if (!window.virtual_office.selected) {
       window.virtual_office.moving = true;
@@ -198,7 +234,6 @@ function handleScreenClick( screen ) {
 
   }
 }
-
 
 export function handleExitSign() {
 
