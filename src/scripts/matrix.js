@@ -65,6 +65,10 @@ window.matrix_scene = {
     
     // Animates the scene
     animate: function (currentTime) {
+        if ( window.scrollY != 0 ) {
+            window.scrollTo(0, 0);
+        }
+
         const elapsedSinceLast = currentTime - window.matrix_scene.lastTime;
         window.matrix_scene.currentTime = currentTime;
         window.matrix_scene.elapsed += window.matrix_scene.currentTime - window.matrix_scene.lastTime;
