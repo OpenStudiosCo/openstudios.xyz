@@ -373,8 +373,7 @@ export default async function init() {
 
   window.addEventListener('resize', handleViewportChange);
 
-  document.getElementById('exitSign').addEventListener('click', handleExitSign);
-  document.getElementById('exitSign').addEventListener('touchend', handleExitSign);
+  document.getElementById('exitSign').addEventListener('pointerdown', handleExitSign);
 
   function onPointerMove(event) {
 

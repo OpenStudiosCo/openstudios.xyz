@@ -22,7 +22,7 @@ export async function setupCorkBoard() {
 
         material.needsUpdate = true;
         material.map = texture;
-        material = brightenMaterial( material, 0.85 );
+        material = brightenMaterial( material, window.virtual_office.fast ? 5 : 0.85 );
     } );
 
     var geometry = new THREE.PlaneGeometry( 16, 9 );
@@ -40,7 +40,7 @@ export async function setupCorkBoard() {
         texture.repeat.set( 4, 2.25 );
         borderMaterial.needsUpdate = true;
         borderMaterial.map = texture;
-        borderMaterial = brightenMaterial( borderMaterial, 0.65 );
+        borderMaterial = brightenMaterial( borderMaterial, window.virtual_office.fast ? 2.5 : 0.65 );
     } );
 
     // Thickness of the border
@@ -113,6 +113,7 @@ export async function setupCorkBoard() {
         // Adjust distance factor based on aspect ratio
         let distanceFactor = aspectRatio > 1 ? 0.015 : 0.045;  // Increase factor slightly for very wide screens
         distanceFactor = aspectRatio > 2 ? 0.025 : distanceFactor;
+        distanceFactor = aspectRatio > 2.2 ? 0.035 : distanceFactor;
         distanceFactor = aspectRatio < 0.5 ? 0.045 : distanceFactor;
     
         const diffZ = distanceHorizontal * distanceFactor;

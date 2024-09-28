@@ -177,7 +177,6 @@ export function handleInteractions() {
 }
 
 function polaroidHover( polaroid ) {
-  console.log('polaroidHBover', window.virtual_office.state.touching , window.virtual_office.moving);
   /**
    * Set the title of the cork board.
    */
@@ -255,6 +254,8 @@ function blogHover() {
         // Show the exit sign.
         document.getElementById( 'exitSign' ).style.display = 'block';
         window.virtual_office.state.pointerDown = false;
+        document.title = 'Blog | Open Studios | Perth, Western Australia';
+        history.pushState( {}, "", '/blog.html' );
       } ).start();
 
     }
@@ -288,25 +289,29 @@ function screenHover( screen ) {
 }
 
 export function handleExitSign() {
-
   window.virtual_office.started = true;
 
-  document.title = 'Open Studios | Perth, Western Australia';
-  history.pushState( {}, "", '/' );
-
-  window.virtual_office.moving = true;
-  var targetRotation = - ( Math.PI / 30 ) * window.virtual_office.camera.aspect;
-
-  let cameraDefaultPosition = { x: 0, y: 18, z: -20 + ( window.virtual_office.room_depth / 2 ) },
-    cameraDefaultRotation = { x: targetRotation, y: 0, z: 0 };
-
-  // Animate the camera resetting from any other position.
-  resetReusables();
-  window.virtual_office.tweens.resetCameraRotation.start();
-  window.virtual_office.tweens.resetCameraPosition.onStart( shrinkScreenBack ).start();
-
-  window.virtual_office.selected = false;
-
+  if ( window.virtual_office.selected.name == 'polaroid' ) {
+    document.title = 'Blog | Open Studios | Perth, Western Australia';
+    history.pushState( {}, "", '/blog.html' );
+  
+    shrinkScreenBack();
+    window.virtual_office.selected = window.virtual_office.scene_objects.blogWall;
+  }
+  else {
+    document.title = 'Open Studios | Perth, Western Australia';
+    history.pushState( {}, "", '/' );
+  
+    window.virtual_office.moving = true;
+    var targetRotation = - ( Math.PI / 30 ) * window.virtual_office.camera.aspect;
+  
+    // Animate the camera resetting from any other position.
+    resetReusables();
+    window.virtual_office.tweens.resetCameraRotation.start();
+    window.virtual_office.tweens.resetCameraPosition.onStart( shrinkScreenBack ).start();
+    document.getElementById( 'exitSign' ).style.display = 'none';
+    window.virtual_office.selected = false;
+  }
 }
 
 /**
@@ -332,7 +337,5 @@ function shrinkScreenBack() {
   document.getElementById( 'pageOverlay' ).contentWindow.scrollTo( 0, 0 );
 
   document.getElementById( 'pageOverlay' ).style.display = 'none';
-
-  document.getElementById( 'exitSign' ).style.display = 'none';
 
 }
