@@ -139,7 +139,16 @@ export function handleInteractions() {
           document.documentElement.style.cursor = "default";
           // Remove previous title.
           clearBlogWallTitle();
+          
+          if ( intersects[ i ].object.name == "polaroid_image" ) {
+            window.virtual_office.hovered = intersects[ i ].object.parent;
 
+            document.documentElement.style.cursor = "pointer";
+
+            polaroidHover( intersects[ i ].object.parent );
+
+            break;
+          }
           if ( intersects[ i ].object.name == "polaroid" ) {
             window.virtual_office.hovered = intersects[ i ].object;
 
@@ -189,18 +198,17 @@ function polaroidHover( polaroid ) {
   /**
    * Handle click.
    */
-  if ( window.virtual_office.pointer.z && !window.virtual_office.moving ) {
+  if ( window.virtual_office.state.mouseDown && !window.virtual_office.moving ) {
     if ( window.virtual_office.selected.name == 'corkBoard' ) {
       window.virtual_office.moving = true;
       window.virtual_office.selected = polaroid;
 
-      // Start loading the screen.
-      document.getElementById( 'pageOverlay' ).src = polaroid.userData.url;
-      document.title = polaroid.userData.title;
+      // // Start loading the screen.
+      // document.getElementById( 'pageOverlay' ).src = polaroid.userData.url;
+      // document.title = polaroid.userData.title;
 
-      history.pushState( {}, "", polaroid.userData.url.replace( 'iframes/', '' ) );
-      stretchSelectedScreen();
-      window.virtual_office.pointer.z = 0;
+      // history.pushState( {}, "", polaroid.userData.url.replace( 'iframes/', '' ) );
+      // stretchSelectedScreen();
       clearBlogWallTitle();
     }
   }
@@ -210,7 +218,7 @@ function blogHover() {
   /**
    * Handle click.
    */
-  if ( window.virtual_office.pointer.z && !window.virtual_office.moving ) {
+  if ( window.virtual_office.state.pointerDown && !window.virtual_office.moving ) {
     if ( !window.virtual_office.selected ) {
       window.virtual_office.moving = true;
       window.virtual_office.selected = window.virtual_office.scene_objects.blogWall;
@@ -221,6 +229,7 @@ function blogHover() {
       window.virtual_office.tweens.moveCamera.to( targetPosition, 1000 ).onComplete( () => {
         // Show the exit sign.
         document.getElementById( 'exitSign' ).style.display = 'block';
+        window.virtual_office.state.pointerDown = false;
       } ).start();
 
     }
@@ -232,7 +241,7 @@ function screenHover( screen ) {
   /**
    * Handle click.
    */
-  if ( window.virtual_office.pointer.z && !window.virtual_office.moving ) {
+  if ( window.virtual_office.state.pointerDown && !window.virtual_office.moving ) {
     if ( !window.virtual_office.selected ) {
       window.virtual_office.moving = true;
       window.virtual_office.selected = screen;
@@ -287,6 +296,8 @@ function stretchSelectedScreen() {
   document.getElementById( 'exitSign' ).style.display = 'block';
 
   window.virtual_office.started = false;
+  window.virtual_office.state.mouseDown = false;
+  window.virtual_office.state.pointerDown = false;
 }
 
 // Restore the CSS object to its original size.
