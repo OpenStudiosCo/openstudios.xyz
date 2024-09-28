@@ -94,7 +94,7 @@ function updateBlog( ) {
 
                 // Run blog sign update if the sign or cork board are hovered.
                 if (
-                    ( window.virtual_office.hovered.name == 'blog_sign' || window.virtual_office.hovered.name == 'corkBoard' )
+                    ( window.virtual_office.hovered.name == 'blog_sign' || window.virtual_office.hovered.name == 'corkboardMesh' )
                 ) {
 
                     // Update emissive color to white.

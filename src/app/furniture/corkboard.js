@@ -26,8 +26,10 @@ export async function setupCorkBoard() {
     } );
 
     var geometry = new THREE.PlaneGeometry( 16, 9 );
-    var corkBoard = new THREE.Mesh( geometry, brightenMaterial( material, 1 ) );
-
+    var corkBoardMesh = new THREE.Mesh( geometry, brightenMaterial( material, 1 ) );
+    corkBoardMesh.name = "corkboardMesh";
+    var corkBoard = new THREE.Object3D();
+    corkBoard.add( corkBoardMesh );
 
     let woodUrl = '/assets/textures/wood.jpg';
 
@@ -62,10 +64,10 @@ export async function setupCorkBoard() {
     topBorder.position.set( 0, 4.5 + borderThickness / 2, 0.01 );  // Above the corkboard
     bottomBorder.position.set( 0, -4.5 - borderThickness / 2, 0.01 );  // Below the corkboard
 
-    corkBoard.add( leftBorder );
-    corkBoard.add( rightBorder );
-    corkBoard.add( topBorder );
-    corkBoard.add( bottomBorder );
+    corkBoardMesh.add( leftBorder );
+    corkBoardMesh.add( rightBorder );
+    corkBoardMesh.add( topBorder );
+    corkBoardMesh.add( bottomBorder );
 
     //mesh.scale.copy( domObject.scale );
     corkBoard.castShadow = false;
@@ -86,7 +88,7 @@ export async function setupCorkBoard() {
     // Blog Neon sign
     await createNeonSign( 'blog', async ( signMesh ) => {
         // Position and rotate the sign
-        signMesh.position.set( -3, 6.5, 0.1 ); // Example position for the sign
+        signMesh.position.set( -3, window.virtual_office.camera.aspect >= 0.88 ? 6.5 : 10, 0.1 ); // Example position for the sign
         signMesh.name = "blog_sign";
         window.virtual_office.scene_objects.blog_sign = signMesh;
         //signMesh.layers.set(11);
@@ -149,44 +151,83 @@ export async function setupCorkBoard() {
         corkBoard.add( polaroid );
     }
 
-    updateBlogLayout();
+    updateBlogLayout( corkBoard );
 
     return corkBoard;
 }
 
-export async function updateBlogLayout() {
-    let configurations = {
-        long: [ -6, -4, -2, 0, 2, 4, 6 ],
-        short: [ 2.25, -2.25 ] 
-    }
-
+export async function updateBlogLayout( corkBoard ) {
     window.virtual_office.scene_objects.polaroids.forEach( (polaroid, i) => {
-        // First row
-        if ( i < 7 ) {
-            polaroid.position.y = 2.25;
-        }
-        // Second row
-        else {
-            polaroid.position.y = -2.25;
-        }
 
-        if ( i == 0 || i == 7 ) {
-            polaroid.position.x = -6;
+        // Use horizontal layout 
+        if ( window.virtual_office.camera.aspect >= 0.88 ) {
+            corkBoard.getObjectByName('corkboardMesh').rotation.z = 0;
+            // First row
+            if ( i < 7 ) {
+                polaroid.position.y = 2.25;
+            }
+            // Second row
+            else {
+                polaroid.position.y = -2.25;
+            }
+
+            if ( i == 0 || i == 7 ) {
+                polaroid.position.x = -6;
+            }
+            if ( i == 1 || i == 8 ) {
+                polaroid.position.x = -4;
+            }
+            if ( i == 2 || i == 9 ) {
+                polaroid.position.x = -2;
+            }
+            if ( i == 3 || i == 10 ) {
+                polaroid.position.x = 0;
+            }
+            if ( i == 4 || i == 11 ) {
+                polaroid.position.x = 2;
+            }
+            if ( i == 5 || i == 12 ) {
+                polaroid.position.x = 4;
+            }
+            if ( i == 6 || i == 13 ) {
+                polaroid.position.x = 6;
+            }
+            if ( i >= 13 ) {
+                polaroid.visible = true;
+            }
         }
-        if ( i == 1 || i == 8 ) {
-            polaroid.position.x = -4;
-        }
-        if ( i == 2 || i == 9 ) {
-            polaroid.position.x = -2;
-        }
-        if ( i == 4 || i == 11 ) {
-            polaroid.position.x = 2;
-        }
-        if ( i == 5 || i == 12 ) {
-            polaroid.position.x = 4;
-        }
-        if ( i == 6 || i == 13 ) {
-            polaroid.position.x = 6;
+        else {
+            corkBoard.getObjectByName('corkboardMesh').rotation.z = Math.PI / 2;
+
+            // First column
+            if ( i == 0 || i == 3 || i == 6 || i == 9 || i == 12 ) {
+                polaroid.position.x = -2.25;
+            }
+            // Second column
+            if ( i == 1 || i == 4 || i == 7 || i == 10 || i == 13 ) {
+                polaroid.position.x = 0;
+            }
+            // Third column
+            if ( i == 2 || i == 5 || i == 8 || i == 11 ) {
+                polaroid.position.x = 2.25;
+            }
+
+            if ( i >= 0 && i <= 2 ) {
+                polaroid.position.y = 4;
+            }
+            if ( i >= 3 && i <= 5 ) {
+                polaroid.position.y = 1;
+            }
+            if ( i >= 6 && i <= 8 ) {
+                polaroid.position.y = -2;
+            }
+            if ( i >= 9 && i <= 12 ) {
+                polaroid.position.y = -5;
+            }
+            if ( i >= 13 ) {
+                polaroid.visible = false;
+            }
+
         }
     });
 }

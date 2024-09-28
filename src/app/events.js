@@ -12,7 +12,7 @@ import { resetReusables } from './tweens.js';
 
 import { getMeshWidth } from './helpers.js';
 
-import { clearBlogWallTitle } from './furniture/corkboard.js';
+import { clearBlogWallTitle, updateBlogLayout } from './furniture/corkboard.js';
 
 export async function handleViewportChange() {
   window.virtual_office.settings.adjusted_gap = calculateAdjustedGapSize();
@@ -72,6 +72,8 @@ export async function handleViewportChange() {
     window.virtual_office.scene_objects.door.position.z = - 15 + (window.virtual_office.room_depth / 2);
     window.virtual_office.scene_objects.door_frame.position.z = - 15 + (window.virtual_office.room_depth / 2);
 
+    updateBlogLayout( window.virtual_office.scene_objects.blogWall );
+
     window.virtual_office.scene_objects.blogWall.position.z = - 15 - ((window.virtual_office.room_depth / 8) * 1.5);
 
     // Update camera position if viewing corkboard.
@@ -79,8 +81,12 @@ export async function handleViewportChange() {
       let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.blogWall.getViewingCoords( );
 
       window.virtual_office.camera.position.copy(targetPosition);
-
     }
+
+    if ( window.virtual_office.scene_objects.blog_sign ) {
+      window.virtual_office.scene_objects.blog_sign.position.set( -3, window.virtual_office.camera.aspect >= 0.88 ? 6.5 : 10, 0.1 );
+    }
+
   }
 }
 
@@ -110,7 +116,7 @@ export function handleInteractions( ) {
           break;
         }
 
-        if (intersects[i].object.name == "blog_sign" || intersects[i].object.name == "corkBoard") {
+        if (intersects[i].object.name == "blog_sign" || intersects[i].object.name == "corkBoard"  || intersects[i].object.name == "corkboardMesh") {
           document.documentElement.style.cursor = "pointer";
 
           blogHover();
@@ -175,7 +181,7 @@ function polaroidHover( polaroid ) {
   
   // Set position, x based on half width.
   let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
-  window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, 0 , .1 );
+  window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, window.virtual_office.camera.aspect >= 0.88 ? 0 : 6.5 , .1 );
 
   // Add selected title to blog wall.
   window.virtual_office.scene_objects.blogWall.add( window.virtual_office.scene_objects.blog_selected_title );
