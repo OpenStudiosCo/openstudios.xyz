@@ -169,10 +169,11 @@ function polaroidHover( polaroid ) {
   
   // Set material to neon blue.
   window.virtual_office.scene_objects.blog_selected_title.material = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0x00EEff, emissiveIntensity: 0.5 } );
+  window.virtual_office.scene_objects.blog_selected_title.visible = true;
   
   // Set position, x based on half width.
   let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
-  window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, 3.5 , .1 );
+  window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, 3.6 , .1 );
 
   // Add selected title to blog wall.
   window.virtual_office.scene_objects.blogWall.add( window.virtual_office.scene_objects.blog_selected_title );

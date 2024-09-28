@@ -29,8 +29,12 @@ function updateBlog( ) {
                 window.virtual_office.scene_objects.blog_sign &&
                 window.virtual_office.scene_objects.polaroids && window.virtual_office.scene_objects.polaroids.length == 14
             ) {
+    
                 // Rotate a polaroid and show it's title if hovered.
                 if ( window.virtual_office.hovered.name == 'polaroid' ) {
+                    let polaroidImage = window.virtual_office.hovered.getObjectByName( 'polaroid_image' );
+                    polaroidImage.material = polaroidImage.userData.materialActive;
+
                     if ( window.virtual_office.hovered.material.emissiveIntensity < 0.125 ) {
                         window.virtual_office.hovered.material.emissiveIntensity += 0.125 / 15;
                     }
@@ -63,6 +67,9 @@ function updateBlog( ) {
                             ( polaroid.rotation.z != polaroid.userData.original_rotation.z )
                         )
                     ) {
+                        let polaroidImage = polaroid.getObjectByName( 'polaroid_image' );
+                        polaroidImage.material = polaroidImage.userData.materialIdle;
+
                         if ( Math.abs( polaroid.material.emissiveIntensity ) <= 0.01 ) {
                             polaroid.material.emissiveIntensity = 0;
                         } else {

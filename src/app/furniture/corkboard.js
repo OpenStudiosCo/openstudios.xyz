@@ -173,14 +173,16 @@ export async function setupCorkBoard() {
  * Create a polaroid to attach to the bulletin board
  */
 export async function setupPolaroid( singleData ) {
-
     let scaler = 0.02;
     let polaroid_outer = { x: 88, y: 107 };
     let polaroid_inner = { x: 79, y: 79 };
 
     // White background (outer) area
-    let material = new THREE.MeshPhongMaterial( { color: 0xFFFFFF,emissive: 0xFFFFFF,
-        emissiveIntensity: 0.1, } );
+    let material = new THREE.MeshPhongMaterial( {
+        color: 0xFFFFFF,
+        emissive: 0xFFFFFF,
+        emissiveIntensity: 0.1,
+    } );
     let geometry = new THREE.PlaneGeometry( polaroid_outer.x, polaroid_outer.y );
 
     let polaroidMesh = new THREE.Mesh( geometry, material );
@@ -189,24 +191,48 @@ export async function setupPolaroid( singleData ) {
     polaroidMesh.name = 'polaroid';
 
     // Photo (inner) area
-    let photoMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } );
+    //let photoMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } );
     let photoGeometry = new THREE.PlaneGeometry( polaroid_inner.x, polaroid_inner.y );
-
-    let photoMesh = new THREE.Mesh( photoGeometry, photoMaterial );
+    let photoMesh = new THREE.Mesh( photoGeometry );
+    //let photoMesh = new THREE.Mesh( photoGeometry, photoMaterial );
     photoMesh.position.y = 9;
     photoMesh.position.z = 1;
+
+    // Load the image texture
+    const textureLoader = new THREE.TextureLoader();
+    const texture = await textureLoader.loadAsync( singleData.image );
+
+    // Calculate aspect ratio and adjust UVs for cropping
+    const aspect = texture.image.width / texture.image.height;
+    let scaleX = 1, scaleY = 1;
+    if ( aspect > 1 ) {
+        // Image is wider than it is tall, crop horizontally
+        scaleX = 1 / aspect;
+    } else {
+        // Image is taller than it is wide, crop vertically
+        scaleY = aspect;
+    }
+
+    texture.center.set( 0.5, 0.5 );
+    texture.repeat.set( scaleX, scaleY );
+
+    // Apply the texture to a material
+    photoMesh.userData.materialActive = brightenMaterial(new THREE.MeshPhongMaterial( { map: texture } ), 3);
+    photoMesh.userData.materialIdle = brightenMaterial(new THREE.MeshPhongMaterial( { map: texture } ), 1);
+
+    photoMesh.material = photoMesh.userData.materialIdle;
+
+    photoMesh.name = 'polaroid_image';
 
     polaroidMesh.add( photoMesh );
 
     // Photo Label
     const loader = new FontLoader();
-
     await loader.load( '/assets/fonts/VeraMono.json', async ( font ) => {
-
         const textGeometry = new TextGeometry( singleData.title, {
             font: font,
             size: 2.5,
-            depth: 0.2
+            depth: 0.2,
         } );
 
         photoMesh.position.z = 1;
@@ -214,23 +240,22 @@ export async function setupPolaroid( singleData ) {
         // Create the emissive material for the text
         var textMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } );
 
-        // Create the "About Us" sign mesh
+        // Create the label mesh
         var signMesh = new THREE.Mesh( textGeometry, textMaterial );
-
         signMesh.layers.set( 11 );
 
         signMesh.name = "polaroid_label";
-        signMesh.position.z = 1;
-        signMesh.position.y = - 40;
+        signMesh.visible = false;
 
         let width = getMeshWidth( signMesh );
-        signMesh.position.x = - width / 2;
+        signMesh.position.x = -width / 2;
 
-        polaroidMesh.add(signMesh);
+        polaroidMesh.add( signMesh );
     } );
 
     return polaroidMesh;
 }
+
 
 
 // @todo: Figure out a better way to do this.
@@ -238,75 +263,75 @@ function getBlogData( i ) {
     let data = [
         // Row 1.
         {
-            'title':    "How to implement Blender Principled\nBSDF Materials in Three.js (WebGL)",
-            'url':      '/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html',
-            'image':    '/assets/blog/2024/09/Screenshot-2024-06-28-162051-Medium.png'
+            'title': "How to implement Blender Principled\nBSDF Materials in Three.js (WebGL)",
+            'url': '/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html',
+            'image': '/assets/blog/2024/09/Screenshot-2024-06-28-162051-Medium.png'
         },
         {
-            'title':    'Studio Roundup for May 2024',
-            'url':      '/blog/2024/05/studio-roundup-may-2024.html',
-            'image':    '/assets/blog/2024/05/opal-banner.webp'
+            'title': 'Studio Roundup for May 2024',
+            'url': '/blog/2024/05/studio-roundup-may-2024.html',
+            'image': '/assets/blog/2024/05/opal-banner.webp'
         },
         {
-            'title':    'Studio Roundup for April 2024',
-            'url':      'https://bastion:8082/blog/2024/04/studio-roundup-april-2024.html',
-            'image':    '/assets/blog/2024/04/emerald-pendant.jpg'
+            'title': 'Studio Roundup for April 2024',
+            'url': '/blog/2024/04/studio-roundup-april-2024.html',
+            'image': '/assets/blog/2024/04/emerald-pendant.jpg'
         },
         {
-            'title':    'Studio Roundup for March 2024',
-            'url':      'https://bastion:8082/blog/2024/03/studio-roundup-march-2024.html',
-            'image':    'https://bastion:8082/assets/blog/2024/03/1__M7aKKPzaeL1ubZgMFUeOg.webp'
+            'title': 'Studio Roundup for March 2024',
+            'url': '/blog/2024/03/studio-roundup-march-2024.html',
+            'image': '/assets/blog/2024/03/1__M7aKKPzaeL1ubZgMFUeOg.webp'
         },
         {
-            'title':    'Studio Roundup for February 2024',
-            'url':      'https://bastion:8082/blog/2024/02/studio-roundup-february-2024.html',
-            'image':    'https://bastion:8082/assets/blog/2024/02/1_dyIbSVF7tlb9HYpBb4AkMQ.webp'
+            'title': 'Studio Roundup for February 2024',
+            'url': '/blog/2024/02/studio-roundup-february-2024.html',
+            'image': '/assets/blog/2024/02/1_dyIbSVF7tlb9HYpBb4AkMQ.webp'
         },
         {
-            'title':    'Studio Roundup for January 2024',
-            'url':      'https://bastion:8082/blog/2024/01/studio-roundup-january-2024.html',
-            'image':    'https://bastion:8082/assets/blog/2024/01/1_jvdn9ENFN3e46Mf5GFmpcA.webp'
+            'title': 'Studio Roundup for January 2024',
+            'url': '/blog/2024/01/studio-roundup-january-2024.html',
+            'image': '/assets/blog/2024/01/1_jvdn9ENFN3e46Mf5GFmpcA.webp'
         },
         {
-            'title':    'Studio Roundup for December 2023',
-            'url':      'https://bastion:8082/blog/2023/12/studio-roundup-december-2023.html',
-            'image':    'https://bastion:8082/assets/blog/2023/12/1_aN2AdpmiU7S0dGFpWUoixA.webp'
+            'title': 'Studio Roundup for December 2023',
+            'url': '/blog/2023/12/studio-roundup-december-2023.html',
+            'image': '/assets/blog/2023/12/1_aN2AdpmiU7S0dGFpWUoixA.webp'
         },
         // Row 2.
         {
-            'title':    'Studio Roundup for November 2023',
-            'url':      'https://bastion:8082/blog/2023/11/studio-roundup-november-2023.html',
-            'image':    'https://bastion:8082/assets/blog/2023/11/1_CgaG1-mK8Ys4idpaYmNavA.webp'
+            'title': 'Studio Roundup for November 2023',
+            'url': '/blog/2023/11/studio-roundup-november-2023.html',
+            'image': '/assets/blog/2023/11/1_CgaG1-mK8Ys4idpaYmNavA.webp'
         },
         {
-            'title':    'Studio Roundup for October 2023',
-            'url':      'https://bastion:8082/blog/2023/10/studio-roundup-october-2023.html',
-            'image':    'https://bastion:8082/assets/blog/2023/10/1_SLu3jtltivXMa4iTfvox4Q.webp'
+            'title': 'Studio Roundup for October 2023',
+            'url': '/blog/2023/10/studio-roundup-october-2023.html',
+            'image': '/assets/blog/2023/10/1_SLu3jtltivXMa4iTfvox4Q.webp'
         },
         {
-            'title':    "Building A Cool 3D website: Tips,\nTricks and Lessons Learned",
-            'url':      'https://bastion:8082/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html',
-            'image':    'https://bastion:8082/assets/blog/2023/10/1*o6xfwPdjAcGUyBE5s69iOQ.png'
+            'title': "Building A Cool 3D website: Tips,\nTricks and Lessons Learned",
+            'url': '/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html',
+            'image': '/assets/blog/2023/10/1*o6xfwPdjAcGUyBE5s69iOQ.png'
         },
         {
-            'title':    'Studio Roundup for September 2023',
-            'url':      'https://bastion:8082/blog/2023/09/studio-roundup-september-2023.html',
-            'image':    'https://bastion:8082/blog/2023/09/studio-roundup-september-2023.html'
+            'title': 'Studio Roundup for September 2023',
+            'url': '/blog/2023/09/studio-roundup-september-2023.html',
+            'image': '/assets/blog/2023/09/1_CSEjUsaGdPWgjjutW2rc8w.webp'
         },
         {
-            'title':    'Studio Roundup for August 2023',
-            'url':      'https://bastion:8082/blog/2023/08/studio-roundup-august-2023.html',
-            'image':    'https://bastion:8082/assets/blog/2023/08/1_KiFpOsEZO4yE7mzAeucs0w.webp'
+            'title': 'Studio Roundup for August 2023',
+            'url': '/blog/2023/08/studio-roundup-august-2023.html',
+            'image': '/assets/blog/2023/08/1_KiFpOsEZO4yE7mzAeucs0w.webp'
         },
         {
-            'title':    'Studio Roundup for July 2023',
-            'url':      'https://bastion:8082/blog/2023/07/studio-roundup-july-2023.html',
-            'image':    'https://bastion:8082/assets/blog/2023/07/1_vnEMqG7iAtvJXFlS-pMkIg.webp'
+            'title': 'Studio Roundup for July 2023',
+            'url': '/blog/2023/07/studio-roundup-july-2023.html',
+            'image': '/assets/blog/2023/07/1_vnEMqG7iAtvJXFlS-pMkIg.webp'
         },
         {
-            'title':    'Studio Roundup for June 2023',
-            'url':      'https://bastion:8082/blog/2023/06/studio-roundup-june-2023.html',
-            'image':    'https://bastion:8082/assets/blog/2023/06/1_DJCaxmHRqHXM4tGMBJiPXA.webp'
+            'title': 'Studio Roundup for June 2023',
+            'url': '/blog/2023/06/studio-roundup-june-2023.html',
+            'image': '/assets/blog/2023/06/1_DJCaxmHRqHXM4tGMBJiPXA.webp'
         },
     ];
 
