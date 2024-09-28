@@ -8,6 +8,8 @@
 
 export function setupTriggers() {
     window.virtual_office.triggers.updateSigns = updateSigns();
+
+    window.virtual_office.triggers.updateBlog = updateBlog();
 }
 
 export function updateTriggers( currentTime ) {
@@ -18,20 +20,15 @@ export function updateTriggers( currentTime ) {
 
 const tolerance = 0.001;
 
-// Brights whatever sign is currently hovered over.
-function updateSigns() {
+// Updates polaroids on the blog wall / cork board / bulletin board.
+function updateBlog( ) {
     return {
         update: ( currentTime ) => {
-
             if (
                 window.virtual_office.hovered &&
                 window.virtual_office.scene_objects.blog_sign &&
-                window.virtual_office.scene_objects.neon_sign &&
-                window.virtual_office.scene_objects.desk_labels && window.virtual_office.scene_objects.desk_labels.length == 4 &&
-                window.virtual_office.scene_objects.deskGroup && window.virtual_office.scene_objects.deskGroup.children.length == 12 &&
                 window.virtual_office.scene_objects.polaroids && window.virtual_office.scene_objects.polaroids.length == 14
             ) {
-
                 // Rotate a polaroid and show it's title if hovered.
                 if ( window.virtual_office.hovered.name == 'polaroid' ) {
                     if ( window.virtual_office.hovered.material.emissiveIntensity < 0.125 ) {
@@ -109,6 +106,23 @@ function updateSigns() {
                     window.virtual_office.scene_objects.blog_sign.material.emissiveIntensity = targetEmissiveIntensity;
 
                 }
+            }
+        }
+    }
+}
+
+// Brights whatever desk sign is currently hovered over.
+function updateSigns() {
+    return {
+        update: ( currentTime ) => {
+
+            if (
+                window.virtual_office.hovered &&
+                window.virtual_office.scene_objects.neon_sign &&
+                window.virtual_office.scene_objects.desk_labels && window.virtual_office.scene_objects.desk_labels.length == 4 &&
+                window.virtual_office.scene_objects.deskGroup && window.virtual_office.scene_objects.deskGroup.children.length == 12
+            ) {
+
 
                 // Run neon sign update if the TV or neon sign are being hovered.
                 if (
