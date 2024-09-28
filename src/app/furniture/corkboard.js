@@ -192,7 +192,7 @@ export async function updateBlogLayout( corkBoard ) {
             if ( i == 6 || i == 13 ) {
                 polaroid.position.x = 6;
             }
-            if ( i >= 13 ) {
+            if ( i >= 12 && i <= 14 ) {
                 polaroid.visible = true;
             }
         }
@@ -221,10 +221,10 @@ export async function updateBlogLayout( corkBoard ) {
             if ( i >= 6 && i <= 8 ) {
                 polaroid.position.y = -2;
             }
-            if ( i >= 9 && i <= 12 ) {
+            if ( i >= 9 && i <= 11 ) {
                 polaroid.position.y = -5;
             }
-            if ( i >= 13 ) {
+            if ( i >= 12 && i <= 14 ) {
                 polaroid.visible = false;
             }
 
