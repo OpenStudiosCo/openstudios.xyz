@@ -95,27 +95,36 @@ export async function setupCorkBoard() {
 
     corkBoard.getViewingCoords = function () {
         let tempMesh = new THREE.Object3D();
-        tempMesh.scale.copy( this.scale );
-        tempMesh.position.copy( this.position );
-
+        tempMesh.scale.copy(this.scale);
+        tempMesh.position.copy(this.position);
+    
         var targetRotation = this.rotation.clone();
-
-        const fovVertical = window.virtual_office.camera.fov * ( Math.PI / 180 );
-        const fovHorizontal = 2 * Math.atan( Math.tan( fovVertical / 2 ) * window.virtual_office.camera.aspect );
-        const distanceHorizontal = window.innerWidth / ( 2 * Math.tan( fovHorizontal / 2 ) );
-
-        const distanceFactor = 0.015;
-
+    
+        // Field of view calculation (vertical and horizontal)
+        const fovVertical = window.virtual_office.camera.fov * (Math.PI / 180);
+        const fovHorizontal = 2 * Math.atan(Math.tan(fovVertical / 2) * window.virtual_office.camera.aspect);
+    
+        // Distance calculations based on aspect ratio and screen size
+        const aspectRatio = window.virtual_office.camera.aspect;
+        const distanceHorizontal = window.innerWidth / (2 * Math.tan(fovHorizontal / 2));
+        
+        // Adjust distance factor based on aspect ratio
+        let distanceFactor = aspectRatio > 1 ? 0.015 : 0.045;  // Increase factor slightly for very wide screens
+        distanceFactor = aspectRatio > 2 ? 0.06 : distanceFactor;
+        distanceFactor = aspectRatio < 0.5 ? 0.045 : distanceFactor;
+    
         const diffZ = distanceHorizontal * distanceFactor;
-
-
+    
+        // Determine direction (room side) and adjust x-axis translation
         const roomSide = tempMesh.position.x > 0 ? -1 : 1;
-        tempMesh.translateX( roomSide * diffZ / 1.4 );
-
-        //  tempMesh.translateZ( diffZ / 1.4 );
-
-        return [ tempMesh.position, targetRotation ];
+        const distanceX = roomSide * diffZ / 1.4;
+    
+        // Apply translation
+        tempMesh.translateX(distanceX);
+    
+        return [tempMesh.position, targetRotation];
     };
+    
 
     let polaroid_width = 88 * 0.02;
 
@@ -128,6 +137,28 @@ export async function setupCorkBoard() {
         polaroid.rotation.x = Math.random() * ( 0.075 + 0.025 ) - 0.025;
         polaroid.rotation.z = Math.random() * ( 0.15 + 0.075 ) - 0.075;
 
+        polaroid.userData.original_rotation = {
+            x: polaroid.rotation.x,
+            z: polaroid.rotation.z
+        }
+
+        window.virtual_office.scene_objects.polaroids.push( polaroid );
+
+        corkBoard.add( polaroid );
+    }
+
+    updateBlogLayout();
+
+    return corkBoard;
+}
+
+export async function updateBlogLayout() {
+    let configurations = {
+        long: [ -6, -4, -2, 0, 2, 4, 6 ],
+        short: [ 2.25, -2.25 ] 
+    }
+
+    window.virtual_office.scene_objects.polaroids.forEach( (polaroid, i) => {
         // First row
         if ( i < 7 ) {
             polaroid.position.y = 2.25;
@@ -155,18 +186,7 @@ export async function setupCorkBoard() {
         if ( i == 6 || i == 13 ) {
             polaroid.position.x = 6;
         }
-
-        polaroid.userData.original_rotation = {
-            x: polaroid.rotation.x,
-            z: polaroid.rotation.z
-        }
-
-        window.virtual_office.scene_objects.polaroids.push( polaroid );
-
-        corkBoard.add( polaroid );
-    }
-
-    return corkBoard;
+    });
 }
 
 /**

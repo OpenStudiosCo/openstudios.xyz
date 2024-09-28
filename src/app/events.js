@@ -78,6 +78,14 @@ export async function handleViewportChange() {
     window.virtual_office.scene_objects.door_frame.position.z = - 15 + (window.virtual_office.room_depth / 2);
 
     window.virtual_office.scene_objects.blogWall.position.z = - 15 - ((window.virtual_office.room_depth / 8) * 1.5);
+
+    // Update camera position if viewing corkboard.
+    if ( window.virtual_office.selected.name == 'corkBoard' ) {
+      let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.blogWall.getViewingCoords( );
+
+      window.virtual_office.camera.position.copy(targetPosition);
+
+    }
   }
 }
 
@@ -187,9 +195,9 @@ function polaroidHover( polaroid ) {
 
       // Start loading the screen.
       document.getElementById('pageOverlay').src = polaroid.userData.url;
-      document.title =  polaroid.userData.title;
+      document.title = polaroid.userData.title;
 
-      history.pushState({}, "", polaroid.userData.url);
+      history.pushState({}, "", polaroid.userData.url.replace('iframes/', ''));
       stretchSelectedScreen();
       window.virtual_office.pointer.z = 0;
       clearBlogWallTitle();
