@@ -117,9 +117,6 @@ export async function setupCorkBoard() {
     };
 
     let polaroid_width = 88 * 0.02;
-    let polaroid_gutter = polaroid_width * 0.5;
-
-    console.log( polaroid_width, polaroid_gutter );
 
     window.virtual_office.scene_objects.polaroids = [];
 
@@ -158,6 +155,11 @@ export async function setupCorkBoard() {
             polaroid.position.x = 6;
         }
 
+        polaroid.userData.original_rotation = {
+            x: polaroid.rotation.x,
+            z: polaroid.rotation.z
+        }
+
         window.virtual_office.scene_objects.polaroids.push( polaroid );
 
         corkBoard.add( polaroid );
@@ -180,11 +182,10 @@ export async function setupPolaroid( singleData ) {
         emissiveIntensity: 0.1, } );
     let geometry = new THREE.PlaneGeometry( polaroid_outer.x, polaroid_outer.y );
 
-    let mesh = new THREE.Mesh( geometry, material );
-
-    mesh.scale.set( scaler, scaler, scaler );
-
-    mesh.position.z = 0.1;
+    let polaroidMesh = new THREE.Mesh( geometry, material );
+    polaroidMesh.scale.set( scaler, scaler, scaler );
+    polaroidMesh.position.z = 0.1;
+    polaroidMesh.name = 'polaroid';
 
     // Photo (inner) area
     let photoMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } );
@@ -194,7 +195,7 @@ export async function setupPolaroid( singleData ) {
     photoMesh.position.y = 9;
     photoMesh.position.z = 1;
 
-    mesh.add( photoMesh );
+    polaroidMesh.add( photoMesh );
 
     // Photo Label
     const loader = new FontLoader();
@@ -224,12 +225,18 @@ export async function setupPolaroid( singleData ) {
         let width = getMeshWidth( signMesh );
         signMesh.position.x = - width / 2;
 
-        mesh.add(signMesh);
+        polaroidMesh.add(signMesh);
     } );
 
-    return mesh;
+    return polaroidMesh;
 }
 
+/**
+ * Use the bounding box to calculate the width of a mesh.
+ * 
+ * @param {*} mesh 
+ * @returns float
+ */
 function getMeshWidth( mesh ) {
     mesh.geometry.computeBoundingBox();
     const boundingBox = mesh.geometry.boundingBox;

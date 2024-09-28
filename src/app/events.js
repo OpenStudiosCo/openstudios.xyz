@@ -123,15 +123,38 @@ export function handleInteractions( ) {
       }
       // Otherwise we're only tracking interaction with the exit sign.
       else {
-        document.documentElement.style.cursor = "inherit";
-        if ( ! window.virtual_office.hovered ) {
-          window.virtual_office.hovered = window.virtual_office.selected;
+        if ( window.virtual_office.selected.name == 'corkBoard' ) {
+          document.documentElement.style.cursor = "default";
+          if (intersects[i].object.name == "polaroid") {
+            window.virtual_office.hovered = intersects[i].object;
+
+            document.documentElement.style.cursor = "pointer";
+  
+            handlePolaroidClick( intersects[i].object );
+      
+            break;
+          }
+        }
+        else {
+          document.documentElement.style.cursor = "inherit";
+          if ( ! window.virtual_office.hovered ) {
+            window.virtual_office.hovered = window.virtual_office.selected;
+          }
         }
       }
     }
   }
   else {
     window.virtual_office.hovered = false;
+  }
+}
+
+function handlePolaroidClick( polaroid ) {
+  if (window.virtual_office.pointer.z && !window.virtual_office.moving) {
+    if (window.virtual_office.selected.name == 'corkBoard') {
+      window.virtual_office.moving = true;
+      window.virtual_office.selected = polaroid;
+    }
   }
 }
 
