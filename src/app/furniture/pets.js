@@ -106,6 +106,7 @@ export async function setupPortraits() {
     portraitMesh.add( topBorder );
     portraitMesh.add( bottomBorder );
 
+    portraitMesh.position.y = -2;
     portraitMesh.position.x = -9 + i * 9;
 
     group.add( portraitMesh );
@@ -146,8 +147,20 @@ export async function setupPortraits() {
     // Apply translation
     tempMesh.translateX( distanceX );
 
+    tempMesh.position.x = Math.min( tempMesh.position.x, 15 );
+
     return [ tempMesh.position, targetRotation ];
   };
+
+  // Blog Neon sign
+  await createNeonSign( 'the pets', async ( signMesh ) => {
+    // Position and rotate the sign
+    signMesh.position.set( -6, 4.5, 0.1 ); // Example position for the sign
+    signMesh.name = "pet_sign";
+    window.virtual_office.scene_objects.pet_sign = signMesh;
+    //signMesh.layers.set(11);
+    group.add( signMesh );
+  } );
 
   return group;
 }
