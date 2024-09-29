@@ -133,8 +133,8 @@ export async function setupPortraits() {
     const distanceHorizontal = window.innerWidth / ( 2 * Math.tan( fovHorizontal / 2 ) );
 
     // Adjust distance factor based on aspect ratio
-    let distanceFactor = aspectRatio > 1 ? 0.025 : 0.065;  // Increase factor slightly for very wide screens
-    distanceFactor = aspectRatio > 2 ? 0.035 : distanceFactor;
+    let distanceFactor = aspectRatio > 1 ? 0.055 : 0.065;  // Increase factor slightly for very wide screens
+    distanceFactor = aspectRatio > 2 ? 0.055 : distanceFactor;
     distanceFactor = aspectRatio > 2.2 ? 0.045 : distanceFactor;
     distanceFactor = aspectRatio < 0.5 ? 0.65 : distanceFactor;
 

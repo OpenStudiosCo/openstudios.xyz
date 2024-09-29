@@ -84,13 +84,7 @@ export async function handleViewportChange() {
       window.virtual_office.camera.rotation.copy( targetRotation );
 
     }
-    if ( window.virtual_office.selected.name == 'portraits' ) {
-      let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.portraits.getViewingCoords();
 
-      window.virtual_office.camera.position.copy( targetPosition );
-      window.virtual_office.camera.rotation.copy( targetRotation );
-
-    }
 
     if ( window.virtual_office.scene_objects.blog_selected_title ) {
       let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
@@ -103,7 +97,13 @@ export async function handleViewportChange() {
 
     if ( window.virtual_office.scene_objects.portraits ) {
       window.virtual_office.scene_objects.portraits.position.z = - 15 + ( ( window.virtual_office.room_depth / 8 ) * 2.5 );
-    }   
+    }
+    if ( window.virtual_office.selected.name == 'portraits' ) {
+      let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.portraits.getViewingCoords();
+
+      window.virtual_office.camera.position.copy( targetPosition );
+      window.virtual_office.camera.rotation.copy( targetRotation );
+    }
 
   }
 }
