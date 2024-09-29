@@ -66,7 +66,8 @@ export async function setupPortraits() {
       material.map = texture;
     } );
     var geometry = new THREE.PlaneGeometry( 6, 6 );
-    var portraitMesh = new THREE.Mesh( geometry, brightenMaterial( material, ( 3 ) ) );
+    var portraitMesh = new THREE.Mesh( geometry, brightenMaterial( material, ( window.virtual_office.fast ? 12 : 3  ) ) );
+    portraitMesh.name = 'portrait';
 
     let woodUrl = '/assets/textures/wood.jpg';
 
@@ -106,8 +107,7 @@ export async function setupPortraits() {
     portraitMesh.add( topBorder );
     portraitMesh.add( bottomBorder );
 
-    portraitMesh.position.y = -2;
-    portraitMesh.position.x = -9 + i * 9;
+    updatePortraitLayout( portraitMesh, i );
 
     group.add( portraitMesh );
   }); 
@@ -133,10 +133,12 @@ export async function setupPortraits() {
     const distanceHorizontal = window.innerWidth / ( 2 * Math.tan( fovHorizontal / 2 ) );
 
     // Adjust distance factor based on aspect ratio
-    let distanceFactor = aspectRatio > 1 ? 0.055 : 0.065;  // Increase factor slightly for very wide screens
-    distanceFactor = aspectRatio > 2 ? 0.055 : distanceFactor;
-    distanceFactor = aspectRatio > 2.2 ? 0.045 : distanceFactor;
-    distanceFactor = aspectRatio < 0.5 ? 0.65 : distanceFactor;
+    let distanceFactor = 0.055;  // Increase factor slightly for very wide screens
+    distanceFactor = aspectRatio > 1.8 ? 0.05 : distanceFactor;
+    distanceFactor = aspectRatio > 2.5 ? 0.055 : distanceFactor;
+    distanceFactor = aspectRatio <= 0.88 ? 0.065 : distanceFactor;
+    distanceFactor = aspectRatio < 0.6 ? 0.08 : distanceFactor;
+    distanceFactor = aspectRatio < 0.5 ? 0.065 : distanceFactor;
 
     const diffZ = distanceHorizontal * distanceFactor;
 
@@ -149,13 +151,15 @@ export async function setupPortraits() {
 
     tempMesh.position.x = Math.min( tempMesh.position.x, 15 );
 
+    tempMesh.position.y = window.virtual_office.camera.aspect >= 0.88 ? 12 : 14.5;
+
     return [ tempMesh.position, targetRotation ];
   };
 
   // Blog Neon sign
   await createNeonSign( 'the pets', async ( signMesh ) => {
     // Position and rotate the sign
-    signMesh.position.set( -6, 4.5, 0.1 ); // Example position for the sign
+    signMesh.position.set( -6, window.virtual_office.camera.aspect >= 0.88 ? 3 : 15, 0.1 ); // Example position for the sign
     signMesh.name = "pet_sign";
     window.virtual_office.scene_objects.pet_sign = signMesh;
     //signMesh.layers.set(11);
@@ -163,4 +167,16 @@ export async function setupPortraits() {
   } );
 
   return group;
+}
+
+export async function updatePortraitLayout( portrait, i ) {
+  // Use horizontal layout 
+  if ( window.virtual_office.camera.aspect >= 0.88 ) {
+    portrait.position.y = -2.5;
+    portrait.position.x = -9 + i * 9;
+  }
+  else {
+    portrait.position.y = -9 + i * 9;
+    portrait.position.x = 0;
+  }
 }
