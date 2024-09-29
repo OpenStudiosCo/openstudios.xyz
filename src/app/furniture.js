@@ -344,6 +344,11 @@ async function createDesk( i ) {
 
         brightenMaterial( child.material, amount );
 
+        child.material.color.r = child.material.color.g = child.material.color.b = 20;
+
+        child.material.metalness = 0.9;
+        child.material.roughness = 0;
+
       }
 
     } );
