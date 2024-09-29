@@ -13,6 +13,7 @@ import { resetReusables } from './tweens.js';
 import { getMeshWidth } from './helpers.js';
 
 import { setupBlogWallTitle, clearBlogWallTitle, updateBlogLayout } from './furniture/corkboard.js';
+import { updatePortraitLayout } from './furniture/pets.js';
 
 export async function handleViewportChange() {
   window.virtual_office.settings.adjusted_gap = calculateAdjustedGapSize();
@@ -85,7 +86,6 @@ export async function handleViewportChange() {
 
     }
 
-
     if ( window.virtual_office.scene_objects.blog_selected_title ) {
       let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
       window.virtual_office.scene_objects.blog_selected_title.position.set( - meshWidth / 2, window.virtual_office.camera.aspect >= 0.88 ? 0 : 6.5, .1 );
@@ -97,6 +97,11 @@ export async function handleViewportChange() {
 
     if ( window.virtual_office.scene_objects.portraits ) {
       window.virtual_office.scene_objects.portraits.position.z = - 15 + ( ( window.virtual_office.room_depth / 8 ) * 2.5 );
+      window.virtual_office.scene_objects.portraits.children.forEach( ( portraitChild, i ) => {
+        if ( portraitChild.name == 'portrait' ) {
+          updatePortraitLayout( portraitChild, i )
+        }
+      });
     }
     if ( window.virtual_office.selected.name == 'portraits' ) {
       let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.portraits.getViewingCoords();
@@ -105,6 +110,9 @@ export async function handleViewportChange() {
       window.virtual_office.camera.rotation.copy( targetRotation );
     }
 
+    if ( window.virtual_office.scene_objects.pet_sign ) {
+      window.virtual_office.scene_objects.pet_sign.position.set( -6, window.virtual_office.camera.aspect >= 0.88 ? 3 : 15, 0.1 );
+    }
   }
 }
 
