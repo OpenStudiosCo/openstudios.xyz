@@ -15,6 +15,7 @@ import { setupEffects } from './effects.js';
 import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
 import { setupBackwall, setupDesks } from './furniture.js';
 import { setupCorkBoard } from './furniture/corkboard.js';
+import { setupCat } from './furniture/pets.js';
 import { setupTriggers, updateTriggers } from './triggers.js';
 import { setupTweens, updateTweens, startTweening } from './tweens.js';
 
@@ -93,7 +94,7 @@ window.virtual_office = {
         loaded: 0
       },
       gtlf: {
-        target: 10, // @todo: Check if this affects double loads, shouldn't with caching.
+        target: 11, // @todo: Check if this affects double loads, shouldn't with caching.
         loaded: 0
       },
       screens: {
@@ -910,6 +911,9 @@ async function setupScene() {
 
   window.virtual_office.scene_objects.blogWall = await setupCorkBoard( );
   window.virtual_office.scene.add(window.virtual_office.scene_objects.blogWall);
+
+  window.virtual_office.scene_objects.cat = await setupCat( );
+  window.virtual_office.scene.add(window.virtual_office.scene_objects.cat);
 
   window.virtual_office.scene_objects.wallGroup = await setupBackwall( );
   window.virtual_office.scene_objects.wallGroup.position.z = - 15 - window.virtual_office.room_depth / 2;

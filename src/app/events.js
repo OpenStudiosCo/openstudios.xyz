@@ -115,6 +115,15 @@ export function handleInteractions() {
 
         document.documentElement.style.cursor = "default";
 
+        if ( intersects[ i ].object.name == "cat" ) {
+          document.documentElement.style.cursor = "pointer";
+
+          //catHover( intersects[ i ].object.parent );
+
+          break;
+        }
+
+
         if ( intersects[ i ].object.name == "screen" || intersects[ i ].object.name == "desk_part" || intersects[ i ].object.name == "desk_label" ) {
           document.documentElement.style.cursor = "pointer";
 

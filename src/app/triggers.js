@@ -27,9 +27,23 @@ function updateBlog( ) {
             if (
                 window.virtual_office.hovered &&
                 window.virtual_office.scene_objects.blog_sign &&
+                window.virtual_office.scene_objects.cat &&
                 window.virtual_office.scene_objects.polaroids && window.virtual_office.scene_objects.polaroids.length == 14
             ) {
-    
+                if ( window.virtual_office.hovered.name == 'cat' ) {
+                    if ( window.virtual_office.hovered.material.emissiveIntensity < 0.25 ) {
+                        window.virtual_office.hovered.material.emissiveIntensity += 0.25 / 15;
+                    }
+                }
+                else {
+                    if ( window.virtual_office.scene_objects.cat.children[0].material.emissiveIntensity > 0.01 ) {
+                        window.virtual_office.scene_objects.cat.children[0].material.emissiveIntensity -= 0.5 / 30;
+                    }
+                    else {
+                        window.virtual_office.scene_objects.cat.children[0].material.emissiveIntensity = 0;
+                    }
+                }
+                
                 // Rotate a polaroid and show it's title if hovered.
                 if ( window.virtual_office.hovered.name == 'polaroid' ) {
                     let polaroidImage = window.virtual_office.hovered.getObjectByName( 'polaroid_image' );
