@@ -625,6 +625,9 @@ window.matrix_scene = {
 
 function downTheRabbitHole() {
     window.virtual_office.started = true;
+    if ( window.scrollY != 0 ) {
+        window.scrollTo(0, 0);
+    }
     document.title = 'Open Studios | Perth, Western Australia';
     const pageWrapper = document.getElementById('page-wrapper');
     
@@ -635,7 +638,8 @@ function downTheRabbitHole() {
     // Hide the pageWrapper on completion so the iframed pages don't clash.
     setTimeout( () => {
         window.matrix_scene.complete = true;
-        pageWrapper.remove();
+         pageWrapper.style.display = 'none';
+         pageWrapper.style.pointerEvents = 'none';
 
         // Animate the camera resetting from any other position.
         window.virtual_office.tweens.resetCameraRotation.start();
