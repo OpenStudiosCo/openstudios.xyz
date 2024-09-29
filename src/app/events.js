@@ -84,6 +84,13 @@ export async function handleViewportChange() {
       window.virtual_office.camera.rotation.copy( targetRotation );
 
     }
+    if ( window.virtual_office.selected.name == 'portraits' ) {
+      let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.portraits.getViewingCoords();
+
+      window.virtual_office.camera.position.copy( targetPosition );
+      window.virtual_office.camera.rotation.copy( targetRotation );
+
+    }
 
     if ( window.virtual_office.scene_objects.blog_selected_title ) {
       let meshWidth = getMeshWidth( window.virtual_office.scene_objects.blog_selected_title ) * .1;
@@ -93,6 +100,10 @@ export async function handleViewportChange() {
     if ( window.virtual_office.scene_objects.blog_sign ) {
       window.virtual_office.scene_objects.blog_sign.position.set( -3, window.virtual_office.camera.aspect >= 0.88 ? 6.5 : 10, 0.1 );
     }
+
+    if ( window.virtual_office.scene_objects.portraits ) {
+      window.virtual_office.scene_objects.portraits.position.z = - 15 + ( ( window.virtual_office.room_depth / 8 ) * 2.5 );
+    }   
 
   }
 }
@@ -118,7 +129,7 @@ export function handleInteractions() {
         if ( intersects[ i ].object.name == "cat" ) {
           document.documentElement.style.cursor = "pointer";
 
-          //catHover( intersects[ i ].object.parent );
+          catHover( intersects[ i ].object.parent );
 
           break;
         }
@@ -202,6 +213,29 @@ export function handleInteractions() {
   }
   else {
     window.virtual_office.hovered = false;
+  }
+}
+
+function catHover() {
+  /**
+   * Handle click.
+   */
+  if ( window.virtual_office.state.pointerDown && !window.virtual_office.moving ) {
+    if ( !window.virtual_office.selected ) {
+      window.virtual_office.moving = true;
+      window.virtual_office.selected = window.virtual_office.scene_objects.portraits;
+
+      let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.portraits.getViewingCoords();
+
+      window.virtual_office.tweens.rotateCamera.to( { x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000 ).start();
+      window.virtual_office.tweens.moveCamera.to( targetPosition, 1000 ).onComplete( () => {
+        // Show the exit sign.
+        document.getElementById( 'exitSign' ).style.display = 'block';
+        window.virtual_office.state.pointerDown = false;
+      } ).start();
+
+    }
+
   }
 }
 
