@@ -25,7 +25,6 @@ export function startTweening() {
 
           window.virtual_office.camera.position.copy(targetPosition);
           window.virtual_office.camera.rotation.copy(targetRotation);
-          
         }
       }
 
@@ -187,7 +186,6 @@ function enterTheOffice ( ) {
 
     let pageWrapper = document.getElementById('page-wrapper');
     pageWrapper.style.display = 'none';
-
   });
 }
 
@@ -274,7 +272,7 @@ function moveCamera( ) {
       window.virtual_office.camera.updateProjectionMatrix();
     })
     .onComplete(() => {
-      window.virtual_office.moving = false;     
+      window.virtual_office.moving = false;
     });
   ;
 }
