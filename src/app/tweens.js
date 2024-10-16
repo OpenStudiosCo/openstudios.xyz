@@ -14,6 +14,7 @@ export function startTweening() {
     }
 
     if (window.matrix_scene.type == 'button') {
+      history.pushState( {}, "", '/' );
       let matched = false;
       // Check which page we came through so we can grab it's position.
       for ( var screen_id in window.virtual_office.screens) {
