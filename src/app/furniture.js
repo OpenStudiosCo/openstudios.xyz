@@ -530,7 +530,7 @@ async function createScreen( i ) {
   const screen = window.virtual_office.screens[ i ];
   const slug = screen.slug;
   const url = '/assets/images/pages/' + slug + '.jpg',
-    pageUrl = '../iframes/' + slug + '.html';
+    pageUrl = '/iframes/' + slug + '.html';
 
   var material = new THREE.MeshPhongMaterial();
   await window.virtual_office.loaders.texture.load( url, async ( screenTexture ) => {
@@ -543,7 +543,7 @@ async function createScreen( i ) {
   // @todo: move into settings.
   screenWebGL.pageUrl = pageUrl;
   screenWebGL.pageTitle = screen.title;
-  screenWebGL.pageRealUrl = '../' + slug + '.html';;
+  screenWebGL.pageRealUrl = '/' + slug + '.html';;
 
   //mesh.scale.copy( domObject.scale );
   screenWebGL.castShadow = false;

@@ -105,7 +105,7 @@ window.matrix_scene = {
             ypos.forEach((y, ind) => {
                 window.matrix_scene.drawSymbol(y, ind);
 
-                if (y > 1 + randomInt(1, 2000 * window.matrix_scene.loaded_done)) ypos[ind] = 0;
+                if (y > 1 + randomInt(1, 10000 * window.matrix_scene.loaded_done)) ypos[ind] = 0;
                 else ypos[ind] = y + fontSize;
 
             });           

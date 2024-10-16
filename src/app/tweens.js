@@ -25,20 +25,19 @@ export function startTweening() {
 
           window.virtual_office.camera.position.copy(targetPosition);
           window.virtual_office.camera.rotation.copy(targetRotation);
-
-          updateFlickering( { emissiveIntensity: 1 } );          
         }
       }
 
+      // Fall back for all other pages entering via pokematrix.
       if ( ! matched ) {
         if ( window.location.href.indexOf('/blog') >= 0 ) {
           let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.blogWall.getViewingCoords( );
           window.virtual_office.camera.position.copy(targetPosition);
           window.virtual_office.camera.rotation.copy(targetRotation);
-
-          updateFlickering( { emissiveIntensity: 1 } );          
         }
       }
+
+      updateFlickering( { emissiveIntensity: 1 } );
     }
     
   }, 250);
@@ -289,8 +288,10 @@ function rotateCamera( ) {
   });
 }
 
-// Resets 
+// Track first run so we can set the initial URL when entering via pokematrix.
+let firstTime = true;
 
+// Resets 
 function resetCameraPosition( cameraDefaultPosition ) {
   return new TWEEN.Tween(window.virtual_office.camera.position)
   .to(cameraDefaultPosition, 1000)
@@ -300,6 +301,13 @@ function resetCameraPosition( cameraDefaultPosition ) {
   })
   .onComplete(() => {
     window.virtual_office.moving = false;
+    if ( firstTime ) {
+      firstTime = false;
+      if (window.matrix_scene.type == 'button') {
+        document.title = 'Open Studios | Perth, Western Australia';
+        history.pushState( {}, "", '/' );
+      }
+    }
   })
   ;
 }
