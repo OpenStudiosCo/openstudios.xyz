@@ -5,7 +5,7 @@
  */
 import * as THREE from 'three';
 
-import { calculateAdjustedGapSize, createOfficeRoom, setCameraFOV, doorWidth, doorDepth, doorHeight } from './main.js';
+import { calculateAdjustedGapSize, createOfficeRoom, setCameraFOV, doorWidth, doorDepth, doorHeight } from '../virtual_office.js';
 
 import { updateDeskZ } from './furniture.js';
 import { resetReusables } from './tweens.js';

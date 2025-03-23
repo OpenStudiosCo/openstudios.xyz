@@ -154,8 +154,9 @@ html(lang='en')
                     gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
                 }
 
-            script
-                include ../scripts/scenograph.js
+            script(type="importmap")
+                include importmap.json
+            script(src='/assets/scripts/L.js')
             script
                 include ../scripts/pokematrix.js
             script.

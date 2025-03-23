@@ -26,7 +26,7 @@ function _init( wait ) {
     if ( window.s ) { alert("window.s already set! Something is wrong."); return; }
 	window.s = {};
 
-    s.version = '0.6.0';
+    s.version = '0.6.0-experimental';
 	s.url = '//' + location.host;
 	s.env = _check_environment();
 
@@ -44,10 +44,58 @@ function _init( wait ) {
 			name: "TWEEN.js",
 			files: [ { path: '/vendor/tween-21.0.0.umd.min.js' } ]
 		},
+		{
+			name: "detect-gpu",
+			files: [ 
+				{ path: '/vendor/detect-gpu.umd.js' }
+			]
+		},
+		{
+			name: "three.js",
+			files: [ 
+				{ path: '/vendor/three.module.js' },
+				{ path: '/vendor/three/addons/controls/OrbitControls.js' },
+				{ path: '/vendor/three/addons/libs/stats.module.js' },
+				{ path: '/vendor/three/addons/loaders/FontLoader.js' },
+				{ path: '/vendor/three/addons/loaders/GLTFLoader.js' },
+				{ path: '/vendor/three/addons/loaders/SVGLoader.js' },
+				{ path: '/vendor/three/addons/utils/BufferGeometryUtils.js' },
+			]
+		},
+		{
+			name: "three-mesh-bvh",
+			requires: [ 'three.js' ],
+			files: [ 
+				{ path: '/vendor/three-mesh-bvh.js' },
+			]
+		},
+		{
+			name: "three-bvh-csg",
+			requires: [ 'three.js', 'three-mesh-bvh' ],
+			files: [ 
+				{ path: '/vendor/three-bvh-csg.js' },
+			]
+		},
+		{
+			name: "postprocessing",
+			requires: [ 'three.js' ],
+			files: [ 
+				{ path: '/vendor/postprocessing.js' },
+			]
+		},
 		{ 
 			name: "Virtual Office",
-			requires: [ 'tweakpane', 'TWEEN.js' ],
-			files: [ { path: "/main.js", callback: "window.virtual_office.init" } ]
+			requires: [ 'tweakpane', 'TWEEN.js', 'detect-gpu', 'three.js', 'three-bvh-csg' ],
+			files: [
+				{ path: "./assets/scripts/virtual_office/effects.js" },
+				{ path: "./assets/scripts/virtual_office/events.js" },
+				{ path: "./assets/scripts/virtual_office/furniture.js" },
+				{ path: "./assets/scripts/virtual_office/furniture/corkboard.js" },
+				{ path: "./assets/scripts/virtual_office/helpers.js" },
+				{ path: "./assets/scripts/virtual_office/triggers.js" },
+				{ path: "./assets/scripts/virtual_office/tweens.js" },
+				{ path: "./assets/scripts/virtual_office.js", callback: "window.virtual_office.init" }
+			]
 		}
 	];
 
