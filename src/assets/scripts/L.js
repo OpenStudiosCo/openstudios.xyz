@@ -53,12 +53,34 @@ function _init( wait ) {
 		{
 			name: "three.js",
 			files: [ 
-				{ path: '/vendor/three.module.js' }
+				{ path: '/vendor/three.module.js' },
+				{ path: '/vendor/three/addons/libs/stats.module.js' },
+			]
+		},
+		{
+			name: "three-mesh-bvh",
+			requires: [ 'three.js' ],
+			files: [ 
+				{ path: '/vendor/three-mesh-bvh.js' },
+			]
+		},
+		{
+			name: "three-bvh-csg",
+			requires: [ 'three.js', 'three-mesh-bvh' ],
+			files: [ 
+				{ path: '/vendor/three-bvh-csg.js' },
+			]
+		},
+		{
+			name: "postprocessing",
+			requires: [ 'three.js' ],
+			files: [ 
+				{ path: '/vendor/postprocessing.js' },
 			]
 		},
 		{ 
 			name: "Virtual Office",
-			requires: [ 'tweakpane', 'TWEEN.js', 'detect-gpu', 'three.js' ],
+			requires: [ 'tweakpane', 'TWEEN.js', 'detect-gpu', 'three.js', 'three-bvh-csg' ],
 			files: [ { path: "./assets/scripts/virtual_office.js", callback: "window.virtual_office.init" } ]
 		}
 	];

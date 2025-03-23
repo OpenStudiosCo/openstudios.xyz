@@ -1,4 +1,4 @@
-import Stats from 'three/addons/libs/stats.module.js';
+import * as THREE from "three";
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -7,13 +7,13 @@ import { SUBTRACTION, Brush, Evaluator } from 'three-bvh-csg';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
-import { setupEffects } from '../../app/effects.js';
-import { handleInteractions, handleViewportChange, handleExitSign } from '../../app/events.js';
-import { setupBackwall, setupDesks } from '../../app/furniture.js';
-import { setupCorkBoard } from '../../app/furniture/corkboard.js';
-import { setupCat, setupPortraits } from '../../app/furniture/pets.js';
-import { setupTriggers, updateTriggers } from '../../app/triggers.js';
-import { setupTweens, updateTweens, startTweening } from '../../app/tweens.js';
+import { setupEffects } from 'virtual_office/effects.js';
+import { handleInteractions, handleViewportChange, handleExitSign } from 'virtual_office/events.js';
+import { setupBackwall, setupDesks } from 'virtual_office/furniture.js';
+import { setupCorkBoard } from 'virtual_office/furniture/corkboard.js';
+import { setupCat, setupPortraits } from 'virtual_office/furniture/pets.js';
+import { setupTriggers, updateTriggers } from 'virtual_office/triggers.js';
+import { setupTweens, updateTweens, startTweening } from 'virtual_office/tweens.js';
 
 let csgEvaluator;
 let stats;
@@ -276,7 +276,7 @@ window.virtual_office.screen_ids =  {
   720: window.virtual_office.screens.about_us,
 };
 
-window.virtual_office.init = async function () {
+async function init() {
 
   let pane;
 

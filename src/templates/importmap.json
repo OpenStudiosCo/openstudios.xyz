@@ -1,0 +1,10 @@
+{
+    "imports": {
+        "postprocessing": "/vendor/postprocessing.js",
+        "three": "/vendor/three.module.js",
+        "three/": "/vendor/three/",
+        "three-bvh-csg": "/vendor/three-bvh-csg.js",
+        "three-mesh-bvh": "/vendor/three-mesh-bvh.js",
+        "virtual_office/": "/assets/scripts/virtual_office/"
+    }
+}
