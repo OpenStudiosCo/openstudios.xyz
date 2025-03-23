@@ -87,14 +87,14 @@ function _init( wait ) {
 			name: "Virtual Office",
 			requires: [ 'tweakpane', 'TWEEN.js', 'detect-gpu', 'three.js', 'three-bvh-csg' ],
 			files: [
-				{ path: "./assets/scripts/virtual_office/effects.js" },
-				{ path: "./assets/scripts/virtual_office/events.js" },
-				{ path: "./assets/scripts/virtual_office/furniture.js" },
-				{ path: "./assets/scripts/virtual_office/furniture/corkboard.js" },
-				{ path: "./assets/scripts/virtual_office/helpers.js" },
-				{ path: "./assets/scripts/virtual_office/triggers.js" },
-				{ path: "./assets/scripts/virtual_office/tweens.js" },
-				{ path: "./assets/scripts/virtual_office.js", callback: "window.virtual_office.init" }
+				{ path: "/assets/scripts/virtual_office/effects.js" },
+				{ path: "/assets/scripts/virtual_office/events.js" },
+				{ path: "/assets/scripts/virtual_office/furniture.js" },
+				{ path: "/assets/scripts/virtual_office/furniture/corkboard.js" },
+				{ path: "/assets/scripts/virtual_office/helpers.js" },
+				{ path: "/assets/scripts/virtual_office/triggers.js" },
+				{ path: "/assets/scripts/virtual_office/tweens.js" },
+				{ path: "/assets/scripts/virtual_office.js", callback: "window.virtual_office.init" }
 			]
 		}
 	];
