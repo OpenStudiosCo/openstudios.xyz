@@ -26,7 +26,7 @@ function _init( wait ) {
     if ( window.s ) { alert("window.s already set! Something is wrong."); return; }
 	window.s = {};
 
-    s.version = '0.6.0';
+    s.version = '0.6.0-experimental';
 	s.url = '//' + location.host;
 	s.env = _check_environment();
 
@@ -44,10 +44,22 @@ function _init( wait ) {
 			name: "TWEEN.js",
 			files: [ { path: '/vendor/tween-21.0.0.umd.min.js' } ]
 		},
+		{
+			name: "detect-gpu",
+			files: [ 
+				{ path: '/vendor/detect-gpu.umd.js' }
+			]
+		},
+		{
+			name: "three.js",
+			files: [ 
+				{ path: '/vendor/three.module.js' }
+			]
+		},
 		{ 
 			name: "Virtual Office",
-			requires: [ 'tweakpane', 'TWEEN.js' ],
-			files: [ { path: "/main.js", callback: "window.virtual_office.init" } ]
+			requires: [ 'tweakpane', 'TWEEN.js', 'detect-gpu', 'three.js' ],
+			files: [ { path: "./assets/scripts/virtual_office.js", callback: "window.virtual_office.init" } ]
 		}
 	];
 

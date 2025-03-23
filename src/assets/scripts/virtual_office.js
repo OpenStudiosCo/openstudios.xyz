@@ -1,7 +1,3 @@
-import { getGPUTier } from 'detect-gpu';
-
-import * as THREE from 'three';
-
 import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -11,13 +7,13 @@ import { SUBTRACTION, Brush, Evaluator } from 'three-bvh-csg';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
-import { setupEffects } from './effects.js';
-import { handleInteractions, handleViewportChange, handleExitSign } from './events.js';
-import { setupBackwall, setupDesks } from './furniture.js';
-import { setupCorkBoard } from './furniture/corkboard.js';
-import { setupCat, setupPortraits } from './furniture/pets.js';
-import { setupTriggers, updateTriggers } from './triggers.js';
-import { setupTweens, updateTweens, startTweening } from './tweens.js';
+import { setupEffects } from '../../app/effects.js';
+import { handleInteractions, handleViewportChange, handleExitSign } from '../../app/events.js';
+import { setupBackwall, setupDesks } from '../../app/furniture.js';
+import { setupCorkBoard } from '../../app/furniture/corkboard.js';
+import { setupCat, setupPortraits } from '../../app/furniture/pets.js';
+import { setupTriggers, updateTriggers } from '../../app/triggers.js';
+import { setupTweens, updateTweens, startTweening } from '../../app/tweens.js';
 
 let csgEvaluator;
 let stats;
@@ -280,7 +276,7 @@ window.virtual_office.screen_ids =  {
   720: window.virtual_office.screens.about_us,
 };
 
-export default async function init() {
+window.virtual_office.init = async function () {
 
   let pane;
 
@@ -300,7 +296,7 @@ export default async function init() {
   }
   else {
     // Run scaling
-    const gpuTier = await getGPUTier();
+    const gpuTier = await DetectGPU.getGPUTier();
 
     if (gpuTier && gpuTier.tier && gpuTier.tier >= 3) {
       // Enable effects

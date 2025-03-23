@@ -150,9 +150,7 @@ html(lang='en')
                     float lum = 0.21 * bloom_color.r + 0.71 * bloom_color.g + 0.07 * bloom_color.b;
                     gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
                 }
-            
-            script
-                include ../scripts/scenograph.js
+            script(src='/assets/scripts/L.js')
             script
                 include ../scripts/matrix.js
             script.
