@@ -1,0 +1,174 @@
+<!DOCTYPE html><html><head><title></title><base href="../"><meta name="description" content="We are Open Studios. Perth based digital production studio."><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><script src="https://www.google.com/recaptcha/api.js"></script><link rel="canonical" href="https://openstudios.xyz/blog/2025/05/langenium-v6-update.html"><meta property="og:title"><meta property="og:description"><meta property="og:type" content="article"><meta property="og:image" content="https://openstudios.xyz//assets/blog/2025/05/Screenshot-from-2025-05-09-22-23-01-1024x355.png"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="768"><meta name="twitter:title"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description"><meta name="twitter:image" content="https://openstudios.xyz//assets/blog/2025/05/Screenshot-from-2025-05-09-22-23-01-1024x355.png"><script async src="https://www.googletagmanager.com/gtag/js?id=AW-983760722"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div class="header_bg"></div><div class="header" role="banner"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div><div class="content_row" role="main"><script>window.addEventListener("DOMContentLoaded", function() {
+  let images = document.querySelectorAll( '.blog_post img' );
+
+  images.forEach( imageElm => {
+    // Create a new anchor element
+    const linkElm = document.createElement('a');
+    // Set the href attribute to the image's src
+    linkElm.href = imageElm.src;
+    linkElm.classList.add('lightbox');
+    
+    // Insert the image as a child of the anchor element
+    linkElm.appendChild(imageElm.cloneNode(true));
+    
+    // Replace the original image with the new anchor element
+    imageElm.parentNode.replaceChild(linkElm, imageElm);
+  } );
+  const prvs = new Parvus();
+
+});
+</script><div class="content blog_post"><div class="breadcrumb"><span class="item">Blogs</span><span class="item">&nbsp;&nbsp;>&nbsp;&nbsp;</span><span class="item">Langenium v6 Update</span></div><h2>Langenium v6 Update</h2><p>The latest ticket in the Langenium repo (#32 – Basic Gameplay) was just completed a few weeks ago making the 6th major refactor (v6) complete. The project had been on hold from 2017 until 2023, so this this continuation was a bit of a reset using the Open Studios website as a 3D game client, building a reusable TypeScript codebase for game logic and a new Node.js server for multiplayer. All the best and unique parts of different past versions of Langenium were referenced in this refactor, and put to use where it provided a benefit and replaced from scratch when it was easier to do that instead.</p>
+
+
+
+<ul class="wp-block-list">
+<li>additional paragraph about new  video</li>
+</ul>
+
+
+
+<p>&lt;NEW TRAILER VIDEO&gt; </p>
+
+
+
+<h2 class="wp-block-heading">Game client</h2>
+
+
+
+<p>The Open Studios website itself is a fork of the static Langenium game client, upgraded significantly with modern optimisations and the latest versions of libraries like Three.js. New libraries like <a href="https://github.com/pmndrs/postprocessing" data-type="link" data-id="https://github.com/pmndrs/postprocessing">postprocessing</a> were used to optimise multiple shader effect passes and <a href="https://github.com/pmndrs/detect-gpu" data-type="link" data-id="https://github.com/pmndrs/detect-gpu">detect-gpu</a> allows the engine to dynamically scale performance to the capabilities of each game client. This means that a user accessing the Langenium game website on their PC will get a 4K experience with advanced special effects, while someone accesing it on a laptop or mobile may see a more demure experience.</p>
+
+
+
+<p>The Langenium loader is a script that was devised in v5 to allow the engine to load and unload script files dynamically. The idea was that a static version of the site had to have a way to change itself in the browser, taking on code only as needed and offloading unused scripts to free up memory and resources.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="355" src="/assets/blog/2025/05/Screenshot-from-2025-05-09-22-23-01-1024x355.png" alt="" class="wp-image-272" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-09-22-23-01-1024x355.png 1024w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-09-22-23-01-300x104.png 300w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-09-22-23-01-768x266.png 768w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-09-22-23-01.png 1225w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption class="wp-element-caption">It also comes with a built-in Linux style boot up process via the browser’s console.log!</figcaption></figure>
+
+
+
+<p>The Open Studios website uses the Langenium loader script to its full effect, however it originally didn’t and the Langenium codebase may or may not go that direction. The loader adds a little bit of delay in real time, however it also stops the browser from freezing when it downloads the app script and tries to process it. While it’s counterintuitive to pick something that takes longer in tech – in testing it felt like the website was freezing or crashing entirely when the compiled version of JS was loaded up. It seems that while the incremental approach of loading small scripts takes a little longer (0.5s~1s), it prevents the browser from being overwhelmed crunching a big JS file and making the user sense that something is wrong because the animation and/or their device is frozen. The same may not always be true when trying to handle Langenium’s much larger codebase, we have a ticket to figure that out in a future sprint.</p>
+
+
+
+<p>In order for the game to have viable multiplayer, the game clients and server need to use an established set of rules in order to create a synchronised game simulation across all players and itself (as the source of truth). To do this in Langenium, both the game client and server use a shared <strong>/game</strong> folder which contains TypeScript classes that define game objects like aircraft statistics and capabilities, damage calculations and other code that needs to be shared and could be considered “game logic”.</p>
+
+
+
+<h2 class="wp-block-heading">Touch controls and cross platform focus</h2>
+
+
+
+<div class="wp-block-media-text is-stacked-on-mobile"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="494" height="745" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-57-55.png" alt="" class="wp-image-276 size-full" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-57-55.png 494w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-57-55-199x300.png 199w" sizes="(max-width: 494px) 100vw, 494px"></figure><div class="wp-block-media-text__content">
+<p>The goal is to implement a true cross platform experience which means UI that works for touchscreen via a mobile or keyboard and mouse on PC.</p>
+
+
+
+<p>Using mesa97’s touch libarry from with some tweaks to add an elevator lever.</p>
+</div></div>
+
+
+
+<p></p>
+
+
+
+<h2 class="wp-block-heading">Thruster effects</h2>
+
+
+
+<div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile"><div class="wp-block-media-text__content">
+<p>Using this TrailRenderer library as the basis for drawing missile and player thruster exhaust trails.</p>
+
+
+
+<p>Video sprites from a real jet engine are attached in a formation around the player’s aircraft thruster to create the effect of a thruster, when the player accelerates the sprites are scaled up and stretched.</p>
+
+
+
+<p></p>
+</div><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="1024" height="608" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-14-06-58-e1747289358895-1024x608.png" alt="" class="wp-image-279 size-full"></figure></div>
+
+
+
+<h2 class="wp-block-heading">Procedural materials and basic scenery</h2>
+
+
+
+<div class="wp-block-cover is-light"><span aria-hidden="true" class="wp-block-cover__background has-background-dim" style="background-color:#72abcc"></span><img loading="lazy" decoding="async" width="951" height="518" class="wp-block-cover__image-background wp-image-95" alt="" src="/assets/blog/2025/05/Screenshot-2024-06-28-044923-edited-e1747289477386.png" data-object-fit="cover" srcset="https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-044923-edited-e1747289477386.png 951w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-044923-edited-e1747289477386-300x163.png 300w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-044923-edited-e1747289477386-768x418.png 768w" sizes="(max-width: 951px) 100vw, 951px"><div class="wp-block-cover__inner-container is-layout-constrained wp-block-cover-is-layout-constrained">
+<p class="has-text-align-center has-large-font-size">This topic was so large it has it’s own blog article, check out <a href="https://openstudios.xyz/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html">How to implement Blender Principled BSDF Materials in Three.js (WebGL)</a></p>
+</div></div>
+
+
+
+<h2 class="wp-block-heading">Mini map</h2>
+
+
+
+<ul class="wp-block-list">
+<li>maybe illustrate up the image below so it’s clearer this is a scaled up section</li>
+</ul>
+
+
+
+<div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile"><div class="wp-block-media-text__content">
+<p>Players and bots use the same radar systems for locking their weapons onto each other.</p>
+
+
+
+<p>Symbols on the map determine whether a the radar system detected a structure (square), aircraft (triangle) or sea vessel (trapezoid). </p>
+</div><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="366" height="343" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-58-56-1-e1747289637866.png" alt="" class="wp-image-283 size-full" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-1-e1747289637866.png 366w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-1-e1747289637866-300x281.png 300w" sizes="(max-width: 366px) 100vw, 366px"></figure></div>
+
+
+
+<h2 class="wp-block-heading">Missile and combat system</h2>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="992" height="1024" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-58-56-992x1024.png" alt="" class="wp-image-277" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-992x1024.png 992w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-291x300.png 291w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-768x793.png 768w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-1488x1536.png 1488w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56.png 1919w" sizes="(max-width: 992px) 100vw, 992px"></figure>
+
+
+
+<p>– V7 and roadmap to production build:</p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+<br><br></div></div><div class="content_row newsletter" role="complementary"><div class="newsletter_bg"></div><div class="content"><div class="row center"><div class="wide-column"><script>function newsletterSubmit(token) {
+    var validationElm = document.getElementById("newslettervalidation");
+    var data = document.getElementById("newsletterform");
+    fetch(data.getAttribute('action'), {
+        method: data.getAttribute('method'),
+        body: new FormData(data)
+    }).then(function (response) {
+        if (response.status === 200) {
+        return response.text();
+        } else {
+        validationElm.innerHTML = response.text();
+        }
+    })
+    .then(function (data) {
+        validationElm.innerHTML = data;
+        if (validationElm.innerHTML.indexOf('Email sent successfully.') >= 0) {
+            document.getElementById("newsletterform").reset();
+        }
+    });
+}</script><form id="newsletterform" method="post" action="https://mailform.openstudios.xyz/" role="form"><h3>Subscribe to our newsletter</h3><p>Get all our latest insights, tips and project updates, conveniently in your inbox.</p><table style="width: 100%"><tr><td style="width: 80%"><input type="hidden" name="name" value="n/a"><input type="hidden" name="message" value="Newsletter signup request"><input type="email" name="email" placeholder="Email address"></td><td style="padding-left: 1rem"><button class="g-recaptcha" data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" data-callback="newsletterSubmit" data-action="submit">Subscribe</button></td></tr></table><h3 id="newslettervalidation" style="color: red; font-weight: bold;"></h3></form></div></div></div></div><div class="content_row footer"><div class="content"><div class="row center"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div></div></div></div><script>var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="https://analytics.openstudios.xyz/";
+_paq.push(['setTrackerUrl', u+'matomo.php']);
+_paq.push(['setSiteId', '11']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+})();</script></body></html>
