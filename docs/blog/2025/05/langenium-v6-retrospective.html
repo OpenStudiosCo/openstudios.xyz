@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="We are Open Studios. Perth based digital production studio."><title>Langenium v6 Retrospective</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><script src="https://www.google.com/recaptcha/api.js"></script><link rel="canonical" href="https://openstudios.xyz/blog/2025/05/langenium-v6-retrospective.html"><meta property="og:title"><meta property="og:description" content="Explore our digital studio retrospectives, project updates and technical guides. Gain insights into our process, expertise and abilities."><meta property="og:type" content="article"><meta property="og:image" content="https://openstudios.xyz//assets/blog/2025/05/Screenshot-from-2025-05-09-22-23-01-1024x355.png"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="768"><meta name="twitter:title"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description" content="Explore our digital studio retrospectives, project updates and technical guides. Gain insights into our process, expertise and abilities."><meta name="twitter:image" content="https://openstudios.xyz//assets/blog/2025/05/Screenshot-from-2025-05-09-22-23-01-1024x355.png"><script async src="https://www.googletagmanager.com/gtag/js?id=AW-983760722"></script><script>window.dataLayer = window.dataLayer || [];
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="We are Open Studios. Perth based digital production studio."><title>Langenium v6 Retrospective</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><script src="https://www.google.com/recaptcha/api.js"></script><link rel="canonical" href="https://openstudios.xyz/blog/2025/05/langenium-v6-retrospective.html"><meta property="og:title"><meta property="og:description" content="Explore our digital studio retrospectives, project updates and technical guides. Gain insights into our process, expertise and abilities."><meta property="og:type" content="article"><meta property="og:image" content="https://openstudios.xyz//assets/blog/2025/05/3d-logo-01-1024x576.png"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="768"><meta name="twitter:title"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description" content="Explore our digital studio retrospectives, project updates and technical guides. Gain insights into our process, expertise and abilities."><meta name="twitter:image" content="https://openstudios.xyz//assets/blog/2025/05/3d-logo-01-1024x576.png"><script async src="https://www.googletagmanager.com/gtag/js?id=AW-983760722"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
@@ -135,17 +135,21 @@ body {
   const prvs = new Parvus();
 
 });
-</script><div class="content blog_post"><div class="breadcrumb"><a class="item" href="/blog.html">Blogs</a><span class="item">&nbsp;&nbsp;>&nbsp;&nbsp;</span><span class="item">Langenium v6 Retrospective</span></div><h2>Langenium v6 Retrospective</h2><p>The latest ticket in the Langenium repo (#32 – Basic Gameplay) was just completed a few weeks ago making the 6th major refactor (v6) complete. The project had been on hold from 2017 until 2023, so this this continuation was a bit of a reset using the Open Studios website as a 3D game client, building a reusable TypeScript codebase for game logic and a new Node.js server for multiplayer. All the best and unique parts of different past versions of Langenium were referenced in this refactor, and put to use where it provided a benefit and replaced from scratch when it was easier to do that instead.</p>
+</script><div class="content blog_post"><div class="breadcrumb"><a class="item" href="/blog.html">Blog</a><span class="item">&nbsp;&nbsp;>&nbsp;&nbsp;</span><span class="item">Langenium v6 Retrospective</span></div><h2>Langenium v6 Retrospective</h2><figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="576" src="/assets/blog/2025/05/3d-logo-01-1024x576.png" alt="" class="wp-image-321" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-1024x576.png 1024w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-300x169.png 300w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-768x432.png 768w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-1536x864.png 1536w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-2048x1152.png 2048w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption class="wp-element-caption">The title sequence for the game uses an SVG of the logo, extruded to give the shape some depth and finally assigned animated shader based materials for the final result you see above.</figcaption></figure>
 
 
 
-<ul class="wp-block-list">
-<li>additional paragraph about new  video</li>
-</ul>
+<p>Langenium is an open source MMORPG project that has been in development since 2012. The latest phase, dubbed “v6” is a major rebuild of the project using the current Open Studios website as a 3D game client, building a reusable TypeScript codebase for game logic and a new Node.js server for multiplayer. The final ticket in the v6 epic (Basic Gameplay – <a href="https://github.com/OpenStudiosCo/Langenium/issues/32">Issue #32</a>) was just completed a few weeks ago making this phase complete. All the best and unique parts of different past versions of Langenium were referenced in this refactor, put to use where it provided a benefit and replaced from scratch when it was easier to do that instead.</p>
 
 
 
-<p>&lt;NEW TRAILER VIDEO&gt; </p>
+<p>When the project first started in 2012, WebGL was still not widely available in the browser and the smartphone market had only just begun to mature with models like the iPhone 5 and Galaxy Note 2. With today’s technology, it is much easier to do 3D in the web, however the practical challenges of working with 3D means it remains a new frontier for the industry. Overheads that originally slowed down this project such as 3D asset production and optimisation haven’t gone away, even with today’s AI.</p>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="Langenium 2025 Trailer" width="500" height="281" src="https://www.youtube.com/embed/0a8gmK9dgxE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div><figcaption class="wp-element-caption"><em>This new trailer for Langenium shows off some of the engines new features including procedurally generated scenery, aircraft targeting scanners and missile combat.</em></figcaption></figure>
 
 
 
@@ -153,11 +157,11 @@ body {
 
 
 
-<p>The Open Studios website itself is a fork of the static Langenium game client, upgraded significantly with modern optimisations and the latest versions of libraries like Three.js. New libraries like <a href="https://github.com/pmndrs/postprocessing" data-type="link" data-id="https://github.com/pmndrs/postprocessing">postprocessing</a> were used to optimise multiple shader effect passes and <a href="https://github.com/pmndrs/detect-gpu" data-type="link" data-id="https://github.com/pmndrs/detect-gpu">detect-gpu</a> allows the engine to dynamically scale performance to the capabilities of each game client. This means that a user accessing the Langenium game website on their PC will get a 4K experience with advanced special effects, while someone accesing it on a laptop or mobile may see a more demure experience.</p>
+<p>The Open Studios website is a fork of the static Langenium v5 game client, upgraded significantly with modern techniques and the latest versions of libraries like Three.js. New libraries like <a href="https://github.com/pmndrs/postprocessing" data-type="link" data-id="https://github.com/pmndrs/postprocessing">postprocessing</a> were used to optimise multiple shader effect passes and <a href="https://github.com/pmndrs/detect-gpu" data-type="link" data-id="https://github.com/pmndrs/detect-gpu">detect-gpu</a> allows the engine to dynamically scale performance to the capabilities of each visitors device and browser. This means that a user accessing the Langenium game website on their PC will get a more high end experience with 4K, shader based special effects, while someone accesing it on a laptop or mobile may see a more demure experience.</p>
 
 
 
-<p>The Langenium loader is a script that was devised in v5 to allow the engine to load and unload script files dynamically. The idea was that a static version of the site had to have a way to change itself in the browser, taking on code only as needed and offloading unused scripts to free up memory and resources.</p>
+<p>The Langenium loader is a script that was devised in v5 to allow the engine to load and unload script files dynamically. The idea was that a static version of the site had to have a way to change itself in the browser, taking on code only as needed and offloading unused code to allow for hot module replacement by using AJAX. Taking inspiration from APIs in CMSes like Drupal and WordPress, Javascript libraries can be added while declaring their dependencies and a callback. This means that a library that needs THREE.JS won’t load into memory until THREE.JS is loaded, and when both are ready a custom function within the game engine can be called to tell it things are ready to go. In the screenshot below, the final callback “l.init()” is called once its two dependencies (TWEEN.JS and the game client) are loaded.</p>
 
 
 
@@ -165,7 +169,7 @@ body {
 
 
 
-<p>The Open Studios website uses the Langenium loader script to its full effect, however it originally didn’t and the Langenium codebase may or may not go that direction. The loader adds a little bit of delay in real time, however it also stops the browser from freezing when it downloads the app script and tries to process it. While it’s counterintuitive to pick something that takes longer in tech – in testing it felt like the website was freezing or crashing entirely when the compiled version of JS was loaded up. It seems that while the incremental approach of loading small scripts takes a little longer (0.5s~1s), it prevents the browser from being overwhelmed crunching a big JS file and making the user sense that something is wrong because the animation and/or their device is frozen. The same may not always be true when trying to handle Langenium’s much larger codebase, we have a ticket to figure that out in a future sprint.</p>
+<p>The Open Studios website uses the Langenium loader script to its full effect, however it originally didn’t and the Langenium codebase may or may not go that direction. The loader adds a little bit of delay in real time, however it also stops the browser from freezing when it downloads the app script and tries to process it. While it’s counterintuitive to pick something that takes longer in tech – in testing it felt like the website was freezing or crashing entirely when the compiled version of the script file was loaded. It seems that while the incremental approach of loading small scripts takes a little longer (0.5s~1s), it prevents the browser from being overwhelmed crunching a big JS file. We already occupy the users attention with an animation on the screen and found in testing that the device freezing made it seem like the website might have crashed the users phone which was not great. The same may not always be true when trying to handle Langenium’s much larger codebase, we have <a href="https://github.com/OpenStudiosCo/Langenium/issues/54">a ticket</a> to figure that out in a future sprint.</p>
 
 
 
@@ -177,17 +181,23 @@ body {
 
 
 
-<div class="wp-block-media-text is-stacked-on-mobile"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="494" height="745" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-57-55.png" alt="" class="wp-image-276 size-full" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-57-55.png 494w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-57-55-199x300.png 199w" sizes="(max-width: 494px) 100vw, 494px"></figure><div class="wp-block-media-text__content">
-<p>The goal is to implement a true cross platform experience which means UI that works for touchscreen via a mobile or keyboard and mouse on PC.</p>
+<div class="wp-block-media-text is-stacked-on-mobile" style="grid-template-columns:30% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="494" height="745" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-57-55.png" alt="" class="wp-image-276 size-full" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-57-55.png 494w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-57-55-199x300.png 199w" sizes="(max-width: 494px) 100vw, 494px"></figure><div class="wp-block-media-text__content">
+<p>A key goal of Langenium is to implement a cross platform experience which means its UI has to work for touchscreen via a mobile or keyboard and mouse on PC. The game has always supported keyboard and mouse as that is what it was developed on, however it has been lacking touch controls until now.</p>
 
 
 
-<p>Using mesa97’s touch libarry from with some tweaks to add an elevator lever.</p>
+<p><a href="https://github.com/mese79/TouchControls">mese97’s touch library</a> was used to add onscreen controls and was extended with our own custom elevator lever. The combat controls are custom HTML elements overlaid and tied into the game engine.</p>
 </div></div>
 
 
 
-<p></p>
+<div class="wp-block-media-text is-stacked-on-mobile" style="grid-template-columns:30% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="1024" height="631" src="/assets/blog/2025/05/Screenshot-2025-05-19-225759-1024x631.png" alt="" class="wp-image-292 size-full"></figure><div class="wp-block-media-text__content">
+<p><a href="https://tweakpane.github.io/docs/">TweakPane</a> is used to power the game’s menu system and game engine controls including the settings screen and debugging mode. The latter is used during development to test things such as frame rate, changing the active camera to look at other objects and more. This mode can be accessed by going to settings and selecting “Debugging mode”.</p>
+</div></div>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="631" src="/assets/blog/2025/05/Screenshot-2025-05-19-224912-1024x631.png" alt="" class="wp-image-291" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-2025-05-19-224912-1024x631.png 1024w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-2025-05-19-224912-300x185.png 300w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-2025-05-19-224912-768x473.png 768w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-2025-05-19-224912.png 1280w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
 
 
 
@@ -195,17 +205,13 @@ body {
 
 
 
-<div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile"><div class="wp-block-media-text__content">
-<p>Using this TrailRenderer library as the basis for drawing missile and player thruster exhaust trails.</p>
+<p>We used the library <a href="https://github.com/mkkellogg/TrailRendererJS/issues">TrailRenderer</a> as a starting point for drawing missile and player thruster exhaust trails and then built on that with some extensions. The player’s aircraft trail is dynamically stretched and reacts to the speed they are flying. The faster they travel, the more promiment the effect.</p>
 
 
 
-<p>Video sprites from a real jet engine are attached in a formation around the player’s aircraft thruster to create the effect of a thruster, when the player accelerates the sprites are scaled up and stretched.</p>
-
-
-
-<p></p>
-</div><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="1024" height="608" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-14-06-58-e1747289358895-1024x608.png" alt="" class="wp-image-279 size-full"></figure></div>
+<div class="wp-block-media-text is-stacked-on-mobile" style="grid-template-columns:30% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="1024" height="608" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-14-06-58-e1747289358895-1024x608.png" alt="" class="wp-image-279 size-full"></figure><div class="wp-block-media-text__content">
+<p>Video sprites from a real jet engine are attached in a circular formation around the player’s aircraft jet engine to create the effect of a thruster, when the player accelerates the sprites are stretched out and the video elements within play faster.</p>
+</div></div>
 
 
 
@@ -219,39 +225,225 @@ body {
 
 
 
+<h3 class="wp-block-heading">Scanners, targeting overlay and missile systems</h3>
+
+
+
+<p>Langenium players used to only have a mini-gun style weapon that would shoot in a straight line from where the aircraft was facing – this wasn’t a very fun way to play and so it was decided that players should either focus on flying or shooting, assisted by auto-targeting and auto-pilot respectively. The targeting scanner is currently rudimentary with simple options of friend or foe, but the foundation is laid to expand that in future to allow more complex factional relationships between players and organisations within the game’s world, e.g. player teams, guilds, companies of enemy bots, etc.</p>
+
+
+
+<p>When an enemy is being target locked, their onscreen overlay pulses in size and from navy blue to magenta – indicating the scanner is locking on. Once a target lock is established, the target overlay changes into a solid thick magenta line indicating weapons can now be fired at the target.</p>
+
+
+
+<p>To assist with testing and this stage of development, auto attacking hostile targets is built into the user interface. A player simple has to fly within the scanner range of an enemy and their aircraft will automatically start firing missiles. In future versions, players will be able to make manual strikes using the on-screen interface and a keyboard button to fire.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="992" height="1024" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-58-56-992x1024.png" alt="" class="wp-image-277" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-992x1024.png 992w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-291x300.png 291w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-768x793.png 768w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-1488x1536.png 1488w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56.png 1919w" sizes="(max-width: 992px) 100vw, 992px"><figcaption class="wp-element-caption">Like the aircraft’s jet engine effect, the explosions created by missiles and aircraft destruction are just a single video file rotated andy scaled randomly. A custom shader was used to make it transparent.</figcaption></figure>
+
+
+
 <h3 class="wp-block-heading">Mini map</h3>
 
 
 
+<div class="wp-block-media-text is-stacked-on-mobile"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="366" height="343" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-58-56-1-e1747289637866.png" alt="" class="wp-image-283 size-full" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-1-e1747289637866.png 366w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-1-e1747289637866-300x281.png 300w" sizes="(max-width: 366px) 100vw, 366px"></figure><div class="wp-block-media-text__content">
+<p>The new mini-map is based on the player ship’s targeting scanner. Like the rest of the user interface, elements are made with regular HTML and a bit of SVG.</p>
+
+
+
+<p>Symbols on the map determine whether a the radar system detected a structure (square), aircraft (triangle) or sea vessel (trapezoid). Green symbols represent passive targets, yellow means aggressive and red means they are currently engaged in combat with the player.</p>
+</div></div>
+
+
+
+<h3 class="wp-block-heading">NPC Pathfinding and Artificial Intelligence (AI)</h3>
+
+
+
+<p>Non player characters (NPCs) use the <a href="https://mugen87.github.io/yuka/docs/index.html">YUKA</a> library for Sight and Pathfinding. In order to uncouple game AI logic from the frontend game client, YUKA imports are restricted to the common game folder in order to ensure all pathfinding and NPC AI related code lives in the shared <strong>/game</strong> folder. This is vital to ensure that the server can accurately simulate the same environment in the cloud as users see in their browsers.</p>
+
+
+
+<p>Cargo ships travel between Extractor wells and the nearby Platform City, an important resource hub belonging to the powerful Union faction in the game. The initial gameplay goal of the scene is to provide missions where players defend, escort and run errands for Langenium operations based out of this city. </p>
+
+
+
+<p>The current demo features one pirate aircraft, but the plan is to have some spawn on missions and others roam the open world in a traditional MMORPG PvE fashion.</p>
+
+
+
+<h3 class="wp-block-heading">Roadmap to production release</h3>
+
+
+
+<p>With V6 now complete, we have a solid foundation to start thinking ahead to a production version of the game. Ironically, this is something that was never done on the project because it seemed too far out of reach in the past. Langenium’s development was always agile based, focused on delivering the next goal but not looking too far ahead because we were too unsure about what we wanted and what was best.</p>
+
+
+
+<p>Below is our current draft roadmap for the next phase of the project, which will be called v7. Technically that version is more like 0.7 in the grand scheme of things but when your project timeline spans decades you have to keep things interesting! Some of the items on the new agenda already have an issue ticket.</p>
+
+
+
 <ul class="wp-block-list">
-<li>maybe illustrate up the image below so it’s clearer this is a scaled up section</li>
+<li><a href="https://github.com/OpenStudiosCo/Langenium/issues/57">v7</a> – Build on the new capabilities and start to extend them
+<ul class="wp-block-list">
+<li>Add new combat features to multiplayer – <a href="https://github.com/OpenStudiosCo/Langenium/issues/34">Issue #34</a></li>
+
+
+
+<li>New public server with funding arm for the projects resources</li>
+
+
+
+<li>Persist player data</li>
+
+
+
+<li>Items and weapon ammunition systems – <a href="https://github.com/OpenStudiosCo/Langenium/issues/58">Issue #58</a></li>
+
+
+
+<li>Dialogue capability with narrator/tutorial</li>
+
+
+
+<li>New screens for game intro sequence, player inventory, player hangar, docking with a building – <a href="https://github.com/OpenStudiosCo/Langenium/issues/31">Issue #31</a> and <a href="https://github.com/OpenStudiosCo/Langenium/issues/55">Issue #55</a></li>
+</ul>
+</li>
+
+
+
+<li>v8 – Content systems for the game
+<ul class="wp-block-list">
+<li>Story missions and side quests</li>
+
+
+
+<li>Player research / tech / progress tree</li>
+
+
+
+<li>Achievements and leaderboards</li>
+
+
+
+<li>Cut scenes, audio dialogue and music</li>
+</ul>
+</li>
+
+
+
+<li>v9 – Content development
+<ul class="wp-block-list">
+<li>Align the game world to the lore and writing notes</li>
+
+
+
+<li>Optimise and test things getting ready for 1.0</li>
+
+
+
+<li>Build enough content to be ready for 1.0</li>
+</ul>
+</li>
+
+
+
+<li>v10 (1.0) – Launch!
+<ul class="wp-block-list">
+<li>Setup a production multiplayer server</li>
+
+
+
+<li>Funding / crowdsource / promotion</li>
+</ul>
+</li>
 </ul>
 
 
 
-<div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile"><div class="wp-block-media-text__content">
-<p>Players and bots use the same radar systems for locking their weapons onto each other.</p>
+<p>We’re excited to hear your feedback on Langenium v6 – as a game and as a web based experience. If this is something that interests you then please reach out to us on Github or social media! The success of this ambitious effort relies on a collective effort to improve and refine until we have an open source, openly produced and web based game that is as awesome and fun as any commercially produced one.</p>
 
 
 
-<p>Symbols on the map determine whether a the radar system detected a structure (square), aircraft (triangle) or sea vessel (trapezoid). </p>
-</div><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="366" height="343" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-58-56-1-e1747289637866.png" alt="" class="wp-image-283 size-full" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-1-e1747289637866.png 366w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-1-e1747289637866-300x281.png 300w" sizes="(max-width: 366px) 100vw, 366px"></figure></div>
+<p>Want to play Langenium? Simply visit the <a href="https://langenium.com">Langenium website</a>.</p>
 
 
 
-<h2 class="wp-block-heading">Missile and combat system</h2>
+<p>Want more information about the game’s development? Check out the <a href="https://paulbrzeski.com/2025/05/09/langenium-2012-2025-retrospective/">Langenium 2012-2025 Retrospective</a> for a look back for the entire history of the project!</p>
 
 
 
-<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="992" height="1024" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-58-56-992x1024.png" alt="" class="wp-image-277" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-992x1024.png 992w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-291x300.png 291w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-768x793.png 768w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56-1488x1536.png 1488w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-58-56.png 1919w" sizes="(max-width: 992px) 100vw, 992px"></figure>
+<h3 class="wp-block-heading">References and Links</h3>
 
 
 
-<p>– V7 and roadmap to production build:</p>
+<ul class="wp-block-list">
+<li>Thank you to the hard working and talented developers and the communities behind these open source projects, without whose ongoing contributions there would be no Langenium project:
+<ul class="wp-block-list">
+<li><a href="https://threejs.org">Three.JS</a>, the backbone of our game’s 3D engine</li>
 
 
 
-<p></p>
+<li><a href="https://nodejs.org/en">node.js</a>, providing the current paradigm for Javascript development</li>
+
+
+
+<li><a href="https://github.com/pmndrs/postprocessing">postprocessing</a>, lightening the burden of multiple shader passes</li>
+
+
+
+<li><a href="https://github.com/pmndrs/detect-gpu">detect-gpu</a>, allowing the game client to select optimal settings before render</li>
+
+
+
+<li><a href="https://mugen87.github.io/yuka/">YUKA</a>, a library for developing game AI</li>
+
+
+
+<li><a href="https://github.com/mkkellogg/TrailRendererJS">TrailerRenderer</a>, giving missiles and jet engines beautiful trails</li>
+
+
+
+<li><a href="https://github.com/mese79/TouchControls/issues">TouchControls</a>, providing a solid foundation for cross platform interactivity</li>
+
+
+
+<li><a href="https://tweakpane.github.io/docs/">TweakPane</a>, driving the game engine’s core UI</li>
+
+
+
+<li><a href="https://www.blender.org">Blender</a>, used to produce all in-game models that aren’t procedurally generated</li>
+
+
+
+<li><a href="https://lmms.io">LMMS</a>, used to produce game music including the trailer music</li>
+</ul>
+</li>
+
+
+
+<li>Langenium links
+<ul class="wp-block-list">
+<li><a href="https://langenium.com">Official website</a> where you can test play the latest version of Langenium</li>
+
+
+
+<li><a href="https://github.com/OpenStudiosCo/Langenium/issues/57">v7 Epic</a> Issue Ticket</li>
+
+
+
+<li><a href="https://github.com/OpenStudiosCo/Langenium">Langenium repository</a> on Github</li>
+
+
+
+<li><a href="https://www.youtube.com/watch?v=0a8gmK9dgxE&amp;list=PLtLxhu3A_KwFpwiutDXG4OtOi7xsOc6Ir">Langenium videos</a> on Youtube</li>
+</ul>
+</li>
+</ul>
 
 
 

@@ -358,8 +358,7 @@ function getBlogData( i ) {
         {
             'title': "Langenium v6 Retrospective",
             'url': '/iframes/blog/2025/05/langenium-v6-retrospective.html',
-            // @todo #74: Update the image to actual feature 
-            'image': '/assets/blog/2024/09/Screenshot-2024-06-28-162051-Medium.png'
+            'image': '/assets/blog/2025/05/3d-logo-01-1024x576.png'
         },
         {
             'title': "How to implement Blender Principled\nBSDF Materials in Three.js (WebGL)",
