@@ -356,6 +356,11 @@ function getBlogData( i ) {
     let data = [
         // Row 1.
         {
+            'title': "Langenium v6 Retrospective",
+            'url': '/iframes/blog/2025/05/langenium-v6-retrospective.html',
+            'image': '/assets/blog/2025/05/3d-logo-01-1024x576.png'
+        },
+        {
             'title': "How to implement Blender Principled\nBSDF Materials in Three.js (WebGL)",
             'url': '/iframes/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html',
             'image': '/assets/blog/2024/09/Screenshot-2024-06-28-162051-Medium.png'
@@ -385,12 +390,12 @@ function getBlogData( i ) {
             'url': '/iframes/blog/2024/01/studio-roundup-january-2024.html',
             'image': '/assets/blog/2024/01/1_jvdn9ENFN3e46Mf5GFmpcA.webp'
         },
+        // Row 2.
         {
             'title': 'Studio Roundup for December 2023',
             'url': '/iframes/blog/2023/12/studio-roundup-december-2023.html',
             'image': '/assets/blog/2023/12/1_aN2AdpmiU7S0dGFpWUoixA.webp'
         },
-        // Row 2.
         {
             'title': 'Studio Roundup for November 2023',
             'url': '/iframes/blog/2023/11/studio-roundup-november-2023.html',
@@ -420,11 +425,6 @@ function getBlogData( i ) {
             'title': 'Studio Roundup for July 2023',
             'url': '/iframes/blog/2023/07/studio-roundup-july-2023.html',
             'image': '/assets/blog/2023/07/1_vnEMqG7iAtvJXFlS-pMkIg.webp'
-        },
-        {
-            'title': 'Studio Roundup for June 2023',
-            'url': '/iframes/blog/2023/06/studio-roundup-june-2023.html',
-            'image': '/assets/blog/2023/06/1_DJCaxmHRqHXM4tGMBJiPXA.webp'
         },
     ];
 

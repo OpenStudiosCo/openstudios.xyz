@@ -731,6 +731,39 @@ a.icon_button img:hover {
 .size-full {
   width: auto;
 }
+.wp-block-embed.is-type-video {
+  margin: 2rem auto 0;
+  max-width: 500px;
+}
+.wp-block-embed.is-type-video .wp-element-caption {
+  margin-top: 1rem;
+}
+.wp-block-media-text {
+  display: grid;
+  grid-template-columns: 50% 1fr;
+  align-items: center;
+  gap: 1.5em;
+  margin-bottom: 1.5em;
+}
+.wp-block-media-text.has-media-on-the-right {
+  grid-template-columns: 1fr 50%;
+}
+.wp-block-media-text .wp-block-media-text__media {
+  margin: 0;
+}
+.wp-block-media-text .wp-block-media-text__content {
+  padding: 0 1em;
+}
+@media (max-width: 768px) {
+  .wp-block-media-text {
+    display: block;
+  }
+  .wp-block-media-text .wp-block-media-text__media,
+  .wp-block-media-text .wp-block-media-text__content {
+    width: 100%;
+    padding: 0;
+  }
+}
 .wp-block-code {
   background: #0f0e22;
   padding: 1em;
