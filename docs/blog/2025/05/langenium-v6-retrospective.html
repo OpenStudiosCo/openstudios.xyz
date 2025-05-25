@@ -135,7 +135,7 @@ body {
   const prvs = new Parvus();
 
 });
-</script><div class="content blog_post"><div class="breadcrumb"><a class="item" href="/blog.html">Blog</a><span class="item">&nbsp;&nbsp;>&nbsp;&nbsp;</span><span class="item">Langenium v6 Retrospective</span></div><h2>Langenium v6 Retrospective</h2><figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="576" src="/assets/blog/2025/05/3d-logo-01-1024x576.png" alt="" class="wp-image-321" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-1024x576.png 1024w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-300x169.png 300w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-768x432.png 768w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-1536x864.png 1536w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-2048x1152.png 2048w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption class="wp-element-caption">The title sequence for the game uses an SVG of the logo, extruded to give the shape some depth and finally assigned animated shader based materials for the final result you see above.</figcaption></figure>
+</script><div class="content blog_post"><div class="breadcrumb"><a class="item" href="/blog.html">Blog</a><span class="item">&nbsp;&nbsp;>&nbsp;&nbsp;</span><span class="item">Langenium v6 Retrospective</span></div><h2>Langenium v6 Retrospective</h2><figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="576" src="/assets/blog/2025/05/3d-logo-01-1024x576.png" alt="" class="wp-image-321" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-1024x576.png 1024w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-300x169.png 300w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-768x432.png 768w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-1536x864.png 1536w, https://portal.openstudios.xyz/app/uploads/2025/05/3d-logo-01-2048x1152.png 2048w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption class="wp-element-caption">The title sequence for the game uses an SVG of the logo, extruded to give the shape some depth and finally assigned shader based materials. The final result you see above was finished in a photo editor.</figcaption></figure>
 
 
 
@@ -169,7 +169,7 @@ body {
 
 
 
-<p>The Open Studios website uses the Langenium loader script to its full effect, however it originally didn’t and the Langenium codebase may or may not go that direction. The loader adds a little bit of delay in real time, however it also stops the browser from freezing when it downloads the app script and tries to process it. While it’s counterintuitive to pick something that takes longer in tech – in testing it felt like the website was freezing or crashing entirely when the compiled version of the script file was loaded. It seems that while the incremental approach of loading small scripts takes a little longer (0.5s~1s), it prevents the browser from being overwhelmed crunching a big JS file. We already occupy the users attention with an animation on the screen and found in testing that the device freezing made it seem like the website might have crashed the users phone which was not great. The same may not always be true when trying to handle Langenium’s much larger codebase, we have <a href="https://github.com/OpenStudiosCo/Langenium/issues/54">a ticket</a> to figure that out in a future sprint.</p>
+<p>The Open Studios website uses the Langenium loader script to load all its dependencies, without a bundling solution like Webpack or Rollup. Using the loader instead of a bundler adds a little bit of delay in real time, however it also stops the browser from freezing when it downloads the app script and tries to process it. While it’s counterintuitive to pick something that takes longer in tech – in testing it felt like the website was freezing or crashing entirely when the compiled version of the script file was loaded. It seems that while the incremental approach of loading small scripts takes a little longer (0.5s~1s), it prevents the browser from being overwhelmed when crunching a big JS file. We already occupy the users attention with an animation on the screen and found in testing that the device freezing made it seem like the website might have crashed the users phone which was not great. The same may not always be true when trying to handle Langenium’s much larger codebase, we have <a href="https://github.com/OpenStudiosCo/Langenium/issues/54">a ticket</a> to figure that out in a future sprint.</p>
 
 
 
@@ -182,7 +182,7 @@ body {
 
 
 <div class="wp-block-media-text is-stacked-on-mobile" style="grid-template-columns:30% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="494" height="745" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-13-57-55.png" alt="" class="wp-image-276 size-full" srcset="https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-57-55.png 494w, https://portal.openstudios.xyz/app/uploads/2025/05/Screenshot-from-2025-05-15-13-57-55-199x300.png 199w" sizes="(max-width: 494px) 100vw, 494px"></figure><div class="wp-block-media-text__content">
-<p>A key goal of Langenium is to implement a cross platform experience which means its UI has to work for touchscreen via a mobile or keyboard and mouse on PC. The game has always supported keyboard and mouse as that is what it was developed on, however it has been lacking touch controls until now.</p>
+<p>A key goal of Langenium is to implement a cross platform experience which means its UI has to work for touchscreen and keyboard and mouse. The game has always supported keyboard and mouse as that is what it was developed on, however it has been lacking touch controls until now.</p>
 
 
 
@@ -210,7 +210,7 @@ body {
 
 
 <div class="wp-block-media-text is-stacked-on-mobile" style="grid-template-columns:30% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="1024" height="608" src="/assets/blog/2025/05/Screenshot-from-2025-05-15-14-06-58-e1747289358895-1024x608.png" alt="" class="wp-image-279 size-full"></figure><div class="wp-block-media-text__content">
-<p>Video sprites from a real jet engine are attached in a circular formation around the player’s aircraft jet engine to create the effect of a thruster, when the player accelerates the sprites are stretched out and the video elements within play faster.</p>
+<p>Video sprites from a real jet engine are attached in a circular formation around the player’s aircraft jet engine to create the effect of a thruster, when the player accelerates the sprites are stretched out to simulate drag and the video elements within play faster to give the illusion of greater turbulence.</p>
 </div></div>
 
 
@@ -219,8 +219,12 @@ body {
 
 
 
-<div class="wp-block-cover is-light"><span aria-hidden="true" class="wp-block-cover__background has-background-dim" style="background-color:#72abcc"></span><img loading="lazy" decoding="async" width="951" height="518" class="wp-block-cover__image-background wp-image-95" alt="" src="/assets/blog/2025/05/Screenshot-2024-06-28-044923-edited-e1747289477386.png" data-object-fit="cover" srcset="https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-044923-edited-e1747289477386.png 951w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-044923-edited-e1747289477386-300x163.png 300w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-044923-edited-e1747289477386-768x418.png 768w" sizes="(max-width: 951px) 100vw, 951px"><div class="wp-block-cover__inner-container is-layout-constrained wp-block-cover-is-layout-constrained">
-<p class="has-text-align-center has-large-font-size">This topic was so large it has it’s own blog article, check out <a href="https://openstudios.xyz/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html">How to implement Blender Principled BSDF Materials in Three.js (WebGL)</a></p>
+<div class="wp-block-media-text is-stacked-on-mobile" style="grid-template-columns:30% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="951" height="518" src="/assets/blog/2025/05/Screenshot-2024-06-28-044923-edited-e1747289477386.png" alt="" class="wp-image-95 size-full" srcset="https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-044923-edited-e1747289477386.png 951w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-044923-edited-e1747289477386-300x163.png 300w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-044923-edited-e1747289477386-768x418.png 768w" sizes="(max-width: 951px) 100vw, 951px"></figure><div class="wp-block-media-text__content">
+<p>We turned to procedural generation to create high resolution materials. This topic was so large it has it’s own blog article!</p>
+
+
+
+<p><a href="https://openstudios.xyz/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html">How to implement Blender Principled BSDF Materials in Three.js (WebGL)</a></p>
 </div></div>
 
 
@@ -237,7 +241,7 @@ body {
 
 
 
-<p>To assist with testing and this stage of development, auto attacking hostile targets is built into the user interface. A player simple has to fly within the scanner range of an enemy and their aircraft will automatically start firing missiles. In future versions, players will be able to make manual strikes using the on-screen interface and a keyboard button to fire.</p>
+<p>To assist with testing and this stage of development, auto attacking hostile targets is built into the user interface. A player simply has to fly within the scanner range of an enemy and their aircraft will automatically start firing missiles. In future versions, players will be able to manually fire missiles using the on-screen interface and an assigned keyboard button.</p>
 
 
 
@@ -429,10 +433,6 @@ body {
 <li>Langenium links
 <ul class="wp-block-list">
 <li><a href="https://langenium.com">Official website</a> where you can test play the latest version of Langenium</li>
-
-
-
-<li><a href="https://github.com/OpenStudiosCo/Langenium/issues/57">v7 Epic</a> Issue Ticket</li>
 
 
 
