@@ -731,6 +731,13 @@ a.icon_button img:hover {
 .size-full {
   width: auto;
 }
+.wp-block-embed.is-type-video {
+  margin: 2rem auto 0;
+  max-width: 500px;
+}
+.wp-block-embed.is-type-video .wp-element-caption {
+  margin-top: 1rem;
+}
 .wp-block-code {
   background: #0f0e22;
   padding: 1em;
