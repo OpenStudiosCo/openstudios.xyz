@@ -738,6 +738,13 @@ a.icon_button img:hover {
 .wp-block-embed.is-type-video .wp-element-caption {
   margin-top: 1rem;
 }
+.wp-block-media-text {
+  display: grid;
+  grid-template-columns: 50% 1fr;
+  align-items: center;
+  gap: 1.5em;
+  margin-bottom: 1.5em;
+}
 .wp-block-code {
   background: #0f0e22;
   padding: 1em;
