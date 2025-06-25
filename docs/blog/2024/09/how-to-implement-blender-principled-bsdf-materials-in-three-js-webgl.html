@@ -139,11 +139,93 @@ body {
 
 
 
-<p></p>
+<h3 class="wp-block-heading">Contents:</h3>
 
 
 
-<h3 class="wp-block-heading">Introduction to Physically Based Rendering and Shaders</h3>
+<ul class="wp-block-list">
+<li><a href="#introduction">Introduction to Physically Based Rendering and Shaders</a></li>
+
+
+
+<li><a href="#designing-materials">Designing physically based materials for the web</a></li>
+
+
+
+<li><a href="#writing-aircraft-shaders">Writing a custom shader material for a sci-fi aircraft</a>
+<ul class="wp-block-list">
+<li><a href="#replacing-color-ramp-node">Replacing the Color Ramp node</a></li>
+
+
+
+<li><a href="#replacing-voronoi-texture-node">Replacing the Voronoi texture node</a></li>
+
+
+
+<li><a href="#debugging-custom-shaders">Debugging Custom Shaders</a></li>
+
+
+
+<li><a href="#comparing-shaders">Comparing Blender shader material to final code</a></li>
+
+
+
+<li><a href="#results-comparison">Side by side comparison</a></li>
+</ul>
+</li>
+
+
+
+<li><a href="#writing-city-shaders">Writing a customer shader material for a futuristic sci-fi city</a>
+<ul class="wp-block-list">
+<li><a href="#recreating-brick-texture-node">Recreating the Brick Texture node</a></li>
+
+
+
+<li><a href="#city-shader-result">Side by side comparison and final result</a></li>
+</ul>
+</li>
+
+
+
+<li><a href="#programmatic-shader-transparency">Programmatically setting transparent areas in a shader surface</a>
+<ul class="wp-block-list">
+<li><a href="#developing-underwater-structures">Developing the custom structure using simple 3D geometry</a></li>
+
+
+
+<li><a href="#underwater-structure-preview">The new structure</a></li>
+</ul>
+</li>
+
+
+
+<li><a href="#creating-procedural-buildings">Creating new sci-fi structures with constructive solid geometry</a></li>
+
+
+
+<li><a href="#creating-procedural-vehicles">Creating new sci-fi vehicles with constructive solid geometry</a></li>
+
+
+
+<li><a href="#reusable-shader-fragments">Creating reusable shader fragments with Three.js</a></li>
+
+
+
+<li><a href="#caching-shader-materials">Caching shader materials in the browser</a></li>
+
+
+
+<li><a href="#summary">Summary</a></li>
+
+
+
+<li><a href="#references">References and links</a></li>
+</ul>
+
+
+
+<h3 class="wp-block-heading" id="introduction">Introduction to Physically Based Rendering and Shaders</h3>
 
 
 
@@ -163,7 +245,7 @@ body {
 
 
 
-<h3 class="wp-block-heading">Designing physically based materials for the web</h3>
+<h3 class="wp-block-heading" id="designing-materials">Designing physically based materials for the web</h3>
 
 
 
@@ -201,7 +283,7 @@ body {
 
 
 
-<h3 class="wp-block-heading">Writing a custom shader material for a sci-fi aircraft</h3>
+<h3 class="wp-block-heading" id="writing-aircraft-shaders">Writing a custom shader material for a sci-fi aircraft</h3>
 
 
 
@@ -246,7 +328,7 @@ body {
 
 
 
-<h4 class="wp-block-heading">Replacing the Color Ramp node</h4>
+<h4 class="wp-block-heading" id="replacing-color-ramp-node">Replacing the Color Ramp node</h4>
 
 
 
@@ -258,7 +340,7 @@ body {
 
 
 
-<h4 class="wp-block-heading">Replacing the Voronoi texture node</h4>
+<h4 class="wp-block-heading" id="replacing-voronoi-texture-node">Replacing the Voronoi texture node</h4>
 
 
 
@@ -312,7 +394,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Debugging Custom Shaders</h4>
+<h4 class="wp-block-heading" id="debugging-custom-shaders">Debugging Custom Shaders</h4>
 
 
 
@@ -378,7 +460,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Comparing Blender shader material to final code</h4>
+<h4 class="wp-block-heading" id="comparing-shaders">Comparing Blender shader material to final code</h4>
 
 
 
@@ -419,7 +501,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Side by side comparison</h4>
+<h4 class="wp-block-heading" id="results-comparison">Side by side comparison</h4>
 
 
 
@@ -459,7 +541,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Writing a customer shader material for a futuristic sci-fi city</h3>
+<h3 class="wp-block-heading" id="writing-city-shaders">Writing a customer shader material for a futuristic sci-fi city</h3>
 
 
 
@@ -479,7 +561,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Recreating the Brick Texture node</h4>
+<h4 class="wp-block-heading" id="recreating-brick-texture-node">Recreating the Brick Texture node</h4>
 
 
 
@@ -495,7 +577,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Side by side comparison and final result</h4>
+<h4 class="wp-block-heading" id="city-shader-result">Side by side comparison and final result</h4>
 
 
 
@@ -563,7 +645,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Programmatically setting transparent areas in a shader surface</h3>
+<h3 class="wp-block-heading" id="programmatic-shader-transparency">Programmatically setting transparent areas in a shader surface</h3>
 
 
 
@@ -637,7 +719,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Developing the custom structure using simple 3D geometry</h4>
+<h4 class="wp-block-heading" id="developing-underwater-structures">Developing the custom structure using simple 3D geometry</h4>
 
 
 
@@ -675,7 +757,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">The new structure</h4>
+<h4 class="wp-block-heading" id="underwater-structure-preview">The new structure</h4>
 
 
 
@@ -695,7 +777,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Creating new sci-fi structures with constructive solid geometry</h3>
+<h3 class="wp-block-heading" id="creating-procedural-buildings">Creating new sci-fi structures with constructive solid geometry</h3>
 
 
 
@@ -723,7 +805,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Creating new sci-fi vehicles with constructive solid geometry</h3>
+<h3 class="wp-block-heading" id="creating-procedural-vehicles">Creating new sci-fi vehicles with constructive solid geometry</h3>
 
 
 
@@ -753,7 +835,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Creating reusable shader fragments with Three.js</h3>
+<h3 class="wp-block-heading" id="reusable-shaders-fragments">Creating reusable shader fragments with Three.js</h3>
 
 
 
@@ -836,7 +918,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Caching shader materials in the browser</h3>
+<h3 class="wp-block-heading" id="caching-shader-materials">Caching shader materials in the browser</h3>
 
 
 
@@ -864,7 +946,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Summary</h3>
+<h3 class="wp-block-heading" id="summary">Summary</h3>
 
 
 
@@ -888,7 +970,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">References and links</h3>
+<h3 class="wp-block-heading" id="references">References and links</h3>
 
 
 
