@@ -139,11 +139,93 @@ body {
 
 
 
-<p></p>
+<h3 class="wp-block-heading">Contents:</h3>
 
 
 
-<h3 class="wp-block-heading">Introduction to Physically Based Rendering and Shaders</h3>
+<ul class="wp-block-list">
+<li><a href="#introduction">Introduction to Physically Based Rendering and Shaders</a></li>
+
+
+
+<li><a href="#designing-materials">Designing physically based materials for the web</a></li>
+
+
+
+<li><a href="#writing-aircraft-shaders">Writing a custom shader material for a sci-fi aircraft</a>
+<ul class="wp-block-list">
+<li><a href="#replacing-color-ramp-node">Replacing the Color Ramp node</a></li>
+
+
+
+<li><a href="#replacing-voronoi-texture-node">Replacing the Voronoi texture node</a></li>
+
+
+
+<li><a href="#debugging-custom-shaders">Debugging Custom Shaders</a></li>
+
+
+
+<li><a href="#comparing-shaders">Comparing Blender shader material to final code</a></li>
+
+
+
+<li><a href="#results-comparison">Side by side comparison</a></li>
+</ul>
+</li>
+
+
+
+<li><a href="#writing-city-shaders">Writing a customer shader material for a futuristic sci-fi city</a>
+<ul class="wp-block-list">
+<li><a href="#recreating-brick-texture-node">Recreating the Brick Texture node</a></li>
+
+
+
+<li><a href="#city-shader-result">Side by side comparison and final result</a></li>
+</ul>
+</li>
+
+
+
+<li><a href="#programmatic-shader-transparency">Programmatically setting transparent areas in a shader surface</a>
+<ul class="wp-block-list">
+<li><a href="#developing-underwater-structures">Developing the custom structure using simple 3D geometry</a></li>
+
+
+
+<li><a href="#underwater-structure-preview">The new structure</a></li>
+</ul>
+</li>
+
+
+
+<li><a href="#creating-procedural-buildings">Creating new sci-fi structures with constructive solid geometry</a></li>
+
+
+
+<li><a href="#creating-procedural-vehicles">Creating new sci-fi vehicles with constructive solid geometry</a></li>
+
+
+
+<li><a href="#reusable-shader-fragments">Creating reusable shader fragments with Three.js</a></li>
+
+
+
+<li><a href="#caching-shader-materials">Caching shader materials in the browser</a></li>
+
+
+
+<li><a href="#summary">Summary</a></li>
+
+
+
+<li><a href="#references">References and links</a></li>
+</ul>
+
+
+
+<h3 class="wp-block-heading" id="introduction">Introduction to Physically Based Rendering and Shaders</h3>
 
 
 
@@ -163,7 +245,7 @@ body {
 
 
 
-<h3 class="wp-block-heading">Designing physically based materials for the web</h3>
+<h3 class="wp-block-heading" id="designing-materials">Designing physically based materials for the web</h3>
 
 
 
@@ -201,7 +283,7 @@ body {
 
 
 
-<h3 class="wp-block-heading">Writing a custom shader material for a sci-fi aircraft</h3>
+<h3 class="wp-block-heading" id="writing-aircraft-shaders">Writing a custom shader material for a sci-fi aircraft</h3>
 
 
 
@@ -246,7 +328,7 @@ body {
 
 
 
-<h4 class="wp-block-heading">Replacing the Color Ramp node</h4>
+<h4 class="wp-block-heading" id="replacing-color-ramp-node">Replacing the Color Ramp node</h4>
 
 
 
@@ -258,7 +340,7 @@ body {
 
 
 
-<h4 class="wp-block-heading">Replacing the Voronoi texture node</h4>
+<h4 class="wp-block-heading" id="replacing-voronoi-texture-node">Replacing the Voronoi texture node</h4>
 
 
 
@@ -312,7 +394,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Debugging Custom Shaders</h4>
+<h4 class="wp-block-heading" id="debugging-custom-shaders">Debugging Custom Shaders</h4>
 
 
 
@@ -378,7 +460,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Comparing Blender shader material to final code</h4>
+<h4 class="wp-block-heading" id="comparing-shaders">Comparing Blender shader material to final code</h4>
 
 
 
@@ -419,7 +501,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Side by side comparison</h4>
+<h4 class="wp-block-heading" id="results-comparison">Side by side comparison</h4>
 
 
 
@@ -459,7 +541,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Writing a customer shader material for a futuristic sci-fi city</h3>
+<h3 class="wp-block-heading" id="writing-city-shaders">Writing a customer shader material for a futuristic sci-fi city</h3>
 
 
 
@@ -479,7 +561,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Recreating the Brick Texture node</h4>
+<h4 class="wp-block-heading" id="recreating-brick-texture-node">Recreating the Brick Texture node</h4>
 
 
 
@@ -495,7 +577,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Side by side comparison and final result</h4>
+<h4 class="wp-block-heading" id="city-shader-result">Side by side comparison and final result</h4>
 
 
 
@@ -563,7 +645,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Programmatically setting transparent areas in a shader surface</h3>
+<h3 class="wp-block-heading" id="programmatic-shader-transparency">Programmatically setting transparent areas in a shader surface</h3>
 
 
 
@@ -637,7 +719,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">Developing the custom structure using simple 3D geometry</h4>
+<h4 class="wp-block-heading" id="developing-underwater-structures">Developing the custom structure using simple 3D geometry</h4>
 
 
 
@@ -675,7 +757,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h4 class="wp-block-heading">The new structure</h4>
+<h4 class="wp-block-heading" id="underwater-structure-preview">The new structure</h4>
 
 
 
@@ -695,7 +777,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Creating new sci-fi structures with constructive solid geometry</h3>
+<h3 class="wp-block-heading" id="creating-procedural-buildings">Creating new sci-fi structures with constructive solid geometry</h3>
 
 
 
@@ -723,7 +805,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Creating new sci-fi vehicles with constructive solid geometry</h3>
+<h3 class="wp-block-heading" id="creating-procedural-vehicles">Creating new sci-fi vehicles with constructive solid geometry</h3>
 
 
 
@@ -753,7 +835,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Creating reusable shader fragments with Three.js</h3>
+<h3 class="wp-block-heading" id="reusable-shaders-fragments">Creating reusable shader fragments with Three.js</h3>
 
 
 
@@ -836,7 +918,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Caching shader materials in the browser</h3>
+<h3 class="wp-block-heading" id="caching-shader-materials">Caching shader materials in the browser</h3>
 
 
 
@@ -864,7 +946,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">Summary</h3>
+<h3 class="wp-block-heading" id="summary">Summary</h3>
 
 
 
@@ -888,7 +970,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
 
 
 
-<h3 class="wp-block-heading">References and links</h3>
+<h3 class="wp-block-heading" id="references">References and links</h3>
 
 
 
@@ -990,7 +1072,7 @@ gray <span class="token operator">=</span> <span class="token punctuation">(</sp
             document.getElementById("newsletterform").reset();
         }
     });
-}</script><form id="newsletterform" method="post" action="https://mailform.openstudios.xyz/" role="form"><h3>Subscribe to our newsletter</h3><p>Get all our latest insights, tips and project updates, conveniently in your inbox.</p><table style="width: 100%"><tr><td style="width: 80%"><input type="hidden" name="name" value="n/a"><input type="hidden" name="message" value="Newsletter signup request"><input type="email" name="email" placeholder="Email address"></td><td style="padding-left: 1rem"><button class="g-recaptcha" data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" data-callback="newsletterSubmit" data-action="submit">Subscribe</button></td></tr></table><h3 id="newslettervalidation" style="color: red; font-weight: bold;"></h3></form></div></div></div></div><div class="content_row footer"><div class="content"><div class="row"><div class="narrow-column"><h3>About us</h3><ul role="menu"><li role="presentation"><a href="/about_us.html" role="menuitem">Meet the team</a></li><li role="presentation"><a href="/about_us.html" role="menuitem">Our values</a></li><li role="presentation"><a href="/blog.html" role="menuitem">Blog</a></li></ul></div><div class="narrow-column"><h3>Services</h3><ul role="menu"><li role="presentation"><a href="/services.html" role="menuitem">3D Modelling and Printing</a></li><li role="presentation"><a href="/services.html" role="menuitem">Animation</a></li><li role="presentation"><a href="/services.html" role="menuitem">Game Development</a></li><li role="presentation"><a href="/services.html" role="menuitem">Graphic Design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Interactive Design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Marketing Design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Product design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Web design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Web development</a></li><li role="presentation"><a href="/services.html" role="menuitem">Video production</a></li></ul></div><div class="narrow-column"><h3>Our work</h3><ul role="menu"><li role="presentation"><a href="/case_studies.html" role="menuitem">Case studies</a></li><li role="presentation"><a href="/portfolio.html" role="menuitem">Portfolio</a></li><li role="presentation"><a href="/contact_us.html" role="menuitem">Contact Us</a></li></ul></div><div class="narrow-column"><h3>Terms</h3><ul role="menu"><li role="presentation"><a href="/accessibility.html" role="menuitem">Accessibility</a></li><li role="presentation"><a href="/ai-copyright.html" role="menuitem">AI and Copyright Policy</a></li><li role="presentation">               <a href="/privacy.html" role="menuitem">Privacy Policy</a></li></ul></div></div><div class="row center"><div class="h1"><a href="./" title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div></div></div></div><div id="webgl-wrapper"><a id="exitSign" href="#"><img src="/assets/back.svg" title="Return to the previous screen" width="300" height="85" alt="Arrow sign saying this leads back"></a><iframe id="pageOverlay"></iframe><div id="webgl"></div><script id="vertexshader" type="x-shader/x-vertex">varying vec2 vUv;
+}</script><form id="newsletterform" method="post" action="https://mailform.openstudios.xyz/" role="form"><h3>Subscribe to our newsletter</h3><p>Get all our latest insights, tips and project updates, conveniently in your inbox.</p><table style="width: 100%"><tr><td style="width: 80%"><input type="hidden" name="name" value="n/a"><input type="hidden" name="message" value="Newsletter signup request"><input type="email" name="email" placeholder="Email address"></td><td style="padding-left: 1rem"><button class="g-recaptcha" data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" data-callback="newsletterSubmit" data-action="submit">Subscribe</button></td></tr></table><h3 id="newslettervalidation" style="color: red; font-weight: bold;"></h3></form></div></div></div></div><div class="content_row footer"><div class="content"><div class="row"><div class="narrow-column"><h3>About us</h3><ul role="menu"><li role="presentation"><a href="/about_us.html" role="menuitem">Meet the team</a></li><li role="presentation"><a href="/about_us.html" role="menuitem">Tools of the trade</a></li><li role="presentation"><a href="/about_us.html" role="menuitem">Our values</a></li><li role="presentation"><a href="/blog.html" role="menuitem">Blog</a></li></ul></div><div class="narrow-column"><h3>Services</h3><ul role="menu"><li role="presentation"><a href="/services.html" role="menuitem">3D Modelling and Printing</a></li><li role="presentation"><a href="/services.html" role="menuitem">Animation</a></li><li role="presentation"><a href="/services.html" role="menuitem">Game Development</a></li><li role="presentation"><a href="/services.html" role="menuitem">Graphic Design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Interactive Design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Marketing Design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Product design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Web design</a></li><li role="presentation"><a href="/services.html" role="menuitem">Web development</a></li><li role="presentation"><a href="/services.html" role="menuitem">Video production</a></li></ul></div><div class="narrow-column"><h3>Our work</h3><ul role="menu"><li role="presentation"><a href="/case_studies.html" role="menuitem">Case studies</a></li><li role="presentation"><a href="/portfolio.html" role="menuitem">Portfolio</a></li><li role="presentation"><a href="/contact_us.html" role="menuitem">Contact Us</a></li></ul></div><div class="narrow-column"><h3>Terms</h3><ul role="menu"><li role="presentation"><a href="/accessibility.html" role="menuitem">Accessibility</a></li><li role="presentation"><a href="/ai-copyright.html" role="menuitem">AI and Copyright Policy</a></li><li role="presentation">               <a href="/privacy.html" role="menuitem">Privacy Policy</a></li></ul></div></div><div class="row center"><div class="h1"><a href="./" title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div></div></div></div><div id="webgl-wrapper"><a id="exitSign" href="#"><img src="/assets/back.svg" title="Return to the previous screen" width="300" height="85" alt="Arrow sign saying this leads back"></a><iframe id="pageOverlay"></iframe><div id="webgl"></div><script id="vertexshader" type="x-shader/x-vertex">varying vec2 vUv;
 void main() {
     vUv = uv;
     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
