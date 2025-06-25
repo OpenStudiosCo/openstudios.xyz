@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title></title><base href="../"><meta name="description" content="We are Open Studios. Perth based digital production studio."><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><script src="https://www.google.com/recaptcha/api.js"></script><link rel="canonical" href="https://openstudios.xyz/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html"><meta property="og:title"><meta property="og:description"><meta property="og:type" content="article"><meta property="og:image" content="https://openstudios.xyz//assets/blog/2023/10/1*o6xfwPdjAcGUyBE5s69iOQ.png"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="768"><meta name="twitter:title"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description"><meta name="twitter:image" content="https://openstudios.xyz//assets/blog/2023/10/1*o6xfwPdjAcGUyBE5s69iOQ.png"><script async src="https://www.googletagmanager.com/gtag/js?id=AW-983760722"></script><script>window.dataLayer = window.dataLayer || [];
+<!DOCTYPE html><html><head><title></title><base href="../"><meta name="description" content="We are Open Studios. Perth based digital production studio."><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><script src="https://www.google.com/recaptcha/api.js"></script><link rel="canonical" href="https://openstudios.xyz/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html"><meta property="og:title"><meta property="og:description"><meta property="og:type" content="article"><meta property="og:image" content="https://openstudios.xyz//assets/blog/2023/10/image.png"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="768"><meta name="twitter:title"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description"><meta name="twitter:image" content="https://openstudios.xyz//assets/blog/2023/10/image.png"><script async src="https://www.googletagmanager.com/gtag/js?id=AW-983760722"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
@@ -22,14 +22,68 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 });
 </script><div class="content blog_post"><div class="breadcrumb"><span class="item">Blog</span><span class="item">&nbsp;&nbsp;>&nbsp;&nbsp;</span><span class="item">Building A Cool 3D website: Tips, Tricks and Lessons Learned</span></div><h2>Building A Cool 3D website: Tips, Tricks and Lessons Learned</h2><div class="wp-block-image">
-<figure class="aligncenter is-resized"><img decoding="async" src="/assets/blog/2023/10/1*o6xfwPdjAcGUyBE5s69iOQ.png" alt="" style="width:844px;height:auto"></figure></div>
+<figure class="aligncenter size-full is-resized"><img loading="lazy" decoding="async" width="700" height="367" src="/assets/blog/2023/10/image.png" alt="" class="wp-image-348" style="width:844px;height:auto" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image.png 700w, https://portal.openstudios.xyz/app/uploads/2023/10/image-300x157.png 300w" sizes="(max-width: 700px) 100vw, 700px"></figure></div>
+
+
+<h3 class="wp-block-heading">Contents</h3>
+
+
+
+<ul class="wp-block-list">
+<li><a href="#background">Background</a></li>
+
+
+
+<li><a href="#architecture">Architecture and tech stack</a>
+<ul class="wp-block-list">
+<li><a href="#html-templating">HTML templating</a></li>
+
+
+
+<li><a href="#javascript-builder">Javascript builder</a></li>
+
+
+
+<li><a href="#loading-screen">Loading screen</a></li>
+</ul>
+</li>
+
+
+
+<li><a href="#asset-preparation">Asset preparation</a></li>
+
+
+
+<li><a href="#performance-optimisation">Performance optimisation</a></li>
+
+
+
+<li><a href="#responsiveness-viewports">Responsiveness and viewports</a></li>
+
+
+
+<li><a href="#device-testing">Device testing</a></li>
+
+
+
+<li><a href="#scope-creep">Scope creep</a></li>
+
+
+
+<li><a href="#the-future">The future</a></li>
+</ul>
+
+
+
+<h3 class="wp-block-heading" id="background">Background</h3>
+
 
 
 <p id="5eb2">I first learned to make websites back in 1999 using Macromedia software like Dreamweaver, Fireworks and Flash. It was a golden age for vibrant interactive experiences that pushed the boundaries of what to expect and that type of web development is what influences me. As a kid of eleven, it was life changing to be able to make my own graphics, animations and interactive experience all with definitely not warez (hai fbi — did I mention I was a minor at the time). The film The Matrix also just came out and I was learning how to use Linux. What I’m saying is that I’ve always been a nerd.</p>
 
 
 <div class="wp-block-image">
-<figure class="aligncenter"><img decoding="async" src="/assets/blog/2023/10/0*Wz8nmIypjtQCnF61.jpg" alt=""></figure></div>
+<figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="460" height="275" src="/assets/blog/2023/10/image.jpeg" alt="" class="wp-image-349" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image.jpeg 460w, https://portal.openstudios.xyz/app/uploads/2023/10/image-300x179.jpeg 300w" sizes="(max-width: 460px) 100vw, 460px"></figure></div>
 
 
 <p id="c7ff">Learning is a journey that never ends, certainly that’s even more true in the world of games programming where even the most sensible wisdoms might get thrown out the window to achieve a result. Some might find that never ending challenge off-putting, but I love it and think it’s fantastic. For Open Studios new website, we wanted to create a digital experience that represented our creative and technical capabilities as a team. Knowing that pushing up against limitations can sometimes shape and produce the best innovative outcomes in the delivery of any project, we decided to proceed without considering the limits and just design whatever we wanted.</p>
@@ -44,11 +98,13 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<p>https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Ff8z5XBTd82M%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Df8z5XBTd82M&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Ff8z5XBTd82M%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtubeThis design reference was made in Blender and rendered using Cycles by&nbsp;<a href="https://www.linkedin.com/in/garrett-ray-kinder-361ba6a5/" rel="noreferrer noopener" target="_blank">Garrett Kinder</a>.</p>
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="Virtual Office Concept Animation" width="500" height="281" src="https://www.youtube.com/embed/f8z5XBTd82M?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div><figcaption class="wp-element-caption">This design reference was made in Blender and rendered using Cycles by&nbsp;<a href="https://www.linkedin.com/in/garrett-ray-kinder-361ba6a5/" target="_blank" rel="noreferrer noopener">Garrett Kinder</a>.</figcaption></figure>
 
 
 
-<h1 class="wp-block-heading" id="9c79">Architecture and tech stack</h1>
+<h3 class="wp-block-heading" id="architecture">Architecture and tech stack</h3>
 
 
 
@@ -82,7 +138,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<p id="60c5"><strong>HTML templating</strong></p>
+<h4 class="wp-block-heading" id="html-templating"><strong>HTML templating</strong></h4>
 
 
 
@@ -98,22 +154,22 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*4vfBxszhQ4gBRyialRsRMQ.png" alt=""></figure>
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1006" height="355" src="/assets/blog/2023/10/image-1.png" alt="" class="wp-image-350" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-1.png 1006w, https://portal.openstudios.xyz/app/uploads/2023/10/image-1-300x106.png 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-1-768x271.png 768w" sizes="(max-width: 1006px) 100vw, 1006px"></figure>
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*zfUNaAz6X209MbPsmrJRyw.png" alt=""><figcaption class="wp-element-caption">The&nbsp;<a href="https://github.com/OpenStudiosCo/openstudios.xyz/tree/master/src/web" rel="noreferrer noopener" target="_blank"><strong>/src/web/</strong></a><strong>&nbsp;</strong>folder contains Pug files that define the HTML pages that are going to be created, as you can see from the two About us source files Eleventy front matter data controls file output location, SEO fields.&nbsp;<strong>extends</strong>&nbsp;sets the template and&nbsp;<strong>include</strong>&nbsp;the common content source in /src/content/about_us.pug.</figcaption></figure>
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="994" height="466" src="/assets/blog/2023/10/image-2.png" alt="" class="wp-image-351" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-2.png 994w, https://portal.openstudios.xyz/app/uploads/2023/10/image-2-300x141.png 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-2-768x360.png 768w" sizes="(max-width: 994px) 100vw, 994px"><figcaption class="wp-element-caption">The&nbsp;<a href="https://github.com/OpenStudiosCo/openstudios.xyz/tree/master/src/web" rel="noreferrer noopener" target="_blank"><strong>/src/web/</strong></a><strong>&nbsp;</strong>folder contains Pug files that define the HTML pages that are going to be created, as you can see from the two About us source files Eleventy front matter data controls file output location, SEO fields.&nbsp;<strong>extends</strong>&nbsp;sets the template and&nbsp;<strong>include</strong>&nbsp;the common content source in /src/content/about_us.pug.</figcaption></figure>
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*CZVvUfCA9SGLJqS9eDd9mA.png" alt=""></figure>
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="999" height="721" src="/assets/blog/2023/10/image-3.png" alt="" class="wp-image-352" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-3.png 999w, https://portal.openstudios.xyz/app/uploads/2023/10/image-3-300x217.png 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-3-768x554.png 768w" sizes="(max-width: 999px) 100vw, 999px"></figure>
 
 
 <div class="wp-block-image">
-<figure class="aligncenter"><img decoding="async" src="/assets/blog/2023/10/1*InKm7M9eS1_QHqc-yq6NAA.png" alt=""><figcaption class="wp-element-caption"><em>The&nbsp;<a href="https://github.com/OpenStudiosCo/openstudios.xyz/tree/master/src/templates" target="_blank" rel="noreferrer noopener">/src/templates</a>&nbsp;folder contains Pug files that contain common HTML structures such as the main HTML tag, head and body elements, etc. Pictured above are the two templates that power the iFrame and HTML fallback pages.</em></figcaption></figure></div>
+<figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="1009" height="921" src="/assets/blog/2023/10/image-4.png" alt="" class="wp-image-353" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-4.png 1009w, https://portal.openstudios.xyz/app/uploads/2023/10/image-4-300x274.png 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-4-768x701.png 768w" sizes="(max-width: 1009px) 100vw, 1009px"><figcaption class="wp-element-caption"><em>The&nbsp;<a href="https://github.com/OpenStudiosCo/openstudios.xyz/tree/master/src/templates" target="_blank" rel="noreferrer noopener">/src/templates</a>&nbsp;folder contains Pug files that contain common HTML structures such as the main HTML tag, head and body elements, etc. Pictured above are the two templates that power the iFrame and HTML fallback pages.</em></figcaption></figure></div>
 
 
-<p id="4c72"><strong>Javascript builder</strong></p>
+<h4 class="wp-block-heading" id="javascript-builder"><strong>Javascript builder</strong></h4>
 
 
 
@@ -125,15 +181,15 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*GIoav_V3xAMVNykWsHDtkg.png" alt=""></figure>
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="637" height="403" src="/assets/blog/2023/10/image-5.png" alt="" class="wp-image-354" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-5.png 637w, https://portal.openstudios.xyz/app/uploads/2023/10/image-5-300x190.png 300w" sizes="(max-width: 637px) 100vw, 637px"></figure>
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*IwioFnqmem73ns74PPcIAA.png" alt=""><figcaption class="wp-element-caption">This is a side by side comparison of my build and watch configuration files for esBuild. In my experience a typical Rollup config is generally twice this size with maybe a couple of addon modules needed. Webpack will have a config magnitudes longer than Rollup. Esbuild just seems to ‘<em>get it’ out of the box.</em></figcaption></figure>
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="993" height="526" src="/assets/blog/2023/10/image-6.png" alt="" class="wp-image-355" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-6.png 993w, https://portal.openstudios.xyz/app/uploads/2023/10/image-6-300x159.png 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-6-768x407.png 768w" sizes="(max-width: 993px) 100vw, 993px"><figcaption class="wp-element-caption">This is a side by side comparison of my build and watch configuration files for esBuild. In my experience a typical Rollup config is generally twice this size with maybe a couple of addon modules needed. Webpack will have a config magnitudes longer than Rollup. Esbuild just seems to ‘<em>get it’ out of the box.</em></figcaption></figure>
 
 
 
-<p id="b092"><strong>Loading screen</strong></p>
+<h4 class="wp-block-heading" id="loading-screen"><strong>Loading screen</strong></h4>
 
 
 
@@ -145,7 +201,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<h1 class="wp-block-heading" id="6abb">Asset preparation</h1>
+<h3 class="wp-block-heading" id="asset-preparation">Asset preparation</h3>
 
 
 
@@ -157,7 +213,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*tdv72UPkSy_iTHwV17987g.png" alt=""><figcaption class="wp-element-caption">This small monstera plant came free from BlenderKit, but still required a bit of work to prepare it for use in a real-time 3D setting like our Three.js website.</figcaption></figure>
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="700" height="420" src="/assets/blog/2023/10/image-7.png" alt="" class="wp-image-356" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-7.png 700w, https://portal.openstudios.xyz/app/uploads/2023/10/image-7-300x180.png 300w" sizes="(max-width: 700px) 100vw, 700px"><figcaption class="wp-element-caption">This small monstera plant came free from BlenderKit, but still required a bit of work to prepare it for use in a real-time 3D setting like our Three.js website.</figcaption></figure>
 
 
 
@@ -173,7 +229,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*b4dp_HOTSHoWwEXJarVLrw.png" alt=""></figure>
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="576" src="/assets/blog/2023/10/image-8-1024x576.png" alt="" class="wp-image-357" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-8-1024x576.png 1024w, https://portal.openstudios.xyz/app/uploads/2023/10/image-8-300x169.png 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-8-768x432.png 768w, https://portal.openstudios.xyz/app/uploads/2023/10/image-8-1536x864.png 1536w, https://portal.openstudios.xyz/app/uploads/2023/10/image-8.png 1920w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
 
 
 
@@ -181,7 +237,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<h1 class="wp-block-heading" id="8869"><strong>Performance optimisation</strong></h1>
+<h3 class="wp-block-heading" id="performance-optimisation"><strong>Performance optimisation</strong></h3>
 
 
 
@@ -209,7 +265,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<h1 class="wp-block-heading" id="7219">Responsiveness and viewports</h1>
+<h3 class="wp-block-heading" id="responsiveness-viewports">Responsiveness and viewports</h3>
 
 
 
@@ -225,15 +281,15 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*2vuekKJBfu1ViNdEd_UuQA.png" alt=""></figure>
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="511" height="1024" src="/assets/blog/2023/10/image-9-511x1024.png" alt="" class="wp-image-359" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-9-511x1024.png 511w, https://portal.openstudios.xyz/app/uploads/2023/10/image-9-150x300.png 150w, https://portal.openstudios.xyz/app/uploads/2023/10/image-9.png 706w" sizes="(max-width: 511px) 100vw, 511px"></figure>
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*ylORDHjNqRmllbJBxSPHaA.png" alt=""><figcaption class="wp-element-caption">As you might notice when looking carefully at these screenshots, the furniture in the room and the field of view are shifted slightly in order to recompose the scene for portrait and landscape modes. We are also running without effects like bloom or anti aliasing here as my laptop couldn’t handle doing them.</figcaption></figure>
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="565" src="/assets/blog/2023/10/image-10-1024x565.png" alt="" class="wp-image-360" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-10-1024x565.png 1024w, https://portal.openstudios.xyz/app/uploads/2023/10/image-10-300x166.png 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-10-768x424.png 768w, https://portal.openstudios.xyz/app/uploads/2023/10/image-10.png 1288w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption class="wp-element-caption">As you might notice when looking carefully at these screenshots, the furniture in the room and the field of view are shifted slightly in order to recompose the scene for portrait and landscape modes. We are also running without effects like bloom or anti aliasing here as my laptop couldn’t handle doing them.</figcaption></figure>
 
 
 
-<h1 class="wp-block-heading" id="ad06">Device testing</h1>
+<h3 class="wp-block-heading" id="device-testing">Device testing</h3>
 
 
 
@@ -245,7 +301,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*vksiIbKlWcqwUwnypyiGaA.png" alt=""><figcaption class="wp-element-caption">The Chrome Remote Debugger showing a live feed of my phone’s browser tab on the left and the corresponding console with Langenium engine output on the right.</figcaption></figure>
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="700" height="415" src="/assets/blog/2023/10/image-11.png" alt="" class="wp-image-361" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-11.png 700w, https://portal.openstudios.xyz/app/uploads/2023/10/image-11-300x178.png 300w" sizes="(max-width: 700px) 100vw, 700px"><figcaption class="wp-element-caption">The Chrome Remote Debugger showing a live feed of my phone’s browser tab on the left and the corresponding console with Langenium engine output on the right.</figcaption></figure>
 
 
 
@@ -253,7 +309,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<h1 class="wp-block-heading" id="fe6d">Scope creep</h1>
+<h3 class="wp-block-heading" id="scope-creep">Scope creep</h3>
 
 
 
@@ -273,7 +329,9 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<p>https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FLqbtxLtF3Ag&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DLqbtxLtF3Ag&amp;image=http%3A%2F%2Fi.ytimg.com%2Fvi%2FLqbtxLtF3Ag%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=google</p>
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="Pokematrix" width="500" height="281" src="https://www.youtube.com/embed/LqbtxLtF3Ag?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div></figure>
 
 
 
@@ -285,7 +343,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*uiBCVQqP5MaF2fcNAuplVA.png" alt=""></figure>
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="910" height="1024" src="/assets/blog/2023/10/image-12-910x1024.png" alt="" class="wp-image-362" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-12-910x1024.png 910w, https://portal.openstudios.xyz/app/uploads/2023/10/image-12-267x300.png 267w, https://portal.openstudios.xyz/app/uploads/2023/10/image-12-768x864.png 768w, https://portal.openstudios.xyz/app/uploads/2023/10/image-12-1365x1536.png 1365w, https://portal.openstudios.xyz/app/uploads/2023/10/image-12-1820x2048.png 1820w, https://portal.openstudios.xyz/app/uploads/2023/10/image-12.png 1920w" sizes="(max-width: 910px) 100vw, 910px"></figure>
 
 
 
@@ -297,7 +355,7 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*T_TFOjv7dKjIrFJzwcvzOQ.png" alt=""></figure>
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="576" src="/assets/blog/2023/10/image-13-1024x576.png" alt="" class="wp-image-363" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-13-1024x576.png 1024w, https://portal.openstudios.xyz/app/uploads/2023/10/image-13-300x169.png 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-13-768x432.png 768w, https://portal.openstudios.xyz/app/uploads/2023/10/image-13-1536x864.png 1536w, https://portal.openstudios.xyz/app/uploads/2023/10/image-13.png 1920w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
 
 
 
@@ -309,11 +367,11 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*VUA-893VO9SfBord970Xyw.jpeg" alt=""></figure>
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="768" src="/assets/blog/2023/10/image-1-1024x768.jpeg" alt="" class="wp-image-364" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-1-1024x768.jpeg 1024w, https://portal.openstudios.xyz/app/uploads/2023/10/image-1-300x225.jpeg 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-1-768x576.jpeg 768w, https://portal.openstudios.xyz/app/uploads/2023/10/image-1-1536x1152.jpeg 1536w, https://portal.openstudios.xyz/app/uploads/2023/10/image-1-2048x1536.jpeg 2048w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
 
 
 
-<figure class="wp-block-image"><img decoding="async" src="/assets/blog/2023/10/1*EhxJZNdhcnYW4A-f9ul0Kg.jpeg" alt=""><figcaption class="wp-element-caption">Like the themes of The Matrix, the year 1999 and the Vaporwave Aesthetic itself, using this older photo of the Perth skyline on the left carries on our theme of celebrating the past but with a futuristic twist.</figcaption></figure>
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="398" src="/assets/blog/2023/10/image-2-1024x398.jpeg" alt="" class="wp-image-365" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image-2-1024x398.jpeg 1024w, https://portal.openstudios.xyz/app/uploads/2023/10/image-2-300x117.jpeg 300w, https://portal.openstudios.xyz/app/uploads/2023/10/image-2-768x299.jpeg 768w, https://portal.openstudios.xyz/app/uploads/2023/10/image-2-1536x597.jpeg 1536w, https://portal.openstudios.xyz/app/uploads/2023/10/image-2-2048x796.jpeg 2048w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption class="wp-element-caption">Like the themes of The Matrix, the year 1999 and the Vaporwave Aesthetic itself, using this older photo of the Perth skyline on the left carries on our theme of celebrating the past but with a futuristic twist.</figcaption></figure>
 
 
 
@@ -321,11 +379,17 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<p>https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FgYr3hbP24sQ%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DgYr3hbP24sQ&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FgYr3hbP24sQ%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube“To Another World” is kind of like a re-launch trailer for our business, I’m currently working on an extended version that intersplices footage of some of our other work as the car is driving in the night.</p>
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="To Another World" width="500" height="281" src="https://www.youtube.com/embed/gYr3hbP24sQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div><figcaption class="wp-element-caption">“To Another World” is kind of like a re-launch trailer for our business, I’m currently working on an extended version that intersplices footage of some of our other work as the car is driving in the night.</figcaption></figure>
 
 
 
-<h1 class="wp-block-heading" id="9e4f">The future</h1>
+<p></p>
+
+
+
+<h3 class="wp-block-heading" id="the-future">The future</h3>
 
 
 
@@ -337,11 +401,11 @@ gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div
 
 
 
-<p id="9ea7">The first version is just our office with our computer workstations but we plan to add other rooms from our studio. The jewellery workshop and its show room are probably going to be the next steps. We also have a crafts room for sewing and studio photography.</p>
+<p id="5b0d">The first version is just our office with our computer workstations but we plan to add other rooms from our studio. The jewellery workshop and its show room are probably going to be the next steps. We also have a crafts room for sewing and studio photography.</p>
 
 
 
-<p id="5b0d">Finally, if you still haven’t seen it, check out the&nbsp;<a href="https://openstudios.xyz/" rel="noreferrer noopener" target="_blank">Open Studios website</a>&nbsp;now!</p>
+<p></p>
 <br><br></div></div><div class="content_row newsletter" role="complementary"><div class="newsletter_bg"></div><div class="content"><div class="row center"><div class="wide-column"><script>function newsletterSubmit(token) {
     var validationElm = document.getElementById("newslettervalidation");
     var data = document.getElementById("newsletterform");
