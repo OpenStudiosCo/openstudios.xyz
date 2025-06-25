@@ -64,6 +64,56 @@ h2 About Us
           We provide a 30 days warranty for all our work and can provide further assistance with retainer arrangements for ongoing updates and maintenance.
   .row.center
     .wide-column
+      h3 Tools of the trade
+      p.
+        We value an efficient workflow that allows us to keep our own overheads down. Our selection of work tools is based on years of industry experience and ensures we are able to deliver our vision. It's important to us to finish work on budget and to do so in a good timeframe and with options to further iterate and improve.
+  .row.center
+    .feature.wide
+      .feature_media
+        a(href='/assets/images/tools/affinity_designer.png' class='lightbox')
+          img(src='/assets/images/tools/affinity_designer.png' style=' width: 100%; height: 350px; object-fit: cover; object-position: top;' alt='Screenshot of a web page being designed in Affinity Designer')
+      .feature_content
+        h4 Illustration and photo editing software
+        p
+          | Our team is most experienced with the Adobe and Affinity suites for producing designs, illustrations and editing photos. We can deliver graphics in all formats including SVG, TIFF and PDF. Assets produced in our creative tools are often for use in other projects such as website designs (pictured) or product photo editing. We can also collaborate with your existing team with online tools like Figma and Canva.
+  .row.center
+    .feature.wide
+      .feature_content
+        h4 3D Design and Rendering Software
+        p
+          | The cornerstone of our capability in 3D Modelling and Rendering, Blender allows our team to access sophisticated tools for producing models, materials and 3D images. We can create custom photo realistic 3D models of  your product designs, optimised game models and create animated sequences for video ads, storytelling and interactive applications.
+      .feature_media
+        a(href='/assets/images/tools/blender.png' class='lightbox')
+          img(src='/assets/images/tools/blender.png' style=' width: 100%; height: 350px; object-fit: cover; object-position: top;' alt='Screenshot of Blender being used to create a 3D animation')
+  .row.center
+    .feature.wide
+      .feature_media
+        a(href='/assets/images/tools/davinci.png' class='lightbox')
+          img(src='/assets/images/tools/davinci.png' style=' width: 100%; height: 350px; object-fit: cover; object-position: top;' alt='Screenshot of DaVinci Resolve being used to edit a video')
+      .feature_content
+        h4 Video Editing Software
+        p
+          | We currently use DaVinci Resolve for sequencing and editing videos, allowing us to make any final touches needed on top of raw footage produced by video cameras and 3D rendering software. Our team is experienced with making good use of the features in DaVinci Resolve to create professional videos with multiple video layers, special effects, text overlays, scene transitions and custom color grading.
+  .row.center
+    .feature.wide
+      .feature_content
+        h4 Development Operations
+        p
+          | Our on premises server hosts our development environments, some of which are custom and others defined in automation tools like Ansible and Docker. Using cloud services for hosting and Github for CI/CD, version control, issue tracking and project management allows our team to work with a broad range of teams around the world. We can work within your organisations coding standards and policies or provide our own recommendations, depending on your needs.
+      .feature_media
+        a(href='/assets/images/tools/vscode.png' class='lightbox')
+          img(src='/assets/images/tools/vscode.png' style=' width: 100%; height: 350px; object-fit: cover; object-position: top;' alt='Screenshot of VS Code')
+  .row.center
+    .feature.wide
+      .feature_media
+        a(href='/assets/images/tools/dropbox.png' class='lightbox')
+          img(src='/assets/images/tools/dropbox.png' style=' width: 100%; height: 350px; object-fit: cover; object-position: top;' alt='Screenshot of the company Dropbox')
+      .feature_content
+        h4 Business Operations
+        p
+          | We have a robust documentation system that ensures nothing is lost. Using Office and Dropbox our organized and structured files keep our production team equipped and informed for maximum efficiency to meet your goals.
+  .row.center
+    .wide-column
       h3 Our values
   .row.center
     .feature
@@ -83,3 +133,61 @@ h2 About Us
         img(src='/assets/images/about-us/newpride.png' alt='2018 Progress Pride Flag by Daniel Quasar')
       .feature_content
         p We embrace differences, cherishing the rich tapestry of backgrounds, experiences, and identities that each person brings. It is important to us that working relationships are not only productive but also built on a foundation of mutual respect and appreciation.
+script.
+  window.addEventListener("DOMContentLoaded", function() {
+    const prvs = new Parvus();
+
+    function ThumbnailPlugin(main) {
+      return (slider) => {
+        function removeActive() {
+          slider.slides.forEach((slide) => {
+            slide.classList.remove("active")
+          })
+        }
+        function addActive(idx) {
+          slider.slides[idx].classList.add("active")
+        }
+
+        function addClickEvents() {
+          slider.slides.forEach((slide, idx) => {
+            slide.addEventListener("click", () => {
+              main.moveToIdx(idx)
+            })
+          })
+        }
+
+        slider.on("created", () => {
+          addActive(slider.track.details.rel)
+          addClickEvents()
+          main.on("animationStarted", (main) => {
+            removeActive()
+            const next = main.animator.targetIdx || 0
+            addActive(main.track.absToRel(next))
+            slider.moveToIdx(Math.min(slider.track.details.maxIdx, next))
+          })
+        })
+      }
+    }
+
+    document.querySelectorAll('.feature.wide .feature_media').forEach(function( parentElement ) {
+      var selector = "#" + parentElement.id + " .keen-slider.main";
+      var slider_exists = parentElement.id
+      if (slider_exists) {
+        var slider = new KeenSlider(selector);
+        var thumbnails = new KeenSlider(
+          "#" + parentElement.id + " .keen-slider.thumbnail",
+          {
+            initial: 0,
+            slides: {
+              perView: 5,
+              spacing: 10,
+            },
+            renderMode: 'performance'
+          },
+          [ThumbnailPlugin(slider)]
+        );
+      }
+    });
+
+    
+  })
