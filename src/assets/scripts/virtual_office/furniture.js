@@ -14,9 +14,10 @@ export async function setupBackwall() {
   var wallGroup = new THREE.Group();
 
   // About Us Neon sign
-  await createNeonSign( 'about us', async ( signMesh ) => {
+  await createNeonSign( 'worlds', async ( signMesh ) => {
+    window.sign = signMesh;
     // Position and rotate the sign
-    signMesh.position.set( -6.4, 15, 1 ); // Example position for the sign
+    signMesh.position.set( -5.2, 15, 1 ); // Example position for the sign
     signMesh.name = "neon_sign";
     window.virtual_office.scene_objects.neon_sign = signMesh;
     //signMesh.layers.set(11);
@@ -477,16 +478,16 @@ async function createDeskLabel( i, callback, deskGroup ) {
   let labelText = '';
   switch ( i ) {
     case 0:
-      labelText = 'Case studies';
+      labelText = 'About Us';
       break;
     case 1:
-      labelText = 'Services';
+      labelText = 'What We Do';
       break;
     case 2:
-      labelText = 'Portfolio';
+      labelText = 'The Studio';
       break;
     case 3:
-      labelText = 'Contact us';
+      labelText = 'Support us';
       break;
   }
 
