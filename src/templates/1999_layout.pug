@@ -13,15 +13,15 @@
         .menu(role="navigation")
             ul(role="menu")
                 li(role="presentation")
+                    a(href='/worlds.html' role="menuitem") Worlds
+                li(role="presentation")
+                    a(href='/the_studio.html' role="menuitem") The Studio
+                li(role="presentation")
+                    a(href='/what_we_do.html' role="menuitem") What We Do
+                li(role="presentation")
                     a(href='/about_us.html' role="menuitem") About Us
                 li(role="presentation")
-                    a(href='/services.html' role="menuitem") Services
-                li(role="presentation")
-                    a(href='/case_studies.html' role="menuitem") Case Studies
-                li(role="presentation")
-                    a(href='/portfolio.html' role="menuitem") Portfolio
-                li(role="presentation")
-                    a(href='/contact_us.html' role="menuitem") Contact Us
+                    a(href='/support_us.html' role="menuitem") Support Us
         #pokematrix
             canvas#pokematrixCanvas
             canvas#pokematrixImage
@@ -33,9 +33,9 @@
         - extra_class = ' bg_river'
     else if page.url == '/404.html'
         - extra_class = ' bg_river'
-    else if page.url == '/services.html'
+    else if page.url == '/worlds.html'
         - extra_class = ' bg_reverse'
-    else if page.url == '/case_studies.html'
+    else if page.url == '/the_studio.html'
         - extra_class = ' bg_reverse'
     else 
         - extra_class = ''
