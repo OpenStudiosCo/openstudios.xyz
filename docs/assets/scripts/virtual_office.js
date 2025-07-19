@@ -146,35 +146,37 @@ window.virtual_office = {
 
   /**
    * Screens / iframe pages
+   *
+   * Controls the html page that a screen loads.
    */
   screens: {
     720: {
-      slug: 'about_us',
-      title: 'About Us',
+      slug: 'what_we_do',
+      title: 'What We Do',
       mesh: false,
       type: 'tv',
     },
 		0: {
-      slug: 'case_studies',
-      title: 'Case Studies',
+      slug: 'about_us',
+      title: 'About Us',
       mesh: false,
       type: 'monitor',
     },
 		3: {
-      slug: 'contact_us',
-      title: 'Contact Us',
+      slug: 'the_studio',
+      title: 'The Studio',
       mesh: false,
       type: 'monitor',
     },
 		2: {
-      slug: 'portfolio',
-      title: 'Portfolio',
+      slug: 'support_us',
+      title: 'Support Us',
       mesh: false,
       type: 'monitor',
     },
 		1: {
-      slug: 'services',
-      title: 'Services',
+      slug: 'worlds',
+      title: 'Worlds',
       mesh: false,
       type: 'monitor',
     },
