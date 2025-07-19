@@ -464,6 +464,9 @@ a.icon_button img:hover {
   height: 100%;
   object-fit: cover;
 }
+.content .align_right {
+  text-align: right;
+}
 @media screen and (min-width: 768px) {
   .content .tiles {
     margin: 1rem -2rem;
