@@ -35,6 +35,7 @@ function _init( wait ) {
 	console.log( '\t Environment: ' + s.env );
 	
 	// Default modules
+	// Refactor to have the variants done more cleanly.
 	var modules = [
 		{
 			name: "tweakpane",
@@ -94,7 +95,7 @@ function _init( wait ) {
 				{ path: "/assets/scripts/virtual_office/helpers.js" },
 				{ path: "/assets/scripts/virtual_office/triggers.js" },
 				{ path: "/assets/scripts/virtual_office/tweens.js" },
-				{ path: "/assets/scripts/virtual_office.js", callback: "window.virtual_office.init" }
+				{ path: "/assets/scripts/virtual_office.js" }
 			]
 		}
 	];

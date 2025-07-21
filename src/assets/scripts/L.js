@@ -94,7 +94,7 @@ function _init( wait ) {
 				{ path: "/assets/scripts/virtual_office/helpers.js" },
 				{ path: "/assets/scripts/virtual_office/triggers.js" },
 				{ path: "/assets/scripts/virtual_office/tweens.js" },
-				{ path: "/assets/scripts/virtual_office.js" }
+				{ path: "/assets/scripts/virtual_office.js", callback: "window.virtual_office.init" }
 			]
 		}
 	];
