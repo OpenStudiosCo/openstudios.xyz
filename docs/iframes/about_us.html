@@ -2,63 +2,7 @@
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
-gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div class="header_bg"></div><div class="header" role="banner"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div><div class="content_row" role="main"><h2>About Us</h2><div class="content"><div class="row center"><div class="wide-column"><p>We&apos;re Open Studios, a multi disciplinary digital production studio.<br>Creating unique and meaningful experiences since 2019.<br>We are a husband and husband team, plus two dogs and a cat. </p></div></div><div class="row"><div class="profiles"><div class="profile"><img class="profile_image" src="/assets/images/about-us/paul.jpg" style=" width: 100%; height: auto;" alt="Selfie of Paul with his two doggos in the car"><h3>Paul Brzeski&nbsp;<a class="icon_button" href="https://linkedin.com/in/paul-b-23620b209/" title="Paul Brzeski on LinkedIn"><img src="/assets/images/linkedin.png"></a></h3><p>Introducing Paul, a creative technologist with two decades in the industry. Starting in software development, Paul has branched out as a creative in his role at the studio.</p><p>With a proficiency for producing art and technology, Paul&apos;s journey has been characterized by staying at the forefront of the ever-changing tech landscape and pushing the boundaries of what&apos;s possible.</p></div><div class="profile"><img class="profile_image" src="/assets/images/about-us/garrett.png" style=" width: 100%; height: auto;" alt="Photo of Garrett studying a whisky blend at a distillery in Scotland"><h3>Garrett Kinder&nbsp;<a class="icon_button" href="https://www.linkedin.com/in/garrett-ray-kinder-361ba6a5/" title="Garrett Kinder on LinkedIn"><img src="/assets/images/linkedin.png" alt="LinkedIn logo"></a></h3><p>Meet Garrett, the embodiment of sophistication and innovation, renowned as an award-winning bartender, expert jeweler, and connoisseur of rare whiskies.</p><p>From bar manager to digital artist, Garrett is skilled at creating visually compelling stories using 2D and 3D assets. Enriching our online world with his profound knowledge of aesthetics and all things refined.</p></div></div></div><div class="row center"><div class="wide-column"><h3>Our values</h3></div></div><div class="row center"><div class="feature"><div class="feature_media"><img src="/assets/images/about-us/aboriginal-flag.png" alt="The Australian Aboriginal Flag"></div><div class="feature_content"><p>Open Studios acknowledges the Nyoongar Whadjuk people - traditional custodians of this land. We wish to acknowledge the strength of their continuing culture and pay our respects to Elders past and present.</p></div></div></div><div class="row center"><div class="feature"><div class="feature_content"><p>Free and Open Source software is as much a way of thinking as it is a licensing scheme, as such we strive to be accountable, transparent, informative and useful to others in all business interactions and activities.</p></div><div class="feature_media"><img src="/assets/images/about-us/linux.png" alt="Collage of Open Source project logos"></div></div></div><div class="row center"><div class="feature"><div class="feature_media"><img src="/assets/images/about-us/newpride.png" alt="2018 Progress Pride Flag by Daniel Quasar"></div><div class="feature_content"><p>We embrace differences, cherishing the rich tapestry of backgrounds, experiences, and identities that each person brings. It is important to us that working relationships are not only productive but also built on a foundation of mutual respect and appreciation.</p></div></div></div></div><script>window.addEventListener("DOMContentLoaded", function() {
-  const prvs = new Parvus();
-
-  function ThumbnailPlugin(main) {
-    return (slider) => {
-      function removeActive() {
-        slider.slides.forEach((slide) => {
-          slide.classList.remove("active")
-        })
-      }
-      function addActive(idx) {
-        slider.slides[idx].classList.add("active")
-      }
-
-      function addClickEvents() {
-        slider.slides.forEach((slide, idx) => {
-          slide.addEventListener("click", () => {
-            main.moveToIdx(idx)
-          })
-        })
-      }
-
-      slider.on("created", () => {
-        addActive(slider.track.details.rel)
-        addClickEvents()
-        main.on("animationStarted", (main) => {
-          removeActive()
-          const next = main.animator.targetIdx || 0
-          addActive(main.track.absToRel(next))
-          slider.moveToIdx(Math.min(slider.track.details.maxIdx, next))
-        })
-      })
-    }
-  }
-
-  document.querySelectorAll('.feature.wide .feature_media').forEach(function( parentElement ) {
-    var selector = "#" + parentElement.id + " .keen-slider.main";
-    var slider_exists = parentElement.id
-    if (slider_exists) {
-      var slider = new KeenSlider(selector);
-      var thumbnails = new KeenSlider(
-        "#" + parentElement.id + " .keen-slider.thumbnail",
-        {
-          initial: 0,
-          slides: {
-            perView: 5,
-            spacing: 10,
-          },
-          renderMode: 'performance'
-        },
-        [ThumbnailPlugin(slider)]
-      );
-    }
-  });
-
-  
-})</script></div><div class="content_row newsletter" role="complementary"><div class="newsletter_bg"></div><div class="content"><div class="row center"><div class="wide-column"><script>function newsletterSubmit(token) {
+gtag('config', 'AW-983760722');</script></head><body><div id="page-wrapper"><div class="header_bg"></div><div class="header" role="banner"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div><div class="content_row" role="main"><h2>About Us</h2><div class="content"><div class="row center"><div class="wide-column"><p>We&apos;re Open Studios, a multi disciplinary digital production studio.<br>Creating unique and meaningful experiences since 2019.<br>We are a husband and husband team, plus two dogs and a cat. </p></div></div><div class="row"><div class="profiles"><div class="profile"><img class="profile_image" src="/assets/images/about-us/paul.jpg" style=" width: 100%; height: auto;" alt="Selfie of Paul with his two doggos in the car"><h3>Paul Brzeski&nbsp;<a class="icon_button" href="https://linkedin.com/in/paul-b-23620b209/" title="Paul Brzeski on LinkedIn"><img src="/assets/images/linkedin.png"></a></h3><p>Introducing Paul, a creative technologist with two decades in the industry. Starting in software development, Paul has branched out as a creative in his role at the studio.</p><p>With a proficiency for producing art and technology, Paul&apos;s journey has been characterized by staying at the forefront of the ever-changing tech landscape and pushing the boundaries of what&apos;s possible.</p></div><div class="profile"><img class="profile_image" src="/assets/images/about-us/garrett.png" style=" width: 100%; height: auto;" alt="Photo of Garrett studying a whisky blend at a distillery in Scotland"><h3>Garrett Kinder&nbsp;<a class="icon_button" href="https://www.linkedin.com/in/garrett-ray-kinder-361ba6a5/" title="Garrett Kinder on LinkedIn"><img src="/assets/images/linkedin.png" alt="LinkedIn logo"></a></h3><p>Meet Garrett, the embodiment of sophistication and innovation, renowned as an award-winning bartender, expert jeweler, and connoisseur of rare whiskies.</p><p>From bar manager to digital artist, Garrett is skilled at creating visually compelling stories using 2D and 3D assets. Enriching our online world with his profound knowledge of aesthetics and all things refined.</p></div></div></div><div class="row center"><div class="wide-column"><h3>Our values</h3></div></div><div class="row center"><div class="feature"><div class="feature_media"><img src="/assets/images/about-us/aboriginal-flag.png" alt="The Australian Aboriginal Flag"></div><div class="feature_content"><p>Open Studios acknowledges the Nyoongar Whadjuk people - traditional custodians of this land. We wish to acknowledge the strength of their continuing culture and pay our respects to Elders past and present.</p></div></div></div><div class="row center"><div class="feature"><div class="feature_content"><p>Free and Open Source software is as much a way of thinking as it is a licensing scheme, as such we strive to be accountable, transparent, informative and useful to others in all business interactions and activities.</p></div><div class="feature_media"><img src="/assets/images/about-us/linux.png" alt="Collage of Open Source project logos"></div></div></div><div class="row center"><div class="feature"><div class="feature_media"><img src="/assets/images/about-us/newpride.png" alt="2018 Progress Pride Flag by Daniel Quasar"></div><div class="feature_content"><p>We embrace differences, cherishing the rich tapestry of backgrounds, experiences, and identities that each person brings. It is important to us that working relationships are not only productive but also built on a foundation of mutual respect and appreciation.</p></div></div></div></div></div><div class="content_row newsletter" role="complementary"><div class="newsletter_bg"></div><div class="content"><div class="row center"><div class="wide-column"><script>function newsletterSubmit(token) {
     var validationElm = document.getElementById("newslettervalidation");
     var data = document.getElementById("newsletterform");
     fetch(data.getAttribute('action'), {

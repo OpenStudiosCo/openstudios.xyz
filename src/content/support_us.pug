@@ -106,3 +106,62 @@ h2 Support Us
         h4 Business Operations
         p
           | We have a robust documentation system that ensures nothing is lost. Using Office and Dropbox our organized and structured files keep our production team equipped and informed for maximum efficiency to meet project goals.
+
+script.
+  window.addEventListener("DOMContentLoaded", function() {
+    const prvs = new Parvus();
+
+    function ThumbnailPlugin(main) {
+      return (slider) => {
+        function removeActive() {
+          slider.slides.forEach((slide) => {
+            slide.classList.remove("active")
+          })
+        }
+        function addActive(idx) {
+          slider.slides[idx].classList.add("active")
+        }
+
+        function addClickEvents() {
+          slider.slides.forEach((slide, idx) => {
+            slide.addEventListener("click", () => {
+              main.moveToIdx(idx)
+            })
+          })
+        }
+
+        slider.on("created", () => {
+          addActive(slider.track.details.rel)
+          addClickEvents()
+          main.on("animationStarted", (main) => {
+            removeActive()
+            const next = main.animator.targetIdx || 0
+            addActive(main.track.absToRel(next))
+            slider.moveToIdx(Math.min(slider.track.details.maxIdx, next))
+          })
+        })
+      }
+    }
+
+    document.querySelectorAll('.feature.wide .feature_media').forEach(function( parentElement ) {
+      var selector = "#" + parentElement.id + " .keen-slider.main";
+      var slider_exists = parentElement.id
+      if (slider_exists) {
+        var slider = new KeenSlider(selector);
+        var thumbnails = new KeenSlider(
+          "#" + parentElement.id + " .keen-slider.thumbnail",
+          {
+            initial: 0,
+            slides: {
+              perView: 5,
+              spacing: 10,
+            },
+            renderMode: 'performance'
+          },
+          [ThumbnailPlugin(slider)]
+        );
+      }
+    });
+
+    
+  })
