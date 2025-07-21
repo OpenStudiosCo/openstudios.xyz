@@ -333,23 +333,14 @@ window.matrix_scene = {
     // Updates the scene
     updateStage: function () {
         if (window.matrix_scene.stage == 0) {
-            if (window.virtual_office && (Date.now() - window.matrix_scene.stageStarted > 500)) {
+            if ((Date.now() - window.matrix_scene.stageStarted > 500)) {
                 window.matrix_scene.stage = 1;
                 window.matrix_scene.stageStarted = Date.now();
-                for (var measure in window.virtual_office.loaders.stats) {
-                    window.matrix_scene.loaded_target += window.virtual_office.loaders.stats[measure].target;
-                }
-
             }
         }
         if (window.matrix_scene.stage == 1) {
-            window.matrix_scene.loaded_done = 0;
-            for (var measure in window.virtual_office.loaders.stats) {
-                window.matrix_scene.loaded_done += window.virtual_office.loaders.stats[measure].loaded;
-            }
-
             if (
-                window.matrix_scene.loaded_done == window.matrix_scene.loaded_target && (Date.now() - window.matrix_scene.stageStarted > 500)
+                (Date.now() - window.matrix_scene.stageStarted > 500)
             ) {
                 window.matrix_scene.stage = 2;
                 window.matrix_scene.stageStarted = Date.now();
@@ -357,7 +348,6 @@ window.matrix_scene = {
         }
         if (window.matrix_scene.stage == 2) {
             if (
-                window.virtual_office.ready == true &&
                 (Date.now() - window.matrix_scene.stageStarted > 500)
             ) {
                 window.matrix_scene.stage = 3;
@@ -396,6 +386,7 @@ window.matrix_scene = {
 };
 
 function downTheRabbitHole() {
+    window.virtual_office.init();
     window.virtual_office.started = true;
     if ( window.scrollY != 0 ) {
         window.scrollTo(0, 0);
