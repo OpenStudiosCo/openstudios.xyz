@@ -992,3 +992,55 @@ code .token.entity {
 code .token.inserted {
   color: #008000;
 }
+.world {
+  align-content: start;
+  background-size: cover;
+  border-radius: 25px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  display: flex;
+  width: 100%;
+}
+.world.yellow {
+  border-color: #ff0;
+}
+.world.yellow a:hover:not([disabled]) {
+  background: rgba(255,255,0,0.5);
+  color: #000;
+}
+.world.magenta {
+  border-color: #f0f;
+}
+.world.magenta a:hover {
+  background: rgba(255,0,255,0.5);
+  color: #fff;
+}
+.world.cyan {
+  border-color: #0ff;
+}
+.world.cyan a:hover {
+  background: rgba(0,255,255,0.5);
+  color: #000;
+}
+.world a {
+  background: rgba(250,250,250,0.5);
+  border: solid 1px #ccc;
+  border-radius: 10px;
+  color: #fff;
+  display: inline-block;
+  margin: 1rem 0 0.5rem 0;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+.world a:hover[disabled] {
+  color: #fff !important;
+}
+.world .world_content {
+  padding: 2rem 3rem;
+  text-align: left;
+  width: 50%;
+}
