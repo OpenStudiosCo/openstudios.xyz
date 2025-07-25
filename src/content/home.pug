@@ -2,37 +2,29 @@ h2 Welcome!
 .content
   .row
     .column
-      .column
-        img(src='/assets/images/cs1xl.jpg' style=' width: 100%; height: auto;' alt='Screenshot of the new 3D website experience')
-      .column
-        h3 This website
-        p
-          | The new studio website is designed to cause shockwaves by being something different but also familiar.
-          | We want you to feel like you&apos;ve walked into a real office where we do our work.
-        a(href='/case_studies.html' style='float: right') See case study
+      h3 We are Open Studios
+      include blocks/paragraph_about
+
+      noscript
+        h3 You are seeing the "1999 Experience"
+        p The 3D virtual office requires ECMAScript 2018 to load. Your current browser/device does not seem to support the features we need to boot up so you are seeing the "1999 experience" instead.      
+
     .column
-      h3(style='margin-top: 0') Recent updates
-      a(href='/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html' target='_blank' title='How to implement Blender Principled BSDF Materials in Three.js (WebGL)')
-        img(src='/assets/blog/2024/09/Screenshot-2024-06-28-162051-Medium.png' style='width: 100%; height: auto; min-height: 269px; object-fit: cover;' alt='A screenshot from the Langenium blog article')
-      a(href='/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html')
-        h3 How to implement Blender Principled BSDF Materials in Three.js (WebGL)
-      p.
-        Constructive Solid Geometry. Procedural generation. Physically Based Materials. Shader Programming.
-      a(href='/blog/2024/05/studio-roundup-may-2024.html' target='_blank' title='Studio Roundup for May 2024')
-        img(src='/assets/blog/2024/05/opal-banner.webp' style='width: 100%; height: auto; min-height: 269px; object-fit: cover;' alt='A close up photo of the surface of an Opal')
-      a(href='/blog/2024/05/studio-roundup-may-2024.html')
-        h3 Studio Roundup for May 2024
-      p.
-        Opals. Game Dev. Marketing.
-      a(href='/blog/2024/04/studio-roundup-april-2024.html' target='_blank' title='Studio Roundup for April 2024')
-        img(src='/assets/blog/2024/04/emerald-pendant.jpg' style=' width: 100%; height: auto;' alt='A photo of necklace featuring an emerald pendant, set in 18k gold')
-      a(href='/blog/2024/04/studio-roundup-april-2024.html')
-        h3 Studio Roundup for April 2024
-      p.
-        One Of A Kind. Marketing Databases. Website Optimisation.
-      a(href='/blog.html' style='float: right' title="View blog") Read our blog
-  noscript
-    .row    
-      .column-wide
-        h3 Welcome to the "1999 Experience"
-        p The 3D virtual office requires ECMAScript 2018 to load. Your current browser/device does not seem to support the features we need to boot up so you are seeing the "1999 experience" instead.
+      section
+        h3(style='margin-top: 0') Recent updates
+
+        article
+          a(href='/blog/2025/07/beginners-guide-to-self-hosted-applications.html' target='_blank' title='Guide to Self Hosted Applications')
+            img(src='/assets/blog/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-1024x683.jpg' style='width: 100%; height: auto; min-height: 107px; object-fit: cover;' alt='A screenshot from the guide')
+          a(href='/blog/2025/07/beginners-guide-to-self-hosted-applications.html' target='_blank' title='Beginniners Guide to Self Hosted Applications')
+            h3 Beginniners Guide to Self Hosted Applications
+          p.
+            Our curated guide to using free and open source software (FOSS) to boost your productivity, compliance and competitives.
+
+        article
+          a(href='/blog/2025/05/langenium-v6-retrospective.html' target='_blank' title='Langenium v6 Retrospective')
+            img(src='/assets/blog/2025/05/3d-logo-01-1024x576.png' style='width: 100%; height: auto; min-height: 107px; object-fit: cover;' alt='A screenshot from the Langenium blog article')
+          a(href='/blog/2025/05/langenium-v6-retrospective.html' target='_blank' title='Langenium v6 Retrospective')
+            h3 Langenium v6 Retrospective
+          p.
+            An overview of this major overhaul of our open source MMORPG project Langenium. This new version adds procedurally generatd scenery, NPC AI, minimaps and new aircraft subsystems.

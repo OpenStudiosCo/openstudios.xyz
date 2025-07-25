@@ -54,26 +54,7 @@
   });
 
   
-})</script></div><div class="content_row newsletter" role="complementary"><div class="newsletter_bg"></div><div class="content"><div class="row center"><div class="wide-column"><script>function newsletterSubmit(token) {
-    var validationElm = document.getElementById("newslettervalidation");
-    var data = document.getElementById("newsletterform");
-    fetch(data.getAttribute('action'), {
-        method: data.getAttribute('method'),
-        body: new FormData(data)
-    }).then(function (response) {
-        if (response.status === 200) {
-        return response.text();
-        } else {
-        validationElm.innerHTML = response.text();
-        }
-    })
-    .then(function (data) {
-        validationElm.innerHTML = data;
-        if (validationElm.innerHTML.indexOf('Email sent successfully.') >= 0) {
-            document.getElementById("newsletterform").reset();
-        }
-    });
-}</script><form id="newsletterform" method="post" action="https://mailform.openstudios.xyz/" role="form"><h3>Subscribe to our newsletter</h3><p>Get all our latest insights, tips and project updates, conveniently in your inbox.</p><table style="width: 100%"><tr><td style="width: 80%"><input type="hidden" name="name" value="n/a"><input type="hidden" name="message" value="Newsletter signup request"><input type="email" name="email" placeholder="Email address"></td><td style="padding-left: 1rem"><button class="g-recaptcha" data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" data-callback="newsletterSubmit" data-action="submit">Subscribe</button></td></tr></table><h3 id="newslettervalidation" style="color: red; font-weight: bold;"></h3></form></div></div></div></div><div class="content_row footer"><div class="content"><div class="row center"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div></div></div></div><script>var _paq = window._paq = window._paq || [];
+})</script></div><div class="content_row footer"><div class="content"><div class="row center"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div></div></div></div><script>var _paq = window._paq = window._paq || [];
 /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
 _paq.push(['trackPageView']);
 _paq.push(['enableLinkTracking']);
