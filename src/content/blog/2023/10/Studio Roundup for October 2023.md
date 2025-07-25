@@ -1,4 +1,4 @@
-### Computer Desktop R&D
+### Computer Desktop R&amp;D
 
 As a creative and technical production studio, we rely on certain tools to get our work done. Unfortunately a lot of those tools are only available on Windows and MacOS. This prevents us from moving to a Linux desktop, even though they have been superior for a while now.
 
