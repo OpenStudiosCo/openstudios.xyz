@@ -13,15 +13,15 @@
         .menu(role="navigation")
             ul(role="menu")
                 li(role="presentation")
+                    a(href='/worlds.html' role="menuitem") Worlds
+                li(role="presentation")
+                    a(href='/the_studio.html' role="menuitem") The Studio
+                li(role="presentation")
+                    a(href='/what_we_do.html' role="menuitem") What We Do
+                li(role="presentation")
                     a(href='/about_us.html' role="menuitem") About Us
                 li(role="presentation")
-                    a(href='/services.html' role="menuitem") Services
-                li(role="presentation")
-                    a(href='/case_studies.html' role="menuitem") Case Studies
-                li(role="presentation")
-                    a(href='/portfolio.html' role="menuitem") Portfolio
-                li(role="presentation")
-                    a(href='/contact_us.html' role="menuitem") Contact Us
+                    a(href='/support_us.html' role="menuitem") Support Us
         #pokematrix
             canvas#pokematrixCanvas
             canvas#pokematrixImage
@@ -33,53 +33,27 @@
         - extra_class = ' bg_river'
     else if page.url == '/404.html'
         - extra_class = ' bg_river'
-    else if page.url == '/services.html'
+    else if page.url == '/worlds.html'
         - extra_class = ' bg_reverse'
-    else if page.url == '/case_studies.html'
+    else if page.url == '/the_studio.html'
         - extra_class = ' bg_reverse'
     else 
         - extra_class = ''
     .content_row(role="main" class=extra_class)
         block page
-    .content_row.newsletter(role="complementary")
-        .newsletter_bg
-        .content
-            .row.center
-                .wide-column
-                    script.
-                        function newsletterSubmit(token) {
-                            var validationElm = document.getElementById("newslettervalidation");
-                            var data = document.getElementById("newsletterform");
-                            fetch(data.getAttribute('action'), {
-                                method: data.getAttribute('method'),
-                                body: new FormData(data)
-                            }).then(function (response) {
-                                if (response.status === 200) {
-                                return response.text();
-                                } else {
-                                validationElm.innerHTML = response.text();
-                                }
-                            })
-                            .then(function (data) {
-                                validationElm.innerHTML = data;
-                                if (validationElm.innerHTML.indexOf('Email sent successfully.') >= 0) {
-                                    document.getElementById("newsletterform").reset();
-                                }
-                            });
-                        }
-                    form#newsletterform(method='post' action='https://mailform.openstudios.xyz/' role="form")
-                        h3 Subscribe to our newsletter
-                        p Get all our latest insights, tips and project updates, conveniently in your inbox.
-                        table(style='width: 100%')
-                            tr
-                                td(style='width: 80%')
-                                    input(type='hidden' name='name' value='n/a')
-                                    input(type='hidden' name='message' value='Newsletter signup request')
-                                    input(type='email' name='email' placeholder='Email address')
-                                td(style='padding-left: 1rem')
-                                    button(class="g-recaptcha" 
-                                        data-sitekey="6LeiXp4nAAAAAKRxcYacR0ZhbcNjf7OMCkjolpNL" 
-                                        data-callback='newsletterSubmit' 
-                                        data-action='submit') Subscribe
-                        h3#newslettervalidation(style="color: red; font-weight: bold;")
+    
+    if page.url == '/about_us.html' || page.url == '/worlds.html' || page.url.indexOf('blog') >= 0
+        .content_row.newsletter(role="complementary")
+            .newsletter_bg
+            .content
+                .row
+                    .tiles
+                        .tile
+                            .tile_content
+                            .tile_innercontent
+                                include ../content/blocks/list_behind_the_scenes.pug
+                        .tile
+                            .tile_content
+                            .tile_innercontent
+                                include ../content/blocks/tile_support_us.pug
     include ./footer.pug

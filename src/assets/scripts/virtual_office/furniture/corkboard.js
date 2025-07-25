@@ -356,6 +356,11 @@ function getBlogData( i ) {
     let data = [
         // Row 1.
         {
+            'title': "Beginniners Guide to Self Hosted Applications",
+            'url': '/iframes/blog/2025/07/beginners-guide-to-self-hosted-applications.html',
+            'image': '/assets/blog/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-1024x683.jpg'
+        },
+        {
             'title': "Langenium v6 Retrospective",
             'url': '/iframes/blog/2025/05/langenium-v6-retrospective.html',
             'image': '/assets/blog/2025/05/3d-logo-01-1024x576.png'
@@ -385,12 +390,12 @@ function getBlogData( i ) {
             'url': '/iframes/blog/2024/02/studio-roundup-february-2024.html',
             'image': '/assets/blog/2024/02/1_dyIbSVF7tlb9HYpBb4AkMQ.webp'
         },
+        // Row 2.
         {
             'title': 'Studio Roundup for January 2024',
             'url': '/iframes/blog/2024/01/studio-roundup-january-2024.html',
             'image': '/assets/blog/2024/01/1_jvdn9ENFN3e46Mf5GFmpcA.webp'
         },
-        // Row 2.
         {
             'title': 'Studio Roundup for December 2023',
             'url': '/iframes/blog/2023/12/studio-roundup-december-2023.html',
@@ -420,12 +425,7 @@ function getBlogData( i ) {
             'title': 'Studio Roundup for August 2023',
             'url': '/iframes/blog/2023/08/studio-roundup-august-2023.html',
             'image': '/assets/blog/2023/08/1_KiFpOsEZO4yE7mzAeucs0w.webp'
-        },
-        {
-            'title': 'Studio Roundup for July 2023',
-            'url': '/iframes/blog/2023/07/studio-roundup-july-2023.html',
-            'image': '/assets/blog/2023/07/1_vnEMqG7iAtvJXFlS-pMkIg.webp'
-        },
+        }
     ];
 
     return data[ i ];

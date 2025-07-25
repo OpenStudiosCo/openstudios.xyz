@@ -18,9 +18,6 @@ script(src='/assets/js/parvus.min.js')
 //- CSS
 link(rel='stylesheet' href='/assets/css/1999.css')
 
-//- Captcha
-script(src='https://www.google.com/recaptcha/api.js')
-
 //- SEO
 link(rel='canonical' href='https://openstudios.xyz' + page.url.replace('/iframes',''))
 meta(property='og:title' content=title)
@@ -35,12 +32,3 @@ meta(name='twitter:title' content=title)
 meta(name='twitter:card' content='summary_large_image')
 meta(name='twitter:description' content=description || title)
 meta(name='twitter:image' content=cover || 'https://openstudios.xyz/assets/images/virtual_office.jpg')
-
-//- Google Ads tag (gtag.js)
-script(async src='https://www.googletagmanager.com/gtag/js?id=AW-983760722')
-script.
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'AW-983760722');

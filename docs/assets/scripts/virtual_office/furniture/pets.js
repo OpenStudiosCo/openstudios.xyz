@@ -58,6 +58,12 @@ export async function setupPortraits() {
     '/assets/textures/Sam Portrait.jpg',
   ];
 
+  let names = [
+    'Jake the Dog',
+    'Peter Frampton',
+    'Samantha Carter',
+  ]
+
   await portraits.forEach( async (portraitUrl, i ) => {
 
     var material = new THREE.MeshPhongMaterial();
@@ -108,6 +114,37 @@ export async function setupPortraits() {
     portraitMesh.add( bottomBorder );
 
     updatePortraitLayout( portraitMesh, i );
+
+    // Photo Label
+    const loader = new FontLoader();
+    await loader.load( '/assets/fonts/VeraMono.json', async ( font ) => {
+        const textGeometry = new TextGeometry( names[i], {
+            font: font,
+            size: 2.5,
+            depth: 0.2,
+        } );
+
+        portraitMesh.position.z = 1;
+
+        // Create the emissive material for the text
+        var textMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0x00EEff, emissiveIntensity: 0.5 } );
+
+        // Create the label mesh
+        var signMesh = new THREE.Mesh( textGeometry, textMaterial );
+        signMesh.layers.set( 11 );
+
+        signMesh.name = "portrait_label";
+        signMesh.scale.setScalar(0.2);
+
+        let width = getMeshWidth( signMesh );
+        signMesh.position.x = -width * 0.1;
+        signMesh.position.y = -4.5;
+
+        portraitMesh.add( signMesh );
+        window.test= signMesh;
+        window.test2= portraitMesh;
+        window.test3=width;
+    } );
 
     group.add( portraitMesh );
   }); 

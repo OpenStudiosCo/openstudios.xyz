@@ -1,0 +1,39 @@
+h2 The Studio
+.content
+  .row
+    .tiles
+      .tile
+        .tile_content
+          .tile_innercontent
+            h3 Welcome to The Studio!
+            p You can use this page to get a behind the scenes look at our work, including access to our retrospectives, guides, source code and software links.
+            p We hope these resources help you along your journey whether you're a hobbyist, professional or studying.
+      .tile
+        .tile_content
+          .tile_innercontent
+            include blocks/list_behind_the_scenes.pug
+      .tile
+        .tile_content
+          .tile_innercontent
+            include blocks/list_guides.pug
+      .tile
+        .tile_content
+          .tile_innercontent
+            h3 Source Code
+            include blocks/list_github.pug
+      .tile
+        .tile_content
+          .tile_innercontent
+            h3 Software
+            p We frequently develop our own software to execute specific production goals i.e. achieving niche visual styles.
+            p
+              a(href='https://github.com/OpenStudiosCo/kettlefish') Kettlefish Static Website Builder
+            p
+              a(href='https://github.com/OpenStudiosCo/manifold') Manifold 2D/3D Graphics Multi Tool
+            br
+            p.align_right
+              a(href='https://github.com/OpenStudiosCo/') Visit our Github
+      .tile
+        .tile_content
+          .tile_innercontent
+            include blocks/tile_support_us.pug

@@ -1,0 +1,427 @@
+<!DOCTYPE html><html><head><title></title><meta name="description" content="We are Open Studios. Perth based digital production studio."><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><link rel="canonical" href="https://openstudios.xyz/blog/2025/07/beginners-guide-to-self-hosted-applications.html"><meta property="og:title"><meta property="og:description"><meta property="og:type" content="article"><meta property="og:image" content="https://openstudios.xyz//assets/blog/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-1024x683.jpg"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="768"><meta name="twitter:title"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description"><meta name="twitter:image" content="https://openstudios.xyz//assets/blog/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-1024x683.jpg"></head><body><div id="page-wrapper"><div class="header_bg"></div><div class="header" role="banner"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div><div class="content_row" role="main"><script>window.addEventListener("DOMContentLoaded", function() {
+  let images = document.querySelectorAll( '.blog_post img' );
+
+  images.forEach( imageElm => {
+    // Create a new anchor element
+    const linkElm = document.createElement('a');
+    // Set the href attribute to the image's src
+    linkElm.href = imageElm.src;
+    linkElm.classList.add('lightbox');
+    
+    // Insert the image as a child of the anchor element
+    linkElm.appendChild(imageElm.cloneNode(true));
+    
+    // Replace the original image with the new anchor element
+    imageElm.parentNode.replaceChild(linkElm, imageElm);
+  } );
+  const prvs = new Parvus();
+
+});
+</script><div class="content blog_post"><div class="breadcrumb"><span class="item">Blog</span><span class="item">&nbsp;&nbsp;>&nbsp;&nbsp;</span><span class="item">Beginners Guide to Self Hosted Applications</span></div><h2>Beginners Guide to Self Hosted Applications</h2><figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="683" src="/assets/blog/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-1024x683.jpg" alt="" class="wp-image-387" srcset="https://portal.openstudios.xyz/app/uploads/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-1024x683.jpg 1024w, https://portal.openstudios.xyz/app/uploads/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-300x200.jpg 300w, https://portal.openstudios.xyz/app/uploads/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-768x512.jpg 768w, https://portal.openstudios.xyz/app/uploads/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-1536x1024.jpg 1536w, https://portal.openstudios.xyz/app/uploads/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1.jpg 1920w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<p>Contents:</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="#cms">Content Management Systems</a></li>
+
+
+
+<li><a href="#analytics">Analytics</a></li>
+
+
+
+<li><a href="#monitoring">Monitoring</a></li>
+
+
+
+<li><a href="#search">Search</a></li>
+
+
+
+<li><a href="#vps">Virtualisation</a></li>
+</ul>
+
+
+
+<p>Self hosting applications allows you to experiment with different solutions, save on cloud costs and create new offerings.</p>
+
+
+
+<p>This curated list is based on our experiences to help you on your way.</p>
+
+
+
+<p>For a comprehensive list of many other options, check out the&nbsp;<a href="https://github.com/awesome-selfhosted/awesome-selfhosted">Awesome Self Hosted</a>&nbsp;list.</p>
+
+
+
+<h2 class="wp-block-heading" id="cms">Content Management Systems</h2>
+
+
+
+<p>Many larger projects in web development will call for some kind of content management system (CMS).</p>
+
+
+
+<h3 class="wp-block-heading">General CMS tips and tricks</h3>
+
+
+
+<ul class="wp-block-list">
+<li>We recommend using a PHP based CMS running on either a LAMP or LEMP stack.</li>
+
+
+
+<li>When using PHP-FPM and MariaDB/MySQL, make sure you fine tune your production systems with the correct configuration.
+<ul class="wp-block-list">
+<li>See this&nbsp;<a href="https://github.com/roots/trellis/pull/1497">pull request</a>&nbsp;for fine tuning MariaDB/MySQL</li>
+
+
+
+<li>See this&nbsp;<a href="https://github.com/roots/trellis/pull/1496">pull request</a>&nbsp;for fine tuning PHP FPM</li>
+</ul>
+</li>
+
+
+
+<li>Sometimes you’ll need to load content in using AJAX for performance or live updates, both&nbsp;<a href="https://www.drupal.org/docs/drupal-apis/ajax-api/basic-concepts">Drupal</a>&nbsp;and&nbsp;<a href="https://developer.wordpress.org/plugins/javascript/ajax/">WordPress</a>&nbsp;can do this natively with a little bit of code to implement routes.</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">Drupal</h3>
+
+
+
+<p>Commercial Sponsor/s:&nbsp;<a href="https://www.acquia.com/">Acquia</a></p>
+
+
+
+<p>Website:&nbsp;<a href="https://www.drupal.org/">https://www.drupal.org/</a></p>
+
+
+
+<h4 class="wp-block-heading">When to use</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Complex multisites that are interrelated</li>
+
+
+
+<li>Larger clients especially government</li>
+</ul>
+
+
+
+<h4 class="wp-block-heading">Tips and tricks</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Import/export your content types, fields, views and site settings in JSON files for easier deployment on multiple environments</li>
+
+
+
+<li>Make use of Panels and Views, but be careful about the database load you create with those configurations.</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">WordPress</h3>
+
+
+
+<p>Commercial Sponsor/s:&nbsp;<a href="https://automattic.com/">Automattic</a></p>
+
+
+
+<p>Website:&nbsp;<a href="https://wordpress.org/">https://wordpress.org/</a></p>
+
+
+
+<h4 class="wp-block-heading">When to use</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Configurable and scalable for clients of all sizes</li>
+
+
+
+<li>Smaller clients can be setup with simpler off the shelf kits</li>
+
+
+
+<li>Larger clients can be setup with bespoke themes and plugins</li>
+</ul>
+
+
+
+<h4 class="wp-block-heading">Tips and tricks</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Avoid overcomplicating and overengineering things, try to follow the lessons of others who have tried to do the same things you’re doing.</li>
+
+
+
+<li>WordPress is one of the largest ecosystems and so it can be tricky to navigate, here are some resources that will help you build a quality site.
+<ul class="wp-block-list">
+<li><a href="https://10up.github.io/Engineering-Best-Practices/php">10Up Engineering Best Practises</a>&nbsp;for avoiding potential issues with performance and security</li>
+
+
+
+<li><a href="https://roots.io/bedrock/">Roots Bedrock</a>&nbsp;for better folder structures</li>
+
+
+
+<li><a href="https://roots.io/sage/">Roots Sage</a>&nbsp;for a Laravel based theme with Tailwind built-in</li>
+</ul>
+</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading" id="analytics">Analytics</h2>
+
+
+
+<p>If you want to know how your websites or web apps are performing, you’ll need some kind of monitoring dashboard we typically call “Analytics” software.</p>
+
+
+
+<p>You can use free cloud options like&nbsp;<a href="https://analytics.google.com/analytics/web/">Google Analytics</a>&nbsp;and&nbsp;<a href="https://www.cloudflare.com/en-gb/web-analytics/">Cloudflare Analytics</a>&nbsp;in a pinch however self hosting has advantages for example you own your data and can do a lot more with it because it’s in a database on your system.</p>
+
+
+
+<h3 class="wp-block-heading">Matomo</h3>
+
+
+
+<p>Commercial Sponsor/s: N/A, community backed open source project</p>
+
+
+
+<p>Website:&nbsp;<a href="https://matomo.org/">https://matomo.org/</a></p>
+
+
+
+<h4 class="wp-block-heading">When to use</h4>
+
+
+
+<ul class="wp-block-list">
+<li>There are many websites to manage</li>
+
+
+
+<li>Customisation of interface and reports</li>
+</ul>
+
+
+
+<h4 class="wp-block-heading">Tips and tricks</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Put your logo and customise the skin with your own branding</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading" id="monitoring">Monitoring</h2>
+
+
+
+<p>If you have cloud or on-premises infrastructure chances are you’ll have a need to keep an eye on things like CPU usage, memory use and disk space.</p>
+
+
+
+<p>Monitoring dashboards like&nbsp;<a href="https://newrelic.com/">New Relic</a>&nbsp;are handy if you don’t have the budget to setup a solution or just need rapid deployment via their CLI tools.</p>
+
+
+
+<p>Self hosted monitoring can be very handy when off the shelf solutions are no longer sufficient for the complexity of your operation.</p>
+
+
+
+<h3 class="wp-block-heading">Grafana</h3>
+
+
+
+<p>Commercial Sponsor/s: N/A, community backed open source project</p>
+
+
+
+<p>Website:&nbsp;<a href="https://grafana.com/">https://grafana.com/</a></p>
+
+
+
+<h4 class="wp-block-heading">When to use</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Complex needs such as multiple systems in multiple locations</li>
+
+
+
+<li>Customisation options such as monitoring specific services like Redis</li>
+</ul>
+
+
+
+<h4 class="wp-block-heading">Tips and tricks</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Setting up Prometheus can be a bit daunting and resources heavy, try using InfluxDB if you just have simpler needs</li>
+
+
+
+<li>There’s a&nbsp;<a href="https://grafana.com/grafana/dashboards/">huge database of user contributed dashboards</a>&nbsp;you can drop into your install with a copy and paste.</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading" id="search">Search</h2>
+
+
+
+<p>When driving search features for large content databases like online stores and news services, you may find the need to switch out the built-in search for something a bit more powerful and configurable.</p>
+
+
+
+<p>If you are using a CMS and just need it working immediately, you can use a plugin like&nbsp;<a href="https://wordpress.com/plugins/elasticpress">ElastiPress</a>&nbsp;and connect to a cloud search engine within minutes.</p>
+
+
+
+<h3 class="wp-block-heading">Elastic Search</h3>
+
+
+
+<p>Commercial Sponsor/s:&nbsp;<a href="https://www.elastic.co/about/">Elastic</a></p>
+
+
+
+<p>Website:&nbsp;<a href="https://www.elastic.co/">https://www.elastic.co/</a></p>
+
+
+
+<h4 class="wp-block-heading">When to use</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Better performance is needed, i.e. WooCommerce product search is unbearably slow</li>
+
+
+
+<li>Customisation is needed to improve quality of search results, i.e. fuzzy word matching for common typos</li>
+
+
+
+<li>Business Intelligence when used as part of the ELK stack
+<ul class="wp-block-list">
+<li>ELK combines Elastic Search, Logstash for gathering data from server log files and Kibana to provide a visual interface for analysts.</li>
+</ul>
+</li>
+</ul>
+
+
+
+<h4 class="wp-block-heading">Tips and tricks</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Elastic talks to other systems using simple GET requests via AJAX, making it very easy to talk to using PHP or Javascript code.</li>
+
+
+
+<li>Make sure you appropriately secure your Elastic instance from the web, i.e. don’t allow writes from strangers</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading" id="vps">Virtualisation</h2>
+
+
+
+<p>The heart of the cloud, virtualisation powers all the cloud giants offerings allowing them to spin up countless virtual machines on demand.</p>
+
+
+
+<p>When deploying self hosted applications for production use you’ll probably be using a Virtual Private Server (VPS) from Amazon Web Services, Linode, Vultr, Digital Ocean or Microsoft Azure.</p>
+
+
+
+<p>Not to be confused with containerisation, self hosted virtualisation means using a physical computer on premise to host virtual machines, or VPS’s.</p>
+
+
+
+<h3 class="wp-block-heading">XCP-ng</h3>
+
+
+
+<p>Commercial Sponsor/s: N/A, community backed open source project</p>
+
+
+
+<p>Website:&nbsp;<a href="https://xcp-ng.org/">https://xcp-ng.org/</a></p>
+
+
+
+<h4 class="wp-block-heading">When to use</h4>
+
+
+
+<ul class="wp-block-list">
+<li>On premises testing, development and staging environments</li>
+
+
+
+<li>Recycling old PC’s to provide services</li>
+</ul>
+
+
+
+<h4 class="wp-block-heading">Tips and tricks</h4>
+
+
+
+<ul class="wp-block-list">
+<li>Create a base machine with defaults you like, for example latest Ubuntu LTS, your own logins and any configuration you want.
+<ul class="wp-block-list">
+<li>Create new virtual machines by cloning from this base machine, and also periodically update it with the latest fixes</li>
+</ul>
+</li>
+
+
+
+<li>There is a free monitoring program for Windows, it’s old but very powerful</li>
+
+
+
+<li>The web based monitoring tool is OK, but a bit pushy about paying for a pro version with additional features</li>
+</ul>
+<br><br></div></div><div class="content_row newsletter" role="complementary"><div class="newsletter_bg"></div><div class="content"><div class="row"><div class="tiles"><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3>Behind the scenes</h3><p>Take a step back through our blog to see behind the scenes updates on our projects including retrospectives and progress updates.</p><p>Recent highlights:</p><p><a href="/blog/2025/05/langenium-v6-retrospective.html" target="_blank" title="Langenium v6 Retrospective">Langenium V6 Retrospective</a></p><p><a href="/blog/2024/05/studio-roundup-may-2024.html" target="_blank" title="Studio Roundup for May 2024">Studio Roundup for May 2024</a></p><br><p class="align_right"><a href="/blog.html" target="_blank" title="Read our blog">Read our blog</a></p></div></div><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3>Support Us</h3><p>Open Studios is an independent studio that needs your help to keep producing high quality work.</p><p>We are committed to produce content without restrictive licenses and with an open approach that teaches others.</p><p>If you like the sound of that, head over to our support page to see how you can get involved!</p><br><p class="align_right"><a href="/support_us.html" target="_blank" title="Support Us">Support Us</a></p></div></div></div></div></div></div><div class="content_row footer"><div class="content"><div class="row center"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div></div></div></div><script>var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="https://analytics.openstudios.xyz/";
+_paq.push(['setTrackerUrl', u+'matomo.php']);
+_paq.push(['setSiteId', '11']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+})();</script></body></html>
