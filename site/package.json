@@ -10,11 +10,11 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production npm-run-all clean -p build:*",
     "build:11ty": "eleventy --quiet",
-    "build:stylus": "node_modules/.bin/stylus src/styles/1999.styl --out docs/assets/css/1999.css",
+    "build:stylus": "node_modules/.bin/stylus src/styles/1999.styl --out web/assets/css/1999.css",
     "clean": "rimraf dist",
     "dev": "npm-run-all clean build:* -p dev:*",
     "dev:11ty": "eleventy --serve --quiet",
-    "dev:stylus": "node_modules/.bin/stylus -w src/styles/1999.styl --out docs/assets/css/1999.css",
+    "dev:stylus": "node_modules/.bin/stylus -w src/styles/1999.styl --out web/assets/css/1999.css",
     "preinstall": "npm install stylus -g"
   },
   "devDependencies": {
