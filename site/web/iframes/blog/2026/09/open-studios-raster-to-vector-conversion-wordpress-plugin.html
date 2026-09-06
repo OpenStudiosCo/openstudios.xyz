@@ -1,0 +1,163 @@
+<!DOCTYPE html><html><head><title></title><meta name="description" content="We are Open Studios. Perth based digital production studio."><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><link rel="canonical" href="https://openstudios.xyz/blog/2026/09/open-studios-raster-to-vector-conversion-wordpress-plugin.html"><meta property="og:title"><meta property="og:description"><meta property="og:type" content="article"><meta property="og:image" content="https://openstudios.xyz//assets/blog/2026/09/image-1024x640.png"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="768"><meta name="twitter:title"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description"><meta name="twitter:image" content="https://openstudios.xyz//assets/blog/2026/09/image-1024x640.png"></head><body><div id="page-wrapper"><div class="header_bg"></div><div class="header" role="banner"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div><div class="content_row" role="main"><script>window.addEventListener("DOMContentLoaded", function() {
+  let images = document.querySelectorAll( '.blog_post img' );
+
+  images.forEach( imageElm => {
+    // Create a new anchor element
+    const linkElm = document.createElement('a');
+    // Set the href attribute to the image's src
+    linkElm.href = imageElm.src;
+    linkElm.classList.add('lightbox');
+    
+    // Insert the image as a child of the anchor element
+    linkElm.appendChild(imageElm.cloneNode(true));
+    
+    // Replace the original image with the new anchor element
+    imageElm.parentNode.replaceChild(linkElm, imageElm);
+  } );
+  const prvs = new Parvus();
+
+});
+</script><div class="content blog_post"><div class="breadcrumb"><span class="item">Blog</span><span class="item">&nbsp;&nbsp;>&nbsp;&nbsp;</span><span class="item">Introducing the Open Studios Raster to Vector Conversion Tool for WordPress</span></div><h2>Introducing the Open Studios Raster to Vector Conversion Tool for WordPress</h2><p class="wp-block-paragraph">We are pleased to announce the launch of our first ever WordPress plugin! The Open Studios Raster to Vector Conversion Tool for WordPress lets you take any bitmap image files (jpg, png) and convert them to an SVG vector file with just one click. The result can then be saved to your WordPress media library.</p>
+
+
+
+<p class="wp-block-paragraph">Check out the video below where our Technical Director Paul Brzeski explains how it works.</p>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-4-3 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="Euclid, a raster to vector conversion tool for WordPress" width="500" height="375" src="https://www.youtube.com/embed/qbK0aiPqzTY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div></figure>
+
+
+
+<h2 class="wp-block-heading">How it works</h2>
+
+
+
+<p class="wp-block-paragraph">The converter works directly inside the standard WordPress Media Library image editor, so there is no need to export an image, process it in another application and upload it again.</p>
+
+
+
+<figure class="wp-block-image size-large"><img decoding="async" src="/assets/blog/2026/09/image-1024x640.png" alt="" class="wp-image-604"><figcaption class="wp-element-caption">The converter runs directly inside the WordPress image editor and provides an SVG preview before saving.</figcaption></figure>
+
+
+
+<p class="wp-block-paragraph">Open an image from your Media Library, click the <strong>Convert to Vector</strong>  button (between Crop and Scale) and choose how you want the image traced. Once you are happy with the result, the generated SVG can be saved directly back into the WordPress Media Library.</p>
+
+
+
+<div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h3 class="wp-block-heading">Black &amp; White</h3>
+
+
+
+<p class="wp-block-paragraph">Uses Potrace to create clean, high-contrast vector paths. This mode works particularly well for line art, silhouettes, logos and other simple graphics.</p>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h3 class="wp-block-heading">Colour</h3>
+
+
+
+<p class="wp-block-paragraph">Creates multi-colour vector artwork from raster images and is designed primarily for logos, icons and flat illustrations.</p>
+</div>
+</div>
+
+
+
+<h3 class="wp-block-heading">Converting an image</h3>
+
+
+
+<ol class="wp-block-list">
+<li>Go to <strong>Media → Library</strong> in WordPress.</li>
+
+
+
+<li>Select the raster image you want to convert.</li>
+
+
+
+<li>Click <strong>Edit Image</strong>.</li>
+
+
+
+<li>Click <strong>Convert to Vector</strong>.</li>
+
+
+
+<li>Choose a black and white or colour conversion.</li>
+
+
+
+<li>Preview the result and click <strong>Save SVG</strong> to add it to your Media Library.</li>
+</ol>
+
+
+
+<p class="wp-block-paragraph"><em>The converter works best with high-contrast images, logos, icons and flat artwork. Complex photographic images can produce less predictable results.</em></p>
+
+
+
+<h2 class="wp-block-heading">About the project</h2>
+
+
+
+<p class="wp-block-paragraph">Years ago, we replaced Adobe Illustrator with Affinity Designer. The transition was pretty smooth, only a small amount of work was needed to clean up existing .ai files to work in the new software.</p>
+
+
+
+<p class="wp-block-paragraph">Then came the difference in features and capabilities. Make no mistake, Affinity Designer was a powerful tool that had also surpassed Illustrator in many ways. But it lacked a simple way to convert bitmap images into vectors, which was a key workflow we relied on in graphic design.</p>
+
+
+
+<p class="wp-block-paragraph">Inkscape offers pretty good conversion options, but it seemed counter intuitive to hop into a whole other slow to launch program for one function so we made our own tool called Manifold.</p>
+
+
+
+<p class="wp-block-paragraph">This plugin was derived from the tracing functionality within Manifold, which itself is based on the libraries Potrace and Imagetracer.js. The result is dubbed internally as “Project Euclid” which aims to provide the bitmap to raster functionality in a range of applications like Blender.</p>
+
+
+
+<h2 class="wp-block-heading">Project roadmap</h2>
+
+
+
+<p class="wp-block-paragraph">We need to hook up the controls so users can fine tune and improve the colour tracing features including background removal on coloured graphics. Currently we can only remove backgounds on black and white.</p>
+
+
+
+<h2 class="wp-block-heading">Useful links</h2>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://wordpress.org/plugins/openstudios-image-to-vector-converter/">Download the plugin</a> from the official WordPress plugin directory</li>
+
+
+
+<li><a href="https://github.com/OpenStudiosCo/Euclid">Visit the project</a> on Github</li>
+
+
+
+<li>Check out the original <a href="https://manifold.paulbrzeski.com">Manifold concept application</a></li>
+</ul>
+
+
+
+<p class="wp-block-paragraph"></p>
+<br><br></div></div><div class="content_row newsletter" role="complementary"><div class="newsletter_bg"></div><div class="content"><div class="row"><div class="tiles"><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3>Behind the scenes</h3><p>Take a step back through our blog to see behind the scenes updates on our projects including retrospectives and progress updates.</p><p>Recent highlights:</p><p><a href="/blog/2025/05/langenium-v6-retrospective.html" target="_blank" title="Langenium v6 Retrospective">Langenium V6 Retrospective</a></p><p><a href="/blog/2024/05/studio-roundup-may-2024.html" target="_blank" title="Studio Roundup for May 2024">Studio Roundup for May 2024</a></p><br><p class="align_right"><a href="/blog.html" target="_blank" title="Read our blog">Read our blog</a></p></div></div><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3>Support Us</h3><p>Open Studios is an independent studio that needs your help to keep producing high quality work.</p><p>We are committed to produce content without restrictive licenses and with an open approach that teaches others.</p><p>If you like the sound of that, head over to our support page to see how you can get involved!</p><br><p class="align_right"><a href="/support_us.html" target="_blank" title="Support Us">Support Us</a></p></div></div></div></div></div></div><div class="content_row footer"><div class="content"><div class="row center"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div></div></div></div><script>var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="https://analytics.openstudios.xyz/";
+_paq.push(['setTrackerUrl', u+'matomo.php']);
+_paq.push(['setSiteId', '11']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+})();</script></body></html>
