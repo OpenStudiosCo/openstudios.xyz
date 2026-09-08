@@ -1,16 +1,6 @@
 h2 Blog
 .content
-  .menu(role="navigation")
-    ul(role="menu")
-        li(role="presentation")
-            a(href='/blog.html' role="menuitem") Recent articles
-        li(role="presentation")
-            a(href='/blog/2026.html' role="menuitem") 2026
-        li(role="presentation")
-            a(href='/blog/2025.html' role="menuitem") 2025
-        li(role="presentation") 2024
-        li(role="presentation")
-            a(href='/blog/2023.html' role="menuitem") 2023
+  +blogMenu('2024')
 
   .row
     .column(style="flex-basis: 55%")
@@ -92,10 +82,4 @@ h2 Blog
         img(src='/assets/blog/2024/01/1_jvdn9ENFN3e46Mf5GFmpcA.webp' style=' width: 100%; height: auto;' alt='Featuring a pair of baby blue Aquamarine in a tapered baguette and octagon cut for a unique and contrasting pairing. This handmade toi et moi ring is part of the Garrett Ray One of a Kind Collection.')
 
 
-  .menu(role="navigation")
-    ul(role="menu")
-        li(role="presentation")
-            a(href='/blog.html' role="menuitem") Recent articles
-        li(role="presentation") 2024
-        li(role="presentation")
-              a(href='/blog/2023.html' role="menuitem") 2023
+  +blogMenu('2024')
