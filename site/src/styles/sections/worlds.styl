@@ -15,7 +15,7 @@ world-background(image_url)
 
 .world
     align-content start
-    
+
     border-radius 25px
     border-style solid
     border-top-width 1px
@@ -44,12 +44,20 @@ world-background(image_url)
 
     &.cyan
         background #267a7dff
-        
+
         world-background( "/assets/images/world-backgrounds/Kamigen.jpg" )
         border-color cyan
         a:hover
             background rgba(0, 255, 255, 0.5)
-            color black   
+            color black
+
+    &.indigo
+        background #7B00FFff
+        world-background("/assets/images/world-backgrounds/Paul.jpg")
+        border-color #7a86ff
+        a:hover:not([disabled])
+            background #7a86ff
+            color black
 
     .world_content
         padding 2rem 3rem

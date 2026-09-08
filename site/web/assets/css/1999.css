@@ -1064,6 +1064,26 @@ code .token.inserted {
   background: rgba(0,255,255,0.5);
   color: #000;
 }
+.world.indigo {
+  background: #7b00ff;
+  background-position: 100% 100%;
+  background-size: 160%;
+  background-repeat: no-repeat;
+  padding-bottom: 21rem;
+  background-image: url("/assets/images/world-backgrounds/Paul.jpg");
+  border-color: #7a86ff;
+}
+@media (min-width: 768px) {
+  .world.indigo {
+    background-size: cover;
+    background-position: center center;
+    padding-bottom: inherit;
+  }
+}
+.world.indigo a:hover:not([disabled]) {
+  background: #7a86ff;
+  color: #000;
+}
 .world .world_content {
   padding: 2rem 3rem;
   text-align: left;
