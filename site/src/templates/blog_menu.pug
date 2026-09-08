@@ -1,0 +1,39 @@
+mixin blogMenu(active)
+  .menu(role="navigation")
+    ul(role="menu")
+      li(role="presentation")
+        if active === 'guides'
+          | Guides
+        else
+          a(href='/blog/guides.html' role="menuitem") Guides
+      li(role="presentation")
+        if active === 'retrospectives'
+          | Retrospectives
+        else
+          a(href='/blog/retrospectives.html' role="menuitem") Retrospectives
+    ul(role="menu")
+      li(role="presentation")
+        if active === 'recent'
+          | Recent articles
+        else
+          a(href='/blog.html' role="menuitem") Recent articles
+      li(role="presentation")
+        if active === '2026'
+          | 2026
+        else
+          a(href='/blog/2026.html' role="menuitem") 2026
+      li(role="presentation")
+        if active === '2025'
+          | 2025
+        else
+          a(href='/blog/2025.html' role="menuitem") 2025
+      li(role="presentation")
+        if active === '2024'
+          | 2024
+        else
+          a(href='/blog/2024.html' role="menuitem") 2024
+      li(role="presentation")
+        if active === '2023'
+          | 2023
+        else
+          a(href='/blog/2023.html' role="menuitem") 2023

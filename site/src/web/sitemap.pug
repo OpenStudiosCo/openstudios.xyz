@@ -6,9 +6,12 @@ eleventyExcludeFromCollections: true
 
 <?xml version="1.0" encoding="utf-8"?>
 
+- const blogArchivePage = /^\/blog\/\d{4}\.html$/
+- const blogInternalPage = page => page === '/blog/guides.html' || page === '/blog/retrospectives.html'
+
 urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
     each page in collections.all
-        if page.url.indexOf('/blog/') < 0 || page.url.indexOf('/blog/2023.html') >= 0 || page.url.indexOf('studio-roundup') >= 0
+        if page.url.indexOf('/blog/') < 0 || blogArchivePage.test(page.url) || blogInternalPage(page.url) || page.url.indexOf('studio-roundup') >= 0
             url
                 - urlstring = 'https://openstudios.xyz' + page.url
                 loc= urlstring

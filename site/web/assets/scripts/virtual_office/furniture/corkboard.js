@@ -160,7 +160,7 @@ export async function setupCorkBoard() {
 export async function updateBlogLayout( corkBoard ) {
     window.virtual_office.scene_objects.polaroids.forEach( ( polaroid, i ) => {
 
-        // Use horizontal layout 
+        // Use horizontal layout
         if ( window.virtual_office.camera.aspect >= 0.88 ) {
             corkBoard.getObjectByName( 'corkboardMesh' ).rotation.z = 0;
             // First row
@@ -356,6 +356,11 @@ function getBlogData( i ) {
     let data = [
         // Row 1.
         {
+            'title': "Introducing A Raster to Vector Plugin for WordPress",
+            'url': '/iframes/blog/2026/09/open-studios-raster-to-vector-conversion-wordpress-plugin.html',
+            'image': '/assets/blog/2026/09/image-1024x640.png'
+        },
+        {
             'title': "Beginniners Guide to Self Hosted Applications",
             'url': '/iframes/blog/2025/07/beginners-guide-to-self-hosted-applications.html',
             'image': '/assets/blog/2025/07/max-harlynking-_QcLpud-gD0-unsplash-1-1024x683.jpg'
@@ -385,12 +390,12 @@ function getBlogData( i ) {
             'url': '/iframes/blog/2024/03/studio-roundup-march-2024.html',
             'image': '/assets/blog/2024/03/1__M7aKKPzaeL1ubZgMFUeOg.webp'
         },
+        // Row 2.
         {
             'title': 'Studio Roundup for February 2024',
             'url': '/iframes/blog/2024/02/studio-roundup-february-2024.html',
             'image': '/assets/blog/2024/02/1_dyIbSVF7tlb9HYpBb4AkMQ.webp'
         },
-        // Row 2.
         {
             'title': 'Studio Roundup for January 2024',
             'url': '/iframes/blog/2024/01/studio-roundup-january-2024.html',
@@ -420,11 +425,6 @@ function getBlogData( i ) {
             'title': 'Studio Roundup for September 2023',
             'url': '/iframes/blog/2023/09/studio-roundup-september-2023.html',
             'image': '/assets/blog/2023/09/1_CSEjUsaGdPWgjjutW2rc8w.webp'
-        },
-        {
-            'title': 'Studio Roundup for August 2023',
-            'url': '/iframes/blog/2023/08/studio-roundup-august-2023.html',
-            'image': '/assets/blog/2023/08/1_KiFpOsEZO4yE7mzAeucs0w.webp'
         }
     ];
 
