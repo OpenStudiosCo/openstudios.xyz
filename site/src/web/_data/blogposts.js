@@ -108,8 +108,28 @@ async function processPosts(blogposts) {
   return Promise.all(
     blogposts.map(async (post) => {
       // remove HTML-Tags from the excerpt for meta description
-      let metaDescription = post.excerpt.rendered.replace(/(<([^>]+)>)/gi, "");
-      metaDescription = metaDescription.replace("\n", "");
+      const namedEntities = {
+        hellip: "…",
+        rsquo: "’",
+        lsquo: "‘",
+        rdquo: "”",
+        ldquo: "“",
+        ndash: "–",
+        mdash: "—",
+        nbsp: " ",
+        quot: "\"",
+        apos: "'",
+        lt: "<",
+        gt: ">",
+        amp: "&",
+      };
+      let metaDescription = post.excerpt.rendered
+        .replace(/(<([^>]+)>)/gi, "")
+        .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+        .replace(/&([a-z]+);/gi, (match, name) => namedEntities[name.toLowerCase()] || match)
+        .replace(/\s*\[…\]\s*$/, "")
+        .replace(/\s+/g, " ")
+        .trim();
 
       let published = new Date( post.date );
       let month = ("0" + (published.getMonth() + 1)).slice(-2);
@@ -121,7 +141,8 @@ async function processPosts(blogposts) {
 
       content = await saveAndReplaceImages( content, year, month );
 
-      const coverPath = 'https://openstudios.xyz/' + getFirstImagePath( content, year, month );
+      const imagePath = getFirstImagePath( content, year, month );
+      const coverPath = imagePath ? "https://openstudios.xyz" + imagePath : "";
 
       // Return only the data that is needed for the actual output
       return {
@@ -162,7 +183,8 @@ function getFirstImagePath( content, year, month ) {
   const dom = new JSDOM(content);
   const images = dom.window.document.querySelectorAll("img");
 
-  const src = images[0].getAttribute("src");
+  const src = images[0] && images[0].getAttribute("src");
+  if (!src) return "";
   const filename = getFilenameFromUrl(src);
   
   return `/assets/blog/${year.toString()}/${month.toString()}/${filename}`;

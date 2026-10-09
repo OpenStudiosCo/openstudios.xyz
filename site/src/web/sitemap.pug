@@ -8,6 +8,14 @@ eleventyExcludeFromCollections: true
 
 - const blogArchivePage = /^\/blog\/\d{4}\.html$/
 - const blogInternalPage = page => page === '/blog/guides.html' || page === '/blog/retrospectives.html'
+- const articlePage = /^\/blog\/\d{4}\/\d{2}\//
+-
+  function changefreqFor(lastmod, declared) {
+    var ageDays = (Date.now() - new Date(lastmod).getTime()) / 86400000
+    if (ageDays > 365) return "monthly"
+    if (ageDays > 90) return "weekly"
+    return declared || "weekly"
+  }
 
 urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
     each page in collections.all
@@ -16,10 +24,8 @@ urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
                 - urlstring = 'https://openstudios.xyz' + page.url
                 loc= urlstring
                 lastmod= page.date.toISOString().split('T')[0]
-                if page.data.changefreq || page.url == '/'
-                    changefreq= page.data.changefreq
-                else
-                    changefreq weekly
+                - var declaredFreq = page.data.changefreq || "weekly"
+                changefreq= articlePage.test(page.url) ? changefreqFor(page.date, declaredFreq) : declaredFreq
                 if page.data.priority
                     priority= page.data.priority
 
@@ -28,4 +34,4 @@ urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
             - urlstring = 'https://openstudios.xyz/blog/' + post.year + '/' + post.month + '/' + post.slug + '.html'
             loc= urlstring
             lastmod= post.modifiedDate.split('T')[0]
-            changefreq daily
+            changefreq= changefreqFor(post.modifiedDate, "daily")

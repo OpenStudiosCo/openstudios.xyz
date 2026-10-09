@@ -1,11 +1,11 @@
 doctype html
 html(lang='en')
     head
+        include ./partials/page_meta.pug
         meta(charset='utf-8')
-        meta(name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
-        meta(name="description" content="We are Open Studios. Perth based digital production studio.")
+        meta(name='viewport' content='width=device-width, initial-scale=1')
 
-        title Open Studios | Perth, Western Australia
+        title= pageTitle
 
         include ./header.pug
 
@@ -29,21 +29,22 @@ html(lang='en')
                 left:0;
                 z-index: 2;
             }
-            h1#loadingSign {
+            #loadingSign {
                 color: #dedede;
                 display: flex;
                 position: absolute;
                 z-index: 2;
                 bottom: 1rem;
                 right: 2rem;
+                margin: 0;
             }
-            h1#loadingSign div {
+            #loadingSign span {
                 display: inline-block;
                 font-family: monospace;
                 font-size: 2.5rem;
                 padding: 1rem 2.5rem 1rem 0;
             }
-            h1#loadingSign img {
+            #loadingSign img {
                 height: 5rem;
                 width: 5rem;
             }
@@ -123,7 +124,7 @@ html(lang='en')
     body(onload="_init( 3000 );")
         noscript
             style.
-                h1#loadingSign { display: none }
+                #loadingSign { display: none }
                 #page-wrapper {
                     z-index: 2;
                 }
@@ -131,13 +132,13 @@ html(lang='en')
         #webgl-wrapper
             canvas#loader_symbols
             canvas#loader_image
-            h1#loadingSign
-                div Loading
-                img(src='/assets/images/tail-spin.svg' alt='Loading spinner')
+            p#loadingSign
+                span Loading
+                img(src='/assets/images/tail-spin.svg' alt='')
             include ../templates/door_image.pug
-            a#exitSign
+            a#exitSign(href="#page-wrapper")
                 img(src='/assets/back.svg' title='Return to the previous screen' width='300' height='85' alt='Arrow sign saying this leads back')
-            iframe#pageOverlay
+            iframe#pageOverlay(title="Page overlay")
             #webgl
             script#vertexshader(type='x-shader/x-vertex').
                 varying vec2 vUv;

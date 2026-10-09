@@ -1,8 +1,10 @@
 doctype html
-html
+html(lang='en')
     head
-        title= title
-        meta(name="description" content="We are Open Studios. Perth based digital production studio.")
+        include ./partials/page_meta.pug
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        title= pageTitle
 
         include ./header.pug
 

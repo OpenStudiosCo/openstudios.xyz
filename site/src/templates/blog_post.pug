@@ -23,15 +23,16 @@ block append page
     });
 
   .content.blog_post
-    .breadcrumb
-      a.item(href='/blog.html') Blog
-      span.item &nbsp;&nbsp;>&nbsp;&nbsp;
-      span.item= blogpost.title
-    h2= blogpost.title
-    include partials/blog_byline.pug
-    . 
-        !{ blogpost.content }
-    include partials/blog_author.pug
-    br
-    br
-    a(href='/blog.html') Back to Blog Home
+    nav.breadcrumb(aria-label='Breadcrumb')
+      ol
+        li
+          a(href='/blog.html') Blog
+        li
+          span(aria-current='page')= blogpost.title
+    article
+      h1= blogpost.title
+      include partials/blog_byline.pug
+      != blogpost.content
+      include partials/blog_author.pug
+    p
+      a(href='/blog.html') Back to Blog Home

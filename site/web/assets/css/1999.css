@@ -198,7 +198,7 @@ a.icon_button img:hover {
   min-height: 100vh;
   overflow-x: hidden;
 }
-#page-wrapper h2 {
+#page-wrapper h1 {
   font-family: Stigmature, "Brush Script MT", cursive;
   color: #fff;
   text-shadow: 2.5px 2.5px 5px #ff69cb;
@@ -211,7 +211,7 @@ a.icon_button img:hover {
   animation-delay: 0.5s;
 }
 @media screen and (min-width: 1200px) {
-  #page-wrapper h2 {
+  #page-wrapper h1 {
     font-size: 10rem;
   }
   #page-wrapper {
@@ -676,8 +676,22 @@ a.icon_button img:hover {
   color: #01cdfe;
   text-decoration: none;
 }
-.menu a.active {
+.menu a.active,
+.menu [aria-current="page"] {
   color: #fff;
+}
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 10005;
+  padding: 0.5rem 1rem;
+  background: #000;
+  color: #fff;
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: none;
 }
 @media screen and (min-width: 1200px) {
   .menu li {
@@ -689,14 +703,19 @@ a.icon_button img:hover {
   display: block !important;
   line-height: 1.6;
 }
-.blog_post > h2 {
+.blog_post article > h1 {
   font-family: SourceSans !important;
   font-size: 2rem !important;
   text-transform: none !important;
+  text-align: left !important;
+  text-shadow: none !important;
+  animation: none !important;
+  color: #fff !important;
   padding-bottom: 1rem !important;
   font-style: italic !important;
   line-height: 4rem !important;
   font-weight: bold !important;
+  margin: 0 0 1rem !important;
 }
 .blog_post h2.wp-block-heading {
   font-family: SourceSans !important;
@@ -737,7 +756,7 @@ a.icon_button img:hover {
   margin-top: 0.5rem;
 }
 @media screen and (min-width: 768px) {
-  .blog_post > h2 {
+  .blog_post article > h1 {
     font-size: 4rem !important;
     padding-bottom: 2rem !important;
     line-height: 6rem !important;
@@ -751,6 +770,21 @@ a.icon_button img:hover {
 }
 .blog-byline {
   margin: 0 0 2rem;
+}
+.breadcrumb {
+  margin: 0 0 1.5rem;
+}
+.breadcrumb ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumb li + li::before {
+  content: ">";
+  margin-right: 0.5rem;
 }
 .content .blog-author.feature.wide {
   width: 100%;
