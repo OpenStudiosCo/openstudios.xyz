@@ -356,6 +356,11 @@ function getBlogData( i ) {
     let data = [
         // Row 1.
         {
+            'title': "How to safely evolve\ncompliance-critical WordPress platforms",
+            'url': '/iframes/blog/2026/09/how-to-safely-evolve-compliance-critical-wordpress-platforms.html',
+            'image': '/assets/blog/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg'
+        },
+        {
             'title': "Introducing A Raster to Vector Plugin for WordPress",
             'url': '/iframes/blog/2026/09/open-studios-raster-to-vector-conversion-wordpress-plugin.html',
             'image': '/assets/blog/2026/09/image-1024x640.png'
@@ -420,11 +425,6 @@ function getBlogData( i ) {
             'title': "Building A Cool 3D website: Tips,\nTricks and Lessons Learned",
             'url': '/iframes/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html',
             'image': '/assets/blog/2023/10/1*o6xfwPdjAcGUyBE5s69iOQ.png'
-        },
-        {
-            'title': 'Studio Roundup for September 2023',
-            'url': '/iframes/blog/2023/09/studio-roundup-september-2023.html',
-            'image': '/assets/blog/2023/09/1_CSEjUsaGdPWgjjutW2rc8w.webp'
         }
     ];
 
