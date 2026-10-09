@@ -1,0 +1,214 @@
+<!DOCTYPE html><html><head><title></title><meta name="description" content="We are Open Studios. Perth based digital production studio."><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><link rel="canonical" href="https://openstudios.xyz/blog/2026/09/how-to-safely-evolve-compliance-critical-wordpress-platforms.html"><meta property="og:title"><meta property="og:description"><meta property="og:type" content="article"><meta property="og:image" content="https://openstudios.xyz//assets/blog/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="768"><meta name="twitter:title"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description"><meta name="twitter:image" content="https://openstudios.xyz//assets/blog/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg"></head><body><div id="page-wrapper"><div class="header_bg"></div><div class="header" role="banner"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div><div class="content_row" role="main"><script>window.addEventListener("DOMContentLoaded", function() {
+  let images = document.querySelectorAll( '.blog_post img' );
+
+  images.forEach( imageElm => {
+    // Create a new anchor element
+    const linkElm = document.createElement('a');
+    // Set the href attribute to the image's src
+    linkElm.href = imageElm.src;
+    linkElm.classList.add('lightbox');
+    
+    // Insert the image as a child of the anchor element
+    linkElm.appendChild(imageElm.cloneNode(true));
+    
+    // Replace the original image with the new anchor element
+    imageElm.parentNode.replaceChild(linkElm, imageElm);
+  } );
+  const prvs = new Parvus();
+
+});
+</script><div class="content blog_post"><div class="breadcrumb"><span class="item">Blog</span><span class="item">&nbsp;&nbsp;>&nbsp;&nbsp;</span><span class="item">How to safely evolve compliance-critical WordPress platforms</span></div><h2>How to safely evolve compliance-critical WordPress platforms</h2><figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="683" src="/assets/blog/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg" alt="Photo by Bonnie Kittle on Unsplash" class="wp-image-615" srcset="https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg 1024w, https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-300x200.jpg 300w, https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-768x512.jpg 768w, https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1536x1024.jpg 1536w, https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash.jpg 1920w" sizes="auto, (max-width: 1024px) 100vw, 1024px"><figcaption class="wp-element-caption">Chesterton’s fence is the idea we should understand why something exists before changing it. The same principle applies when changing software.</figcaption></figure>
+
+
+
+<p class="wp-block-paragraph">Some WordPress sites are too important to change casually.</p>
+
+
+
+<p class="wp-block-paragraph">They might support client records, student assessments, internal reporting, sensitive private information, bookings, payments, or operational workflows where accuracy isn’t just important, it has compliance requirements.</p>
+
+
+
+<p class="wp-block-paragraph">In these environments, the challenge is not just efficiently delivering new features. The challenge is preserving and building trust. Both your client and their users need to trust that the system continues to work as it should. Data, calculations, reports – these can have legal consequences if the system is not working as expected.</p>
+
+
+
+<p class="wp-block-paragraph">At Open Studios, we help digital agencies and their clients make careful changes to complex WordPress and PHP systems that cannot afford to break.</p>
+
+
+
+<p class="wp-block-paragraph">Below are some key ingredients we’ve used to help people succeed in evolving these critical systems.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity">
+
+
+
+<h2 class="wp-block-heading">Keep the reference material close and integrate team knowledge into the code comments.</h2>
+
+
+
+<p class="wp-block-paragraph">If regulations are available, make sure to reference them and even quote the relevant block. Link to online copies if they are available. This helps with team alignment and ensures that code is always written with the regulations in mind.</p>
+
+
+
+<pre class="wp-block-code" data-language="html"><code class="language-html">&lt;?php
+/**
+ * Example comment above something compliance-related
+ * 
+ * This implements section 7.3.1 of the Standard Document.
+ * @see https://example.com/standard-document#section-7.3.1
+ */</code></pre>
+
+
+
+<p class="wp-block-paragraph">When performing compliance-related calculations or using formulas, make sure to reference the actual math you’re supposed to implement and how it’s been interpreted into code. It’s usually best to isolate such calculations into their own functions or classes so they can be easily tested and maintained.</p>
+
+
+
+<pre class="wp-block-code" data-language="html"><code class="language-html">&lt;?php
+/**
+ * Example formula translation above calculations
+ * 
+ * This implements section 7.3.2 of the Standard Document.
+ * @see https://example.com/standard-document#section-7.3.2
+ *
+ * The formula from the standard is:
+ *     Counted Hours = Actual Hours * (1 + (Months since late renewal / 20))
+ */
+
+function counted_hours( float $actual_hours, int $months_late ): float {
+    return $actual_hours * ( 1 + ( $months_late / 20 ) );
+}</code></pre>
+
+
+
+<p class="wp-block-paragraph">If the client is unable to provide much technical documentation or reference material, it can be useful to produce your own. If it’s developer facing only and only relevant when working on the codebase, consider adding it directly to the repo as a /docs folder with Markdown files. Most git hosting platforms will automatically render Markdown files as HTML documentation.</p>
+
+
+
+<h2 class="wp-block-heading">Maintain internal documentation that bridges the gap between code and compliance requirements.</h2>
+
+
+
+<p class="wp-block-paragraph">Many client domains use generic-sounding terms that actually have a specific meaning within compliance and regulatory frameworks. Whatever that terminology is, it can be vital to have a clear glossary for development teams so that ambiguity and incorrect assumptions can be avoided. Sometimes clients develop their own language on top of the framework. It’s important to document these too in order to communicate effectively.</p>
+
+
+
+<pre class="wp-block-code" data-language="html"><code class="language-html">Standard SKU: Refers to the lookup code that government agencies use to identify products and services.
+Counted Hours: The number of hours after all calculations are performed including per record and account wide adjustments.
+Regular Price: The market price of a product before we apply our own adjustments.
+Product Price: The final price of a product after all adjustments have been applied.
+Delivery Date: The requested date by the client for the product to be delivered.
+Order Completed Date: The date the order was completed and the product was delivered.</code></pre>
+
+
+
+<p class="wp-block-paragraph">Developing a WordPress site can take many different forms, with many different valid approaches. Maintaining an internal developer reference explaining the key fundamentals of how the system is put together, including how top-level concepts were translated from requirements into Custom Post Types, Taxonomies and Constants, can save a lot of time and effort in the long run.</p>
+
+
+
+<pre class="wp-block-code" data-language="html"><code class="language-html">&lt;?php
+/**
+ * Standard Product CPT class file.
+ * 
+ * This class implements the Standard Product CPT that allows clients to manage prices and metadata without changing the live store.
+ * 
+ * Product information is synced to associated products on save.
+ */</code></pre>
+
+
+
+<p class="wp-block-paragraph">When the client system’s language is documented along with the system’s architecture, communication between developers and stakeholders can be more effective. The glossary provides the vocabulary while the accompanying notes like project history, architecture and assumptions provide the context.</p>
+
+
+
+<p class="wp-block-paragraph">When making changes to compliance-critical systems, having this information can be essential to ensure that changes required were understood and will be implemented correctly.</p>
+
+
+
+<h2 class="wp-block-heading">Use the client’s subject-matter expertise to test system accuracy including any calculations.</h2>
+
+
+
+<p class="wp-block-paragraph">If a project happens to have a subject matter expert as a stakeholder, make good use of that person’s expertise and regularly maintain communication with them with progress updates and engage them for feedback.</p>
+
+
+
+<p class="wp-block-paragraph">People who have spent years working in their fields can provide valuable insights that can round out our understanding of requirements that are otherwise missed during discovery and development. Sometimes this can be as organic as asking them a series of questions probing theoretical design constraints; other times it may be a request for people to review exported data for accuracy.</p>
+
+
+
+<p class="wp-block-paragraph">We’ve spent a number of years working with a training organisation that provides courses and tracking software. Their organisation helps people obtain certifications so they are able to do their jobs. The training program itself is regulated by an Australian state government department. We helped them migrate from an old compliance scheme to a new one, and offered their existing users an option of migration, as permitted by the rules. This option was unique to our client’s platform. Their competitors opted to migrate everyone at once and not give the option.</p>
+
+
+
+<p class="wp-block-paragraph">Thanks to our technical steering of the project and maintaining open communication with the client, we were able to deliver the new compliance rules by the deadline with our client’s satisfaction that both the old and new rules were implemented correctly. The client was then audited by the state government and received positive feedback that they met the standard required.</p>
+
+
+
+<h2 class="wp-block-heading">Version the data model and write migrations</h2>
+
+
+
+<p class="wp-block-paragraph">The shape of a system can change dramatically with time. Managing that evolution with code is handled well by version control systems like Git, but the mechanism for the database has to be implemented manually by developers.</p>
+
+
+
+<p class="wp-block-paragraph">Many clients that implement WordPress as a critical system will have customisations that implement custom fields, custom post types and taxonomies. These customisations are referenced in code and sometimes undergo changes over time. Just as WordPress itself sometimes requires a database update when the software is updated, so too does a custom WordPress implementation.</p>
+
+
+
+<p class="wp-block-paragraph">By versioning the database you develop an implementation reference in the code, as well as a project history of how the system’s data has changed over time. This can be as simple as a WP Option that stores the same version number as that of a custom plugin you’ve written. Then you just need to write a hook that runs the migration as needed i.e. if we’re on a newer version of the plugin than is stored in the WP Option.</p>
+
+
+
+<p class="wp-block-paragraph">Having this mechanism allows you to ensure clean migration of data on each deployed environment without manually updating data records in each environment. When helping clients who have custom meta keys and values that need to be migrated, we version the database and write migrations to ensure a consistent experience across all environments.</p>
+
+
+
+<h2 class="wp-block-heading">How dev processes help with recovery and rollback options</h2>
+
+
+
+<p class="wp-block-paragraph">Clients whose business depends on a WordPress system cannot afford to test changes on their main site. By establishing a development environment, you can incrementally build and test changes without affecting others. When making use of a staging environment, you can test the changes and discuss them with the team before deployment. This is the point where client feedback, user acceptance testing and code reviews happen.</p>
+
+
+
+<p class="wp-block-paragraph">Best practices exist for a good reason, not necessarily because they’re the best possible solution but because they are widely accepted to deliver a result when weighing different constraints. Within web development, ensuring that websites are built using version control, and following best practices for development operations, can be vital to ensuring service level agreements are achieved within agreed standards.</p>
+
+
+
+<p class="wp-block-paragraph">At Open Studios we work with digital agencies that implement their own hosting and have strong standards that define things like issue tracking, deployment processes and operations. They are contractually obligated to their clients to deliver a high-quality service within agreed standards. In these situations we work within the client’s team and framework to ensure that the service level agreements are met and the client feels confident to entrust us with their critical systems.</p>
+
+
+
+<p class="wp-block-paragraph">Disaster recovery planning and having strong systems can be essential to ensuring continuity of a WordPress site when hackers try to exploit potential security vulnerabilities or unexpected problems arise from recent changes. Sometimes the problems arise due to incompatibilities between plugins or themes, or due to changes in WordPress itself needing to be accounted for in custom code.</p>
+
+
+
+<p class="wp-block-paragraph">Whatever the reason, it’s much easier to get a website back up and running if you have planned ahead for different possibilities. Version control lets you roll back to a previous version of your codebase if something goes wrong. Having regular database backups means you can recover lost records from a previous point in time if they were corrupted or deleted.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity">
+
+
+
+<p class="wp-block-paragraph">Evolving a critical system takes an understanding of the rules it implements, the people who depend on it and the consequences of getting it wrong. Clear documentation, close collaboration and careful development practices give everyone involved a stronger foundation for making changes with confidence.</p>
+
+
+
+<p class="wp-block-paragraph">At Open Studios, we bring this care to our work with digital agencies and their clients. The same level of care goes into every project we work on, whether it’s our own IP and R&amp;D work or the projects we deliver alongside our agency partners.</p>
+<br><br></div></div><div class="content_row newsletter" role="complementary"><div class="newsletter_bg"></div><div class="content"><div class="row"><div class="tiles"><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3>Behind the scenes</h3><p>Take a step back through our blog to see behind the scenes updates on our projects including retrospectives and progress updates.</p><p>Recent highlights:</p><p><a href="/blog/2026/09/open-studios-raster-to-vector-conversion-wordpress-plugin.html" target="_blank" title="Introducing the Open Studios Raster to Vector Conversion Tool for WordPress">Launched a Raster to Vector Plugin for WordPress</a></p><p><a href="/blog/2025/05/langenium-v6-retrospective.html" target="_blank" title="Langenium v6 Retrospective">Langenium Game Dev (V6) Retrospective</a></p><br><p class="align_right"><a href="/blog.html" target="_blank" title="Read our blog">Read our blog</a></p></div></div><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3>Support Us</h3><p>Open Studios is an independent studio that needs your help to keep producing high quality work.</p><p>We are committed to produce content without restrictive licenses and with an open approach that teaches others.</p><p>If you like the sound of that, head over to our support page to see how you can get involved!</p><br><p class="align_right"><a href="/support_us.html" target="_blank" title="Support Us">Support Us</a></p></div></div></div></div></div></div><div class="content_row footer"><div class="content"><div class="row center"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Logo"></a></div></div></div></div></div><script>var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="https://analytics.openstudios.xyz/";
+_paq.push(['setTrackerUrl', u+'matomo.php']);
+_paq.push(['setSiteId', '11']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+})();</script></body></html>
