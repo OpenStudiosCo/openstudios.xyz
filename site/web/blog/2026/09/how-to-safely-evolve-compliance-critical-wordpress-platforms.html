@@ -167,13 +167,13 @@ body {
 
 
 
-<pre class="wp-block-code" data-language="html"><code class="language-html">&lt;?php
-/**
+<pre class="wp-block-code language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token comment">/**
  * Example comment above something compliance-related
  * 
  * This implements section 7.3.1 of the Standard Document.
  * @see https://example.com/standard-document#section-7.3.1
- */</code></pre>
+ */</span></span></code></pre>
 
 
 
@@ -181,8 +181,8 @@ body {
 
 
 
-<pre class="wp-block-code" data-language="html"><code class="language-html">&lt;?php
-/**
+<pre class="wp-block-code language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token comment">/**
  * Example formula translation above calculations
  * 
  * This implements section 7.3.2 of the Standard Document.
@@ -190,11 +190,11 @@ body {
  *
  * The formula from the standard is:
  *     Counted Hours = Actual Hours * (1 + (Months since late renewal / 20))
- */
+ */</span>
 
-function counted_hours( float $actual_hours, int $months_late ): float {
-    return $actual_hours * ( 1 + ( $months_late / 20 ) );
-}</code></pre>
+<span class="token keyword">function</span> <span class="token function-definition function">counted_hours</span><span class="token punctuation">(</span> <span class="token keyword type-hint">float</span> <span class="token variable">$actual_hours</span><span class="token punctuation">,</span> <span class="token keyword type-hint">int</span> <span class="token variable">$months_late</span> <span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">float</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token variable">$actual_hours</span> <span class="token operator">*</span> <span class="token punctuation">(</span> <span class="token number">1</span> <span class="token operator">+</span> <span class="token punctuation">(</span> <span class="token variable">$months_late</span> <span class="token operator">/</span> <span class="token number">20</span> <span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></span></code></pre>
 
 
 
@@ -210,7 +210,7 @@ function counted_hours( float $actual_hours, int $months_late ): float {
 
 
 
-<pre class="wp-block-code" data-language="html"><code class="language-html">Standard SKU: Refers to the lookup code that government agencies use to identify products and services.
+<pre class="wp-block-code language-markdown" data-language="html"><code class="language-html">Standard SKU: Refers to the lookup code that government agencies use to identify products and services.
 Counted Hours: The number of hours after all calculations are performed including per record and account wide adjustments.
 Regular Price: The market price of a product before we apply our own adjustments.
 Product Price: The final price of a product after all adjustments have been applied.
@@ -223,14 +223,14 @@ Order Completed Date: The date the order was completed and the product was deliv
 
 
 
-<pre class="wp-block-code" data-language="html"><code class="language-html">&lt;?php
-/**
+<pre class="wp-block-code language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token comment">/**
  * Standard Product CPT class file.
  * 
  * This class implements the Standard Product CPT that allows clients to manage prices and metadata without changing the live store.
  * 
  * Product information is synced to associated products on save.
- */</code></pre>
+ */</span></span></code></pre>
 
 
 
