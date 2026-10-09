@@ -539,6 +539,21 @@ a.icon_button img:hover {
     margin: 1rem 0.5rem;
     flex-direction: column;
   }
+  .content .feature.values {
+    align-items: center;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+  .content .feature.values .feature_media,
+  .content .feature.values .feature_content {
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+  }
+  .content .feature.values .feature_media img {
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
 }
 @media screen and (min-width: 768px) and (max-width: 1200px) {
   .content {
