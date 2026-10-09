@@ -3,7 +3,7 @@ extends ../templates/1999_iframe.pug
 block append page
   script.
     window.addEventListener("DOMContentLoaded", function() {
-      let images = document.querySelectorAll( '.blog_post img' );
+      let images = document.querySelectorAll( '.blog_post img:not(.blog-author-photo)' );
 
       images.forEach( imageElm => {
         // Create a new anchor element
@@ -23,13 +23,15 @@ block append page
     });
 
   .content.blog_post
-    .breadcrumb
-      span.item Blog
-      span.item &nbsp;&nbsp;>&nbsp;&nbsp;
-      span.item= blogpost.title
-    h2= blogpost.title
-    . 
-        !{ blogpost.content }
-    br
-    br
+    nav.breadcrumb(aria-label='Breadcrumb')
+      ol
+        li
+          span Blog
+        li
+          span(aria-current='page')= blogpost.title
+    article
+      h1= blogpost.title
+      include partials/blog_byline.pug
+      != blogpost.content
+      include partials/blog_author.pug
 

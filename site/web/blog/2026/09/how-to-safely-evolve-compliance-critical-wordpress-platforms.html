@@ -1,0 +1,647 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>How to safely evolve compliance-critical WordPress platforms | Open Studios</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><meta name="description" content="Some WordPress sites are too important to change casually. They might support client records, student assessments, internal reporting, sensitive private information, bookings, payments, or operational workflows where accuracy isn’t just important, it has compliance requirements. In these environments, the challenge is not just efficiently delivering new features. The challenge is preserving and building trust. Both"><link rel="canonical" href="https://openstudios.xyz/blog/2026/09/how-to-safely-evolve-compliance-critical-wordpress-platforms.html"><meta property="og:title" content="How to safely evolve compliance-critical WordPress platforms | Open Studios"><meta property="og:description" content="Some WordPress sites are too important to change casually. They might support client records, student assessments, internal reporting, sensitive private information, bookings, payments, or operational workflows where accuracy isn’t just important, it has compliance requirements. In these environments, the challenge is not just efficiently delivering new features. The challenge is preserving and building trust. Both"><meta property="og:type" content="article"><meta property="og:url" content="https://openstudios.xyz/blog/2026/09/how-to-safely-evolve-compliance-critical-wordpress-platforms.html"><meta property="og:image" content="https://openstudios.xyz/assets/blog/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg"><meta name="twitter:title" content="How to safely evolve compliance-critical WordPress platforms | Open Studios"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description" content="Some WordPress sites are too important to change casually. They might support client records, student assessments, internal reporting, sensitive private information, bookings, payments, or operational workflows where accuracy isn’t just important, it has compliance requirements. In these environments, the challenge is not just efficiently delivering new features. The challenge is preserving and building trust. Both"><meta name="twitter:image" content="https://openstudios.xyz/assets/blog/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"How to safely evolve compliance-critical WordPress platforms","description":"Some WordPress sites are too important to change casually. They might support client records, student assessments, internal reporting, sensitive private information, bookings, payments, or operational workflows where accuracy isn’t just important, it has compliance requirements. In these environments, the challenge is not just efficiently delivering new features. The challenge is preserving and building trust. Both","mainEntityOfPage":"https://openstudios.xyz/blog/2026/09/how-to-safely-evolve-compliance-critical-wordpress-platforms.html","url":"https://openstudios.xyz/blog/2026/09/how-to-safely-evolve-compliance-critical-wordpress-platforms.html","author":{"@type":"Person","name":"Paul Brzeski","url":"https://paulbrzeski.com/"},"publisher":{"@type":"Organization","name":"Open Studios","url":"https://openstudios.xyz/"},"datePublished":"2026-09-30T02:51:24","dateModified":"2026-10-09T15:45:41","image":"https://openstudios.xyz/assets/blog/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg"}</script><style>#page-wrapper {
+    position: relative;
+    z-index: 2;
+}
+#webgl-wrapper {
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+#loader_symbols {
+    display: block;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index: 2;
+}
+
+body {
+    background-color: #000;
+    margin: 0;
+    padding: 0;
+}
+#webgl {
+    display: none;
+    opacity: 0;
+}
+#pageOverlay,
+#webgl {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+}
+#pageOverlay {
+    border: 0 none;
+    display: none;
+    z-index: 10000;
+}
+#pokematrixSign,
+#exitSign {
+    background: black;
+    font-weight: bold;
+    color: #fff;
+    box-shadow: 0px 0px 5px 5px #00DD00;
+    text-shadow: 2.5px 2.5px 5px #999;
+    cursor: pointer;
+    border: solid 1px #00DD00;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 10001;
+    padding-top: 1.75rem;
+    padding-right: 1.75rem;
+    margin-right: -1rem;
+    margin-top: -1rem;
+    line-height: 0;
+}
+#pokematrixSign img,
+#exitSign img {
+    display: block;
+    max-width: min(80px, 15vw);
+    height: auto;
+}
+#pokematrixSign:active,
+#pokematrixSign:focus,
+#pokematrixSign:hover,
+#exitSign:active,
+#exitSign:focus,
+#exitSign:hover {
+    box-shadow: 0px 0px 7.5px 7.5px #00FF00;
+    border-color: #00FF00;
+}
+
+#pokematrixSign {
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10003;
+    font: inherit;
+    appearance: none;
+}
+#exitSign {
+    display: none;
+}
+#pokematrixImage,
+#pokematrixCanvas {
+    border-radius: 1rem;
+    height: auto;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10002;
+}
+#pokematrixImage {
+    top: 13rem;
+}
+
+@media screen and (min-width: 640px) {
+    #pokematrixSign,
+    #exitSign {
+        padding: 1rem;
+        margin-top: 0rem;
+        margin-right: 0rem;
+        top: 2rem;
+        right: 3rem;
+    }
+    #pokematrixSign img,
+    #exitSign img {
+        width: clamp(5rem, 6vw, 14rem);
+        max-width: none;
+    }
+     #pokematrixImage,
+    #pokematrixCanvas {
+        right: calc(3rem - 5px);
+        top: calc(2rem - 5px);
+    }
+}</style></head><body onload="_init( 3000 );"><noscript><style>#loadingSign { display: none }</style></noscript><div id="page-wrapper"><a class="skip-link" href="#main">Skip to content</a><div class="header_bg"></div><header class="header"><div class="h1"><a href="/" title="Home"><img src="/assets/images/logo-wide.png" alt="Open Studios"></a></div></header><nav class="menu" aria-label="Main"><ul><li><a href="/worlds.html">Worlds</a></li><li><a href="/the_studio.html">The Studio</a></li><li><a href="/what_we_do.html">What We Do</a></li><li><a href="/about_us.html">About Us</a></li><li><a href="/support_us.html">Support Us</a></li></ul></nav><div id="pokematrix"><canvas id="pokematrixCanvas"></canvas><canvas id="pokematrixImage"></canvas><button id="pokematrixSign" type="button"><img src="/assets/go3d.svg" title="Enter the virtual 3D office" width="300" height="85" alt="A sign saying to go 3D"></button></div><img id="exit_image" alt="Exit sign" style="display:none;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHMAAABCCAYAAABkZenuAAAFc2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjExNSIKICAgZXhpZjpQaXhlbFlEaW1lbnNpb249IjY2IgogICBleGlmOkNvbG9yU3BhY2U9IjEiCiAgIHRpZmY6SW1hZ2VXaWR0aD0iMTE1IgogICB0aWZmOkltYWdlTGVuZ3RoPSI2NiIKICAgdGlmZjpSZXNvbHV0aW9uVW5pdD0iMiIKICAgdGlmZjpYUmVzb2x1dGlvbj0iNzIvMSIKICAgdGlmZjpZUmVzb2x1dGlvbj0iNzIvMSIKICAgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIKICAgcGhvdG9zaG9wOklDQ1Byb2Zp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"><img id="exit_image_mobile" alt="Exit sign" style="display:none;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHMAAABCCAYAAABkZenuAAAFemlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjExNSIKICAgZXhpZjpQaXhlbFlEaW1lbnNpb249IjY2IgogICBleGlmOkNvbG9yU3BhY2U9IjEiCiAgIHRpZmY6SW1hZ2VXaWR0aD0iMTE1IgogICB0aWZmOkltYWdlTGVuZ3RoPSI2NiIKICAgdGlmZjpSZXNvbHV0aW9uVW5pdD0iMiIKICAgdGlmZjpYUmVzb2x1dGlvbj0iNzIvMSIKICAgdGlmZjpZUmVzb2x1dGlvbj0iNzIvMSIKICAgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIKICAgcGhvdG9zaG9wOklDQ1Byb2Zp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"><main class="content_row" id="main"><script>window.addEventListener("DOMContentLoaded", function() {
+  let images = document.querySelectorAll( '.blog_post img:not(.blog-author-photo)' );
+
+  images.forEach( imageElm => {
+    // Create a new anchor element
+    const linkElm = document.createElement('a');
+    // Set the href attribute to the image's src
+    linkElm.href = imageElm.src;
+    linkElm.classList.add('lightbox');
+    
+    // Insert the image as a child of the anchor element
+    linkElm.appendChild(imageElm.cloneNode(true));
+    
+    // Replace the original image with the new anchor element
+    imageElm.parentNode.replaceChild(linkElm, imageElm);
+  } );
+  const prvs = new Parvus();
+
+});
+</script><div class="content blog_post"><nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/blog.html">Blog</a></li><li><span aria-current="page">How to safely evolve compliance-critical WordPress platforms</span></li></ol></nav><article><h1>How to safely evolve compliance-critical WordPress platforms</h1><p class="blog-byline"><strong>By Paul Brzeski</strong> · <time datetime="2026-09-30T02:51:24">September 30, 2026</time></p><figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="683" src="/assets/blog/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg" alt="Photo by Bonnie Kittle on Unsplash" class="wp-image-615" srcset="https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg 1024w, https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-300x200.jpg 300w, https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-768x512.jpg 768w, https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1536x1024.jpg 1536w, https://portal.openstudios.xyz/app/uploads/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash.jpg 1920w" sizes="auto, (max-width: 1024px) 100vw, 1024px"><figcaption class="wp-element-caption">Chesterton’s fence is the idea we should understand why something exists before changing it. The same principle applies when changing software.</figcaption></figure>
+
+
+
+<p class="wp-block-paragraph">Some WordPress sites are too important to change casually.</p>
+
+
+
+<p class="wp-block-paragraph">They might support client records, student assessments, internal reporting, sensitive private information, bookings, payments, or operational workflows where accuracy isn’t just important, it has compliance requirements.</p>
+
+
+
+<p class="wp-block-paragraph">In these environments, the challenge is not just efficiently delivering new features. The challenge is preserving and building trust. Both your client and their users need to trust that the system continues to work as it should. Data, calculations, reports – these can have legal consequences if the system is not working as expected.</p>
+
+
+
+<p class="wp-block-paragraph">At Open Studios, we help digital agencies and their clients make careful changes to complex WordPress and PHP systems that cannot afford to break.</p>
+
+
+
+<p class="wp-block-paragraph">Below are some key ingredients we’ve used to help people succeed in evolving these critical systems.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity">
+
+
+
+<h3 class="wp-block-heading">Keep the reference material close and integrate team knowledge into the code comments.</h3>
+
+
+
+<p class="wp-block-paragraph">If regulations are available, make sure to reference them and even quote the relevant block. Link to online copies if they are available. This helps with team alignment and ensures that code is always written with the regulations in mind.</p>
+
+
+
+<pre class="wp-block-code language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token comment">/**
+ * Example comment above something compliance-related
+ * 
+ * This implements section 7.3.1 of the Standard Document.
+ * @see https://example.com/standard-document#section-7.3.1
+ */</span></span></code></pre>
+
+
+
+<p class="wp-block-paragraph">When performing compliance-related calculations or using formulas, make sure to reference the actual math you’re supposed to implement and how it’s been interpreted into code. It’s usually best to isolate such calculations into their own functions or classes so they can be easily tested and maintained.</p>
+
+
+
+<pre class="wp-block-code language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token comment">/**
+ * Example formula translation above calculations
+ * 
+ * This implements section 7.3.2 of the Standard Document.
+ * @see https://example.com/standard-document#section-7.3.2
+ *
+ * The formula from the standard is:
+ *     Counted Hours = Actual Hours * (1 + (Months since late renewal / 20))
+ */</span>
+
+<span class="token keyword">function</span> <span class="token function-definition function">counted_hours</span><span class="token punctuation">(</span> <span class="token keyword type-hint">float</span> <span class="token variable">$actual_hours</span><span class="token punctuation">,</span> <span class="token keyword type-hint">int</span> <span class="token variable">$months_late</span> <span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">float</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token variable">$actual_hours</span> <span class="token operator">*</span> <span class="token punctuation">(</span> <span class="token number">1</span> <span class="token operator">+</span> <span class="token punctuation">(</span> <span class="token variable">$months_late</span> <span class="token operator">/</span> <span class="token number">20</span> <span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></span></code></pre>
+
+
+
+<p class="wp-block-paragraph">If the client is unable to provide much technical documentation or reference material, it can be useful to produce your own. If it’s developer facing only and only relevant when working on the codebase, consider adding it directly to the repo as a /docs folder with Markdown files. Most git hosting platforms will automatically render Markdown files as HTML documentation.</p>
+
+
+
+<h3 class="wp-block-heading">Maintain internal documentation that bridges the gap between code and compliance requirements.</h3>
+
+
+
+<p class="wp-block-paragraph">Many client domains use generic-sounding terms that actually have a specific meaning within compliance and regulatory frameworks. Whatever that terminology is, it can be vital to have a clear glossary for development teams so that ambiguity and incorrect assumptions can be avoided. Sometimes clients develop their own language on top of the framework. It’s important to document these too in order to communicate effectively.</p>
+
+
+
+<pre class="wp-block-code language-markdown" data-language="html"><code class="language-html">Standard SKU: Refers to the lookup code that government agencies use to identify products and services.
+Counted Hours: The number of hours after all calculations are performed including per record and account wide adjustments.
+Regular Price: The market price of a product before we apply our own adjustments.
+Product Price: The final price of a product after all adjustments have been applied.
+Delivery Date: The requested date by the client for the product to be delivered.
+Order Completed Date: The date the order was completed and the product was delivered.</code></pre>
+
+
+
+<p class="wp-block-paragraph">Developing a WordPress site can take many different forms, with many different valid approaches. Maintaining an internal developer reference explaining the key fundamentals of how the system is put together, including how top-level concepts were translated from requirements into Custom Post Types, Taxonomies and Constants, can save a lot of time and effort in the long run.</p>
+
+
+
+<pre class="wp-block-code language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token comment">/**
+ * Standard Product CPT class file.
+ * 
+ * This class implements the Standard Product CPT that allows clients to manage prices and metadata without changing the live store.
+ * 
+ * Product information is synced to associated products on save.
+ */</span></span></code></pre>
+
+
+
+<p class="wp-block-paragraph">When the client system’s language is documented along with the system’s architecture, communication between developers and stakeholders can be more effective. The glossary provides the vocabulary while the accompanying notes like project history, architecture and assumptions provide the context.</p>
+
+
+
+<p class="wp-block-paragraph">When making changes to compliance-critical systems, having this information can be essential to ensure that changes required were understood and will be implemented correctly.</p>
+
+
+
+<h3 class="wp-block-heading">Use the client’s subject-matter expertise to test system accuracy including any calculations.</h3>
+
+
+
+<p class="wp-block-paragraph">If a project happens to have a subject matter expert as a stakeholder, make good use of that person’s expertise and regularly maintain communication with them with progress updates and engage them for feedback.</p>
+
+
+
+<p class="wp-block-paragraph">People who have spent years working in their fields can provide valuable insights that can round out our understanding of requirements that are otherwise missed during discovery and development. Sometimes this can be as organic as asking them a series of questions probing theoretical design constraints; other times it may be a request for people to review exported data for accuracy.</p>
+
+
+
+<p class="wp-block-paragraph">We’ve spent a number of years working with a training organisation that provides courses and tracking software. Their organisation helps people obtain certifications so they are able to do their jobs. The training program itself is regulated by an Australian state government department. We helped them migrate from an old compliance scheme to a new one, and offered their existing users an option of migration, as permitted by the rules. This option was unique to our client’s platform. Their competitors opted to migrate everyone at once and not give the option.</p>
+
+
+
+<p class="wp-block-paragraph">Thanks to our technical steering of the project and maintaining open communication with the client, we were able to deliver the new compliance rules by the deadline with our client’s satisfaction that both the old and new rules were implemented correctly. The client was then audited by the state government and received positive feedback that they met the standard required.</p>
+
+
+
+<h3 class="wp-block-heading">Version the data model and write migrations</h3>
+
+
+
+<p class="wp-block-paragraph">The shape of a system can change dramatically with time. Managing that evolution with code is handled well by version control systems like Git, but the mechanism for the database has to be implemented manually by developers.</p>
+
+
+
+<p class="wp-block-paragraph">Many clients that implement WordPress as a critical system will have customisations that implement custom fields, custom post types and taxonomies. These customisations are referenced in code and sometimes undergo changes over time. Just as WordPress itself sometimes requires a database update when the software is updated, so too does a custom WordPress implementation.</p>
+
+
+
+<p class="wp-block-paragraph">By versioning the database you develop an implementation reference in the code, as well as a project history of how the system’s data has changed over time. This can be as simple as a WP Option that stores the same version number as that of a custom plugin you’ve written. Then you just need to write a hook that runs the migration as needed i.e. if we’re on a newer version of the plugin than is stored in the WP Option.</p>
+
+
+
+<p class="wp-block-paragraph">Having this mechanism allows you to ensure clean migration of data on each deployed environment without manually updating data records in each environment. When helping clients who have custom meta keys and values that need to be migrated, we version the database and write migrations to ensure a consistent experience across all environments.</p>
+
+
+
+<h3 class="wp-block-heading">How dev processes help with recovery and rollback options</h3>
+
+
+
+<p class="wp-block-paragraph">Clients whose business depends on a WordPress system cannot afford to test changes on their main site. By establishing a development environment, you can incrementally build and test changes without affecting others. When making use of a staging environment, you can test the changes and discuss them with the team before deployment. This is the point where client feedback, user acceptance testing and code reviews happen.</p>
+
+
+
+<p class="wp-block-paragraph">Best practices exist for a good reason, not necessarily because they’re the best possible solution but because they are widely accepted to deliver a result when weighing different constraints. Within web development, ensuring that websites are built using version control, and following best practices for development operations, can be vital to ensuring service level agreements are achieved within agreed standards.</p>
+
+
+
+<p class="wp-block-paragraph">At Open Studios we work with digital agencies that implement their own hosting and have strong standards that define things like issue tracking, deployment processes and operations. They are contractually obligated to their clients to deliver a high-quality service within agreed standards. In these situations we work within the client’s team and framework to ensure that the service level agreements are met and the client feels confident to entrust us with their critical systems.</p>
+
+
+
+<p class="wp-block-paragraph">Disaster recovery planning and having strong systems can be essential to ensuring continuity of a WordPress site when hackers try to exploit potential security vulnerabilities or unexpected problems arise from recent changes. Sometimes the problems arise due to incompatibilities between plugins or themes, or due to changes in WordPress itself needing to be accounted for in custom code.</p>
+
+
+
+<p class="wp-block-paragraph">Whatever the reason, it’s much easier to get a website back up and running if you have planned ahead for different possibilities. Version control lets you roll back to a previous version of your codebase if something goes wrong. Having regular database backups means you can recover lost records from a previous point in time if they were corrupted or deleted.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity">
+
+
+
+<p class="wp-block-paragraph">Evolving a critical system takes an understanding of the rules it implements, the people who depend on it and the consequences of getting it wrong. Clear documentation, close collaboration and careful development practices give everyone involved a stronger foundation for making changes with confidence.</p>
+
+
+
+<p class="wp-block-paragraph">At Open Studios, we bring this care to our work with digital agencies and their clients. The same level of care goes into every project we work on, whether it’s our own IP and R&amp;D work or the projects we deliver alongside our agency partners.</p>
+<div class="blog-author feature wide"><div class="feature_content"><h2>About Paul Brzeski</h2><p>Paul Brzeski is the Co-Founder and Technical Director of Open Studios, and a writer and creative technologist with more than two decades of experience working with software, the web, systems and graphical applications.</p><p>His work spans web development, technical architecture, WordPress and PHP systems, DevOps, interactive 3D and experimental R&D. He writes about technology, software, creative practice and the systems people build and live within.</p><p>Outside of work, Paul is a house husband, writer and dog dad to three fur babies.</p><p>Read more:&nbsp;<a href="https://paulbrzeski.com/" target="_blank" rel="noopener">Paul’s blog</a> ·&nbsp;<a href="https://www.linkedin.com/in/paul-b-23620b209/" target="_blank" rel="noopener">LinkedIn</a></p></div><div class="feature_media"><img class="blog-author-photo" src="/assets/images/about-us/paul.jpg" alt="Selfie of Paul with his two doggos in the car"></div></div></article><p><a href="/blog.html">Back to Blog Home</a></p></div></main><aside class="content_row newsletter"><div class="newsletter_bg"></div><div class="content"><div class="row"><div class="tiles"><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3 id="behind-the-scenes">Behind the scenes</h3><p>Take a step back through our blog to see behind the scenes updates on our projects including retrospectives and progress updates.</p><p>Recent highlights:</p><p><a href="/blog/2026/09/open-studios-raster-to-vector-conversion-wordpress-plugin.html" target="_blank" title="Introducing the Open Studios Raster to Vector Conversion Tool for WordPress">Launched a Raster to Vector Plugin for WordPress</a></p><p><a href="/blog/2025/05/langenium-v6-retrospective.html" target="_blank" title="Langenium v6 Retrospective">Langenium Game Dev (V6) Retrospective</a></p><br><p class="align_right"><a href="/blog.html" target="_blank" title="Read our blog">Read our blog</a></p></div></div><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3>Support Us</h3><p>Open Studios is an independent studio that needs your help to keep producing high quality work.</p><p>We are committed to produce content without restrictive licenses and with an open approach that teaches others.</p><p>If you like the sound of that, head over to our support page to see how you can get involved!</p><br><p class="align_right"><a href="/support_us.html" target="_blank" title="Support Us">Support Us</a></p></div></div></div></div></div></aside><footer class="content_row footer"><div class="content"><nav class="row" aria-label="Footer"><div class="narrow-column"><h3>Worlds</h3><ul><li><a href="/worlds.html#demonology">Demonology</a></li><li><a href="/worlds.html#kamigen">Kamigen</a></li><li><a href="/worlds.html#langenium">Langenium</a></li></ul></div><div class="narrow-column"><h3>The Studio</h3><ul><li><a href="/blog.html#blog">Blog</a></li><li><a href="/the_studio.html#behind-the-scenes">Behind the scenes</a></li><li><a href="/the_studio.html#guides">Guides</a></li><li><a href="/the_studio.html#source-code">Source Code</a></li><li><a href="/the_studio.html#software">Software</a></li></ul></div><div class="narrow-column"><h3>What We Do</h3><ul><li><a href="/what_we_do.html#research-and-development">Research &amp; Development</a></li><li><a href="/what_we_do.html#open-source">Open Source</a></li></ul></div><div class="narrow-column"><h3>Terms</h3><ul><li><a href="/accessibility.html">Accessibility</a></li><li><a href="/ai-copyright.html">AI and Copyright Policy</a></li><li><a href="/privacy.html">Privacy Policy</a></li></ul></div></nav><div class="row center"><div class="h1"><a href="/" title="Home"><img src="/assets/images/logo-wide.png" alt="Open Studios"></a></div></div></div></footer></div><div id="webgl-wrapper"><a id="exitSign" href="#page-wrapper"><img src="/assets/back.svg" title="Return to the previous screen" width="300" height="85" alt="Arrow sign saying this leads back"></a><iframe id="pageOverlay" title="Page overlay"></iframe><div id="webgl"></div><script id="vertexshader" type="x-shader/x-vertex">varying vec2 vUv;
+void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+}</script><script id="fragmentshader" type="x-shader/x-fragment">// Kudos to https://github.com/mrdoob/three.js/issues/14104#issuecomment-1536582334
+uniform sampler2D baseTexture;
+uniform sampler2D bloomTexture;
+varying vec2 vUv;
+void main() {
+    vec4 base_color = texture2D(baseTexture, vUv);
+    vec4 bloom_color = texture2D(bloomTexture, vUv);
+    float lum = 0.21 * bloom_color.r + 0.71 * bloom_color.g + 0.07 * bloom_color.b;
+    gl_FragColor = vec4(base_color.rgb + bloom_color.rgb, max(base_color.a, lum));
+}
+</script><script type="importmap">{
+    "imports": {
+        "postprocessing": "/vendor/postprocessing.js",
+        "three": "/vendor/three.module.js",
+        "three/": "/vendor/three/",
+        "three-bvh-csg": "/vendor/three-bvh-csg.js",
+        "three-mesh-bvh": "/vendor/three-mesh-bvh.js",
+        "virtual_office/": "/assets/scripts/virtual_office/"
+    }
+}
+</script><script src="/assets/scripts/pokeL.js"></script><script>/**
+ * Poke Matrix
+ * 
+ * Pocket sized loading effect.
+ * 
+ */
+
+const charArr = ['モ', 'エ', 'ヤ', 'キ', 'オ', 'カ', '7', 'ケ', 'サ', 'ス', 'z', '1', '5', '2', 'ヨ', 'タ', 'ワ', '4', 'ネ', 'ヌ', 'ナ', '9', '8', 'ヒ', '0', 'ホ', 'ア', '3', 'ウ', ' ', 'セ', '¦', ':', '"', '꞊', 'ミ', 'ラ', 'リ', '╌', 'ツ', 'テ', 'ニ', 'ハ', 'ソ', '▪', '—', '<', '>', '0', '|', '+', '*', 'コ', 'シ', 'マ', 'ム', 'メ'];
+
+const backgroundImage = new Image();
+let isDesktop = window.innerWidth > 640;
+backgroundImage.src = isDesktop ? document.getElementById('exit_image').src : document.getElementById('exit_image_mobile').src  ;
+
+const webgl = document.getElementById('webgl');
+webgl.style.filter = 'saturate(0)';
+
+const canvas = document.getElementById('pokematrixCanvas');
+const ctx = canvas.getContext('2d');
+const canvas2 = document.getElementById('pokematrixImage');
+canvas2.style.display = 'none';
+const ctx2 = canvas2.getContext('2d', {
+    willReadFrequently: true
+});
+
+let exitButton = document.getElementById('pokematrixSign');
+
+let w = canvas.width = canvas2.width = exitButton.offsetWidth + 10;
+let h = canvas.height = canvas2.height = exitButton.offsetHeight + 10;
+
+const largeScreen = canvas.width * canvas.height < 2000000;
+const portraitMode = canvas.width < canvas.height;
+const fontSize = (portraitMode || largeScreen) ? 2 : 2;
+
+let cols = Math.floor(w / fontSize ) + 1;
+let ypos = Array(cols).fill(0);
+
+window.matrix_scene = {
+    type: 'button',
+    interval: false,
+    complete: false,
+    currentTime: 0,
+    lastTime: 0,
+    /**
+     * Stages:
+     *  - 0 Intro - load virtual office
+     *  - 1 Fill viewport with numbers - load virtual office assets
+     *  - 2 Buy time to fill the matrix (if it loaded from cache / too fast)
+     *  - 3 Enter the matrix - start
+     */
+    stage: 0,
+    /**
+     * Timestamp when the current stage began.
+     */
+    stageStarted: 0,
+    /**
+     * Stage specific variables.
+     */
+    // Stage 0
+    elapsed: 0,
+    // Stage 1
+    loaded_done: 0,
+    loaded_target: 0,
+    // Stage 2
+    transition_total: 1250, // in milliseconds
+
+    // Animates the scene
+    animate: function (currentTime) {
+        const elapsedSinceLast = currentTime - window.matrix_scene.lastTime;
+        window.matrix_scene.currentTime = currentTime;
+        window.matrix_scene.elapsed += window.matrix_scene.currentTime - window.matrix_scene.lastTime;
+        window.matrix_scene.lastTime = currentTime;
+        drawBackground();
+
+        ctx.font = fontSize + 'pt monospace';
+
+        if (window.matrix_scene.stage == 0) {
+            ctx.fillStyle = "rgba(0,0,0,0.00125)";
+            ctx.fillRect(0, 0, w, h);
+            // @todo: implement the intro sequence here - column reduce?
+
+            ypos.forEach((y, ind) => {
+
+                window.matrix_scene.drawSymbol(y, ind);
+
+
+
+                if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
+                else ypos[ind] = y + fontSize;
+
+            });
+        }
+        if (window.matrix_scene.stage == 1) {
+            ctx.fillStyle = "rgba(0,0,0,0.0025)";
+            ctx.fillRect(0, 0, w, h);
+            ypos.forEach((y, ind) => {
+                window.matrix_scene.drawSymbol(y, ind);
+
+                if (y > 1 + randomInt(1, 2000 * window.matrix_scene.loaded_done)) ypos[ind] = 0;
+                else ypos[ind] = y + fontSize;
+
+            });
+
+        }
+        if (window.matrix_scene.stage == 2) {
+            ctx.fillStyle = "rgba(0,0,0,0.005)";
+            ctx.fillRect(0, 0, w, h);
+
+            ypos.forEach((y, ind) => {
+                window.matrix_scene.drawSymbol(y, ind);
+
+                if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
+                else ypos[ind] = y + fontSize;
+
+            });
+
+        }
+        if (window.matrix_scene.stage == 3) {
+
+            ctx.fillStyle = "rgba(0,0,0,0.005)";
+            ctx.fillRect(0, 0, w, h);
+            ypos.forEach((y, ind) => {
+                window.matrix_scene.drawSymbol(y, ind);
+
+                if ((y > 1 + randomInt(1, window.matrix_scene.elapsed))) ypos[ind] = 0;
+                else ypos[ind] = y + fontSize;
+
+            });
+        }
+
+        if (!window.matrix_scene.complete) {
+            requestAnimationFrame(window.matrix_scene.animate);
+        }
+    },
+    drawSymbol: function (y, ind) {
+        const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
+        const x = ind * fontSize * 1.5;
+
+        ctx.fillStyle = getAverageColor(ctx2, x, y);
+        ctx.fillText(text, x, y);
+    },
+    // Updates the scene
+    updateStage: function () {
+        if (window.matrix_scene.stage == 0) {
+            if ((Date.now() - window.matrix_scene.stageStarted > 500)) {
+                window.matrix_scene.stage = 1;
+                window.matrix_scene.stageStarted = Date.now();
+            }
+        }
+        if (window.matrix_scene.stage == 1) {
+            if (
+                (Date.now() - window.matrix_scene.stageStarted > 500)
+            ) {
+                window.matrix_scene.stage = 2;
+                window.matrix_scene.stageStarted = Date.now();
+            }
+        }
+        if (window.matrix_scene.stage == 2) {
+            if (
+                (Date.now() - window.matrix_scene.stageStarted > 500)
+            ) {
+                window.matrix_scene.stage = 3;
+                window.matrix_scene.stageStarted = Date.now();
+                canvas.style.transition = 'filter 2.5s, transform 2.5s, opacity 2.5s';
+                canvas.style.transform = "scale(5)";
+                canvas.style.filter = "blur(5px)";
+                canvas.style.opacity = 0;
+
+                exitButton.style.transition = 'opacity 2s';
+                exitButton.style.opacity = 1;
+            }
+        }
+        if (window.matrix_scene.stage == 3) {
+            if (
+                (Date.now() - window.matrix_scene.stageStarted) > window.matrix_scene.transition_total
+            ) {
+                clearInterval(window.matrix_scene.interval);
+                canvas.style.display = 'none';
+                exitButton.addEventListener( 'click', downTheRabbitHole);
+            }
+        }
+    },
+    // Start
+    start: function () {
+        ctx.fillStyle = "rgba(0,0,0,0)";
+        ctx.fillRect(0, 0, w, h);
+
+        window.addEventListener('orientationchange', handleViewportChange);
+        window.addEventListener('resize', handleViewportChange);
+
+        window.matrix_scene.stageStarted = Date.now();
+        window.matrix_scene.interval = setInterval(window.matrix_scene.updateStage, 100);
+        requestAnimationFrame(window.matrix_scene.animate);
+    }
+};
+
+function downTheRabbitHole() {
+    window.virtual_office.init();
+    window.virtual_office.started = true;
+    if ( window.scrollY != 0 ) {
+        window.scrollTo(0, 0);
+    }
+    document.title = 'Open Studios | Perth, Western Australia';
+    const pageWrapper = document.getElementById('page-wrapper');
+    
+    pageWrapper.style.opacity = 1;
+    pageWrapper.style.transition = 'opacity 1s';
+    pageWrapper.style.opacity = 0;
+
+    // Hide the pageWrapper on completion so the iframed pages don't clash.
+    setTimeout( () => {
+        window.matrix_scene.complete = true;
+         pageWrapper.style.display = 'none';
+         pageWrapper.style.pointerEvents = 'none';
+
+        // Animate the camera resetting from any other position.
+        window.virtual_office.tweens.resetCameraRotation.start();
+        window.virtual_office.tweens.resetCameraPosition.start();
+    }, 1000);
+
+    webgl.style.transition = 'filter 3s 2s, opacity 4s';
+    webgl.style.filter = "saturate(1)";
+    webgl.style.opacity = 1;
+
+    // Hide body element scrollbars as the 3D viewport takes over.
+    document.querySelector("body").style.overflow = 'hidden';
+
+}
+
+// Function to draw the background image
+function drawBackground() {
+    var scale = isDesktop ? 1 : 0.8;
+
+    var scaledWidth =  canvas.width * scale;
+    var scaledHeight =  canvas.height * scale;
+
+    // Calculate the top-left coordinates of the image to center it
+    var imageX =  (w - scaledWidth) / 2;
+    var imageY = 2.5 + (h - scaledHeight) / 2;
+
+    if (!isDesktop) {
+        imageX += ( 0.1 ) * canvas.width;
+        imageY -= ( 0.1 ) * canvas.height;
+    }
+
+    // Draw the image on the canvas at the calculated position
+    ctx2.drawImage(backgroundImage, imageX, imageY, scaledWidth, scaledHeight);
+}
+
+function getAverageColor(context, x, y) {
+    const imageData = context.getImageData(x, y, 5, 5).data;
+    let r = 0,
+        g = 0,
+        b = 0;
+    let randomDelta = Math.tan(randomInt(1, 50)) * 2;
+    for (let i = 0; i < imageData.length; i += 4) {
+        r += imageData[i] + randomDelta;
+        g += imageData[i + 1] + randomDelta;
+        b += imageData[i + 2] + randomDelta;
+    }
+    const count = imageData.length / 4;
+    if (Math.floor(g / count) <=0 ) {
+        return `rgba(0,0,0,0.0001)`;
+        
+    }
+    else {
+        return `rgb(${Math.floor(r / count)}, ${Math.floor(g / count)}, ${Math.floor(b / count)})`;
+    }
+}
+
+
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function handleViewportChange() {
+
+    w = canvas.width = canvas2.width = exitButton.offsetWidth;
+    h = canvas.height = canvas2.height = exitButton.offsetHeight;
+    cols = Math.floor(w / fontSize) + 1;
+    ypos = Array(cols).fill(0);
+
+    ctx.fillStyle = '#0000';
+    ctx.fillRect(0, 0, w, h);
+
+    isDesktop = window.innerWidth > 640;
+    backgroundImage.src = isDesktop ? document.getElementById('exit_image').src : document.getElementById('exit_image_mobile').src  ;
+}</script><script>var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="https://analytics.openstudios.xyz/";
+_paq.push(['setTrackerUrl', u+'matomo.php']);
+_paq.push(['setSiteId', '11']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+})();</script></div></body></html>

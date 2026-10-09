@@ -1,0 +1,29 @@
+-
+  var hasPost = typeof blogpost !== "undefined" && blogpost
+  var path = String((typeof page !== "undefined" && page.url) || "/").replace("/iframes", "")
+  var headline = (hasPost && blogpost.title) || (typeof title !== "undefined" && title) || "Open Studios"
+  var pageTitle = headline.indexOf("Open Studios") === -1 ? headline + " | Open Studios" : headline
+  var pageDescription = (hasPost && blogpost.metaDescription) || (typeof description !== "undefined" && description) || "We are Open Studios, a digital production studio in Perth, Western Australia."
+  var canonicalUrl = "https://openstudios.xyz" + path
+  var isArticle = /^\/blog\/\d{4}\/\d{2}\//.test(path)
+  var socialImage = (hasPost && blogpost.cover) || (typeof cover !== "undefined" && cover) || "https://openstudios.xyz/assets/images/virtual_office.jpg"
+  socialImage = String(socialImage).replace("https://openstudios.xyz//", "https://openstudios.xyz/")
+  var published = hasPost && blogpost.date ? blogpost.date : (typeof date !== "undefined" ? date : null)
+  if (published && typeof published.toISOString === "function") published = published.toISOString()
+  var modified = hasPost && blogpost.modifiedDate ? blogpost.modifiedDate : published
+  var articleSchema = null
+  if (isArticle && String((typeof page !== "undefined" && page.url) || "").indexOf("/iframes") < 0) {
+    articleSchema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": headline,
+      "description": pageDescription,
+      "mainEntityOfPage": canonicalUrl,
+      "url": canonicalUrl,
+      "author": { "@type": "Person", "name": "Paul Brzeski", "url": "https://paulbrzeski.com/" },
+      "publisher": { "@type": "Organization", "name": "Open Studios", "url": "https://openstudios.xyz/" }
+    }
+    if (published) articleSchema.datePublished = published
+    if (modified) articleSchema.dateModified = modified
+    if (socialImage) articleSchema.image = socialImage
+  }

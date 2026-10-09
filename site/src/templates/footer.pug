@@ -1,52 +1,52 @@
-.content_row.footer
+footer.content_row.footer
     .content
         if ! isIframe
-            .row
+            nav.row(aria-label='Footer')
                 .narrow-column
                     h3 Worlds
-                    ul(role="menu")
-                        li(role="presentation")
-                            a(href='/worlds.html' role="menuitem") Demonology
-                        li(role="presentation")
-                            a(href='/worlds.html' role="menuitem") Kamigen
-                        li(role="presentation")
-                            a(href='/worlds.html' role="menuitem") Langenium
+                    ul
+                        li
+                            a(href='/worlds.html#demonology') Demonology
+                        li
+                            a(href='/worlds.html#kamigen') Kamigen
+                        li
+                            a(href='/worlds.html#langenium') Langenium
                 .narrow-column
                     h3 The Studio
-                    ul(role="menu")
-                        li(role="presentation")
-                            a(href='/blog.html' role="menuitem") Blog
-                        li(role="presentation")
-                            a(href='/the_studio.html' role="menuitem") Behind the scenes
-                        li(role="presentation")
-                            a(href='/the_studio.html' role="menuitem") Guides
-                        li(role="presentation")
-                            a(href='/the_studio.html' role="menuitem") Source Code
-                        li(role="presentation")
-                            a(href='/the_studio.html' role="menuitem") Software
+                    ul
+                        li
+                            a(href='/blog.html#blog') Blog
+                        li
+                            a(href='/the_studio.html#behind-the-scenes') Behind the scenes
+                        li
+                            a(href='/the_studio.html#guides') Guides
+                        li
+                            a(href='/the_studio.html#source-code') Source Code
+                        li
+                            a(href='/the_studio.html#software') Software
                 .narrow-column
                     h3 What We Do
-                    ul(role="menu")
-                        li(role="presentation")
-                            a(href='/what_we_do.html' role="menuitem") Research &amp; Development
-                        li(role="presentation")
-                            a(href='/what_we_do.html' role="menuitem") Open Source
+                    ul
+                        li
+                            a(href='/what_we_do.html#research-and-development') Research &amp; Development
+                        li
+                            a(href='/what_we_do.html#open-source') Open Source
                 .narrow-column
                     h3 Terms
-                    ul(role="menu")
-                        li(role="presentation")
-                            a(href='/accessibility.html' role="menuitem") Accessibility
-                        li(role="presentation")
-                            a(href='/ai-copyright.html' role="menuitem") AI and Copyright Policy
-                        li(role="presentation")                
-                            a(href='/privacy.html' role="menuitem") Privacy Policy
+                    ul
+                        li
+                            a(href='/accessibility.html') Accessibility
+                        li
+                            a(href='/ai-copyright.html') AI and Copyright Policy
+                        li
+                            a(href='/privacy.html') Privacy Policy
 
         .row.center
             if ! isIframe
                 .h1
-                    a(href='./' title='Home')
-                        img(src='/assets/images/logo-wide.png' alt='Logo')
+                    a(href='/' title='Home')
+                        img(src='/assets/images/logo-wide.png' alt='Open Studios')
             else
                 .h1
                     a(title='Home')
-                        img(src='/assets/images/logo-wide.png' alt='Logo')
+                        img(src='/assets/images/logo-wide.png' alt='Open Studios')

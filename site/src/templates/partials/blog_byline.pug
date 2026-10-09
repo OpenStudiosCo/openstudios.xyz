@@ -1,0 +1,15 @@
+-
+  var hasPost = typeof blogpost !== "undefined" && blogpost
+  var published = hasPost && blogpost.date ? blogpost.date : (typeof date !== "undefined" ? date : null)
+  var publishedLabel = hasPost && blogpost.formattedDate ? blogpost.formattedDate : null
+  if (published && typeof published.toISOString === "function") {
+    if (!publishedLabel) {
+      publishedLabel = published.toLocaleDateString("en-AU", { year: "numeric", month: "long", day: "numeric" })
+    }
+    published = published.toISOString()
+  }
+p.blog-byline
+  strong By Paul Brzeski
+  if publishedLabel
+    |  · 
+    time(datetime=published)= publishedLabel

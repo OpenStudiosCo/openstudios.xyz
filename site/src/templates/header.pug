@@ -19,16 +19,21 @@ script(src='/assets/js/parvus.min.js')
 link(rel='stylesheet' href='/assets/css/1999.css')
 
 //- SEO
-link(rel='canonical' href='https://openstudios.xyz' + page.url.replace('/iframes',''))
-meta(property='og:title' content=title)
-meta(property='og:description' content=description || title )
-meta(property='og:type' content='article')
-meta(property='og:image' content=cover || 'https://openstudios.xyz/assets/images/virtual_office.jpg')
-meta(property='og:image:width' content='1024')
-meta(property='og:image:height' content='768')
+meta(name='description' content=pageDescription)
+if typeof robots !== 'undefined' && robots
+  meta(name='robots' content=robots)
+link(rel='canonical' href=canonicalUrl)
+meta(property='og:title' content=pageTitle)
+meta(property='og:description' content=pageDescription)
+meta(property='og:type' content=isArticle ? 'article' : 'website')
+meta(property='og:url' content=canonicalUrl)
+meta(property='og:image' content=socialImage)
 
 //- Twitter
-meta(name='twitter:title' content=title)
+meta(name='twitter:title' content=pageTitle)
 meta(name='twitter:card' content='summary_large_image')
-meta(name='twitter:description' content=description || title)
-meta(name='twitter:image' content=cover || 'https://openstudios.xyz/assets/images/virtual_office.jpg')
+meta(name='twitter:description' content=pageDescription)
+meta(name='twitter:image' content=socialImage)
+
+if articleSchema
+  script(type='application/ld+json')!= JSON.stringify(articleSchema).replace(/</g, '\\u003c')

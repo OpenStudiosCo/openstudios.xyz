@@ -1,11 +1,11 @@
 doctype html
 html(lang='en')
     head
+        include ./partials/page_meta.pug
         meta(charset='utf-8')
         meta(name='viewport' content='width=device-width, initial-scale=1')
-        meta(name="description" content="We are Open Studios. Perth based digital production studio.")
 
-        title= title || blogpost.title
+        title= pageTitle
 
         include ./header.pug
 
@@ -73,9 +73,11 @@ html(lang='en')
                 padding-right: 1.75rem;
                 margin-right: -1rem;
                 margin-top: -1rem;
+                line-height: 0;
             }
             #pokematrixSign img,
             #exitSign img {
+                display: block;
                 max-width: min(80px, 15vw);
                 height: auto;
             }
@@ -93,6 +95,8 @@ html(lang='en')
                 opacity: 0;
                 cursor: pointer;
                 z-index: 10003;
+                font: inherit;
+                appearance: none;
             }
             #exitSign {
                 display: none;
@@ -119,6 +123,11 @@ html(lang='en')
                     top: 2rem;
                     right: 3rem;
                 }
+                #pokematrixSign img,
+                #exitSign img {
+                    width: clamp(5rem, 6vw, 14rem);
+                    max-width: none;
+                }
                  #pokematrixImage,
                 #pokematrixCanvas {
                     right: calc(3rem - 5px);
@@ -128,7 +137,7 @@ html(lang='en')
     body
         noscript
             style.
-                h1#loadingSign { display: none }
+                #loadingSign { display: none }
         - var isIframe = false
         include ./1999_layout.pug
         #webgl-wrapper

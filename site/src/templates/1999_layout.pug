@@ -1,31 +1,32 @@
 #page-wrapper
+    a.skip-link(href='#main') Skip to content
     .header_bg
-    .header(role="banner")
+    header.header
         if ! isIframe
             .h1
                 a(href='/' title='Home')
-                    img(src='/assets/images/logo-wide.png' alt='Logo')
+                    img(src='/assets/images/logo-wide.png' alt='Open Studios')
         else
             .h1
                 a(title='Home')
-                    img(src='/assets/images/logo-wide.png' alt='Logo')
+                    img(src='/assets/images/logo-wide.png' alt='Open Studios')
     if ! isIframe
-        .menu(role="navigation")
-            ul(role="menu")
-                li(role="presentation")
-                    a(href='/worlds.html' role="menuitem") Worlds
-                li(role="presentation")
-                    a(href='/the_studio.html' role="menuitem") The Studio
-                li(role="presentation")
-                    a(href='/what_we_do.html' role="menuitem") What We Do
-                li(role="presentation")
-                    a(href='/about_us.html' role="menuitem") About Us
-                li(role="presentation")
-                    a(href='/support_us.html' role="menuitem") Support Us
+        nav.menu(aria-label='Main')
+            ul
+                li
+                    a(href='/worlds.html') Worlds
+                li
+                    a(href='/the_studio.html') The Studio
+                li
+                    a(href='/what_we_do.html') What We Do
+                li
+                    a(href='/about_us.html') About Us
+                li
+                    a(href='/support_us.html') Support Us
         #pokematrix
             canvas#pokematrixCanvas
             canvas#pokematrixImage
-            a#pokematrixSign
+            button#pokematrixSign(type='button')
                 img(src='/assets/go3d.svg' title='Enter the virtual 3D office' width='300' height='85' alt='A sign saying to go 3D')
         include ../templates/exit_image.pug
         include ../templates/exit_image_mobile.pug
@@ -39,11 +40,11 @@
         - extra_class = ' bg_reverse'
     else 
         - extra_class = ''
-    .content_row(role="main" class=extra_class)
+    main.content_row#main(class=extra_class)
         block page
     
     if page.url == '/about_us.html' || page.url == '/worlds.html' || page.url.indexOf('blog') >= 0
-        .content_row.newsletter(role="complementary")
+        aside.content_row.newsletter
             .newsletter_bg
             .content
                 .row
