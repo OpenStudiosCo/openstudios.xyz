@@ -73,9 +73,11 @@ html(lang='en')
                 padding-right: 1.75rem;
                 margin-right: -1rem;
                 margin-top: -1rem;
+                line-height: 0;
             }
             #pokematrixSign img,
             #exitSign img {
+                display: block;
                 max-width: min(80px, 15vw);
                 height: auto;
             }
@@ -118,6 +120,11 @@ html(lang='en')
                     margin-right: 0rem;
                     top: 2rem;
                     right: 3rem;
+                }
+                #pokematrixSign img,
+                #exitSign img {
+                    width: clamp(5rem, 6vw, 14rem);
+                    max-width: none;
                 }
                  #pokematrixImage,
                 #pokematrixCanvas {
