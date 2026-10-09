@@ -32,10 +32,35 @@
     filter: brightness(1);
   }
 }
+html {
+  font-size: 100%;
+}
+@media screen and (min-width: 1600px) {
+  html {
+    font-size: 112.5%;
+  }
+}
+@media screen and (min-width: 2000px) {
+  html {
+    font-size: 125%;
+  }
+}
+@media screen and (min-width: 2560px) {
+  html {
+    font-size: 137.5%;
+  }
+}
+@media screen and (min-width: 3200px) {
+  html {
+    font-size: 162.5%;
+  }
+}
 body {
   margin: 0;
   padding: 0;
   font-family: SourceSans, Arial, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
   background-color: #000;
   color: #fff;
 }
@@ -44,11 +69,13 @@ a {
 }
 h3 {
   font-family: VeraMono, Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.35;
   color: #ff69cb;
   margin: 1.5rem 0;
 }
 p {
-  line-height: 1.5rem;
+  line-height: 1.6;
 }
 form {
   border: 2px dotted #ff69cb;
@@ -263,10 +290,10 @@ a.icon_button img:hover {
   display: flex;
   flex-wrap: wrap;
   margin: 0rem 2rem;
-  max-width: 960px;
+  max-width: 60rem;
 }
 .content.wide {
-  max-width: 1280px;
+  max-width: 80rem;
 }
 .row .content {
   margin: 0px auto;
@@ -297,13 +324,13 @@ a.icon_button img:hover {
   display: flex;
   flex-wrap: wrap;
   margin: 0rem 2rem;
-  max-width: 960px;
+  max-width: 60rem;
 }
 .content p {
   margin-bottom: 1rem;
 }
 .content.wide {
-  max-width: 1280px;
+  max-width: 80rem;
 }
 .content_row .content {
   margin: 0px auto;
@@ -515,7 +542,7 @@ a.icon_button img:hover {
 }
 @media screen and (min-width: 768px) and (max-width: 1200px) {
   .content {
-    max-width: 760px;
+    max-width: 47.5rem;
   }
 }
 @media screen and (min-width: 1200px) {
@@ -660,8 +687,9 @@ a.icon_button img:hover {
 }
 .blog_post {
   display: block !important;
+  line-height: 1.6;
 }
-.blog_post h2 {
+.blog_post > h2 {
   font-family: SourceSans !important;
   font-size: 2rem !important;
   text-transform: none !important;
@@ -670,19 +698,37 @@ a.icon_button img:hover {
   line-height: 4rem !important;
   font-weight: bold !important;
 }
+.blog_post h2.wp-block-heading {
+  font-family: SourceSans !important;
+  font-size: 1.5rem !important;
+  text-transform: none !important;
+  padding-bottom: 0 !important;
+  margin: 2.25rem 0 0.85rem !important;
+  font-style: italic !important;
+  line-height: 1.3 !important;
+  font-weight: bold !important;
+}
 .blog_post h3 {
   font-size: 1.5rem !important;
+  line-height: 1.35 !important;
+  margin: 1.75rem 0 0.6rem !important;
 }
 .blog_post img {
   width: 100% !important;
   height: auto !important;
   margin-bottom: 2rem;
 }
+.blog_post hr,
+.blog_post .wp-block-separator {
+  margin: 2.5rem 0 !important;
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.35);
+}
 .blog_post li strong,
 .blog_post li,
 .blog_post p {
-  margin-bottom: 0.5rem;
-  line-height: 1.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
 }
 .blog_post > ul {
   margin-top: 1rem;
@@ -691,13 +737,16 @@ a.icon_button img:hover {
   margin-top: 0.5rem;
 }
 @media screen and (min-width: 768px) {
-  .blog_post h2 {
+  .blog_post > h2 {
     font-size: 4rem !important;
     padding-bottom: 2rem !important;
     line-height: 6rem !important;
   }
+  .blog_post h2.wp-block-heading {
+    font-size: 1.75rem !important;
+  }
   .blog_post h3 {
-    font-size: 2rem !important;
+    font-size: 1.5rem !important;
   }
 }
 * {
@@ -706,8 +755,7 @@ a.icon_button img:hover {
   box-sizing: border-box;
 }
 .wp-block-heading {
-  font-size: 1.8em;
-  margin: 2em 0 1em;
+  margin: 1.5rem 0 0.85rem;
 }
 .wp-block-image {
   margin: 1em 0;
