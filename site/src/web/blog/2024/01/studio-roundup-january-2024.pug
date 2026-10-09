@@ -14,4 +14,6 @@ extends ../../../../templates/1999_html.pug
 block append page
   h2 January 2024
   .content(style="display: inherit;")
+    include ../../../../templates/partials/blog_byline.pug
     include:markdown-it(html) ../../../../content/blog/2024/01/Studio Roundup for January 2024.md
+    include ../../../../templates/partials/blog_author.pug
