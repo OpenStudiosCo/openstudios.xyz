@@ -122,6 +122,9 @@ html(lang='en')
                 display: none;
             }
     body(onload="_init( 3000 );")
+        include ./partials/office_nav.pug
+        script
+            include ../scripts/a11y-fallback.js
         noscript
             style.
                 #loadingSign { display: none }

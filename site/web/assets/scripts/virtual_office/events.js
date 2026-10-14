@@ -225,26 +225,31 @@ export function handleInteractions() {
 }
 
 function catHover() {
-  /**
-   * Handle click.
-   */
-  if ( window.virtual_office.state.pointerDown && !window.virtual_office.moving ) {
-    if ( !window.virtual_office.selected ) {
-      window.virtual_office.moving = true;
-      window.virtual_office.selected = window.virtual_office.scene_objects.portraits;
-
-      let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.portraits.getViewingCoords();
-
-      window.virtual_office.tweens.rotateCamera.to( { x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000 ).start();
-      window.virtual_office.tweens.moveCamera.to( targetPosition, 1000 ).onComplete( () => {
-        // Show the exit sign.
-        document.getElementById( 'exitSign' ).style.display = 'block';
-        window.virtual_office.state.pointerDown = false;
-      } ).start();
-
-    }
-
+  if ( window.virtual_office.state.pointerDown ) {
+    activatePortraits();
   }
+}
+
+export function activatePortraits() {
+  if ( window.virtual_office.moving || window.virtual_office.selected ) {
+    return false;
+  }
+
+  window.virtual_office.moving = true;
+  window.virtual_office.selected = window.virtual_office.scene_objects.portraits;
+  notifyOfficeView();
+
+  let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.portraits.getViewingCoords();
+
+  window.virtual_office.tweens.rotateCamera.to( { x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000 ).start();
+  window.virtual_office.tweens.moveCamera.to( targetPosition, 1000 ).onComplete( () => {
+    document.getElementById( 'exitSign' ).style.display = 'block';
+    window.virtual_office.state.pointerDown = false;
+    focusExitIfKeyboard();
+    notifyOfficeView();
+  } ).start();
+
+  return true;
 }
 
 function polaroidHover( polaroid ) {
@@ -254,16 +259,7 @@ function polaroidHover( polaroid ) {
    */
   if ( window.virtual_office.state.mouseDown && !window.virtual_office.moving ) {
     if ( window.virtual_office.selected.name == 'corkBoard') {
-      window.virtual_office.selected = polaroid;
-
-      // Start loading the screen.
-      document.getElementById( 'pageOverlay' ).src = polaroid.userData.url;
-      document.title = polaroid.userData.title;
-
-      history.pushState( {}, "", polaroid.userData.url.replace( 'iframes/', '' ) );
-      stretchSelectedScreen();
-    
-      clearBlogWallTitle();
+      activatePolaroid( polaroid );
     }
   }
 
@@ -295,53 +291,89 @@ function polaroidHover( polaroid ) {
 }
 
 function blogHover() {
-  /**
-   * Handle click.
-   */
-  if ( window.virtual_office.state.pointerDown && !window.virtual_office.moving ) {
-    if ( !window.virtual_office.selected ) {
-      window.virtual_office.moving = true;
-      window.virtual_office.selected = window.virtual_office.scene_objects.blogWall;
-
-      let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.blogWall.getViewingCoords();
-
-      window.virtual_office.tweens.rotateCamera.to( { x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000 ).start();
-      window.virtual_office.tweens.moveCamera.to( targetPosition, 1000 ).onComplete( () => {
-        // Show the exit sign.
-        document.getElementById( 'exitSign' ).style.display = 'block';
-        window.virtual_office.state.pointerDown = false;
-        document.title = 'Blog | Open Studios | Perth, Western Australia';
-        history.pushState( {}, "", '/blog.html' );
-      } ).start();
-
-    }
-
+  if ( window.virtual_office.state.pointerDown ) {
+    activateBlog();
   }
 }
 
-function screenHover( screen ) {
-  /**
-   * Handle click.
-   */
-  if ( window.virtual_office.state.pointerDown && !window.virtual_office.moving ) {
-    if ( !window.virtual_office.selected ) {
-      window.virtual_office.moving = true;
-      window.virtual_office.selected = screen;
-
-      let [ targetPosition, targetRotation ] = screen.webGLScreen.getViewingCoords();
-
-      // Start loading the screen.
-      document.getElementById( 'pageOverlay' ).src = window.virtual_office.selected.webGLScreen.pageUrl;
-      document.title = window.virtual_office.selected.webGLScreen.pageTitle + ' | Open Studios | Perth, Western Australia';
-
-      history.pushState( {}, "", window.virtual_office.selected.webGLScreen.pageRealUrl );
-
-      window.virtual_office.tweens.rotateCamera.to( { x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000 ).start();
-      window.virtual_office.tweens.moveCamera.to( targetPosition, 1000 ).onComplete( stretchSelectedScreen ).start();
-
-    }
-
+export function activateBlog() {
+  if ( window.virtual_office.moving || window.virtual_office.selected ) {
+    return false;
   }
+
+  window.virtual_office.moving = true;
+  window.virtual_office.selected = window.virtual_office.scene_objects.blogWall;
+  notifyOfficeView();
+
+  let [ targetPosition, targetRotation ] = window.virtual_office.scene_objects.blogWall.getViewingCoords();
+
+  window.virtual_office.tweens.rotateCamera.to( { x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000 ).start();
+  window.virtual_office.tweens.moveCamera.to( targetPosition, 1000 ).onComplete( () => {
+    document.getElementById( 'exitSign' ).style.display = 'block';
+    window.virtual_office.state.pointerDown = false;
+    document.title = 'Blog | Open Studios | Perth, Western Australia';
+    history.pushState( {}, "", '/blog.html' );
+    focusExitIfKeyboard();
+    notifyOfficeView();
+  } ).start();
+
+  return true;
+}
+
+function screenHover( screen ) {
+  if ( window.virtual_office.state.pointerDown ) {
+    activateScreen( screen );
+  }
+}
+
+export function activateScreen( screen ) {
+  if ( !screen || !screen.webGLScreen || window.virtual_office.moving || window.virtual_office.selected ) {
+    return false;
+  }
+
+  window.virtual_office.moving = true;
+  window.virtual_office.selected = screen;
+  notifyOfficeView();
+
+  let [ targetPosition, targetRotation ] = screen.webGLScreen.getViewingCoords();
+
+  const overlay = document.getElementById( 'pageOverlay' );
+  overlay.src = window.virtual_office.selected.webGLScreen.pageUrl;
+  overlay.title = window.virtual_office.selected.webGLScreen.pageTitle;
+  document.title = window.virtual_office.selected.webGLScreen.pageTitle + ' | Open Studios | Perth, Western Australia';
+
+  history.pushState( {}, "", window.virtual_office.selected.webGLScreen.pageRealUrl );
+
+  window.virtual_office.tweens.rotateCamera.to( { x: targetRotation.x, y: targetRotation.y, z: targetRotation.z }, 1000 ).start();
+  window.virtual_office.tweens.moveCamera.to( targetPosition, 1000 ).onComplete( stretchSelectedScreen ).start();
+
+  return true;
+}
+
+export function activatePolaroid( polaroid ) {
+  if ( !polaroid || window.virtual_office.moving || !window.virtual_office.selected ) {
+    return false;
+  }
+
+  const selectedName = window.virtual_office.selected.name;
+  if ( selectedName !== 'corkBoard' && selectedName !== 'polaroid' ) {
+    return false;
+  }
+
+  window.virtual_office.selected = polaroid;
+
+  const title = String( polaroid.userData.title || 'Blog post' ).replace( /\s*\n\s*/g, ' ' );
+  const overlay = document.getElementById( 'pageOverlay' );
+  overlay.src = polaroid.userData.url;
+  overlay.title = title;
+  document.title = title;
+
+  history.pushState( {}, "", polaroid.userData.url.replace( 'iframes/', '' ) );
+  stretchSelectedScreen();
+  clearBlogWallTitle();
+  notifyOfficeView();
+
+  return true;
 }
 
 export function handleExitSign() {
@@ -355,6 +387,8 @@ export function handleExitSign() {
     window.virtual_office.hovered = window.virtual_office.selected;
     window.virtual_office.selected = window.virtual_office.scene_objects.blogWall;
     clearBlogWallTitle();
+    focusExitIfKeyboard();
+    notifyOfficeView();
   }
   else {
     clearBlogWallTitle();
@@ -371,6 +405,8 @@ export function handleExitSign() {
     window.virtual_office.tweens.resetCameraPosition.onStart( shrinkScreenBack ).start();
     document.getElementById( 'exitSign' ).style.display = 'none';
     window.virtual_office.selected = false;
+    notifyOfficeView();
+    focusExitIfKeyboard();
   }
 
 }
@@ -379,12 +415,36 @@ export function handleExitSign() {
  * Helpers
  */
 
+function notifyOfficeView() {
+  document.dispatchEvent( new CustomEvent( 'office-view-changed' ) );
+}
+
+function focusExitIfKeyboard() {
+  if ( !window.virtual_office.keyboardActivation ) {
+    return;
+  }
+
+  window.virtual_office.keyboardActivation = false;
+  const exitSign = document.getElementById( 'exitSign' );
+  if ( exitSign && exitSign.style.display === 'block' ) {
+    exitSign.focus();
+    return;
+  }
+
+  const toggle = document.getElementById( 'office-menu-toggle' );
+  if ( toggle && !toggle.hidden ) {
+    toggle.focus();
+  }
+}
+
 // Function to update the CSS object's size to fit the visible space
 function stretchSelectedScreen() {
 
   document.getElementById( 'pageOverlay' ).style.display = 'block';
 
   document.getElementById( 'exitSign' ).style.display = 'block';
+  focusExitIfKeyboard();
+  notifyOfficeView();
 
   window.virtual_office.started = false;
   window.virtual_office.state.mouseDown = false;

@@ -8,7 +8,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 import { setupEffects } from 'virtual_office/effects.js';
-import { handleInteractions, handleViewportChange, handleExitSign } from 'virtual_office/events.js';
+import { handleInteractions, handleViewportChange, handleExitSign, activateScreen, activateBlog, activatePortraits, activatePolaroid } from 'virtual_office/events.js';
 import { setupBackwall, setupDesks } from 'virtual_office/furniture.js';
 import { setupCorkBoard } from 'virtual_office/furniture/corkboard.js';
 import { setupCat, setupPortraits } from 'virtual_office/furniture/pets.js';
@@ -266,6 +266,12 @@ window.virtual_office = {
   tweens: {}
 };
 
+window.virtual_office.activateScreen = activateScreen;
+window.virtual_office.activateBlog = activateBlog;
+window.virtual_office.activatePortraits = activatePortraits;
+window.virtual_office.activatePolaroid = activatePolaroid;
+window.virtual_office.handleExitSign = handleExitSign;
+
 
 /**
  * Screen lookups
@@ -354,6 +360,8 @@ async function init() {
   materials = {};
 
   window.virtual_office.controls = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.webgl.domElement);
+  // Visitors zoom and pan with a view offset. OrbitControls stay debug-only
+  // so they don't replace the scripted camera moves.
   window.virtual_office.controls.enabled = window.virtual_office.debug;
   window.virtual_office.controls.target.set(0, 10, 0);
   window.virtual_office.controls.update();
@@ -372,7 +380,11 @@ async function init() {
 
   window.addEventListener('resize', handleViewportChange);
 
-  document.getElementById('exitSign').addEventListener('pointerdown', handleExitSign);
+  document.getElementById('exitSign').addEventListener('click', (event) => {
+    event.preventDefault();
+    window.virtual_office.keyboardActivation = event.detail === 0;
+    handleExitSign();
+  });
 
   function onPointerMove(event) {
 
