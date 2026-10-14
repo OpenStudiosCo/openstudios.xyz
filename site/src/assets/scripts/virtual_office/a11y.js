@@ -93,7 +93,10 @@ function labelSceneCanvas() {
   }
 
   canvas.setAttribute( 'role', 'img' );
-  canvas.setAttribute( 'aria-label', 'Three-dimensional view of the Open Studios office. Open the Virtual office menu with the Menu button or the M key. Pinch to zoom. Once zoomed in, drag with one finger or use the arrow keys to pan.' );
+  canvas.setAttribute( 'aria-label', 'Virtual office' );
+  if ( document.getElementById( 'office-nav-help' ) ) {
+    canvas.setAttribute( 'aria-describedby', 'office-nav-help' );
+  }
   canvas.tabIndex = -1;
 }
 

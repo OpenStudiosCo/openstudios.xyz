@@ -428,13 +428,16 @@ function setFallbackHidden( hidden ) {
   if ( hidden ) {
     if ( wrapper.contains( document.activeElement ) ) {
       const exitSign = document.getElementById( 'exitSign' );
-      if ( exitSign ) {
+      if ( exitSign && exitSign.style.display == 'block' ) {
         exitSign.focus();
       }
     }
+    // aria-hidden drops it from the accessibility tree. inert also takes it out of tab order.
     wrapper.setAttribute( 'aria-hidden', 'true' );
+    wrapper.inert = true;
   }
   else {
+    wrapper.inert = false;
     wrapper.removeAttribute( 'aria-hidden' );
   }
 }
