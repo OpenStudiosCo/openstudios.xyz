@@ -73,6 +73,7 @@ h4 {
 a {
   color: #0ef;
 }
+h2,
 h3 {
   font-family: VeraMono, Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.5rem;
@@ -116,15 +117,18 @@ form button:hover {
   font-family: SourceSans;
   src: url("/assets/fonts/SourceSans3-Light.woff");
   src: url("/assets/fonts/SourceSans3-Light.woff2");
+  font-display: swap;
 }
 @font-face {
   font-family: Stigmature;
   src: url("/assets/fonts/Stigmature.otf");
+  font-display: swap;
 }
 @font-face {
   font-family: VeraMono;
   src: url("/assets/fonts/VeraMono.woff");
   src: url("/assets/fonts/VeraMono.woff2");
+  font-display: swap;
 }
 /* Components */
 .icon_button {
@@ -239,7 +243,7 @@ a.icon_button img:hover {
 }
 .content_row::before {
   content: "";
-  background: no-repeat url("/assets/images/backgrounds/highway.jpg");
+  background-repeat: no-repeat;
   background-position: bottom;
   background-size: 100%;
   display: block;
@@ -250,12 +254,12 @@ a.icon_button img:hover {
   z-index: 0;
 }
 .content_row.bg_reverse::before {
-  background: no-repeat url("/assets/images/backgrounds/reverse.jpg");
+  background-repeat: no-repeat;
   background-position: bottom;
   background-size: 100%;
 }
 .content_row.bg_river::before {
-  background: no-repeat url("/assets/images/backgrounds/river.jpg");
+  background-repeat: no-repeat;
   background-position: bottom center;
   background-size: cover;
 }
@@ -263,7 +267,7 @@ a.icon_button img:hover {
   padding-bottom: 350px;
 }
 .content_row.newsletter::before {
-  background: no-repeat url("/assets/images/backgrounds/newsletter.jpg");
+  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
@@ -272,7 +276,7 @@ a.icon_button img:hover {
   padding-bottom: 10vh;
 }
 .content_row.footer::before {
-  background: no-repeat url("/assets/images/backgrounds/footer.jpg");
+  background-repeat: no-repeat;
   background-position: bottom;
   background-size: 100%;
   padding: 0 2rem 0;
@@ -284,6 +288,21 @@ a.icon_button img:hover {
 }
 .content_row.footer .narrow-column a:hover {
   text-decoration: underline;
+}
+html.is-decorated .content_row::before {
+  background-image: url("/assets/images/backgrounds/highway.jpg");
+}
+html.is-decorated .content_row.bg_reverse::before {
+  background-image: url("/assets/images/backgrounds/reverse.jpg");
+}
+html.is-decorated .content_row.bg_river::before {
+  background-image: url("/assets/images/backgrounds/river.jpg");
+}
+html.is-decorated .content_row.newsletter::before {
+  background-image: url("/assets/images/backgrounds/newsletter.jpg");
+}
+html.is-decorated .content_row.footer::before {
+  background-image: url("/assets/images/backgrounds/footer.jpg");
 }
 .content a:hover {
   text-decoration: none;
@@ -623,8 +642,11 @@ a.icon_button img:hover {
   z-index: 0;
 }
 .header_bg {
-  background: no-repeat url("/assets/images/backgrounds/header.jpg");
+  background-repeat: no-repeat;
   background-position: center -230px;
+}
+html.is-decorated .header_bg {
+  background-image: url("/assets/images/backgrounds/header.jpg");
 }
 @media screen and (min-width: 3000px) {
   .header_bg {

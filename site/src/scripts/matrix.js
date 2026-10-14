@@ -26,6 +26,8 @@ const ctx2 = canvas2.getContext('2d', {
 
 let w = canvas.width = canvas2.width = window.innerWidth;
 let h = canvas.height = canvas2.height = window.innerHeight;
+// One pixel buffer for the whole frame. getImageData per glyph blocks painting.
+let backgroundPixels = null;
 
 const largeScreen = canvas.width * canvas.height < 2000000;
 const portraitMode = canvas.width < canvas.height;
@@ -73,7 +75,7 @@ window.matrix_scene = {
         window.matrix_scene.currentTime = currentTime;
         window.matrix_scene.elapsed += window.matrix_scene.currentTime - window.matrix_scene.lastTime;
         window.matrix_scene.lastTime = currentTime;
-        drawBackground();
+        ensureBackground();
 
         ctx.font = fontSize + 'pt monospace';
 
@@ -156,7 +158,7 @@ window.matrix_scene = {
         const text = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
         const x = ind * fontSize * 1.5;
 
-        ctx.fillStyle = getAverageColor(ctx2, x, y);
+        ctx.fillStyle = getAverageColor(x, y);
         ctx.fillText(text, x, y);
     },
     // Updates the scene
@@ -258,18 +260,33 @@ function drawBackground() {
     ctx2.drawImage(backgroundImage, imageX, imageY, scaledWidth, scaledHeight);
 }
 
-function getAverageColor(context, x, y) {
-    const imageData = context.getImageData(x, y, 5, 5).data;
+function ensureBackground() {
+    if ( backgroundPixels ) return;
+    if ( ! backgroundImage.complete || ! backgroundImage.width ) return;
+    drawBackground();
+    backgroundPixels = ctx2.getImageData( 0, 0, w, h ).data;
+}
+
+function getAverageColor(x, y) {
+    if ( ! backgroundPixels ) return '#000';
+    const size = 5;
     let r = 0,
         g = 0,
-        b = 0;
-    let randomDelta = Math.tan(randomInt(1, 50)) * 2;
-    for (let i = 0; i < imageData.length; i += 4) {
-        r += imageData[i] + randomDelta;
-        g += imageData[i + 1] + randomDelta;
-        b += imageData[i + 2] + randomDelta;
+        b = 0,
+        count = 0;
+    const randomDelta = Math.tan(randomInt(1, 50)) * 2;
+    const x0 = Math.max( 0, x | 0 );
+    const y0 = Math.max( 0, y | 0 );
+    for ( let yy = y0; yy < y0 + size && yy < h; yy++ ) {
+        for ( let xx = x0; xx < x0 + size && xx < w; xx++ ) {
+            const i = ( yy * w + xx ) * 4;
+            r += backgroundPixels[i] + randomDelta;
+            g += backgroundPixels[i + 1] + randomDelta;
+            b += backgroundPixels[i + 2] + randomDelta;
+            count++;
+        }
     }
-    const count = imageData.length / 4;
+    if ( ! count ) return '#000';
     return `rgb(${Math.floor(r / count)}, ${Math.floor(g / count)}, ${Math.floor(b / count)})`;
 }
 
@@ -281,6 +298,7 @@ function randomInt(min, max) {
 function handleViewportChange() {
     w = canvas.width = canvas2.width = window.innerWidth;
     h = canvas.height = canvas2.height = window.innerHeight;
+    backgroundPixels = null;
     cols = Math.floor(w / fontSize * 1.5) + 1;
     ypos = Array(cols).fill(0);
 

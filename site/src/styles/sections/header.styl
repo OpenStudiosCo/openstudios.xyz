@@ -9,8 +9,12 @@
 }
 
 .header_bg {
-    background: no-repeat url(/assets/images/backgrounds/header.jpg);
+    background-repeat: no-repeat;
     background-position: center -230px;
+}
+
+html.is-decorated .header_bg {
+    background-image: url(/assets/images/backgrounds/header.jpg);
 }
 
 @media screen and (min-width: 3000px) {

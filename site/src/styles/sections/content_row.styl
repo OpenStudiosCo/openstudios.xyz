@@ -9,7 +9,7 @@
 
 .content_row::before {
     content: "";
-    background: no-repeat url(/assets/images/backgrounds/highway.jpg);
+    background-repeat: no-repeat;
     background-position: bottom;
     background-size: 100%;
     display: block;
@@ -21,13 +21,13 @@
 }
 
 .content_row.bg_reverse::before {
-    background: no-repeat url(/assets/images/backgrounds/reverse.jpg);
+    background-repeat: no-repeat;
     background-position: bottom;
     background-size: 100%;
 }
 
 .content_row.bg_river::before {
-    background: no-repeat url(/assets/images/backgrounds/river.jpg);
+    background-repeat: no-repeat;
     background-position: bottom center;
     background-size: cover;
 }
@@ -37,7 +37,7 @@
 }
 
 .content_row.newsletter::before {
-    background: no-repeat url(/assets/images/backgrounds/newsletter.jpg);
+    background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
 }
@@ -48,7 +48,7 @@
 }
 
 .content_row.footer::before {
-    background: no-repeat url(/assets/images/backgrounds/footer.jpg);
+    background-repeat: no-repeat;
     background-position: bottom;
     background-size: 100%;
     padding: 0 2rem 0;
@@ -62,4 +62,26 @@
 
 .content_row.footer .narrow-column a:hover {
     text-decoration: underline;
+}
+
+html.is-decorated {
+    .content_row::before {
+        background-image: url(/assets/images/backgrounds/highway.jpg);
+    }
+
+    .content_row.bg_reverse::before {
+        background-image: url(/assets/images/backgrounds/reverse.jpg);
+    }
+
+    .content_row.bg_river::before {
+        background-image: url(/assets/images/backgrounds/river.jpg);
+    }
+
+    .content_row.newsletter::before {
+        background-image: url(/assets/images/backgrounds/newsletter.jpg);
+    }
+
+    .content_row.footer::before {
+        background-image: url(/assets/images/backgrounds/footer.jpg);
+    }
 }
