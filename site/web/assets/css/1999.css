@@ -736,6 +736,10 @@ a.icon_button img:hover {
 #page-wrapper.is-concealed {
   min-height: 0;
 }
+#webgl,
+#webgl canvas {
+  touch-action: none;
+}
 .office-menu-toggle[hidden] {
   display: none;
 }
@@ -760,12 +764,12 @@ a.icon_button img:hover {
   cursor: pointer;
 }
 .office-menu-toggle:hover,
-.office-menu-toggle:focus-visible,
+.office-menu-toggle:focus,
 .office-menu-toggle[aria-expanded="true"] {
   border-color: #0f0;
   box-shadow: 0px 0px 7.5px 7.5px #0f0;
 }
-.office-menu-toggle:focus-visible {
+.office-menu-toggle:focus {
   outline: 2px solid #fff;
   outline-offset: 3px;
 }
@@ -845,9 +849,6 @@ a.icon_button img:hover {
 .office-nav li {
   margin: 0.15rem 0;
 }
-.office-nav li:has(> button[hidden]) {
-  display: none;
-}
 .office-nav button,
 .office-nav label {
   font: inherit;
@@ -870,7 +871,7 @@ a.icon_button img:hover {
   cursor: default;
 }
 .office-nav button:hover:not(:disabled),
-.office-nav button:focus-visible:not(:disabled) {
+.office-nav button:focus:not(:disabled) {
   color: #fff;
   background: rgba(1,205,254,0.12);
   outline: 2px solid #fff;
@@ -905,7 +906,7 @@ a.icon_button img:hover {
   margin: 0.35rem 0.55rem 0.15rem;
   accent-color: #01cdfe;
 }
-.office-nav input[type=range]:focus-visible {
+.office-nav input[type=range]:focus {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }

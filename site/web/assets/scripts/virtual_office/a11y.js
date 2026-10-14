@@ -1,13 +1,8 @@
 /**
- * Keyboard access and zoom for the 3D office.
+ * Accessibility
  *
- * OrbitControls stay limited to debug mode. Enabling them for zoom would
- * also let the camera orbit and pan, which fights the scripted moves.
- * A view offset magnifies the current shot and slides that window around.
- * The camera position and rotation stay with the scripted moves.
- *
- * M opens the virtual office menu. Plus and minus zoom the scene.
- * Arrow keys pan once the scene is zoomed in.
+ * Keyboard menu, zoom and pan for the virtual office.
+ * OrbitControls stay in debug mode so they don't fight the scripted camera.
  */
 
 const MIN_ZOOM = 1;
@@ -24,6 +19,7 @@ let panX = 0;
 let panY = 0;
 let drag = null;
 let dragToken = 0;
+let touchPan = null;
 
 export function setupOfficeAccess() {
   const nav = document.getElementById( 'office-nav' );
@@ -43,7 +39,7 @@ export function setupOfficeAccess() {
       menuToggleCloses = officeMenuIsOpen();
     } );
     toggle.addEventListener( 'click', ( event ) => {
-      const closes = event.detail === 0 ? officeMenuIsOpen() : menuToggleCloses;
+      const closes = event.detail == 0 ? officeMenuIsOpen() : menuToggleCloses;
       if ( closes ) {
         closeOfficeMenu();
       }
@@ -68,16 +64,19 @@ export function setupOfficeAccess() {
     } );
   }
 
-  const viewport = document.getElementById( 'webgl' );
+  const canvas = document.querySelector( '#webgl canvas' );
+  const viewport = canvas || document.getElementById( 'webgl' );
   if ( viewport ) {
+    viewport.style.touchAction = 'none';
     viewport.addEventListener( 'wheel', onWheel, { passive: false } );
     viewport.addEventListener( 'pointerdown', onViewportPointerDown );
     viewport.addEventListener( 'pointermove', onViewportPointerMove );
     viewport.addEventListener( 'pointerup', onViewportPointerUp );
     viewport.addEventListener( 'pointercancel', onViewportPointerUp );
-    viewport.addEventListener( 'touchstart', onTouchStart, { passive: true } );
+    viewport.addEventListener( 'touchstart', onTouchStart, { passive: false } );
     viewport.addEventListener( 'touchmove', onTouchMove, { passive: false } );
     viewport.addEventListener( 'touchend', onTouchEnd );
+    viewport.addEventListener( 'touchcancel', onTouchEnd );
   }
 
   window.addEventListener( 'keydown', onKeyDown );
@@ -94,7 +93,7 @@ function labelSceneCanvas() {
   }
 
   canvas.setAttribute( 'role', 'img' );
-  canvas.setAttribute( 'aria-label', 'Three-dimensional view of the Open Studios office. Open the Virtual office menu with the Menu button or the M key. Arrow keys pan the view once it is zoomed in.' );
+  canvas.setAttribute( 'aria-label', 'Three-dimensional view of the Open Studios office. Open the Virtual office menu with the Menu button or the M key. Pinch to zoom. Once zoomed in, drag with one finger or use the arrow keys to pan.' );
   canvas.tabIndex = -1;
 }
 
@@ -104,22 +103,22 @@ function onOfficeClick( event ) {
     return;
   }
 
-  window.virtual_office.keyboardActivation = event.detail === 0;
+  window.virtual_office.keyboardActivation = event.detail == 0;
   const action = button.dataset.office;
   let opened = false;
 
-  if ( action === 'back' || action === 'post' ) {
-    if ( action === 'back' ) {
+  if ( action == 'back' || action == 'post' ) {
+    if ( action == 'back' ) {
       window.virtual_office.handleExitSign();
       syncOfficeNav();
     }
     return;
   }
 
-  if ( action === 'blog' ) {
+  if ( action == 'blog' ) {
     opened = window.virtual_office.activateBlog();
   }
-  else if ( action === 'portraits' ) {
+  else if ( action == 'portraits' ) {
     opened = window.virtual_office.activatePortraits();
   }
   else {
@@ -147,7 +146,7 @@ function findScreenHost( slug ) {
     } );
   }
 
-  return hosts.find( ( host ) => host.webGLScreen.settings && host.webGLScreen.settings.slug === slug ) || null;
+  return hosts.find( ( host ) => host.webGLScreen.settings && host.webGLScreen.settings.slug == slug ) || null;
 }
 
 function syncOfficeNav() {
@@ -161,24 +160,27 @@ function syncOfficeNav() {
   const selected = window.virtual_office.selected;
   const moving = !!window.virtual_office.moving;
   const current = currentTarget( selected );
-  const inBlog = current === 'blog';
+  const inBlog = current == 'blog';
 
   nav.querySelectorAll( 'button[data-office]' ).forEach( ( button ) => {
     const action = button.dataset.office;
 
-    if ( action === 'back' ) {
+    if ( action == 'back' ) {
       button.hidden = !selected;
       button.disabled = moving;
+      if ( button.parentElement ) {
+        button.parentElement.hidden = !selected;
+      }
       return;
     }
 
-    if ( action === 'post' ) {
+    if ( action == 'post' ) {
       button.disabled = moving || !inBlog;
       return;
     }
 
     button.disabled = moving || !!selected;
-    if ( action === current ) {
+    if ( action == current ) {
       button.setAttribute( 'aria-current', 'true' );
     }
     else {
@@ -201,11 +203,11 @@ function currentTarget( selected ) {
     return selected.webGLScreen.settings.slug;
   }
 
-  if ( selected.name === 'corkBoard' || selected.name === 'polaroid' ) {
+  if ( selected.name == 'corkBoard' || selected.name == 'polaroid' ) {
     return 'blog';
   }
 
-  if ( selected.name === 'portraits' ) {
+  if ( selected.name == 'portraits' ) {
     return 'portraits';
   }
 
@@ -227,7 +229,7 @@ function ensurePostButtons() {
     button.dataset.office = 'post';
     button.textContent = String( polaroid.userData.title || 'Blog post' ).replace( /\s*\n\s*/g, ' ' );
     button.addEventListener( 'click', ( event ) => {
-      window.virtual_office.keyboardActivation = event.detail === 0;
+      window.virtual_office.keyboardActivation = event.detail == 0;
       if ( window.virtual_office.activatePolaroid( polaroid ) ) {
         syncOfficeNav();
       }
@@ -238,7 +240,7 @@ function ensurePostButtons() {
 }
 
 function onOfficeViewChanged() {
-  if ( window.virtual_office.moving && ( panX !== 0 || panY !== 0 ) ) {
+  if ( window.virtual_office.moving && ( panX != 0 || panY != 0 ) ) {
     panX = 0;
     panY = 0;
     applySceneFrame();
@@ -262,7 +264,7 @@ function onWheel( event ) {
 }
 
 function onViewportPointerDown( event ) {
-  if ( sceneZoom <= 1 || controlsEnabled() || event.button !== 0 ) {
+  if ( event.pointerType == 'touch' || sceneZoom <= 1 || controlsEnabled() || event.button != 0 ) {
     return;
   }
 
@@ -277,7 +279,7 @@ function onViewportPointerDown( event ) {
   };
 
   window.setTimeout( () => {
-    if ( !drag || drag.moved || drag.id !== event.pointerId ) {
+    if ( !drag || drag.moved || drag.id != event.pointerId ) {
       return;
     }
 
@@ -286,7 +288,7 @@ function onViewportPointerDown( event ) {
 }
 
 function onViewportPointerMove( event ) {
-  if ( !drag || event.pointerId !== drag.id ) {
+  if ( !drag || event.pointerId != drag.id ) {
     return;
   }
 
@@ -308,7 +310,7 @@ function onViewportPointerMove( event ) {
 }
 
 function onViewportPointerUp( event ) {
-  if ( !drag || event.pointerId !== drag.id ) {
+  if ( !drag || event.pointerId != drag.id ) {
     return;
   }
 
@@ -322,16 +324,15 @@ function onViewportPointerUp( event ) {
     return;
   }
 
-  // pointerup runs before the office's mouseup and touchend listeners, which
-  // clear the press. Restore it on the next frame so a tap still selects.
+  // mouseup clears the press before the office reads it. Put it back for one frame.
   window.requestAnimationFrame( () => {
-    if ( token !== dragToken ) {
+    if ( token != dragToken ) {
       return;
     }
 
     holdSceneClick( true, pointerType );
     window.requestAnimationFrame( () => {
-      if ( token === dragToken ) {
+      if ( token == dragToken ) {
         holdSceneClick( false );
       }
     } );
@@ -351,7 +352,7 @@ function holdSceneClick( active, pointerType ) {
     return;
   }
 
-  if ( pointerType === 'touch' ) {
+  if ( pointerType == 'touch' ) {
     state.touching = true;
   }
   else {
@@ -366,7 +367,7 @@ function onMenuFocusOut( event ) {
     return;
   }
 
-  if ( toggle && event.relatedTarget === toggle ) {
+  if ( toggle && event.relatedTarget == toggle ) {
     return;
   }
 
@@ -440,12 +441,12 @@ function onKeyDown( event ) {
 
   const target = event.target;
   const tag = target && target.tagName;
-  const typing = tag === 'TEXTAREA' || ( target && target.isContentEditable ) || ( tag === 'INPUT' && target.type !== 'range' );
+  const typing = tag == 'TEXTAREA' || ( target && target.isContentEditable ) || ( tag == 'INPUT' && target.type != 'range' );
   if ( typing ) {
     return;
   }
 
-  if ( event.key === 'm' || event.key === 'M' ) {
+  if ( event.key == 'm' || event.key == 'M' ) {
     event.preventDefault();
     if ( officeMenuIsOpen() ) {
       closeOfficeMenu();
@@ -456,29 +457,29 @@ function onKeyDown( event ) {
     return;
   }
 
-  if ( event.key === 'Escape' && officeMenuIsOpen() ) {
+  if ( event.key == 'Escape' && officeMenuIsOpen() ) {
     event.preventDefault();
     closeOfficeMenu();
     return;
   }
 
-  if ( tag === 'INPUT' ) {
+  if ( tag == 'INPUT' ) {
     return;
   }
 
-  if ( event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowUp' || event.key === 'ArrowDown' ) {
+  if ( event.key == 'ArrowLeft' || event.key == 'ArrowRight' || event.key == 'ArrowUp' || event.key == 'ArrowDown' ) {
     if ( sceneZoom <= 1 || officeMenuIsOpen() ) {
       return;
     }
 
     event.preventDefault();
-    if ( event.key === 'ArrowLeft' ) {
+    if ( event.key == 'ArrowLeft' ) {
       panX -= PAN_KEY_STEP;
     }
-    else if ( event.key === 'ArrowRight' ) {
+    else if ( event.key == 'ArrowRight' ) {
       panX += PAN_KEY_STEP;
     }
-    else if ( event.key === 'ArrowUp' ) {
+    else if ( event.key == 'ArrowUp' ) {
       panY += PAN_KEY_STEP;
     }
     else {
@@ -490,47 +491,142 @@ function onKeyDown( event ) {
     return;
   }
 
-  if ( event.key === '+' || event.key === '=' ) {
+  if ( event.key == '+' || event.key == '=' ) {
     event.preventDefault();
     setSceneZoom( sceneZoom * 1.2 );
   }
-  else if ( event.key === '-' || event.key === '_' ) {
+  else if ( event.key == '-' || event.key == '_' ) {
     event.preventDefault();
     setSceneZoom( sceneZoom / 1.2 );
   }
 }
 
 function onTouchStart( event ) {
-  if ( event.touches.length === 2 ) {
-    drag = null;
-    pinchDistance = touchDistance( event.touches );
-    pinchCenter = touchCenter( event.touches );
-  }
-}
-
-function onTouchMove( event ) {
-  if ( event.touches.length !== 2 || !pinchDistance || !pinchCenter ) {
-    return;
-  }
-
   if ( controlsEnabled() ) {
     return;
   }
 
+  if ( event.touches.length >= 2 ) {
+    drag = null;
+    touchPan = null;
+    holdSceneClick( false );
+    pinchDistance = touchDistance( event.touches );
+    pinchCenter = touchCenter( event.touches );
+    event.preventDefault();
+    return;
+  }
+
+  if ( event.touches.length != 1 || sceneZoom <= 1 ) {
+    return;
+  }
+
+  dragToken += 1;
+  touchPan = {
+    x: event.touches[ 0 ].clientX,
+    y: event.touches[ 0 ].clientY,
+    token: dragToken,
+    moved: false,
+    dragged: false
+  };
+
+  window.setTimeout( () => {
+    if ( !touchPan || touchPan.moved || touchPan.token != dragToken ) {
+      return;
+    }
+
+    holdSceneClick( false );
+  }, 0 );
+}
+
+function onTouchMove( event ) {
+  if ( controlsEnabled() ) {
+    return;
+  }
+
+  if ( event.touches.length >= 2 && pinchDistance && pinchCenter ) {
+    event.preventDefault();
+    const next = touchDistance( event.touches );
+    const center = touchCenter( event.touches );
+    const dx = center.x - pinchCenter.x;
+    const dy = center.y - pinchCenter.y;
+    pinchCenter = center;
+    setSceneZoom( sceneZoom * ( next / pinchDistance ) );
+    pinchDistance = next;
+    panByPixels( dx, dy );
+    return;
+  }
+
+  if ( event.touches.length != 1 || !touchPan || sceneZoom <= 1 ) {
+    return;
+  }
+
+  const dx = event.touches[ 0 ].clientX - touchPan.x;
+  const dy = event.touches[ 0 ].clientY - touchPan.y;
+  if ( !touchPan.moved ) {
+    if ( Math.hypot( dx, dy ) < 8 ) {
+      return;
+    }
+
+    touchPan.moved = true;
+    holdSceneClick( false );
+  }
+
   event.preventDefault();
-  const next = touchDistance( event.touches );
-  const center = touchCenter( event.touches );
-  panByPixels( center.x - pinchCenter.x, center.y - pinchCenter.y );
-  pinchCenter = center;
-  setSceneZoom( sceneZoom * ( next / pinchDistance ) );
-  pinchDistance = next;
+  touchPan.dragged = true;
+  panByPixels( dx, dy );
+  touchPan.x = event.touches[ 0 ].clientX;
+  touchPan.y = event.touches[ 0 ].clientY;
 }
 
 function onTouchEnd( event ) {
-  if ( event.touches.length < 2 ) {
-    pinchDistance = 0;
-    pinchCenter = null;
+  if ( event.touches.length >= 2 ) {
+    pinchDistance = touchDistance( event.touches );
+    pinchCenter = touchCenter( event.touches );
+    return;
   }
+
+  pinchDistance = 0;
+  pinchCenter = null;
+
+  if ( event.touches.length == 1 && sceneZoom > 1 ) {
+    dragToken += 1;
+    touchPan = {
+      x: event.touches[ 0 ].clientX,
+      y: event.touches[ 0 ].clientY,
+      token: dragToken,
+      moved: true,
+      dragged: false
+    };
+    return;
+  }
+
+  if ( !touchPan ) {
+    return;
+  }
+
+  const moved = touchPan.moved;
+  const dragged = touchPan.dragged;
+  const token = touchPan.token;
+  touchPan = null;
+  if ( moved ) {
+    if ( dragged ) {
+      announcePan();
+    }
+    return;
+  }
+
+  window.requestAnimationFrame( () => {
+    if ( token != dragToken ) {
+      return;
+    }
+
+    holdSceneClick( true, 'touch' );
+    window.requestAnimationFrame( () => {
+      if ( token == dragToken ) {
+        holdSceneClick( false );
+      }
+    } );
+  } );
 }
 
 function touchDistance( touches ) {
@@ -593,7 +689,11 @@ function applySceneFrame() {
   const offsetX = ( ( fullWidth - width ) / 2 ) * ( 1 + panX );
   const offsetY = ( ( fullHeight - height ) / 2 ) * ( 1 - panY );
   camera.setViewOffset( fullWidth, fullHeight, offsetX, offsetY, width, height );
-  setPanCursor( false );
+
+  // Don't put the grab cursor back while a drag is in progress.
+  if ( !( drag && drag.moved ) && !( touchPan && touchPan.moved ) ) {
+    setPanCursor( false );
+  }
 }
 
 function setPanCursor( grabbing ) {

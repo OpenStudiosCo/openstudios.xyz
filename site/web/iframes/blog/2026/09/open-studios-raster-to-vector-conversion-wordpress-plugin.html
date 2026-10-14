@@ -1,6 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Introducing the Open Studios Raster to Vector Conversion Tool for WordPress</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><meta name="description" content="We are pleased to announce the launch of our first ever WordPress plugin! The Open Studios Raster to Vector Conversion Tool for WordPress lets you take any bitmap image files (jpg, png) and convert them to an SVG vector file with just one click. The result can then be saved to your WordPress media library."><link rel="canonical" href="https://openstudios.xyz/blog/2026/09/open-studios-raster-to-vector-conversion-wordpress-plugin.html"><meta property="og:title" content="Introducing the Open Studios Raster to Vector Conversion Tool for WordPress"><meta property="og:description" content="We are pleased to announce the launch of our first ever WordPress plugin! The Open Studios Raster to Vector Conversion Tool for WordPress lets you take any bitmap image files (jpg, png) and convert them to an SVG vector file with just one click. The result can then be saved to your WordPress media library."><meta property="og:type" content="article"><meta property="og:url" content="https://openstudios.xyz/blog/2026/09/open-studios-raster-to-vector-conversion-wordpress-plugin.html"><meta property="og:image" content="https://openstudios.xyz/assets/blog/2026/09/image-1024x640.png"><meta name="twitter:title" content="Introducing the Open Studios Raster to Vector Conversion Tool for WordPress"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description" content="We are pleased to announce the launch of our first ever WordPress plugin! The Open Studios Raster to Vector Conversion Tool for WordPress lets you take any bitmap image files (jpg, png) and convert them to an SVG vector file with just one click. The result can then be saved to your WordPress media library."><meta name="twitter:image" content="https://openstudios.xyz/assets/blog/2026/09/image-1024x640.png"></head><body><script>/**
- * Keep the HTML fallback in the accessibility tree.
- * display:none removes it for screen readers and keyboard users.
+ * HTML fallback
+ *
+ * Hide the page without display:none so screen readers can still reach it.
  */
 function concealFallbackContent(pageWrapper) {
     const wrapper = pageWrapper || document.getElementById('page-wrapper');
@@ -17,10 +18,7 @@ function concealFallbackContent(pageWrapper) {
 
 window.concealFallbackContent = concealFallbackContent;
 
-/**
- * CSS text-transform changes the name Chrome exposes, so the script face
- * can stay lowercase while the heading is announced as written.
- */
+// text-transform changes the name screen readers get. Keep the written heading.
 function preserveHeadingNames(root) {
     const scope = root || document;
     scope.querySelectorAll('h1').forEach((heading) => {

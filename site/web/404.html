@@ -122,8 +122,9 @@ body {
         top: calc(2rem - 5px);
     }
 }</style></head><body><script>/**
- * Keep the HTML fallback in the accessibility tree.
- * display:none removes it for screen readers and keyboard users.
+ * HTML fallback
+ *
+ * Hide the page without display:none so screen readers can still reach it.
  */
 function concealFallbackContent(pageWrapper) {
     const wrapper = pageWrapper || document.getElementById('page-wrapper');
@@ -140,10 +141,7 @@ function concealFallbackContent(pageWrapper) {
 
 window.concealFallbackContent = concealFallbackContent;
 
-/**
- * CSS text-transform changes the name Chrome exposes, so the script face
- * can stay lowercase while the heading is announced as written.
- */
+// text-transform changes the name screen readers get. Keep the written heading.
 function preserveHeadingNames(root) {
     const scope = root || document;
     scope.querySelectorAll('h1').forEach((heading) => {

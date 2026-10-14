@@ -188,8 +188,8 @@ function enterTheOffice ( ) {
       loader_symbols.style.display = 'none';
 
     let pageWrapper = document.getElementById('page-wrapper');
-    if ( window.concealFallbackContent ) {
-      window.concealFallbackContent( pageWrapper );
+    if (window.concealFallbackContent) {
+      window.concealFallbackContent(pageWrapper);
     }
     setupOfficeAccess();
   });

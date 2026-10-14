@@ -209,8 +209,8 @@ function downTheRabbitHole() {
     // Hide the pageWrapper on completion so the iframed pages don't clash.
     setTimeout( () => {
         window.matrix_scene.complete = true;
-        if ( window.concealFallbackContent ) {
-          window.concealFallbackContent( pageWrapper );
+        if (window.concealFallbackContent) {
+            window.concealFallbackContent(pageWrapper);
         }
 
         // Animate the camera resetting from any other position.

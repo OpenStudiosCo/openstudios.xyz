@@ -360,8 +360,7 @@ async function init() {
   materials = {};
 
   window.virtual_office.controls = new OrbitControls(window.virtual_office.camera, window.virtual_office.renderers.webgl.domElement);
-  // Visitors zoom and pan with a view offset. OrbitControls stay debug-only
-  // so they don't replace the scripted camera moves.
+  // Zoom and pan use a view offset. OrbitControls stay debug-only.
   window.virtual_office.controls.enabled = window.virtual_office.debug;
   window.virtual_office.controls.target.set(0, 10, 0);
   window.virtual_office.controls.update();
@@ -382,7 +381,7 @@ async function init() {
 
   document.getElementById('exitSign').addEventListener('click', (event) => {
     event.preventDefault();
-    window.virtual_office.keyboardActivation = event.detail === 0;
+    window.virtual_office.keyboardActivation = event.detail == 0;
     handleExitSign();
   });
 

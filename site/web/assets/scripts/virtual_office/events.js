@@ -356,7 +356,7 @@ export function activatePolaroid( polaroid ) {
   }
 
   const selectedName = window.virtual_office.selected.name;
-  if ( selectedName !== 'corkBoard' && selectedName !== 'polaroid' ) {
+  if ( selectedName != 'corkBoard' && selectedName != 'polaroid' ) {
     return false;
   }
 
@@ -446,7 +446,7 @@ function focusExitIfKeyboard() {
 
   window.virtual_office.keyboardActivation = false;
   const exitSign = document.getElementById( 'exitSign' );
-  if ( exitSign && exitSign.style.display === 'block' ) {
+  if ( exitSign && exitSign.style.display == 'block' ) {
     exitSign.focus();
     return;
   }
