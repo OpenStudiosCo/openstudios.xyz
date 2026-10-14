@@ -1,0 +1,41 @@
+button#office-menu-toggle.office-menu-toggle(type='button' hidden aria-expanded='false' aria-controls='office-nav' aria-keyshortcuts='M')
+    span.office-menu-toggle-label Menu
+    kbd M
+nav#office-nav.office-nav(hidden aria-labelledby='office-nav-title' aria-describedby='office-nav-help')
+    h2#office-nav-title.office-nav-title Virtual office
+    p#office-nav-help.visually-hidden Move through the 3D office. Zoom runs from 100 to 250 percent with the slider, the plus and minus keys, the mouse wheel, or a pinch. Arrow keys or a one-finger drag pan that zoomed view. A move to another place recenters it. Ctrl plus the mouse wheel still uses the browser zoom.
+    ul
+        li
+            button(type='button' data-office='worlds') Worlds
+        li
+            button(type='button' data-office='the_studio') The Studio
+        li
+            button(type='button' data-office='what_we_do') What We Do
+        li
+            button(type='button' data-office='about_us') About Us
+        li
+            button(type='button' data-office='support_us') Support Us
+        li
+            button(type='button' data-office='blog') Blog
+        li
+            button(type='button' data-office='portraits') Pet portraits
+        li
+            button#office-back(type='button' data-office='back' hidden) Back
+        li.office-zoom
+            label(for='office-zoom') Scene zoom
+            input#office-zoom(type='range' min='100' max='250' step='1' value='100' aria-valuemin='100' aria-valuemax='250' aria-valuenow='100' aria-valuetext='100 percent')
+    div#office-posts-wrap(hidden)
+        h3 Blog posts
+        ul#office-posts
+    ul.office-keys
+        li
+            kbd +
+            kbd -
+            span Zoom
+        li
+            kbd Arrows
+            span Pan
+        li
+            kbd Esc
+            span Close menu
+    p#office-status.visually-hidden(aria-live='polite')

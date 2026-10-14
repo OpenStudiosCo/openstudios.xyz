@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import { setupOfficeAccess } from 'virtual_office/a11y.js';
+
 export function startTweening() {
   setTimeout(() => {
     let loadingSign = document.getElementById('loadingSign');
@@ -38,6 +40,7 @@ export function startTweening() {
       }
 
       updateFlickering( { emissiveIntensity: 1 } );
+      setupOfficeAccess();
     }
     
   }, 250);
@@ -185,7 +188,10 @@ function enterTheOffice ( ) {
       loader_symbols.style.display = 'none';
 
     let pageWrapper = document.getElementById('page-wrapper');
-    pageWrapper.style.display = 'none';
+    if (window.concealFallbackContent) {
+      window.concealFallbackContent(pageWrapper);
+    }
+    setupOfficeAccess();
   });
 }
 
@@ -273,6 +279,7 @@ function moveCamera( ) {
     })
     .onComplete(() => {
       window.virtual_office.moving = false;
+      document.dispatchEvent( new CustomEvent( 'office-view-changed' ) );
     });
   ;
 }
@@ -285,6 +292,7 @@ function rotateCamera( ) {
   })
   .onComplete(() => {
     window.virtual_office.moving = false;
+    document.dispatchEvent( new CustomEvent( 'office-view-changed' ) );
   });
 }
 
@@ -301,6 +309,7 @@ function resetCameraPosition( cameraDefaultPosition ) {
   })
   .onComplete(() => {
     window.virtual_office.moving = false;
+    document.dispatchEvent( new CustomEvent( 'office-view-changed' ) );
     if ( firstTime ) {
       firstTime = false;
       if (window.matrix_scene.type == 'button') {

@@ -1,4 +1,40 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Studio Roundup for June 2023 | Open Studios | Perth, Western Australia</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><meta name="description" content="We are Open Studios, a digital production studio in Perth, Western Australia."><link rel="canonical" href="https://openstudios.xyz/blog/2023/06/studio-roundup-june-2023.html"><meta property="og:title" content="Studio Roundup for June 2023 | Open Studios | Perth, Western Australia"><meta property="og:description" content="We are Open Studios, a digital production studio in Perth, Western Australia."><meta property="og:type" content="article"><meta property="og:url" content="https://openstudios.xyz/blog/2023/06/studio-roundup-june-2023.html"><meta property="og:image" content="https://openstudios.xyz/assets/images/virtual_office.jpg"><meta name="twitter:title" content="Studio Roundup for June 2023 | Open Studios | Perth, Western Australia"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description" content="We are Open Studios, a digital production studio in Perth, Western Australia."><meta name="twitter:image" content="https://openstudios.xyz/assets/images/virtual_office.jpg"></head><body><div id="page-wrapper"><a class="skip-link" href="#main">Skip to content</a><div class="header_bg"></div><header class="header"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Open Studios"></a></div></header><main class="content_row" id="main"><h1>June 2023</h1><div class="content" style="display: inherit;"><p class="blog-byline"><strong>By Paul Brzeski</strong></p><h3>Analytics</h3>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Studio Roundup for June 2023 | Open Studios | Perth, Western Australia</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="stylesheet" href="/assets/css/1999.css"><meta name="description" content="We are Open Studios, a digital production studio in Perth, Western Australia."><link rel="canonical" href="https://openstudios.xyz/blog/2023/06/studio-roundup-june-2023.html"><meta property="og:title" content="Studio Roundup for June 2023 | Open Studios | Perth, Western Australia"><meta property="og:description" content="We are Open Studios, a digital production studio in Perth, Western Australia."><meta property="og:type" content="article"><meta property="og:url" content="https://openstudios.xyz/blog/2023/06/studio-roundup-june-2023.html"><meta property="og:image" content="https://openstudios.xyz/assets/images/virtual_office.jpg"><meta name="twitter:title" content="Studio Roundup for June 2023 | Open Studios | Perth, Western Australia"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description" content="We are Open Studios, a digital production studio in Perth, Western Australia."><meta name="twitter:image" content="https://openstudios.xyz/assets/images/virtual_office.jpg"></head><body><script>/**
+ * HTML fallback
+ *
+ * Hide the page without display:none so screen readers can still reach it.
+ */
+function concealFallbackContent(pageWrapper) {
+    const wrapper = pageWrapper || document.getElementById('page-wrapper');
+    if (!wrapper) {
+        return;
+    }
+
+    wrapper.classList.add('is-concealed');
+    wrapper.style.removeProperty('display');
+    wrapper.style.removeProperty('opacity');
+    wrapper.style.removeProperty('transition');
+    wrapper.style.pointerEvents = 'none';
+}
+
+window.concealFallbackContent = concealFallbackContent;
+
+// text-transform changes the name screen readers get. Keep the written heading.
+function preserveHeadingNames(root) {
+    const scope = root || document;
+    scope.querySelectorAll('h1').forEach((heading) => {
+        const text = heading.textContent.replace(/\s+/g, ' ').trim();
+        if (!text || heading.hasAttribute('aria-label')) {
+            return;
+        }
+
+        heading.setAttribute('aria-label', text);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    preserveHeadingNames(document);
+});
+</script><div id="page-wrapper"><a class="skip-link" href="#main">Skip to content</a><div class="header_bg"></div><header class="header"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Open Studios"></a></div></header><main class="content_row" id="main"><h1>June 2023</h1><div class="content" style="display: inherit;"><p class="blog-byline"><strong>By Paul Brzeski</strong></p><h3>Analytics</h3>
 <p>We had plenty of notice about the end of data processing for Google Analytics v3, but still found it annoying being forced to make changes. We’re a very small business and any web developer time comes out of our free time — or by cancelling something important.</p>
 <p>You have to wonder why Google didn’t just do a seamless transition within their platform. The approach Google took with the GA4 upgrade, forcing everyone to update their sites and remove the old embed code, seemed to just treat the majority of their Analytics customers like we are unpaid Google employees who serve at their beck and call.</p>
 <p>All told we’ve not been happy with Google Analytics for years. It’s sluggish performance, visitor stats that don’t match server stats and lack of ownership of the data are some examples as to why. When we went to look for an alternative, we found that there’s actually a number of competitors and some have very interesting unique features.</p>

@@ -10,6 +10,8 @@ html(lang='en')
 
     body
         - var isIframe = true
+        script
+            include ../scripts/a11y-fallback.js
         include ./1999_layout.pug
         script.
                 var _paq = window._paq = window._paq || [];
