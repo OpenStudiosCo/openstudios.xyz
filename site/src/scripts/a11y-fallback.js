@@ -16,3 +16,23 @@ function concealFallbackContent(pageWrapper) {
 }
 
 window.concealFallbackContent = concealFallbackContent;
+
+/**
+ * CSS text-transform changes the name Chrome exposes, so the script face
+ * can stay lowercase while the heading is announced as written.
+ */
+function preserveHeadingNames(root) {
+    const scope = root || document;
+    scope.querySelectorAll('h1').forEach((heading) => {
+        const text = heading.textContent.replace(/\s+/g, ' ').trim();
+        if (!text || heading.hasAttribute('aria-label')) {
+            return;
+        }
+
+        heading.setAttribute('aria-label', text);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    preserveHeadingNames(document);
+});

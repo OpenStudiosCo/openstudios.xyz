@@ -419,6 +419,26 @@ function notifyOfficeView() {
   document.dispatchEvent( new CustomEvent( 'office-view-changed' ) );
 }
 
+function setFallbackHidden( hidden ) {
+  const wrapper = document.getElementById( 'page-wrapper' );
+  if ( !wrapper ) {
+    return;
+  }
+
+  if ( hidden ) {
+    if ( wrapper.contains( document.activeElement ) ) {
+      const exitSign = document.getElementById( 'exitSign' );
+      if ( exitSign ) {
+        exitSign.focus();
+      }
+    }
+    wrapper.setAttribute( 'aria-hidden', 'true' );
+  }
+  else {
+    wrapper.removeAttribute( 'aria-hidden' );
+  }
+}
+
 function focusExitIfKeyboard() {
   if ( !window.virtual_office.keyboardActivation ) {
     return;
@@ -443,6 +463,7 @@ function stretchSelectedScreen() {
   document.getElementById( 'pageOverlay' ).style.display = 'block';
 
   document.getElementById( 'exitSign' ).style.display = 'block';
+  setFallbackHidden( true );
   focusExitIfKeyboard();
   notifyOfficeView();
 
@@ -458,6 +479,7 @@ function shrinkScreenBack() {
   document.getElementById( 'pageOverlay' ).contentWindow.scrollTo( 0, 0 );
 
   document.getElementById( 'pageOverlay' ).style.display = 'none';
+  setFallbackHidden( false );
 
   // Run this in case viewport was changed while we were in full screen mode.
   handleViewportChange();
