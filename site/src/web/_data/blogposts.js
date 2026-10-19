@@ -47,11 +47,7 @@ async function requestPosts(page = 1) {
     };
   } catch (err) {
     console.error("API not responding, no data returned", err);
-    return {
-      total: 0,
-      pages: 0,
-      data: [],
-    };
+    throw err;
   }
 }
 
@@ -68,7 +64,9 @@ async function getAllPosts() {
 
   if (cache.isCacheValid("24h")) {
     console.log("Using cached blogposts");
-    return cache.getCachedValue();
+    const cached = await cache.getCachedValue();
+    assertPosts(cached);
+    return cached;
   }
 
   // make first request and marge results with array
@@ -96,9 +94,17 @@ async function getAllPosts() {
     });
   }
 
-  // return data
+  // An empty result used to let the build succeed and leave previously
+  // generated article HTML in place. Layout changes then never reached them.
+  assertPosts(apiData);
   await cache.save(apiData, "json");
   return apiData;
+}
+
+function assertPosts(posts) {
+  if (!Array.isArray(posts) || posts.length === 0) {
+    throw new Error("WordPress returned no blog posts. Refusing to build article pages without them.");
+  }
 }
 
 /**
