@@ -297,38 +297,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-<pre class="wp-block-code language-yaml" data-language="html"><code class="language-html">objects:
-  # OMITTED: other overworld structures.
-  - name: Lambda City
-    model: platform
-    position:
-      x: -35000
-      y: 1500
-      z: -65000
-    rotation:
-      x: 0
-      y: -12.56
-      z: 0
-    hangars:
-      - name: Hangar 1
-        position:
-          x: 0
-          y: 6100
-          z: -8620
-        rotation:
-          x: 0
-          y: 0
-          z: 0
-      - name: Hangar 2
-        position:
-          x: 0
-          y: 6100
-          z: 8620
-        rotation:
-          x: 0
-          y: 3.14159
-          z: 0
-  # OMITTED: remaining overworld structures.</code></pre>
+<pre class="wp-block-code language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">objects</span><span class="token punctuation">:</span>
+  <span class="token comment"># OMITTED: other overworld structures.</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Lambda City
+    <span class="token key atrule">model</span><span class="token punctuation">:</span> platform
+    <span class="token key atrule">position</span><span class="token punctuation">:</span>
+      <span class="token key atrule">x</span><span class="token punctuation">:</span> <span class="token number">-35000</span>
+      <span class="token key atrule">y</span><span class="token punctuation">:</span> <span class="token number">1500</span>
+      <span class="token key atrule">z</span><span class="token punctuation">:</span> <span class="token number">-65000</span>
+    <span class="token key atrule">rotation</span><span class="token punctuation">:</span>
+      <span class="token key atrule">x</span><span class="token punctuation">:</span> <span class="token number">0</span>
+      <span class="token key atrule">y</span><span class="token punctuation">:</span> <span class="token number">-12.56</span>
+      <span class="token key atrule">z</span><span class="token punctuation">:</span> <span class="token number">0</span>
+    <span class="token key atrule">hangars</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Hangar 1
+        <span class="token key atrule">position</span><span class="token punctuation">:</span>
+          <span class="token key atrule">x</span><span class="token punctuation">:</span> <span class="token number">0</span>
+          <span class="token key atrule">y</span><span class="token punctuation">:</span> <span class="token number">6100</span>
+          <span class="token key atrule">z</span><span class="token punctuation">:</span> <span class="token number">-8620</span>
+        <span class="token key atrule">rotation</span><span class="token punctuation">:</span>
+          <span class="token key atrule">x</span><span class="token punctuation">:</span> <span class="token number">0</span>
+          <span class="token key atrule">y</span><span class="token punctuation">:</span> <span class="token number">0</span>
+          <span class="token key atrule">z</span><span class="token punctuation">:</span> <span class="token number">0</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Hangar 2
+        <span class="token key atrule">position</span><span class="token punctuation">:</span>
+          <span class="token key atrule">x</span><span class="token punctuation">:</span> <span class="token number">0</span>
+          <span class="token key atrule">y</span><span class="token punctuation">:</span> <span class="token number">6100</span>
+          <span class="token key atrule">z</span><span class="token punctuation">:</span> <span class="token number">8620</span>
+        <span class="token key atrule">rotation</span><span class="token punctuation">:</span>
+          <span class="token key atrule">x</span><span class="token punctuation">:</span> <span class="token number">0</span>
+          <span class="token key atrule">y</span><span class="token punctuation">:</span> <span class="token number">3.14159</span>
+          <span class="token key atrule">z</span><span class="token punctuation">:</span> <span class="token number">0</span>
+  <span class="token comment"># OMITTED: remaining overworld structures.</span></code></pre>
 
 
 
@@ -340,65 +340,65 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-<pre class="wp-block-code language-ts" data-language="html"><code class="language-html">    getDesign( designIndex = 0 ) {
-        const designs = [
-          {
-            name: 'Bay with quarters',
-            size: 5,
-            components: [
-              {
-                  name: 'Main Bay',
-                  width: 10,
-                  height: 5,
-                  depth: 10,
-                  position: {
-                      x: 0,
-                      y: 0,
-                      z: 0
-                  },
-                  rotation: {
-                      x: 0,
-                      y: 0,
-                      z: 0
-                  }
-              },
-              {
-                  name: 'Quarters',
-                  width: 5,
-                  height: 2.5,
-                  depth: 5,
-                  position: {
-                      x: -8.375,
-                      y: -1.25,
-                      z: -2.5
-                  },
-                  rotation: {
-                      x: 0,
-                      y: 0,
-                      z: 0
-                  }
-              },
-              {
-                name: 'Corridor',
-                width: 2.5,
-                height: 2.55,
-                depth: 1.25,
-                position: {
-                    x: -5,
-                    y: -1.225,
-                    z: -1.25
-                },
-                rotation: {
-                    x: 0,
-                    y: 0, // 90 degrees or half pi
-                    z: 0
-                }
-              },
-            ]
-          }
-        ];
-        return designs[designIndex];
-    }</code></pre>
+<pre class="wp-block-code language-ts" data-language="ts"><code class="language-ts">    <span class="token function">getDesign</span><span class="token punctuation">(</span> designIndex <span class="token operator">=</span> <span class="token number">0</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> designs <span class="token operator">=</span> <span class="token punctuation">[</span>
+          <span class="token punctuation">{</span>
+            name<span class="token operator">:</span> <span class="token string">'Bay with quarters'</span><span class="token punctuation">,</span>
+            size<span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+            components<span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                  name<span class="token operator">:</span> <span class="token string">'Main Bay'</span><span class="token punctuation">,</span>
+                  width<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+                  height<span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+                  depth<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+                  position<span class="token operator">:</span> <span class="token punctuation">{</span>
+                      x<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                      y<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                      z<span class="token operator">:</span> <span class="token number">0</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  rotation<span class="token operator">:</span> <span class="token punctuation">{</span>
+                      x<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                      y<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                      z<span class="token operator">:</span> <span class="token number">0</span>
+                  <span class="token punctuation">}</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                  name<span class="token operator">:</span> <span class="token string">'Quarters'</span><span class="token punctuation">,</span>
+                  width<span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+                  height<span class="token operator">:</span> <span class="token number">2.5</span><span class="token punctuation">,</span>
+                  depth<span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+                  position<span class="token operator">:</span> <span class="token punctuation">{</span>
+                      x<span class="token operator">:</span> <span class="token operator">-</span><span class="token number">8.375</span><span class="token punctuation">,</span>
+                      y<span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1.25</span><span class="token punctuation">,</span>
+                      z<span class="token operator">:</span> <span class="token operator">-</span><span class="token number">2.5</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  rotation<span class="token operator">:</span> <span class="token punctuation">{</span>
+                      x<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                      y<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                      z<span class="token operator">:</span> <span class="token number">0</span>
+                  <span class="token punctuation">}</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                name<span class="token operator">:</span> <span class="token string">'Corridor'</span><span class="token punctuation">,</span>
+                width<span class="token operator">:</span> <span class="token number">2.5</span><span class="token punctuation">,</span>
+                height<span class="token operator">:</span> <span class="token number">2.55</span><span class="token punctuation">,</span>
+                depth<span class="token operator">:</span> <span class="token number">1.25</span><span class="token punctuation">,</span>
+                position<span class="token operator">:</span> <span class="token punctuation">{</span>
+                    x<span class="token operator">:</span> <span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">,</span>
+                    y<span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1.225</span><span class="token punctuation">,</span>
+                    z<span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1.25</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                rotation<span class="token operator">:</span> <span class="token punctuation">{</span>
+                    x<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                    y<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token comment">// 90 degrees or half pi</span>
+                    z<span class="token operator">:</span> <span class="token number">0</span>
+                <span class="token punctuation">}</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> designs<span class="token punctuation">[</span>designIndex<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
 
 
 
@@ -601,23 +601,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-<pre class="wp-block-code language-yaml" data-language="html"><code class="language-html">actors:
-  # OMITTED: other actors.
-  - name: Player Two
-    model: person
-    class: player
-    hangar:
-      structure: Lambda City
-      hangarName: Hangar 2
-    position:
-      x: -65000
-      y: -35000
-      z: 1500
-    rotation:
-      x: 0
-      y: -12.56
-      z: 0
-  # OMITTED: remaining actors.</code></pre>
+<pre class="wp-block-code language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">actors</span><span class="token punctuation">:</span>
+  <span class="token comment"># OMITTED: other actors.</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Player Two
+    <span class="token key atrule">model</span><span class="token punctuation">:</span> person
+    <span class="token key atrule">class</span><span class="token punctuation">:</span> player
+    <span class="token key atrule">hangar</span><span class="token punctuation">:</span>
+      <span class="token key atrule">structure</span><span class="token punctuation">:</span> Lambda City
+      <span class="token key atrule">hangarName</span><span class="token punctuation">:</span> Hangar 2
+    <span class="token key atrule">position</span><span class="token punctuation">:</span>
+      <span class="token key atrule">x</span><span class="token punctuation">:</span> <span class="token number">-65000</span>
+      <span class="token key atrule">y</span><span class="token punctuation">:</span> <span class="token number">-35000</span>
+      <span class="token key atrule">z</span><span class="token punctuation">:</span> <span class="token number">1500</span>
+    <span class="token key atrule">rotation</span><span class="token punctuation">:</span>
+      <span class="token key atrule">x</span><span class="token punctuation">:</span> <span class="token number">0</span>
+      <span class="token key atrule">y</span><span class="token punctuation">:</span> <span class="token number">-12.56</span>
+      <span class="token key atrule">z</span><span class="token punctuation">:</span> <span class="token number">0</span>
+  <span class="token comment"># OMITTED: remaining actors.</span></code></pre>
 
 
 
@@ -649,39 +649,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-<pre class="wp-block-code language-ts" data-language="html"><code class="language-html">    public getComponentAABBs(): AABB[] {
-        const cos = Math.cos( this.rotation.y || 0 );
-        const sin = Math.sin( this.rotation.y || 0 );
+<pre class="wp-block-code language-ts" data-language="ts"><code class="language-ts">    <span class="token keyword">public</span> <span class="token function">getComponentAABBs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token constant">AABB</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> cos <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">cos</span><span class="token punctuation">(</span> <span class="token keyword">this</span><span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>y <span class="token operator">||</span> <span class="token number">0</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">const</span> sin <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">sin</span><span class="token punctuation">(</span> <span class="token keyword">this</span><span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>y <span class="token operator">||</span> <span class="token number">0</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        return this.design.components.map(component =&gt; {
-            const halfSize = {
-                x: component.width,
-                y: component.height,
-                z: component.depth
-            };
-            const localX = component.position.x * 2.5;
-            const localZ = component.position.z * 2.5;
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>design<span class="token punctuation">.</span>components<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>component <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+            <span class="token keyword">const</span> halfSize <span class="token operator">=</span> <span class="token punctuation">{</span>
+                x<span class="token operator">:</span> component<span class="token punctuation">.</span>width<span class="token punctuation">,</span>
+                y<span class="token operator">:</span> component<span class="token punctuation">.</span>height<span class="token punctuation">,</span>
+                z<span class="token operator">:</span> component<span class="token punctuation">.</span>depth
+            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> localX <span class="token operator">=</span> component<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">2.5</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> localZ <span class="token operator">=</span> component<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z <span class="token operator">*</span> <span class="token number">2.5</span><span class="token punctuation">;</span>
 
-            const worldPos = {
-                x: this.position.x + localX * cos + localZ * sin,
-                y: this.position.y + component.position.y * 2.5,
-                z: this.position.z - localX * sin + localZ * cos
-            };
+            <span class="token keyword">const</span> worldPos <span class="token operator">=</span> <span class="token punctuation">{</span>
+                x<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>position<span class="token punctuation">.</span>x <span class="token operator">+</span> localX <span class="token operator">*</span> cos <span class="token operator">+</span> localZ <span class="token operator">*</span> sin<span class="token punctuation">,</span>
+                y<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>position<span class="token punctuation">.</span>y <span class="token operator">+</span> component<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y <span class="token operator">*</span> <span class="token number">2.5</span><span class="token punctuation">,</span>
+                z<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>position<span class="token punctuation">.</span>z <span class="token operator">-</span> localX <span class="token operator">*</span> sin <span class="token operator">+</span> localZ <span class="token operator">*</span> cos
+            <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-            return {
-                min: {
-                    x: worldPos.x - halfSize.x,
-                    y: worldPos.y - halfSize.y,
-                    z: worldPos.z - halfSize.z
-                },
-                max: {
-                    x: worldPos.x + halfSize.x,
-                    y: worldPos.y + halfSize.y,
-                    z: worldPos.z + halfSize.z
-                }
-            };
-        });
-    }</code></pre>
+            <span class="token keyword">return</span> <span class="token punctuation">{</span>
+                min<span class="token operator">:</span> <span class="token punctuation">{</span>
+                    x<span class="token operator">:</span> worldPos<span class="token punctuation">.</span>x <span class="token operator">-</span> halfSize<span class="token punctuation">.</span>x<span class="token punctuation">,</span>
+                    y<span class="token operator">:</span> worldPos<span class="token punctuation">.</span>y <span class="token operator">-</span> halfSize<span class="token punctuation">.</span>y<span class="token punctuation">,</span>
+                    z<span class="token operator">:</span> worldPos<span class="token punctuation">.</span>z <span class="token operator">-</span> halfSize<span class="token punctuation">.</span>z
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                max<span class="token operator">:</span> <span class="token punctuation">{</span>
+                    x<span class="token operator">:</span> worldPos<span class="token punctuation">.</span>x <span class="token operator">+</span> halfSize<span class="token punctuation">.</span>x<span class="token punctuation">,</span>
+                    y<span class="token operator">:</span> worldPos<span class="token punctuation">.</span>y <span class="token operator">+</span> halfSize<span class="token punctuation">.</span>y<span class="token punctuation">,</span>
+                    z<span class="token operator">:</span> worldPos<span class="token punctuation">.</span>z <span class="token operator">+</span> halfSize<span class="token punctuation">.</span>z
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
 
 
 
@@ -693,52 +693,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-<pre class="wp-block-code language-ts" data-language="html"><code class="language-html">    checkHangarCollisions(actorInstance: any) {
-        // Get object's proposed AABB at next position
-        const actorAABB = actorInstance.object.getAABBNext();
+<pre class="wp-block-code language-ts" data-language="ts"><code class="language-ts">    <span class="token function">checkHangarCollisions</span><span class="token punctuation">(</span>actorInstance<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Get object's proposed AABB at next position</span>
+        <span class="token keyword">const</span> actorAABB <span class="token operator">=</span> actorInstance<span class="token punctuation">.</span>object<span class="token punctuation">.</span><span class="token function">getAABBNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // Ensure the user is still inside the hangar area.
-        let inside = false;
-        if (actorInstance.config.hangar) {
-            this.instance.objects.forEach((objectInstance, objectName) =&gt; {
-                if (objectName == actorInstance.config.hangar.structure) {
-                    if (objectInstance.hangars) {
-                        objectInstance.hangars.forEach((hangarInstance) =&gt; {
-                            if (hangarInstance.config.name == actorInstance.config.hangar.hangarName) {
+        <span class="token comment">// Ensure the user is still inside the hangar area.</span>
+        <span class="token keyword">let</span> inside <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>actorInstance<span class="token punctuation">.</span>config<span class="token punctuation">.</span>hangar<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>instance<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>objectInstance<span class="token punctuation">,</span> objectName<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>objectName <span class="token operator">==</span> actorInstance<span class="token punctuation">.</span>config<span class="token punctuation">.</span>hangar<span class="token punctuation">.</span>structure<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>objectInstance<span class="token punctuation">.</span>hangars<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        objectInstance<span class="token punctuation">.</span>hangars<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>hangarInstance<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+                            <span class="token keyword">if</span> <span class="token punctuation">(</span>hangarInstance<span class="token punctuation">.</span>config<span class="token punctuation">.</span>name <span class="token operator">==</span> actorInstance<span class="token punctuation">.</span>config<span class="token punctuation">.</span>hangar<span class="token punctuation">.</span>hangarName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-                                for (const componentAABB of hangarInstance.object.aabb ) {
-                                    if (this.aabbContained(actorAABB, componentAABB)) {
-                                        inside = true;
-                                        break;
-                                    }
-                                }
+                                <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> componentAABB <span class="token keyword">of</span> hangarInstance<span class="token punctuation">.</span>object<span class="token punctuation">.</span>aabb <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">aabbContained</span><span class="token punctuation">(</span>actorAABB<span class="token punctuation">,</span> componentAABB<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                        inside <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                                        <span class="token keyword">break</span><span class="token punctuation">;</span>
+                                    <span class="token punctuation">}</span>
+                                <span class="token punctuation">}</span>
 
-                            }
-                        });
-                    }
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
 
-                }
-            });
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        }
-        if (inside) {
-            actorInstance.object.commitNextPosition();
-        }
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>inside<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            actorInstance<span class="token punctuation">.</span>object<span class="token punctuation">.</span><span class="token function">commitNextPosition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-    }
+    <span class="token punctuation">}</span>
 
-    // Checks if actor Bounding Box is within the component Bounding Box
-    aabbContained(actorBounds, componentBounds) {
-        let offset = 1.25;
-        return (
-            actorBounds.min.x &gt;= componentBounds.min.x - offset &amp;&amp;
-            actorBounds.max.x &lt;= componentBounds.max.x + offset &amp;&amp;
-            actorBounds.min.y &gt;= componentBounds.min.y - offset &amp;&amp;
-            actorBounds.max.y &lt;= componentBounds.max.y + offset &amp;&amp;
-            actorBounds.min.z &gt;= componentBounds.min.z - offset &amp;&amp;
-            actorBounds.max.z &lt;= componentBounds.max.z + offset
-        );
-    }</code></pre>
+    <span class="token comment">// Checks if actor Bounding Box is within the component Bounding Box</span>
+    <span class="token function">aabbContained</span><span class="token punctuation">(</span>actorBounds<span class="token punctuation">,</span> componentBounds<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> offset <span class="token operator">=</span> <span class="token number">1.25</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>
+            actorBounds<span class="token punctuation">.</span>min<span class="token punctuation">.</span>x <span class="token operator">&gt;=</span> componentBounds<span class="token punctuation">.</span>min<span class="token punctuation">.</span>x <span class="token operator">-</span> offset <span class="token operator">&amp;&amp;</span>
+            actorBounds<span class="token punctuation">.</span>max<span class="token punctuation">.</span>x <span class="token operator">&lt;=</span> componentBounds<span class="token punctuation">.</span>max<span class="token punctuation">.</span>x <span class="token operator">+</span> offset <span class="token operator">&amp;&amp;</span>
+            actorBounds<span class="token punctuation">.</span>min<span class="token punctuation">.</span>y <span class="token operator">&gt;=</span> componentBounds<span class="token punctuation">.</span>min<span class="token punctuation">.</span>y <span class="token operator">-</span> offset <span class="token operator">&amp;&amp;</span>
+            actorBounds<span class="token punctuation">.</span>max<span class="token punctuation">.</span>y <span class="token operator">&lt;=</span> componentBounds<span class="token punctuation">.</span>max<span class="token punctuation">.</span>y <span class="token operator">+</span> offset <span class="token operator">&amp;&amp;</span>
+            actorBounds<span class="token punctuation">.</span>min<span class="token punctuation">.</span>z <span class="token operator">&gt;=</span> componentBounds<span class="token punctuation">.</span>min<span class="token punctuation">.</span>z <span class="token operator">-</span> offset <span class="token operator">&amp;&amp;</span>
+            actorBounds<span class="token punctuation">.</span>max<span class="token punctuation">.</span>z <span class="token operator">&lt;=</span> componentBounds<span class="token punctuation">.</span>max<span class="token punctuation">.</span>z <span class="token operator">+</span> offset
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
 
 
 

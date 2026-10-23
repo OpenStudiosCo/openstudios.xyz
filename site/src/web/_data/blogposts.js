@@ -13,8 +13,7 @@ const path = require('path');
 const { exit } = require( "process" );
 
 const { JSDOM } = jsdom;
-loadLanguages(["php"]);
-loadLanguages(['glsl']);
+loadLanguages(['php', 'glsl', 'yaml', 'typescript']);
 
 // Config
 const ITEMS_PER_REQUEST = 10;
@@ -265,47 +264,24 @@ function highlightCode(content) {
 
       if (code) {
         
-        // get specified language from css-classname
-        let codeLanguage = "html";
-        const preClass = pre.className.toString();
-        
-        // set grammar that prism should use for highlighting
-        let prismGrammar = Prism.languages.html;
-
-        if ( preClass.indexOf('language-glsl') >= 0 ) {
-          codeLanguage = 'glsl';
-          prismGrammar = Prism.languages.glsl;
-        }
-
-        if ( preClass.indexOf('language-html') >= 0 ) {
-          codeLanguage = 'html';
-          prismGrammar = Prism.languages.html;
-        }
-
-        if ( preClass.indexOf('language-css') >= 0 ) {
-          codeLanguage = 'css';
-          prismGrammar = Prism.languages.css;
-        }
-
-        if ( preClass.indexOf('language-php') >= 0 ) {
-          codeLanguage = 'php';
-          prismGrammar = Prism.languages.php;
-        }
-
-        if ( preClass.indexOf('language-js') >= 0 ) {
-          codeLanguage = 'js';
-          prismGrammar = Prism.languages.javascript;
-        }
+        // WordPress can put the language on either the code or its wrapper.
+        const languageClass = [...code.classList, ...pre.classList].find(
+          className => className.startsWith('language-')
+        );
+        const codeLanguage = languageClass ? languageClass.slice(9).toLowerCase() : 'html';
+        const prismGrammar = Prism.languages[codeLanguage];
 
         // save the language for later use in CSS
         pre.dataset.language = codeLanguage;
 
         // highlight code
-        code.innerHTML = Prism.highlight(
-          code.textContent,
-          prismGrammar,
-          codeLanguage
-        );
+        if (prismGrammar) {
+          code.innerHTML = Prism.highlight(
+            code.textContent,
+            prismGrammar,
+            codeLanguage
+          );
+        }
 
         code.classList.add(`language-${codeLanguage}`);
       }
