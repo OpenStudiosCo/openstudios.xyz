@@ -1,0 +1,974 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>How to create procedurally generated game environments in Three.js | Open Studios</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/favicon/site.webmanifest" crossorigin="use-credentials"><link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#000000"><link rel="stylesheet" href="/assets/css/keen-slider.min.css"><script async src="/assets/js/keen-slider.js"></script><link rel="stylesheet" href="/assets/css/parvus.min.css"><script src="/assets/js/parvus.min.js"></script><link rel="preload" href="/assets/fonts/Stigmature.otf" as="font" type="font/otf" crossorigin="anonymous"><link rel="stylesheet" href="/assets/css/1999.css"><meta name="description" content="Langenium is a project whose goal is to eventually produce a web based MMORPG. One of the biggest bottlenecks of the genre is content creation and delivery, game installer sizes, which means that will also be an even bigger choking point for a web game with limited studio resources. That’s why I decided to use"><link rel="canonical" href="https://openstudios.xyz/blog/2026/10/how-to-create-procedurally-generated-game-environments-in-three-js.html"><meta property="og:title" content="How to create procedurally generated game environments in Three.js | Open Studios"><meta property="og:description" content="Langenium is a project whose goal is to eventually produce a web based MMORPG. One of the biggest bottlenecks of the genre is content creation and delivery, game installer sizes, which means that will also be an even bigger choking point for a web game with limited studio resources. That’s why I decided to use"><meta property="og:type" content="article"><meta property="og:url" content="https://openstudios.xyz/blog/2026/10/how-to-create-procedurally-generated-game-environments-in-three-js.html"><meta property="og:image" content="https://openstudios.xyz/assets/blog/2026/10/Screenshot_20261023_151923-1024x465.png"><meta name="twitter:title" content="How to create procedurally generated game environments in Three.js | Open Studios"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description" content="Langenium is a project whose goal is to eventually produce a web based MMORPG. One of the biggest bottlenecks of the genre is content creation and delivery, game installer sizes, which means that will also be an even bigger choking point for a web game with limited studio resources. That’s why I decided to use"><meta name="twitter:image" content="https://openstudios.xyz/assets/blog/2026/10/Screenshot_20261023_151923-1024x465.png"></head><body><script>/**
+ * HTML fallback
+ *
+ * Hide the page without display:none so screen readers can still reach it.
+ */
+function concealFallbackContent(pageWrapper) {
+    const wrapper = pageWrapper || document.getElementById('page-wrapper');
+    if (!wrapper) {
+        return;
+    }
+
+    wrapper.classList.add('is-concealed');
+    wrapper.style.removeProperty('display');
+    wrapper.style.removeProperty('opacity');
+    wrapper.style.removeProperty('transition');
+    wrapper.style.pointerEvents = 'none';
+}
+
+window.concealFallbackContent = concealFallbackContent;
+
+// text-transform changes the name screen readers get. Keep the written heading.
+function preserveHeadingNames(root) {
+    const scope = root || document;
+    scope.querySelectorAll('h1').forEach((heading) => {
+        const text = heading.textContent.replace(/\s+/g, ' ').trim();
+        if (!text || heading.hasAttribute('aria-label')) {
+            return;
+        }
+
+        heading.setAttribute('aria-label', text);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    preserveHeadingNames(document);
+});
+</script><script>setTimeout(function () {
+    document.documentElement.classList.add('is-decorated');
+}, 250);</script><div id="page-wrapper"><a class="skip-link" href="#main">Skip to content</a><div class="header_bg"></div><header class="header"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Open Studios"></a></div></header><main class="content_row" id="main"><script>window.addEventListener("DOMContentLoaded", function() {
+  let images = document.querySelectorAll( '.blog_post img:not(.blog-author-photo)' );
+
+  images.forEach( imageElm => {
+    // Create a new anchor element
+    const linkElm = document.createElement('a');
+    // Set the href attribute to the image's src
+    linkElm.href = imageElm.src;
+    linkElm.classList.add('lightbox');
+    
+    // Insert the image as a child of the anchor element
+    linkElm.appendChild(imageElm.cloneNode(true));
+    
+    // Replace the original image with the new anchor element
+    imageElm.parentNode.replaceChild(linkElm, imageElm);
+  } );
+  const prvs = new Parvus();
+
+});
+</script><div class="content blog_post"><nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><span>Blog</span></li><li><span aria-current="page">How to create procedurally generated game environments in Three.js</span></li></ol></nav><article><h1>How to create procedurally generated game environments in Three.js</h1><p class="blog-byline"><strong>By Paul Brzeski</strong> · <time datetime="2026-10-23T15:03:46">October 23, 2026</time></p><figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="465" src="/assets/blog/2026/10/Screenshot_20261023_151923-1024x465.png" alt="" class="wp-image-660" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151923-1024x465.png 1024w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151923-300x136.png 300w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151923-767x348.png 767w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151923-1536x697.png 1536w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151923-2048x929.png 2048w" sizes="auto, (max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<p class="wp-block-paragraph">Langenium is a project whose goal is to eventually produce a web based MMORPG. One of the biggest bottlenecks of the genre is content creation and delivery, game installer sizes, which means that will also be an even bigger choking point for a web game with limited studio resources. That’s why I decided to use procedurally generated materials and structures where possible.</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="#background-context">Background Context</a></li>
+
+
+
+<li><a href="#building-an-indoor-scene">Building an Indoor Scene</a></li>
+
+
+
+<li><a href="#shader-based-materials">Shader based materials</a></li>
+
+
+
+<li><a href="#long-term-vision">Long term vision</a></li>
+
+
+
+<li><a href="#whats-next">What’s next</a></li>
+
+
+
+<li><a href="#additional-reading">Links</a></li>
+</ul>
+
+
+
+<h2 id="background-context" class="wp-block-heading">Background Context</h2>
+
+
+
+<p class="wp-block-paragraph">Back in May of 2014 I experimented with <a href="https://github.com/chandlerprall/ThreeCSG">ThreeCSG</a>, a plugin that allowed boolean operations between simple 3D objects.</p>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="720" height="424" data-id="636" src="/assets/blog/2026/10/01-constructive-solid-geometry-2.png" alt="" class="wp-image-636" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/01-constructive-solid-geometry-2.png 720w, https://portal.openstudios.xyz/app/uploads/2026/10/01-constructive-solid-geometry-2-300x177.png 300w" sizes="auto, (max-width: 720px) 100vw, 720px"></figure>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="720" height="424" data-id="637" src="/assets/blog/2026/10/01-constructive-solid-geometry-3.png" alt="" class="wp-image-637" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/01-constructive-solid-geometry-3.png 720w, https://portal.openstudios.xyz/app/uploads/2026/10/01-constructive-solid-geometry-3-300x177.png 300w" sizes="auto, (max-width: 720px) 100vw, 720px"></figure>
+</figure>
+
+
+
+<p class="wp-block-paragraph">Caption: Randomised colours helped separate the objects visually when lining them up for boolean joins and intersection.</p>
+
+
+
+<p class="wp-block-paragraph">My tests were successful for simple intersections of flat surfaces, but things quickly became unsustainable when merging anything with curves.</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="720" height="509" src="/assets/blog/2026/10/03-constructive-solid-geometry.png" alt="" class="wp-image-638" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/03-constructive-solid-geometry.png 720w, https://portal.openstudios.xyz/app/uploads/2026/10/03-constructive-solid-geometry-300x212.png 300w" sizes="auto, (max-width: 720px) 100vw, 720px"></figure>
+
+
+
+<p class="wp-block-paragraph">Caption: The calculations simply couldn’t figure out a simple way to do it without multiplying all the touching surfaces exponentially.</p>
+
+
+
+<p class="wp-block-paragraph">Still, the technique proved useful enough to deliver my first indoor environment.</p>
+
+
+
+<p class="wp-block-paragraph">&lt; screenshots of the epoch exordium scene &gt;</p>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-2 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="720" height="432" data-id="641" src="/assets/blog/2026/10/18-scene-set-up-2.png" alt="" class="wp-image-641" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/18-scene-set-up-2.png 720w, https://portal.openstudios.xyz/app/uploads/2026/10/18-scene-set-up-2-300x180.png 300w" sizes="auto, (max-width: 720px) 100vw, 720px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="720" height="370" data-id="640" src="/assets/blog/2026/10/18-scene-set-up.png" alt="" class="wp-image-640" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/18-scene-set-up.png 720w, https://portal.openstudios.xyz/app/uploads/2026/10/18-scene-set-up-300x154.png 300w" sizes="auto, (max-width: 720px) 100vw, 720px"></figure>
+</figure>
+
+
+
+<p class="wp-block-paragraph"><br>Caption: This was used for indoor space station scene for a mini story driven game called Langenium Epoch Exordium.</p>
+
+
+
+<p class="wp-block-paragraph">The office environment for Open Studios website uses a mix of Constructive Solid Geometry to create objects procedurally and game models where it was easier to just use existing assets than model them in code.</p>
+
+
+
+<p class="wp-block-paragraph">From createOfficeRoom() in <a href="https://github.com/OpenStudiosCo/openstudios.xyz/blob/master/site/src/assets/scripts/virtual_office.js#L723-L905">virtual_office.js, lines 723–905</a>:</p>
+
+
+
+<pre class="wp-block-code language-js" data-language="js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">createOfficeRoom</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">var</span> doorGeometry <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>BoxGeometry</span><span class="token punctuation">(</span>doorWidth<span class="token punctuation">,</span> doorHeight<span class="token punctuation">,</span> doorDepth<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> transparentMaterial <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>MeshLambertMaterial</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token literal-property property">opacity</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">transparent</span><span class="token operator">:</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> doorBrush <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Brush</span><span class="token punctuation">(</span>doorGeometry<span class="token punctuation">,</span> transparentMaterial<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  doorBrush<span class="token punctuation">.</span>position<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token operator">-</span>doorWidth <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token operator">-</span> <span class="token number">5</span> <span class="token operator">+</span> <span class="token punctuation">(</span>doorHeight <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span> <span class="token number">15</span> <span class="token operator">+</span> <span class="token punctuation">(</span>window<span class="token punctuation">.</span>virtual_office<span class="token punctuation">.</span>room_depth <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  doorBrush<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x <span class="token operator">+=</span> <span class="token number">4.1</span><span class="token punctuation">;</span>
+  doorBrush<span class="token punctuation">.</span><span class="token function">updateMatrixWorld</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> roomWidth <span class="token operator">=</span> <span class="token number">80</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> roomHeight <span class="token operator">=</span> <span class="token number">37.5</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> roomGeometry <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>BoxGeometry</span><span class="token punctuation">(</span>roomWidth<span class="token punctuation">,</span> roomHeight<span class="token punctuation">,</span> window<span class="token punctuation">.</span>virtual_office<span class="token punctuation">.</span>room_depth<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// OMITTED: floor, ceiling and wall materials, texture loading, and the exterior floor plane.</span>
+
+  <span class="token keyword">const</span> materials <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token comment">// Right</span>
+    sidewallMaterial<span class="token punctuation">,</span>
+    <span class="token comment">// Left</span>
+    sidewallMaterial<span class="token punctuation">,</span>
+    <span class="token comment">// Ceiling</span>
+    ceilMaterial<span class="token punctuation">,</span>
+    <span class="token comment">// Floor</span>
+    floorMaterial<span class="token punctuation">,</span>
+    <span class="token comment">// Front</span>
+    backwallMaterial<span class="token punctuation">,</span>
+    <span class="token comment">// Back</span>
+    backwallMaterial
+  <span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> roomBrush <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Brush</span><span class="token punctuation">(</span>roomGeometry<span class="token punctuation">,</span> materials<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  roomBrush<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">13.75</span><span class="token punctuation">;</span>
+  roomBrush<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">15</span><span class="token punctuation">;</span>
+
+  roomBrush<span class="token punctuation">.</span><span class="token function">updateMatrixWorld</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Mesh</span><span class="token punctuation">(</span>
+    <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>BufferGeometry</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>MeshBasicMaterial</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  csgEvaluator<span class="token punctuation">.</span><span class="token function">evaluate</span><span class="token punctuation">(</span>roomBrush<span class="token punctuation">,</span> doorBrush<span class="token punctuation">,</span> <span class="token constant">SUBTRACTION</span><span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  result<span class="token punctuation">.</span>receiveShadow <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+  result<span class="token punctuation">.</span>layers<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+
+
+
+<p class="wp-block-paragraph">Caption: This code creates the geometry of the room, cutting out the space for the door and allowing the user to enter the room in the intro sequence.</p>
+
+
+
+<p class="wp-block-paragraph">From <code>createDesk()</code> in <a href="https://github.com/OpenStudiosCo/openstudios.xyz/blob/master/site/src/assets/scripts/virtual_office/furniture.js#L363-L392">virtual_office/furniture.js, lines 363–392</a>.</p>
+
+
+
+<pre class="wp-block-code language-js" data-language="js"><code class="language-js"><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">createDesk</span><span class="token punctuation">(</span> <span class="token parameter">i</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> deskGroup <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Group</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  deskGroup<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"desk"</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// OMITTED: desk model loading and material adjustments.</span>
+
+  <span class="token comment">// Add computer screen</span>
+  <span class="token keyword">var</span> screenGeometry <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>BoxGeometry</span><span class="token punctuation">(</span> <span class="token number">0.64</span><span class="token punctuation">,</span> <span class="token number">0.48</span><span class="token punctuation">,</span> <span class="token number">0.02</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> screenMaterial <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>MeshPhongMaterial</span><span class="token punctuation">(</span> <span class="token punctuation">{</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token number">0x222222</span> <span class="token punctuation">}</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> screen <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Mesh</span><span class="token punctuation">(</span> screenGeometry<span class="token punctuation">,</span> screenMaterial <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  screen<span class="token punctuation">.</span>position<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token punctuation">,</span> <span class="token number">0.05</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  screen<span class="token punctuation">.</span>castShadow <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token comment">//default is false</span>
+  screen<span class="token punctuation">.</span>receiveShadow <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">//default</span>
+  screen<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"screen"</span><span class="token punctuation">;</span>
+  deskGroup<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span> screen <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Add screen stand (formerly CPU)</span>
+  <span class="token keyword">var</span> cpuGeometry <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>BoxGeometry</span><span class="token punctuation">(</span> <span class="token number">0.1</span><span class="token punctuation">,</span> <span class="token number">0.15</span><span class="token punctuation">,</span> <span class="token number">0.025</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> cpuMaterial <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>MeshPhongMaterial</span><span class="token punctuation">(</span> <span class="token punctuation">{</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token number">0x666666</span> <span class="token punctuation">}</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> cpu <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Mesh</span><span class="token punctuation">(</span> cpuGeometry<span class="token punctuation">,</span> cpuMaterial <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  cpu<span class="token punctuation">.</span>position<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0.4</span><span class="token punctuation">,</span> <span class="token number">0.0625</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  cpu<span class="token punctuation">.</span>castShadow <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token comment">//default is false</span>
+  cpu<span class="token punctuation">.</span>receiveShadow <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">//default</span>
+  cpu<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"cpu"</span><span class="token punctuation">;</span>
+  deskGroup<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span> cpu <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Add screen stand base.</span>
+  <span class="token keyword">var</span> baseGeo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>BoxGeometry</span><span class="token punctuation">(</span> <span class="token number">0.25</span><span class="token punctuation">,</span> <span class="token number">0.01</span><span class="token punctuation">,</span> <span class="token number">0.125</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> base <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Mesh</span><span class="token punctuation">(</span> baseGeo<span class="token punctuation">,</span> cpuMaterial <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  base<span class="token punctuation">.</span>position<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0.32</span><span class="token punctuation">,</span> <span class="token number">0.0625</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  base<span class="token punctuation">.</span>castShadow <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token comment">//default is false</span>
+  base<span class="token punctuation">.</span>receiveShadow <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">//default</span>
+  base<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"base"</span><span class="token punctuation">;</span>
+  deskGroup<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span> base <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// OMITTED: desk labels, ceiling light models and spotlight setup.</span>
+
+  <span class="token keyword">return</span> deskGroup<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+
+
+
+<p class="wp-block-paragraph">Caption: This code creates the computer monitors on each desk, using simple shapes to create the monitor stands and screens.</p>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-3 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="700" height="367" data-id="348" src="/assets/blog/2026/10/image.png" alt="" class="wp-image-348" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/image.png 700w, https://portal.openstudios.xyz/app/uploads/2023/10/image-300x157.png 300w" sizes="auto, (max-width: 700px) 100vw, 700px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="561" data-id="370" src="/assets/blog/2026/10/1_3f4NkhjMUmTz9UW0ulJZHw-1024x561.webp" alt="" class="wp-image-370" srcset="https://portal.openstudios.xyz/app/uploads/2023/10/1_3f4NkhjMUmTz9UW0ulJZHw-1024x561.webp 1024w, https://portal.openstudios.xyz/app/uploads/2023/10/1_3f4NkhjMUmTz9UW0ulJZHw-300x164.webp 300w, https://portal.openstudios.xyz/app/uploads/2023/10/1_3f4NkhjMUmTz9UW0ulJZHw-768x421.webp 768w, https://portal.openstudios.xyz/app/uploads/2023/10/1_3f4NkhjMUmTz9UW0ulJZHw-1536x841.webp 1536w, https://portal.openstudios.xyz/app/uploads/2023/10/1_3f4NkhjMUmTz9UW0ulJZHw-2048x1121.webp 2048w" sizes="auto, (max-width: 1024px) 100vw, 1024px"></figure>
+</figure>
+
+
+
+<p class="wp-block-paragraph"><br>Caption: The result of putting these elements together is a highly optimised and scalable scene that uses procedural and binary (file based) assets as needed.</p>
+
+
+
+<p class="wp-block-paragraph">Migration of the office into Langenium’s new build made me experiment with other procedurally generated structures leading to the creation of the new wells, refineries and cargo ships in the game overworld.</p>
+
+
+
+<p class="wp-block-paragraph">With the success of the new overworld structures, I wanted to create a way to create indoor environments that could act as additional gameplay areas for story telling, puzzle solving, platforming challenges and building atmosphere.</p>
+
+
+
+<h2 id="building-an-indoor-scene" class="wp-block-heading">Building an Indoor Scene</h2>
+
+
+
+<p class="wp-block-paragraph">Langenium is slowly progressing from being a tech demo into a actual game, as such I wanted to start supporting a separate scene so the user could be inside overworld structures to do things like trade, interact with NPC’s and handle other game systems in an immersive world building way.</p>
+
+
+
+<p class="wp-block-paragraph">The hangar scene was envisaged to be a key part of the game since the beginning, below are my original drawings of the scene. I’ve deviated from that a little but the central idea was preserved.</p>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-4 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="960" height="720" data-id="647" src="/assets/blog/2026/10/522776_10151213757062104_1597306627_n.jpg" alt="" class="wp-image-647" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/522776_10151213757062104_1597306627_n.jpg 960w, https://portal.openstudios.xyz/app/uploads/2026/10/522776_10151213757062104_1597306627_n-300x225.jpg 300w, https://portal.openstudios.xyz/app/uploads/2026/10/522776_10151213757062104_1597306627_n-768x576.jpg 768w" sizes="auto, (max-width: 960px) 100vw, 960px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="768" data-id="648" src="/assets/blog/2026/10/20130904_2211580-scaled-1-e1792675226289-1024x768.jpg" alt="" class="wp-image-648" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/20130904_2211580-scaled-1-e1792675226289-1024x768.jpg 1024w, https://portal.openstudios.xyz/app/uploads/2026/10/20130904_2211580-scaled-1-e1792675226289-300x225.jpg 300w, https://portal.openstudios.xyz/app/uploads/2026/10/20130904_2211580-scaled-1-e1792675226289-768x576.jpg 768w, https://portal.openstudios.xyz/app/uploads/2026/10/20130904_2211580-scaled-1-e1792675226289-1536x1152.jpg 1536w, https://portal.openstudios.xyz/app/uploads/2026/10/20130904_2211580-scaled-1-e1792675226289-2048x1536.jpg 2048w" sizes="auto, (max-width: 1024px) 100vw, 1024px"><figcaption class="wp-element-caption">ø;</figcaption></figure>
+</figure>
+
+
+
+<h3 class="wp-block-heading">Using configuration to guide procedural generation</h3>
+
+
+
+<p class="wp-block-paragraph">In order for the indoor scene to be a natural part of the game world, and to work later in the multiplayer version, I refactored the code so that the overworld was populated from a config file. This means that each structure can have its own hangar configuration, allowing all sorts of in-engine and in-game options.</p>
+
+
+
+<p class="wp-block-paragraph">This configuration found in the Overworld config (<a href="https://github.com/OpenStudiosCo/Langenium/blob/master/game/src/scenes/overworld.yml">game/src/scenes/overworld.yml</a>) attaches hangars to an overworld structure:</p>
+
+
+
+<pre class="wp-block-code language-yaml" data-language="html"><code class="language-html">objects:
+  # OMITTED: other overworld structures.
+  - name: Lambda City
+    model: platform
+    position:
+      x: -35000
+      y: 1500
+      z: -65000
+    rotation:
+      x: 0
+      y: -12.56
+      z: 0
+    hangars:
+      - name: Hangar 1
+        position:
+          x: 0
+          y: 6100
+          z: -8620
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+      - name: Hangar 2
+        position:
+          x: 0
+          y: 6100
+          z: 8620
+        rotation:
+          x: 0
+          y: 3.14159
+          z: 0
+  # OMITTED: remaining overworld structures.</code></pre>
+
+
+
+<p class="wp-block-paragraph">There is currently only one hangar design in the game code, but it’s been written to be extensible so adding more is just a matter of writing new configurations and testing them.</p>
+
+
+
+<p class="wp-block-paragraph">This configuration from the hangar game class ( <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/game/src/objects/structures/hangar.ts"><code>game/src/objects/structures/hangar.ts</code></a>)  holds the default hangar design that is loaded by <code>getDesign()</code>:</p>
+
+
+
+<pre class="wp-block-code language-ts" data-language="html"><code class="language-html">    getDesign( designIndex = 0 ) {
+        const designs = [
+          {
+            name: 'Bay with quarters',
+            size: 5,
+            components: [
+              {
+                  name: 'Main Bay',
+                  width: 10,
+                  height: 5,
+                  depth: 10,
+                  position: {
+                      x: 0,
+                      y: 0,
+                      z: 0
+                  },
+                  rotation: {
+                      x: 0,
+                      y: 0,
+                      z: 0
+                  }
+              },
+              {
+                  name: 'Quarters',
+                  width: 5,
+                  height: 2.5,
+                  depth: 5,
+                  position: {
+                      x: -8.375,
+                      y: -1.25,
+                      z: -2.5
+                  },
+                  rotation: {
+                      x: 0,
+                      y: 0,
+                      z: 0
+                  }
+              },
+              {
+                name: 'Corridor',
+                width: 2.5,
+                height: 2.55,
+                depth: 1.25,
+                position: {
+                    x: -5,
+                    y: -1.225,
+                    z: -1.25
+                },
+                rotation: {
+                    x: 0,
+                    y: 0, // 90 degrees or half pi
+                    z: 0
+                }
+              },
+            ]
+          }
+        ];
+        return designs[designIndex];
+    }</code></pre>
+
+
+
+<p class="wp-block-paragraph">It describes three components: <strong>the main bay, quarters and connecting corridor</strong>, each with dimensions, a position and a rotation. In the original code, this object is the first entry in the <code>designs</code> array, selected by default through <code>getDesign(designIndex = 0)</code>.</p>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-5 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="465" data-id="662" src="/assets/blog/2026/10/Screenshot_20261023_152000-1024x465.png" alt="" class="wp-image-662" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152000-1024x465.png 1024w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152000-300x136.png 300w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152000-767x348.png 767w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152000-1536x697.png 1536w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152000-2048x929.png 2048w" sizes="auto, (max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="465" data-id="664" src="/assets/blog/2026/10/Screenshot_20261023_151943-1024x465.png" alt="" class="wp-image-664" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151943-1024x465.png 1024w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151943-300x136.png 300w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151943-767x348.png 767w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151943-1536x697.png 1536w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_151943-2048x929.png 2048w" sizes="auto, (max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="467" data-id="665" src="/assets/blog/2026/10/Screenshot_20261023_152232-1024x467.png" alt="" class="wp-image-665" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152232-1024x467.png 1024w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152232-300x137.png 300w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152232-767x350.png 767w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152232-1536x701.png 1536w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot_20261023_152232-2048x935.png 2048w" sizes="auto, (max-width: 1024px) 100vw, 1024px"></figure>
+</figure>
+
+
+
+<p class="wp-block-paragraph">This code loads the hangar design in the game client to render it in 3D, from <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/client/src/app/scenograph/objects/structures/hangar.js">client/src/app/scenograph/objects/structures/hangar.js</a>:</p>
+
+
+
+<pre class="wp-block-code language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> <span class="token constant">THREE</span> <span class="token keyword">from</span> <span class="token string">'three'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> <span class="token constant">ADDITION</span><span class="token punctuation">,</span> <span class="token constant">HOLLOW_SUBTRACTION</span><span class="token punctuation">,</span> Operation<span class="token punctuation">,</span> Evaluator <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'three-bvh-csg'</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * Internal libs and helpers.
+ */</span>
+<span class="token keyword">import</span> l <span class="token keyword">from</span> <span class="token string">'@/helpers/l.js'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> proceduralBuilding<span class="token punctuation">,</span> proceduralMetalMaterial2 <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@/scenograph/materials.js'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> HangarObject <span class="token keyword">from</span> <span class="token string">'#/game/src/objects/structures/hangar'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">Hangar</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// Modified materials for indoor scenes</span>
+    materials<span class="token punctuation">;</span>
+
+    <span class="token comment">// Game object containing layout definition and collision detection handling.</span>
+    objectClass<span class="token punctuation">;</span>
+
+    <span class="token comment">// THREE.Mesh</span>
+    mesh<span class="token punctuation">;</span>
+
+    <span class="token comment">// The scale of the mesh.</span>
+    size<span class="token punctuation">;</span>
+
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span>size <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span>materials <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span>ready <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span>objectClass <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HangarObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Load hangar mesh
+     * @returns
+     */</span>
+    <span class="token keyword">async</span> <span class="token function">loadMesh</span><span class="token punctuation">(</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> hangarConfig<span class="token punctuation">,</span> corridorConfig<span class="token punctuation">,</span> quartersConfig<span class="token punctuation">;</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span>objectClass<span class="token punctuation">.</span>design<span class="token punctuation">.</span>components<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">component</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span> component<span class="token punctuation">.</span>name <span class="token operator">===</span> <span class="token string">'Main Bay'</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                hangarConfig <span class="token operator">=</span> component<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span> component<span class="token punctuation">.</span>name <span class="token operator">===</span> <span class="token string">'Quarters'</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                quartersConfig <span class="token operator">=</span> component<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span> component<span class="token punctuation">.</span>name <span class="token operator">===</span> <span class="token string">'Corridor'</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                corridorConfig <span class="token operator">=</span> component<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">/**
+         * Main hangar mesh
+         */</span>
+        <span class="token keyword">let</span> hangarMesh <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">loadHangarMesh</span><span class="token punctuation">(</span> hangarConfig <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">/**
+         * Corridor mesh
+         */</span>
+        <span class="token keyword">let</span> corridorMesh <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">loadCorridorMesh</span><span class="token punctuation">(</span> corridorConfig <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        corridorMesh<span class="token punctuation">.</span>operation <span class="token operator">=</span> <span class="token constant">ADDITION</span><span class="token punctuation">;</span>
+        hangarMesh<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span> corridorMesh <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">/**
+         * Player quarters mesh.
+         */</span>
+        <span class="token keyword">let</span> quartersMesh <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">loadQuartersMesh</span><span class="token punctuation">(</span> quartersConfig <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        quartersMesh<span class="token punctuation">.</span>operation <span class="token operator">=</span> <span class="token constant">ADDITION</span><span class="token punctuation">;</span>
+        hangarMesh<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span> quartersMesh <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Constructive Solid Geometry (csg) Evaluator.</span>
+        <span class="token keyword">let</span> csgEvaluator<span class="token punctuation">;</span>
+        csgEvaluator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Evaluator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        csgEvaluator<span class="token punctuation">.</span>useGroups <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">let</span> result <span class="token operator">=</span> csgEvaluator<span class="token punctuation">.</span><span class="token function">evaluateHierarchy</span><span class="token punctuation">(</span> hangarMesh <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">let</span> mesh <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Object3D</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mesh<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span> result <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mesh<span class="token punctuation">.</span>userData<span class="token punctuation">.</span>targetable <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        mesh<span class="token punctuation">.</span>userData<span class="token punctuation">.</span>objectClass <span class="token operator">=</span> <span class="token string">'hangar'</span><span class="token punctuation">;</span>
+        mesh<span class="token punctuation">.</span>scale<span class="token punctuation">.</span><span class="token function">setScalar</span><span class="token punctuation">(</span> <span class="token number">2.5</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> mesh<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">async</span> <span class="token function">load</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token comment">// Setup materials.</span>
+        <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">loadMaterials</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span>mesh <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">loadMesh</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Setup Hangar materials
+     */</span>
+    <span class="token comment">// OMITTED: loadMaterials(); shown in the shader materials section below.</span>
+
+    <span class="token comment">/**
+     * Creates the Hangar's main mesh.
+     */</span>
+    <span class="token keyword">async</span> <span class="token function">loadHangarMesh</span><span class="token punctuation">(</span> <span class="token parameter">config</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">/**
+         * Hangar mesh
+         */</span>
+        <span class="token keyword">let</span> hangarMesh <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Operation</span><span class="token punctuation">(</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>BoxGeometry</span><span class="token punctuation">(</span> config<span class="token punctuation">.</span>width<span class="token punctuation">,</span> config<span class="token punctuation">.</span>height<span class="token punctuation">,</span> config<span class="token punctuation">.</span>depth<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>hangar<span class="token punctuation">,</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>hangar<span class="token punctuation">,</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>hangar<span class="token punctuation">,</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>hangar<span class="token punctuation">,</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>hangar<span class="token punctuation">,</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>clear<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        hangarMesh<span class="token punctuation">.</span><span class="token function">updateMatrixWorld</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> hangarMesh<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Creates the corridor mesh.
+     */</span>
+    <span class="token keyword">async</span> <span class="token function">loadCorridorMesh</span><span class="token punctuation">(</span> <span class="token parameter">config</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">let</span> corridorMesh <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Operation</span><span class="token punctuation">(</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>BoxGeometry</span><span class="token punctuation">(</span> config<span class="token punctuation">.</span>width<span class="token punctuation">,</span> config<span class="token punctuation">.</span>height<span class="token punctuation">,</span> config<span class="token punctuation">.</span>depth <span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>metal <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        corridorMesh<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x <span class="token operator">=</span> config<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x<span class="token punctuation">;</span>
+        corridorMesh<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y <span class="token operator">=</span> config<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y<span class="token punctuation">;</span>
+        corridorMesh<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z <span class="token operator">=</span> config<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z<span class="token punctuation">;</span>
+        corridorMesh<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>x <span class="token operator">=</span> config<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>x<span class="token punctuation">;</span>
+        corridorMesh<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>y <span class="token operator">=</span> config<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>y<span class="token punctuation">;</span>
+        corridorMesh<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>z <span class="token operator">=</span> config<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>z<span class="token punctuation">;</span>
+
+        corridorMesh<span class="token punctuation">.</span><span class="token function">updateMatrixWorld</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> corridorMesh<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Creates the player quarters mesh.
+     */</span>
+    <span class="token keyword">async</span> <span class="token function">loadQuartersMesh</span><span class="token punctuation">(</span> <span class="token parameter">config</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> quartersMesh <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Operation</span><span class="token punctuation">(</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>BoxGeometry</span><span class="token punctuation">(</span> config<span class="token punctuation">.</span>width<span class="token punctuation">,</span> config<span class="token punctuation">.</span>height<span class="token punctuation">,</span> config<span class="token punctuation">.</span>depth<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>metal <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        quartersMesh<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x <span class="token operator">=</span> config<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x<span class="token punctuation">;</span>
+        quartersMesh<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y <span class="token operator">=</span> config<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y<span class="token punctuation">;</span>
+        quartersMesh<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z <span class="token operator">=</span> config<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z<span class="token punctuation">;</span>
+        quartersMesh<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>x <span class="token operator">=</span> config<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>x<span class="token punctuation">;</span>
+        quartersMesh<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>y <span class="token operator">=</span> config<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>y<span class="token punctuation">;</span>
+        quartersMesh<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>z <span class="token operator">=</span> config<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>z<span class="token punctuation">;</span>
+        quartersMesh<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">.</span>scale<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">0.8</span><span class="token punctuation">;</span>
+
+        quartersMesh<span class="token punctuation">.</span><span class="token function">updateMatrixWorld</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        quartersMesh<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'inner'</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> quartersMesh<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// OMITTED: animate() shader time update.</span>
+
+<span class="token punctuation">}</span></code></pre>
+
+
+
+<p class="wp-block-paragraph">The client loads the design from the game-core hangar object, finds the main bay, corridor and quarters, and builds their geometry using the configured dimensions. The corridor and quarters are positioned and rotated from their configuration, then joined to the main bay using CSG addition. The result is scaled by 2.5. The main bay uses a separate invisible material on one face for its opening.</p>
+
+
+
+<p class="wp-block-paragraph">This configuration places the player within a hangar, from <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/game/src/scenes/overworld.yml">game/src/scenes/overworld.yml</a>:</p>
+
+
+
+<pre class="wp-block-code language-yaml" data-language="html"><code class="language-html">actors:
+  # OMITTED: other actors.
+  - name: Player Two
+    model: person
+    class: player
+    hangar:
+      structure: Lambda City
+      hangarName: Hangar 2
+    position:
+      x: -65000
+      y: -35000
+      z: 1500
+    rotation:
+      x: 0
+      y: -12.56
+      z: 0
+  # OMITTED: remaining actors.</code></pre>
+
+
+
+<p class="wp-block-paragraph">The <code>hangar</code> entry identifies the structure and named hangar that the player occupies. Here, <code>Player Two</code> uses the <code>person</code> model and is assigned to <code>Hangar 2</code> in <code>Lambda City</code>.</p>
+
+
+
+<h3 class="wp-block-heading">Gameplay experience considerations</h3>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="479" src="/assets/blog/2026/10/Screenshot-from-2025-12-29-17-18-35-1024x479.png" alt="" class="wp-image-658" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot-from-2025-12-29-17-18-35-1024x479.png 1024w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot-from-2025-12-29-17-18-35-300x140.png 300w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot-from-2025-12-29-17-18-35-767x359.png 767w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot-from-2025-12-29-17-18-35-1536x719.png 1536w, https://portal.openstudios.xyz/app/uploads/2026/10/Screenshot-from-2025-12-29-17-18-35.png 1849w" sizes="auto, (max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<p class="wp-block-paragraph">When the overworld simulation is loaded by the game client, it processes each structures hangar configuration and loads up the hangar designs needed if a player is inside one. Hangars can see out, but players in the overworld cannot currently see into the hangars. This was a intentional decision so that I could maintain the immersion of being in a structure in an overworld area, without having to handle design fidelity when there are multiple hangars on one building.</p>
+
+
+
+<p class="wp-block-paragraph">The hangar scene uses AABB collision, the connected pieces of simple geometry check if the player is crossing into an area where they are no longer inside one of the room elements.</p>
+
+
+
+<p class="wp-block-paragraph">It took a bit of refining to get the collision detection to work, I was able to clip through walls if I ran fast enough and I believe according to the way code is written that is still technically possible if someone could move faster than they’re allowed to by the code.</p>
+
+
+
+<p class="wp-block-paragraph">The hangar game object derives component bounding boxes from the same design used to construct the visible geometry. From <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/game/src/objects/structures/hangar.ts">game/src/objects/structures/hangar.ts</a>:</p>
+
+
+
+<pre class="wp-block-code language-ts" data-language="html"><code class="language-html">    public getComponentAABBs(): AABB[] {
+        const cos = Math.cos( this.rotation.y || 0 );
+        const sin = Math.sin( this.rotation.y || 0 );
+
+        return this.design.components.map(component =&gt; {
+            const halfSize = {
+                x: component.width,
+                y: component.height,
+                z: component.depth
+            };
+            const localX = component.position.x * 2.5;
+            const localZ = component.position.z * 2.5;
+
+            const worldPos = {
+                x: this.position.x + localX * cos + localZ * sin,
+                y: this.position.y + component.position.y * 2.5,
+                z: this.position.z - localX * sin + localZ * cos
+            };
+
+            return {
+                min: {
+                    x: worldPos.x - halfSize.x,
+                    y: worldPos.y - halfSize.y,
+                    z: worldPos.z - halfSize.z
+                },
+                max: {
+                    x: worldPos.x + halfSize.x,
+                    y: worldPos.y + halfSize.y,
+                    z: worldPos.z + halfSize.z
+                }
+            };
+        });
+    }</code></pre>
+
+
+
+<p class="wp-block-paragraph">The component offsets are scaled and transformed into world coordinates using the hangar position and Y rotation. Each component produces a minimum and maximum bound for the movement checks.</p>
+
+
+
+<p class="wp-block-paragraph">These methods from <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/game/src/world.ts">game/src/world.ts</a> check the proposed player bounds against the components of the assigned hangar:</p>
+
+
+
+<pre class="wp-block-code language-ts" data-language="html"><code class="language-html">    checkHangarCollisions(actorInstance: any) {
+        // Get object's proposed AABB at next position
+        const actorAABB = actorInstance.object.getAABBNext();
+
+        // Ensure the user is still inside the hangar area.
+        let inside = false;
+        if (actorInstance.config.hangar) {
+            this.instance.objects.forEach((objectInstance, objectName) =&gt; {
+                if (objectName == actorInstance.config.hangar.structure) {
+                    if (objectInstance.hangars) {
+                        objectInstance.hangars.forEach((hangarInstance) =&gt; {
+                            if (hangarInstance.config.name == actorInstance.config.hangar.hangarName) {
+
+                                for (const componentAABB of hangarInstance.object.aabb ) {
+                                    if (this.aabbContained(actorAABB, componentAABB)) {
+                                        inside = true;
+                                        break;
+                                    }
+                                }
+
+                            }
+                        });
+                    }
+
+                }
+            });
+
+        }
+        if (inside) {
+            actorInstance.object.commitNextPosition();
+        }
+
+    }
+
+    // Checks if actor Bounding Box is within the component Bounding Box
+    aabbContained(actorBounds, componentBounds) {
+        let offset = 1.25;
+        return (
+            actorBounds.min.x &gt;= componentBounds.min.x - offset &amp;&amp;
+            actorBounds.max.x &lt;= componentBounds.max.x + offset &amp;&amp;
+            actorBounds.min.y &gt;= componentBounds.min.y - offset &amp;&amp;
+            actorBounds.max.y &lt;= componentBounds.max.y + offset &amp;&amp;
+            actorBounds.min.z &gt;= componentBounds.min.z - offset &amp;&amp;
+            actorBounds.max.z &lt;= componentBounds.max.z + offset
+        );
+    }</code></pre>
+
+
+
+<p class="wp-block-paragraph">The simulation commits the proposed position only when the actor bounding box fits inside at least one component, with the configured 1.25-unit tolerance. This checks containment within the component boxes rather than testing against the triangles produced by CSG.</p>
+
+
+
+<p class="wp-block-paragraph">I had some performance issues when I first implemented AABB based collision which led me on a months long quest to try to refactor the engine, a pursuit I ultimately abandoned. I did however keep a significant rework of the game engine that moved the tracking of game world state out of the game client and into the reusable core as its own simulation. That will allow the same code to be run by the game clients and multiplayer servers in future.</p>
+
+
+
+<p class="wp-block-paragraph">The hangar scene was implemented and it’s performance issues seemed solved even on mobile, so I decided to push ahead and merge it in.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="649" src="/assets/blog/2026/10/image-1024x649.png" alt="" class="wp-image-653" srcset="https://portal.openstudios.xyz/app/uploads/2026/10/image-1024x649.png 1024w, https://portal.openstudios.xyz/app/uploads/2026/10/image-300x190.png 300w, https://portal.openstudios.xyz/app/uploads/2026/10/image-767x486.png 767w, https://portal.openstudios.xyz/app/uploads/2026/10/image-1536x973.png 1536w, https://portal.openstudios.xyz/app/uploads/2026/10/image.png 1728w" sizes="auto, (max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<h2 id="shader-based-materials" class="wp-block-heading">Shader based materials</h2>
+
+
+
+<p class="wp-block-paragraph">The Langenium engine has a number of shader based materials that were ported from Blender. If you’d like to know more about them, check out <a href="https://openstudios.xyz/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html">How to implement Blender Principled BSDF Materials in Three.js (WebGL)</a>.</p>
+
+
+
+<p class="wp-block-paragraph">For the hangar, we’re using Langenium’s procedural building material. This features complex metal panels that represent a mix of technological components, lights and metalwork. The same material is used for the inside of wells and the inner rows of the refinery structures.</p>
+
+
+
+<p class="wp-block-paragraph">While different parts of the world share a material, they implement it with different settings for scale so that they fit the structure they’re attached to.</p>
+
+
+
+<p class="wp-block-paragraph">The hangar sets up its materials in <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/client/src/app/scenograph/objects/structures/hangar.js">client/src/app/scenograph/objects/structures/hangar.js</a>. It clones the building material to give the main bay its own scale setting:</p>
+
+
+
+<pre class="wp-block-code language-js" data-language="js"><code class="language-js">    <span class="token keyword">async</span> <span class="token function">loadMaterials</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>clear <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>MeshBasicMaterial</span><span class="token punctuation">(</span> <span class="token punctuation">{</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token number">0xffFFFF</span><span class="token punctuation">,</span> <span class="token literal-property property">transparent</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token literal-property property">visible</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token literal-property property">side</span><span class="token operator">:</span> <span class="token constant">THREE</span><span class="token punctuation">.</span>DoubleSide <span class="token punctuation">}</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>metal <span class="token operator">=</span> <span class="token function">proceduralBuilding</span><span class="token punctuation">(</span> <span class="token punctuation">{</span>
+            <span class="token literal-property property">uniforms</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token literal-property property">time</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">0.0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">scale</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">.025</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>                                         <span class="token comment">// Scale</span>
+                <span class="token literal-property property">lacunarity</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">2.0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>                                          <span class="token comment">// Lacunarity</span>
+                <span class="token literal-property property">randomness</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">1.0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>                                          <span class="token comment">// Randomness</span>
+                <span class="token literal-property property">emitColour1</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Vector4</span><span class="token punctuation">(</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.25</span> <span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>     <span class="token comment">// Emission gradient colour 1</span>
+                <span class="token literal-property property">emitColour2</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Vector4</span><span class="token punctuation">(</span> <span class="token number">0.158</span><span class="token punctuation">,</span> <span class="token number">1.</span><span class="token punctuation">,</span> <span class="token number">1.</span><span class="token punctuation">,</span> <span class="token number">.9</span> <span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>       <span class="token comment">// Emission gradient colour 2</span>
+                <span class="token literal-property property">shadowFactor</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">0.03</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">shadowOffset</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">0.1</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>metal<span class="token punctuation">.</span>transparent <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>metal<span class="token punctuation">.</span>side <span class="token operator">=</span> <span class="token constant">THREE</span><span class="token punctuation">.</span>DoubleSide<span class="token punctuation">;</span>
+        <span class="token comment">// Clone of the material to customize scaling.</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>hangar <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>metal<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>materials<span class="token punctuation">.</span>hangar<span class="token punctuation">.</span>uniforms<span class="token punctuation">.</span>scale<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">0.25</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
+
+
+
+<p class="wp-block-paragraph">The wells use the same material function in <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/client/src/app/scenograph/objects/structures/extractor.js">client/src/app/scenograph/objects/structures/extractor.js</a>, with a cloned material for the inner surface:</p>
+
+
+
+<pre class="wp-block-code language-js" data-language="js"><code class="language-js">        <span class="token keyword">const</span> material <span class="token operator">=</span> <span class="token function">proceduralBuilding</span><span class="token punctuation">(</span> <span class="token punctuation">{</span>
+            <span class="token literal-property property">uniforms</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token literal-property property">time</span>        <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">0.0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">scale</span>       <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">.005</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>                                         <span class="token comment">// Scale</span>
+                <span class="token literal-property property">lacunarity</span>  <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">2.0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>                                          <span class="token comment">// Lacunarity</span>
+                <span class="token literal-property property">randomness</span>  <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">1.0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>                                          <span class="token comment">// Randomness</span>
+                <span class="token literal-property property">emitColour1</span> <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Vector4</span><span class="token punctuation">(</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.25</span> <span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>     <span class="token comment">// Emission gradient colour 1</span>
+                <span class="token literal-property property">emitColour2</span> <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Vector4</span><span class="token punctuation">(</span> <span class="token number">0.158</span><span class="token punctuation">,</span> <span class="token number">1.</span><span class="token punctuation">,</span> <span class="token number">1.</span><span class="token punctuation">,</span> <span class="token number">.9</span> <span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>       <span class="token comment">// Emission gradient colour 2</span>
+                <span class="token literal-property property">shadowFactor</span><span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">0.03</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">shadowOffset</span><span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">0.1</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        material<span class="token punctuation">.</span>transparent <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        material<span class="token punctuation">.</span>side <span class="token operator">=</span> <span class="token constant">THREE</span><span class="token punctuation">.</span>DoubleSide<span class="token punctuation">;</span>
+        <span class="token comment">// OMITTED: outer mesh construction and CSG subtraction.</span>
+
+        <span class="token keyword">let</span> innerMesh2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Mesh</span><span class="token punctuation">(</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>CylinderGeometry</span><span class="token punctuation">(</span> <span class="token number">7.5</span><span class="token punctuation">,</span> <span class="token number">7.5</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token boolean">true</span> <span class="token punctuation">)</span><span class="token punctuation">,</span> material<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        window<span class="token punctuation">.</span>extractor<span class="token punctuation">.</span>inner <span class="token operator">=</span> innerMesh2<span class="token punctuation">.</span>material<span class="token punctuation">;</span>
+        innerMesh2<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">.</span>scale<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">0.8</span><span class="token punctuation">;</span>
+        innerMesh2<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        innerMesh2<span class="token punctuation">.</span>scale<span class="token punctuation">.</span><span class="token function">setScalar</span><span class="token punctuation">(</span> <span class="token keyword">this</span><span class="token punctuation">.</span>size <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        innerMesh2<span class="token punctuation">.</span><span class="token function">updateMatrixWorld</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        innerMesh2<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'inner'</span><span class="token punctuation">;</span></code></pre>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="595" height="335" src="/assets/blog/2026/10/Screenshot-2024-08-25-041411-edited.png" alt="" class="wp-image-134" srcset="https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-08-25-041411-edited.png 595w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-08-25-041411-edited-300x169.png 300w" sizes="auto, (max-width: 595px) 100vw, 595px"></figure>
+
+
+
+<p class="wp-block-paragraph">The refinery creates its inner shell material with another scale setting, in <a href="https://github.com/OpenStudiosCo/Langenium/blob/master/client/src/app/scenograph/objects/structures/refinery.js">client/src/app/scenograph/objects/structures/refinery.js</a>:</p>
+
+
+
+<pre class="wp-block-code language-js" data-language="js"><code class="language-js">        <span class="token keyword">const</span> material2 <span class="token operator">=</span> <span class="token function">proceduralBuilding</span><span class="token punctuation">(</span> <span class="token punctuation">{</span>
+            <span class="token literal-property property">uniforms</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token literal-property property">time</span>        <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">0.0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">scale</span>       <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">13.3</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>                                         <span class="token comment">// Scale</span>
+                <span class="token literal-property property">lacunarity</span>  <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">2.0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>                                          <span class="token comment">// Lacunarity</span>
+                <span class="token literal-property property">randomness</span>  <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">1.0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>                                          <span class="token comment">// Randomness</span>
+                <span class="token literal-property property">emitColour1</span> <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Vector4</span><span class="token punctuation">(</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.25</span> <span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>     <span class="token comment">// Emission gradient colour 1</span>
+                <span class="token literal-property property">emitColour2</span> <span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Vector4</span><span class="token punctuation">(</span> <span class="token number">0.158</span><span class="token punctuation">,</span> <span class="token number">1.</span><span class="token punctuation">,</span> <span class="token number">1.</span><span class="token punctuation">,</span> <span class="token number">.9</span> <span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>       <span class="token comment">// Emission gradient colour 2</span>
+                <span class="token literal-property property">shadowFactor</span><span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">0.01</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">shadowOffset</span><span class="token operator">:</span>  <span class="token punctuation">{</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">1.75</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">let</span> innerShell <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Brush</span><span class="token punctuation">(</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>OctahedronGeometry</span><span class="token punctuation">(</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span> <span class="token punctuation">)</span><span class="token punctuation">,</span> material2 <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        innerShell<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token operator">-</span> Math<span class="token punctuation">.</span><span class="token constant">PI</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        innerShell<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>y <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token constant">PI</span><span class="token punctuation">;</span>
+        innerShell<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>z <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token constant">PI</span> <span class="token operator">/</span> <span class="token number">4</span><span class="token punctuation">;</span>
+        innerShell<span class="token punctuation">.</span>scale<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span> <span class="token keyword">this</span><span class="token punctuation">.</span>size <span class="token operator">*</span> <span class="token number">0.95</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>size <span class="token operator">*</span> <span class="token number">0.95</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>size <span class="token operator">/</span> <span class="token number">1.5</span> <span class="token operator">*</span> <span class="token number">0.95</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        innerShell<span class="token punctuation">.</span><span class="token function">updateMatrixWorld</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        innerShell<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'inner'</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>mesh<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span> innerShell <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="511" src="/assets/blog/2026/10/Screenshot-2024-06-28-162051-Medium-1024x511.png" alt="" class="wp-image-136" srcset="https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-162051-Medium-1024x511.png 1024w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-162051-Medium-300x150.png 300w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-162051-Medium-768x383.png 768w, https://portal.openstudios.xyz/app/uploads/2024/09/Screenshot-2024-06-28-162051-Medium.png 1366w" sizes="auto, (max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<p class="wp-block-paragraph">There are a couple of benefits to using a shader material over baked textures:</p>
+
+
+
+<ul class="wp-block-list">
+<li>We can generate varied surface details across massive structures without obvious texture tiling, while retaining detail when viewed up close.</li>
+
+
+
+<li>Generating the patterns in code avoids downloading and storing large image textures for those details, helping keep asset downloads and texture memory use down.</li>
+
+
+
+<li>We can quickly change patterns, colours and surface properties through material settings, creating new variations and testing different looks directly in the game without editing and exporting texture files.</li>
+</ul>
+
+
+
+<h2 id="long-term-vision" class="wp-block-heading">Long term vision</h2>
+
+
+
+<p class="wp-block-paragraph">The game can already support multiple hangar designs attached to multiple buildings, the next step is to leverage that capability to create new kinds of indoor environments such as NPC homes, public spaces and shops.</p>
+
+
+
+<p class="wp-block-paragraph">A visual editor for the hangar scene would also be useful, currently it requires a bit of of math to figure out dimensions. It’s almost worth drawing up in a CAD program just to have the layout right without fixing up incrementally via code.</p>
+
+
+
+<h2 id="whats-next" class="wp-block-heading">What’s next</h2>
+
+
+
+<p class="wp-block-paragraph">My next priority is to add an item and mission system to the game, which will also likely involve placing objects into the indoor environments for interaction.</p>
+
+
+
+<p class="wp-block-paragraph">I think this combination of elements will finally demonstrate the gameplay loop I’ve envisaged for the project since the beginning. Travelling across a mysterious vast world, learning about how it got here, going on missions and engaging in aerial combat with players and bots.</p>
+
+
+
+<p class="wp-block-paragraph">The game client currently allows players to have infinite missiles, so that will be something to tackle with the next release. My thinking is that players will have to pick up missiles at the hangar, and craft improvements using materials salvaged from combat. The first mission will be somewhat of a game introduction tutorial, setting up the elements in the game and also introducing the player to them.</p>
+
+
+
+<h2 id="additional-reading" class="wp-block-heading">Resources and additional reading:</h2>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://github.com/OpenStudiosCo/openstudios.xyz">OpenStudiosCo/openstudios.xyz</a></li>
+
+
+
+<li><a href="https://github.com/OpenStudiosCo/Langenium">OpenStudiosCo/Langenium</a></li>
+
+
+
+<li><a href="https://github.com/gkjohnson/three-bvh-csg">three-bvh-csg</a></li>
+
+
+
+<li><a href="https://github.com/chandlerprall/ThreeCSG">ThreeCSG (the library used in the original experiments)</a></li>
+
+
+
+<li><a href="https://openstudios.xyz/blog/2024/09/how-to-implement-blender-principled-bsdf-materials-in-three-js-webgl.html">How to implement Blender Principled BSDF Materials in Three.js (WebGL)</a></li>
+</ul>
+
+
+
+<p class="wp-block-paragraph"></p>
+<div class="blog-author feature wide"><div class="feature_content"><h2>About Paul Brzeski</h2><p>Paul Brzeski is the Co-Founder and Technical Director of Open Studios, and a writer and creative technologist with more than two decades of experience working with software, the web, systems and graphical applications.</p><p>His work spans web development, technical architecture, WordPress and PHP systems, DevOps, interactive 3D and experimental R&D. He writes about technology, software, creative practice and the systems people build and live within.</p><p>Outside of work, Paul is a house husband, writer and dog dad to three fur babies.</p><p>Read more:&nbsp;<a href="https://paulbrzeski.com/" target="_blank" rel="noopener">Paul’s blog</a> ·&nbsp;<a href="https://www.linkedin.com/in/paul-b-23620b209/" target="_blank" rel="noopener">LinkedIn</a></p></div><div class="feature_media"><img class="blog-author-photo" src="/assets/images/about-us/paul.jpg" alt="Selfie of Paul with his two doggos in the car"></div></div></article></div></main><aside class="content_row newsletter"><div class="newsletter_bg"></div><div class="content"><div class="row"><div class="tiles"><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3 id="behind-the-scenes">Behind the scenes</h3><p>Take a step back through our blog to see behind the scenes updates on our projects including retrospectives and progress updates.</p><p>Recent highlights:</p><p><a href="/blog/2026/09/open-studios-raster-to-vector-conversion-wordpress-plugin.html" target="_blank" title="Introducing the Open Studios Raster to Vector Conversion Tool for WordPress">Launched a Raster to Vector Plugin for WordPress</a></p><p><a href="/blog/2025/05/langenium-v6-retrospective.html" target="_blank" title="Langenium v6 Retrospective">Langenium Game Dev (V6) Retrospective</a></p><br><p class="align_right"><a href="/blog.html" target="_blank" title="Read our blog">Read our blog</a></p></div></div><div class="tile"><div class="tile_content"></div><div class="tile_innercontent"><h3>Support Us</h3><p>Open Studios is an independent studio that needs your help to keep producing high quality work.</p><p>We are committed to produce content without restrictive licenses and with an open approach that teaches others.</p><p>If you like the sound of that, head over to our support page to see how you can get involved!</p><br><p class="align_right"><a href="/support_us.html" target="_blank" title="Support Us">Support Us</a></p></div></div></div></div></div></aside><footer class="content_row footer"><div class="content"><div class="row center"><div class="h1"><a title="Home"><img src="/assets/images/logo-wide.png" alt="Open Studios"></a></div></div></div></footer></div><script>var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="https://analytics.openstudios.xyz/";
+_paq.push(['setTrackerUrl', u+'matomo.php']);
+_paq.push(['setSiteId', '11']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+})();</script></body></html>
