@@ -356,6 +356,11 @@ function getBlogData( i ) {
     let data = [
         // Row 1.
         {
+            'title': "How to create procedurally generated\ngame environments in Three.js",
+            'url': '/iframes/blog/2026/10/how-to-create-procedurally-generated-game-environments-in-three-js.html',
+            'image': '/assets/blog/2026/10/Screenshot_20261023_151923-1024x465.png'
+        },
+        {
             'title': "How to safely evolve\ncompliance-critical WordPress platforms",
             'url': '/iframes/blog/2026/09/how-to-safely-evolve-compliance-critical-wordpress-platforms.html',
             'image': '/assets/blog/2026/09/bonnie-kittle-G-zs_msYcnc-unsplash-1024x683.jpg'
@@ -420,11 +425,6 @@ function getBlogData( i ) {
             'title': 'Studio Roundup for October 2023',
             'url': '/iframes/blog/2023/10/studio-roundup-october-2023.html',
             'image': '/assets/blog/2023/10/1_SLu3jtltivXMa4iTfvox4Q.webp'
-        },
-        {
-            'title': "Building A Cool 3D website: Tips,\nTricks and Lessons Learned",
-            'url': '/iframes/blog/2023/10/building-a-cool-3d-website-tips-tricks-and-lessons-learned.html',
-            'image': '/assets/blog/2023/10/1*o6xfwPdjAcGUyBE5s69iOQ.png'
         }
     ];
 
