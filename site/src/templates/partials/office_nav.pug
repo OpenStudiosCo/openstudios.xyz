@@ -3,7 +3,7 @@ button#office-menu-toggle.office-menu-toggle(type='button' hidden aria-expanded=
     kbd M
 nav#office-nav.office-nav(hidden aria-labelledby='office-nav-title' aria-describedby='office-nav-help')
     h2#office-nav-title.office-nav-title Virtual office
-    p#office-nav-help.visually-hidden Move through the 3D office. Zoom runs from 100 to 250 percent with the slider, the plus and minus keys, the mouse wheel, or a pinch. Arrow keys or a one-finger drag pan that zoomed view. A move to another place recenters it. Ctrl plus the mouse wheel still uses the browser zoom.
+    p#office-nav-help.visually-hidden Tab and Shift+Tab move through this menu. Zoom runs from 100 to 250 percent with the slider, the plus and minus keys, the mouse wheel, or a pinch. When the menu is closed and the scene is zoomed in, arrow keys or a one-finger drag pan that view. A move to another place recenters it. Ctrl plus the mouse wheel still uses the browser zoom.
     ul
         li
             button(type='button' data-office='worlds') Worlds
@@ -29,12 +29,15 @@ nav#office-nav.office-nav(hidden aria-labelledby='office-nav-title' aria-describ
         ul#office-posts
     ul.office-keys
         li
+            kbd Tab
+            span Next
+        li
+            kbd Shift+Tab
+            span Previous
+        li
             kbd +
             kbd -
             span Zoom
-        li
-            kbd Arrows
-            span Pan
         li
             kbd Esc
             span Close menu
