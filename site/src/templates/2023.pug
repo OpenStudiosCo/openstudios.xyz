@@ -3,7 +3,7 @@ html(lang='en')
     head
         include ./partials/page_meta.pug
         meta(charset='utf-8')
-        meta(name='viewport' content='width=device-width, initial-scale=1')
+        meta(name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover')
 
         title= pageTitle
 
@@ -15,6 +15,7 @@ html(lang='en')
                 z-index: 0;
             }
             #webgl-wrapper {
+                overflow: hidden;
                 position: absolute;
                 z-index: 1;
                 top: 0;
@@ -49,10 +50,12 @@ html(lang='en')
                 width: 5rem;
             }
 
+            html,
             body {
                 background-color: #000;
                 margin: 0;
                 padding: 0;
+                overflow-x: hidden;
             }
             #webgl {
                 opacity: 0;

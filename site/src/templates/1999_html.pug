@@ -3,7 +3,7 @@ html(lang='en')
     head
         include ./partials/page_meta.pug
         meta(charset='utf-8')
-        meta(name='viewport' content='width=device-width, initial-scale=1')
+        meta(name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover')
 
         title= pageTitle
 
@@ -31,10 +31,12 @@ html(lang='en')
                 z-index: 2;
             }
 
+            html,
             body {
                 background-color: #000;
                 margin: 0;
                 padding: 0;
+                overflow-x: hidden;
             }
             #webgl {
                 display: none;
@@ -65,7 +67,6 @@ html(lang='en')
                 border: solid 1px #00DD00;
                 border-radius: 1rem;
                 padding: 0.5rem;
-                position: fixed;
                 top: 0;
                 right: 0;
                 z-index: 10001;
@@ -92,6 +93,7 @@ html(lang='en')
             }
 
             #pokematrixSign {
+                position: fixed;
                 opacity: 0;
                 cursor: pointer;
                 z-index: 10003;
@@ -99,6 +101,8 @@ html(lang='en')
                 appearance: none;
             }
             #exitSign {
+                /* Absolute so #webgl-wrapper overflow clips the hanging edge. */
+                position: absolute;
                 display: none;
             }
             #pokematrixImage,
